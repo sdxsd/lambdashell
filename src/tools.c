@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/22 15:13:49 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/22 17:04:43 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/08/22 21:32:34 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,32 @@ int	substring_start(char *s1, char *s2)
 		i++;
 	}
 	return (1);
+}
+
+char	*ms_strjoin(char *s1, char *s2, char c)
+{
+	int		i;
+	int		j;
+	char	*s3;
+
+	i = 0;
+	j = 0;
+	s3 = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 2));
+	if (!s3)
+		return (NULL);
+	while (s1[i])
+	{
+		s3[i] = s1[i];
+		i++;
+	}
+	s3[i] = c;
+	i++;
+	while (s2[j])
+	{
+		s3[i] = s2[j];
+		i++;
+		j++;
+	}
+	s3[i] = '\0';
+	return (s3);
 }

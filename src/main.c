@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:37 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/22 17:07:01 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/08/22 21:43:56 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ int     main(int argc, char **argv, char **envp)
 	//(void)envp;
 	if (init(envp))
 		return (1);
-	env_add_keyvalue("SHELL", "NONSENSE\n\n\n\n");
+	//env_add_keyvalue("Pokemon", "Pikachu");
+	env_add_keyvalue("SHELL", "MITHRAS");
 	int i = 0;
 	while (env_global[i])
 	{
