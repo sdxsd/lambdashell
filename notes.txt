@@ -1,0 +1,3 @@
+/*
+-L ~/.brew/opt/readline/lib -l readline -I ~/.brew/opt/readline/include
+*/
