@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/22 12:24:35 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/22 17:06:20 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/08/22 21:44:15 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,46 +82,55 @@ entry is provided in key-value format. If the key already exists in env_global,
 it will replace its corresponding value with what is user-specified.
 */
 
-
 int	env_add_keyvalue(char *key, char *value)
 {
 	int		i;
-	char	*key_tmp;
-	char	*key_value;
-	int		env_i;
+	char	*entry;
 	
-	env_i = env_find_key(key);
-	i = 0;
-	key_tmp = ft_strjoin(key, "=");
-	if (!key_tmp)
-		return (1);
-	key_value = ft_strjoin(key_tmp, value);
-	if (!key_value)
+	i = env_find_key(key);
+	entry = ms_strjoin(key, value, '=');
+	if (entry == NULL)
 	{
-		free (key_tmp);
 		return (1);
 	}
-	if (env_i == -1)
+	if (i != -1)
 	{
-		while (env_global[i])
-			i++;
-		i++;
-		if (!value)
-			env_global[env_i] = key_tmp;
-		else
-			env_global[env_i] = key_value;
+		free (env_global[i]);
+		env_write_entry(i, entry, value);
 	}
 	else
 	{
-		free (env_global[env_i]);
-		if (!value)
-			env_global[env_i] = key_tmp;
-		else
-			env_global[env_i] = key_value;
+		i = 0;
+		while (env_global[i])
+			i++;
+		env_write_entry(i, entry, value);
 	}
-	free (key_tmp);
+	free (entry);
 	return (0);
 }
+
+int	env_write_entry(int pos, char *entry, char *value)
+{
+	if (!value)
+	{
+		env_global[pos] = ft_strdup(entry);
+		if (!env_global[pos])
+		{
+			return (1);
+		}
+	}
+	else
+	{
+		env_global[pos] = ft_strdup(entry);
+		if (!env_global[pos])
+		{
+			return (1);
+		}
+	}
+	return (0);
+}
+
+
 
 int	env_find_key(char *key)
 {
@@ -131,11 +140,14 @@ int	env_find_key(char *key)
 	i = 0;
 	key_tmp = ft_strjoin(key, "=");
 	if (!key_tmp)
-		return (0); // error trigger
+		return (-1);
 	while (env_global[i])
 	{
 		if (substring_start(env_global[i], key_tmp))
+		{
+			free (key_tmp);
 			return (i);
+		}
 		i++;
 	}
 	free (key_tmp);
