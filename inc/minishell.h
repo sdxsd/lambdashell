@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:32 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/21 12:49:57 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/08/22 12:51:08 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,18 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-char    **global_env;
+// GLOBAL VARIABLE
+char    **env_global;
+
+// PROTOTYPES
+// init.c
+int	init(char **envp);
+int	init_global(char **envp);
+
+// parse_cmd.c
+
+// run_cmd.c
+
+
 
 #endif

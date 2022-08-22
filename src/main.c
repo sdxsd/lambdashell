@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:37 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/22 10:33:31 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/08/22 12:25:00 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,28 +22,6 @@ if (!env)
 
 #include "minishell.h"
 
-int     init_global(char **env)
-{
-	int	i;
-
-	i = 0;
-	while (env[i])
-		i++;
-	global_env = ft_calloc((i + 1), (sizeof(char *)));
-	if (!global_env)
-	{
-		printf("Error: Mem allocation for global env. failed.\n");
-		return (1);
-	}
-	return (0);
-}
-
-int	init(char **envp)
-{
-	if (init_global(envp))
-		return (1);
-	return (0);
-}
 
 int     main(int argc, char **argv, char **envp)
 {
@@ -53,6 +31,14 @@ int     main(int argc, char **argv, char **envp)
 	//(void)envp;
 	if (init(envp))
 		return (1);
+	
+	int i;
+	i = 0;
+	while (i < 10)
+	{
+		printf("%s\n", env_global[i]);
+		i++;
+	}
 	printf("\nEND OF MINISHELL\n");	
 	return 0;
 }

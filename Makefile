@@ -6,7 +6,7 @@
 #    By: mikuiper <mikuiper@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/08/19 09:07:48 by mikuiper      #+#    #+#                  #
-#    Updated: 2022/08/21 11:54:05 by mikuiper      ########   odam.nl          #
+#    Updated: 2022/08/22 12:26:12 by mikuiper      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,8 @@ HEADERS	=	-I ./inc
 SRC_DIR		= ./src/
 FT_DIR = ./libft
 
-SRCS		= $(SRC_DIR)main.c
+SRCS		= 	$(SRC_DIR)main.c \
+				$(SRC_DIR)init.c
 OBJS		= $(SRCS:.c=.o)
 
 # COLORS
