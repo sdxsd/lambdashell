@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:37 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/22 10:23:30 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/08/22 10:33:31 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,7 @@ if (!env)
 	exit(1);
 */
 
-int	init(char **envp)
-{
-	if (init_global(envp))
-		return (1);
-}
+#include "minishell.h"
 
 int     init_global(char **env)
 {
@@ -42,12 +38,21 @@ int     init_global(char **env)
 	return (0);
 }
 
+int	init(char **envp)
+{
+	if (init_global(envp))
+		return (1);
+	return (0);
+}
+
 int     main(int argc, char **argv, char **envp)
 {
+	printf("\nSTART OF MINISHELL\n");	
 	(void)argc;
 	(void)argv;
 	//(void)envp;
 	if (init(envp))
 		return (1);
+	printf("\nEND OF MINISHELL\n");	
 	return 0;
 }
