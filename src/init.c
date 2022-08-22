@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/22 12:24:35 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/22 21:44:15 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/08/22 22:22:34 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,26 +63,17 @@ int	init(char **envp)
 }
 
 /*
-get_shell_lvl()
--
--
+env_add_entry(2)
+Adds an entry to env_global. It expects that the new entry is provided in 
+key-value format. It uses env_find_key(1) to decide where to write the entry
+in env_global. If env_find_key(1) could not find the key in env_global, it will
+tell env_add_entry(2) to add the entry to the end of env_global. If the key
+already exists in env_global, it will replace its corresponding value with
+what is user-specified. It uses env_write_entry(3) for actually writing the 
+entry.
 */
 
-/*
-int	get_shell_lvl(char **envp)
-{
-
-}
-*/
-
-/*
-env_add_keyvalue()
-Adds new entry to the global variable env_global. It expects that the new
-entry is provided in key-value format. If the key already exists in env_global,
-it will replace its corresponding value with what is user-specified.
-*/
-
-int	env_add_keyvalue(char *key, char *value)
+int	env_add_entry(char *key, char *value)
 {
 	int		i;
 	char	*entry;
@@ -109,28 +100,25 @@ int	env_add_keyvalue(char *key, char *value)
 	return (0);
 }
 
+/*
+env_write_entry(3)
+Serves as a helper function for env_add_entry(2). It will add a new 
+user-specified entry to env_global at the specified position.
+*/
+
 int	env_write_entry(int pos, char *entry, char *value)
 {
-	if (!value)
-	{
-		env_global[pos] = ft_strdup(entry);
-		if (!env_global[pos])
-		{
-			return (1);
-		}
-	}
-	else
-	{
-		env_global[pos] = ft_strdup(entry);
-		if (!env_global[pos])
-		{
-			return (1);
-		}
-	}
+	env_global[pos] = ft_strdup(entry);
+	if (!env_global[pos])
+		return (1);
 	return (0);
 }
 
-
+/*
+env_find_key(1)
+Searches in env_global for the provided key. If found, it returns the position
+of the key. Else, returns -1.
+*/
 
 int	env_find_key(char *key)
 {
@@ -138,7 +126,7 @@ int	env_find_key(char *key)
 	char	*key_tmp;
 
 	i = 0;
-	key_tmp = ft_strjoin(key, "=");
+	key_tmp = ms_strjoin(key, "", '=');
 	if (!key_tmp)
 		return (-1);
 	while (env_global[i])
@@ -153,3 +141,16 @@ int	env_find_key(char *key)
 	free (key_tmp);
 	return (-1);
 }
+
+/*
+get_shell_lvl()
+-
+-
+*/
+
+/*
+int	get_shell_lvl(char **envp)
+{
+
+}
+*/
