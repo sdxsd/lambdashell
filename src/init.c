@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/22 12:24:35 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/22 12:25:03 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/08/22 17:06:20 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,84 @@ int	init(char **envp)
 		return (1);
 	}
 	return (0);
+}
+
+/*
+get_shell_lvl()
+-
+-
+*/
+
+/*
+int	get_shell_lvl(char **envp)
+{
+
+}
+*/
+
+/*
+env_add_keyvalue()
+Adds new entry to the global variable env_global. It expects that the new
+entry is provided in key-value format. If the key already exists in env_global,
+it will replace its corresponding value with what is user-specified.
+*/
+
+
+int	env_add_keyvalue(char *key, char *value)
+{
+	int		i;
+	char	*key_tmp;
+	char	*key_value;
+	int		env_i;
+	
+	env_i = env_find_key(key);
+	i = 0;
+	key_tmp = ft_strjoin(key, "=");
+	if (!key_tmp)
+		return (1);
+	key_value = ft_strjoin(key_tmp, value);
+	if (!key_value)
+	{
+		free (key_tmp);
+		return (1);
+	}
+	if (env_i == -1)
+	{
+		while (env_global[i])
+			i++;
+		i++;
+		if (!value)
+			env_global[env_i] = key_tmp;
+		else
+			env_global[env_i] = key_value;
+	}
+	else
+	{
+		free (env_global[env_i]);
+		if (!value)
+			env_global[env_i] = key_tmp;
+		else
+			env_global[env_i] = key_value;
+	}
+	free (key_tmp);
+	return (0);
+}
+
+int	env_find_key(char *key)
+{
+	int		i;
+	char	*key_tmp;
+
+	i = 0;
+	key_tmp = ft_strjoin(key, "=");
+	if (!key_tmp)
+		return (0); // error trigger
+	while (env_global[i])
+	{
+		if (substring_start(env_global[i], key_tmp))
+			return (i);
+		i++;
+	}
+	free (key_tmp);
+	return (-1);
 }

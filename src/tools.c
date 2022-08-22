@@ -1,43 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   tools.c                                            :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/08/19 21:20:37 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/22 17:07:01 by mikuiper      ########   odam.nl         */
+/*   Created: 2022/08/22 15:13:49 by mikuiper      #+#    #+#                 */
+/*   Updated: 2022/08/22 17:04:43 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-sudo apt-get install libreadline-dev
-*/
-
-/*
-env = ft_calloc(1, sizeof(t_env));
-if (!env)
-	exit(1);
-*/
-
 #include "minishell.h"
 
-
-int     main(int argc, char **argv, char **envp)
+int	substring_start(char *s1, char *s2)
 {
-	printf("\nSTART OF MINISHELL\n");	
-	(void)argc;
-	(void)argv;
-	//(void)envp;
-	if (init(envp))
-		return (1);
-	env_add_keyvalue("SHELL", "NONSENSE\n\n\n\n");
-	int i = 0;
-	while (env_global[i])
+	size_t	i;
+
+	i = 0;
+	while (s1[i] && (i != ft_strlen(s2)))
 	{
-		printf("%s\n", env_global[i]);
+		if (s1[i] != s2[i])
+			return (0);
 		i++;
 	}
-	printf("\nEND OF MINISHELL\n");	
-	return 0;
+	return (1);
 }
