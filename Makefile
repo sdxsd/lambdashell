@@ -6,7 +6,7 @@
 #    By: mikuiper <mikuiper@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/08/19 09:07:48 by mikuiper      #+#    #+#                  #
-#    Updated: 2022/08/22 12:26:12 by mikuiper      ########   odam.nl          #
+#    Updated: 2022/08/22 15:17:36 by mikuiper      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,9 @@ SRC_DIR		= ./src/
 FT_DIR = ./libft
 
 SRCS		= 	$(SRC_DIR)main.c \
-				$(SRC_DIR)init.c
+				$(SRC_DIR)init.c \
+				$(SRC_DIR)parse_cmd.c \
+				$(SRC_DIR)tools.c
 OBJS		= $(SRCS:.c=.o)
 
 # COLORS
