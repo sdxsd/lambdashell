@@ -1,38 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   clean.c                                            :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/08/19 21:20:37 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/25 13:53:39 by mikuiper      ########   odam.nl         */
+/*   Created: 2022/08/25 13:57:16 by mikuiper      #+#    #+#                 */
+/*   Updated: 2022/08/25 14:01:43 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-sudo apt-get install libreadline-dev
-*/
+#include "minishell.sh"
 
-/*
-env = ft_calloc(1, sizeof(t_env));
-if (!env)
-	exit(1);
-*/
-
-#include "minishell.h"
-
-int	main(int argc, char **argv, char **envp)
+void int	clean_ms_env(t_ms *ms)
 {
-	printf("\nSTART OF MINISHELL\n");	
-	t_ms *ms;
-	ms = ft_calloc(1, sizeof(t_ms));
+	int	i;
 
-	(void)argc;
-	(void)argv;
-	if (init_wrapper(ms, envp))
+	i = 0;
+	while (ms->env[i])
+	{
+		free (ms->env[i]);
+		ms->env[i] = NULL;
+	}
+	free (ms->env);
+	ms->env = NULL;
+	return (0);
+}
+
+int	clean_ms_wrapper(t_ms *ms)
+{
+	if (!ms)
 		return (1);
-	(void)ms;
-	printf("\nEND OF MINISHELL\n");	
-	return 0;
+	clean_ms_env(ms);
+	return (0);
 }
