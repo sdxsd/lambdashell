@@ -1,4 +1,9 @@
-/*
-Compile with readline
--L ~/.brew/opt/readline/lib -l readline -I ~/.brew/opt/readline/include
-*/
+# Install readline
+	Debian
+		1. sudo apt-get install -y readline-common
+	macOS
+		1. rm -rf $HOME/.brew && curl -fsSL https://rawgit.com/kube/42homebrew/master/install.sh | zs
+		2. brew install readline
+
+# Include readline (at compile-time)
+	-L ~/.brew/opt/readline/lib -l readline -I ~/.brew/opt/readline/include

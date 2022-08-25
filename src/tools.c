@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/22 15:13:49 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/22 21:32:34 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/08/25 14:02:57 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,17 @@ char	*ms_strjoin(char *s1, char *s2, char c)
 	}
 	s3[i] = '\0';
 	return (s3);
+}
+
+int	print_env(t_ms *ms)
+{
+	int	i;
+
+	i = 0;
+	while (ms->env[i])
+	{
+		printf("%s\n", ms->env[i]);
+		i++;
+	}
+	return (0);
 }
