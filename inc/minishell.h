@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:32 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/25 14:04:46 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/08/25 14:42:35 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,16 @@ int		init_wrapper(t_ms *ms, char **envp);
 // tools.c
 int		substring_start(char *s1, char *s2);
 char	*ms_strjoin(char *s1, char *s2, char c);
-int		print_env(t_ms *ms)
+int		msg_err(char *s, int ret);
 
 // clean.c
 int		clean_ms_wrapper(t_ms *ms);
 
-// parse_cmd.c
-// ???
-
 // cmd.c
 // ???
+
+// debug.c
+int	dbg_print_env(t_ms *ms);
 
 
 #endif
