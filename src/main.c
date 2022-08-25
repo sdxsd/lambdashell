@@ -6,33 +6,21 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:37 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/25 13:53:39 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/08/25 14:57:17 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
-
-/*
-sudo apt-get install libreadline-dev
-*/
-
-/*
-env = ft_calloc(1, sizeof(t_env));
-if (!env)
-	exit(1);
-*/
 
 #include "minishell.h"
 
 int	main(int argc, char **argv, char **envp)
 {
-	printf("\nSTART OF MINISHELL\n");	
 	t_ms *ms;
 	ms = ft_calloc(1, sizeof(t_ms));
 
+	init_wrapper(ms, envp);
+	//dbg_print_env(ms);
 	(void)argc;
 	(void)argv;
-	if (init_wrapper(ms, envp))
-		return (1);
-	(void)ms;
-	printf("\nEND OF MINISHELL\n");	
+	clean_ms_wrapper(ms);
 	return 0;
 }

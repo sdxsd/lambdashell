@@ -6,7 +6,7 @@
 #    By: mikuiper <mikuiper@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/08/19 09:07:48 by mikuiper      #+#    #+#                  #
-#    Updated: 2022/08/25 13:58:03 by mikuiper      ########   odam.nl          #
+#    Updated: 2022/08/25 15:23:48 by mikuiper      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,14 +26,16 @@ HEADERS	=	-I ./inc
 
 # DIRECTORIES
 SRC_DIR		= ./src/
-FT_DIR = ./libft
+OBJ_DIR		= ./obj/
+FT_DIR		= ./libft
 
 SRCS		= 	$(SRC_DIR)main.c \
 				$(SRC_DIR)init.c \
-				$(SRC_DIR)parse_cmd.c \
+				$(SRC_DIR)cmd.c \
 				$(SRC_DIR)tools.c \
-				$(SRC_DIR)clean.c
-OBJS		= $(SRCS:.c=.o)
+				$(SRC_DIR)clean.c \
+				$(SRC_DIR)debug.c
+OBJS		= 	$(SRCS:.c=.o)
 
 # COLORS
 GREEN = \033[92m
