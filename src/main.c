@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:37 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/26 15:55:08 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/08/26 17:26:10 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	main(int argc, char **argv, char **envp)
 	free (tmp);
 	clean_dp (ms->env);
 	free (ms);
+	ms_pwd();
 	(void)argc;
 	(void)argv;
 	return 0;
