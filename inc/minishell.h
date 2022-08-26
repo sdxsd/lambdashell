@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:32 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/26 15:54:26 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/08/26 17:27:12 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,9 @@ int		env_get_shlvl(t_ms *ms);
 // clean.c
 int		clean_dp(char **dp);
 int		clean_ms_wrapper(t_ms *ms);
+
+// builtins.c
+int		ms_pwd(void);
 
 // cmd.c
 // ???
