@@ -6,30 +6,30 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/25 13:57:16 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/25 15:25:21 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/08/26 15:38:36 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	clean_ms_env(t_ms *ms)
+int	clean_dp(char **dp)
 {
 	int	i;
 
 	i = 0;
-	while (ms->env[i])
+	while (dp[i])
 	{
-		free (ms->env[i]);
+		free (dp[i]);
 		i++;
 	}
-	//free (ms->env);
+	free (dp);
 	return (0);
 }
 
-int	clean_ms_wrapper(t_ms *ms)
-{
-	if (!ms)
-		return (1);
-	clean_ms_env(ms);
-	return (0);
-}
+// int	clean_ms_wrapper(t_ms *ms)
+// {
+// 	if (!ms)
+// 		return (1);
+// 	//clean_ms_env(ms);
+// 	return (0);
+// }
