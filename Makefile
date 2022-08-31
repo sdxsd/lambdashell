@@ -6,7 +6,7 @@
 #    By: mikuiper <mikuiper@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/08/19 09:07:48 by mikuiper      #+#    #+#                  #
-#    Updated: 2022/08/31 15:09:30 by mikuiper      ########   odam.nl          #
+#    Updated: 2022/08/31 21:04:52 by mikuiper      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,12 +62,12 @@ leaks: $(OBJS) $(FT)
 	@$(CC) $(CFLAGS) $(HEADERS) -c -o $@ $<
 
 clean:
-	@$(MAKE) -sC $(FT_DIR) clean
+	#@$(MAKE) -sC $(FT_DIR) clean
 	@echo "$(GREEN)[minishell] - \t Running clean.$(NOCOLOR)"
 	@$(RM) $(OBJS)
 
 fclean:
-	@$(MAKE) -sC $(FT_DIR) fclean
+	#@$(MAKE) -sC $(FT_DIR) fclean
 	@echo "$(GREEN)[minishell] - \t Running fclean.$(NOCOLOR)"
 	@$(RM) $(OBJS)
 	@$(RM) $(NAME)
