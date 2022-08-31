@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:03:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/31 20:39:02 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/08/31 20:40:16 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	add_idx_env(t_env **env)
 	return (0);
 }
 
-int	add_new_entry(t_ms *ms, t_env *new_node)
+int	add_new_entry(t_ms *ms, t_env *node)
 {
 	t_env *cur;
 
@@ -66,32 +66,32 @@ int	add_new_entry(t_ms *ms, t_env *new_node)
 		cur = *ms->env;
 		while (cur->next)
 			cur = cur->next;
-		cur->next = new_node;
+		cur->next = node;
 	}
 	else
-		*ms->env = new_node;
+		*ms->env = node;
 	return (0);
 }
 
 int	env_copier(t_ms *ms, char *line)
 {
-	t_env	*new_node;
+	t_env	*node;
 
-	new_node = ft_calloc(1, sizeof(t_env));
-	if (!new_node)
+	node = ft_calloc(1, sizeof(t_env));
+	if (!node)
 		return (1);
-	new_node->key = ft_substr(line, 0, ft_strchr(line, '=') - line);
-	if (!new_node->key)
+	node->key = ft_substr(line, 0, ft_strchr(line, '=') - line);
+	if (!node->key)
 		return (1);
-	new_node->val = NULL;
+	node->val = NULL;
 	if (ft_strchr(line, '='))
 	{
-		new_node->val = ft_strdup(ft_strchr(line, '='));
-		if (new_node->val == NULL)
+		node->val = ft_strdup(ft_strchr(line, '='));
+		if (node->val == NULL)
 			return (1);
 	}
-	new_node->next = NULL;
-	if (add_new_entry(ms, new_node))
+	node->next = NULL;
+	if (add_new_entry(ms, node))
 		return (1);
 	return (0);
 }
