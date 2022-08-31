@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:03:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/31 20:14:09 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/08/31 20:39:02 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ int	add_new_entry(t_ms *ms, t_env *new_node)
 	}
 	else
 		*ms->env = new_node;
-	ms->env_len++;
 	return (0);
 }
 
