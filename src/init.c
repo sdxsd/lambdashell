@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/22 12:24:35 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/31 19:54:12 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/08/31 20:39:05 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	init_ms(t_ms *ms)
 {
 	ms->input_line = NULL;
 	ms->cmd = NULL;
-	ms->env_len = 0;
 	return (0);
 }
 
