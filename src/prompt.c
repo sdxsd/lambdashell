@@ -1,28 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   debug.c                                            :+:    :+:            */
+/*   prompt.c                                           :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/08/25 14:38:27 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/29 16:04:19 by mikuiper      ########   odam.nl         */
+/*   Created: 2022/08/31 13:05:43 by mikuiper      #+#    #+#                 */
+/*   Updated: 2022/08/31 13:05:48 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	dbg_print_env(t_ms *ms)
+void	show_prompt(t_ms *ms)
 {
-	int	i;
-
-	i = 0;
-	if (!ms->env)
-		return (1);
-	while (ms->env[i])
+	while (1)
 	{
-		printf("%s\n", ms->env[i]);
-		i++;
+		ms->input_line = readline(">");
+		if (ms->input_line)
+		{
+			parse_input(ms, ms->input_line);
+		}
 	}
-	return (0);
+	(void)ms;
 }

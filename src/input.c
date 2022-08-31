@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/30 11:47:20 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/31 11:57:33 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/08/31 13:05:35 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,17 +94,4 @@ int	parse_input(t_ms *ms, char *line)
 	(void)tmp;
 	(void)ms;
 	return (0);
-}
-
-void	show_prompt(t_ms *ms)
-{
-	while (1)
-	{
-		ms->input_line = readline(">");
-		if (ms->input_line)
-		{
-			parse_input(ms, ms->input_line);
-		}
-	}
-	(void)ms;
 }

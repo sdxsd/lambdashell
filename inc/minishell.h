@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:32 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/31 11:54:27 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/08/31 17:49:29 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,25 +22,68 @@
 // GLOBAL VARIABLE
 int		global_sig;
 
+
+typedef struct s_cmd
+{
+	int			fd_input;
+	int			fd_output;
+	int			fd_pipe[2];
+	char		**cmd_split;
+	char		*path;
+}				t_cmd;
+
+typedef struct	s_env
+{
+	char	*key;
+	char	*val;
+	int		idx;
+	void	*next;
+}				t_env;
+
 typedef struct s_ms
 {
-	char	**env;
+	//char	**env;
 	char	*input_line;
-
+	t_cmd	*cmd;
+	int		env_len;
+	t_env	**env;
 }			t_ms;
 
 // PROTOTYPES
 // INIT.C
-int		init_ms(void);
+int		init_start(void);
 int		init_env(t_ms *ms, char **envp);
+int		init_ms(t_ms *ms);
+
+// ENV_TOOLS.C
+/*
+int		substring_start(char *s1, char *s2);
+char	*ms_strjoin(char *s1, char *s2, char c);
+int		env_write_entry(t_ms *ms, int pos, char *entry);
+int		env_find_key(t_ms *ms, char *key);
+int		env_add_entry(t_ms *ms, char *key, char *value);
+char 	*env_get_val(t_ms *ms, char *key);
+int		str_only_nbrs(char *s);
+int		env_get_shlvl(t_ms *ms);
+*/
 
 // TOOLS.C
 int		msg_err(char *s, int ret);
 
 // INPUT.C
 void	show_prompt(t_ms *ms);
+int 	check_quotations(char *line);
+int		check_first_char(char *line);
+int		get_last_char(char *line);
+int 	check_last_char(char *line, char *charset);
+int		check_line_formatting(char *line, char *charset);
+int		parse_input(t_ms *ms, char *line);
+
+// PROMPT.C
+void	show_prompt(t_ms *ms);
 
 // CLEAN.C
+int		clean_dp(char **dp);
 
 // BUILTINS.C
 int		ms_pwd(void);
@@ -48,5 +91,6 @@ int		ms_pwd(void);
 // CMD.C
 
 // DEBUG.C
+int		dbg_print_env(t_ms *ms);
 
 #endif
