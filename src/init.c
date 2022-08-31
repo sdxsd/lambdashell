@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/22 12:24:35 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/31 18:22:09 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/08/31 19:54:12 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,45 +18,6 @@ int	init_ms(t_ms *ms)
 	ms->input_line = NULL;
 	ms->cmd = NULL;
 	ms->env_len = 0;
-	return (0);
-}
-
-int	add_new_entry(t_ms *ms, t_env *new_node)
-{
-	t_env *cur;
-	if (ms->env_len)
-	{
-		cur = *ms->env;
-		while (cur->next)
-			cur = cur->next;
-		cur->next = new_node;
-	}
-	else
-		*ms->env = new_node;
-	ms->env_len++;
-	return (0);
-}
-
-int	env_copier(t_ms *ms, char *line)
-{
-	t_env	*new_node;
-
-	new_node = ft_calloc(1, sizeof(t_env));
-	if (!new_node)
-		return (1);
-	new_node->key = ft_substr(line, 0, ft_strchr(line, '=') - line);
-	if (!new_node->key)
-		return (1);
-	new_node->val = NULL;
-	if (ft_strchr(line, '='))
-	{
-		new_node->val = ft_strdup(ft_strchr(line, '='));
-		if (new_node->val == NULL)
-			return (1);
-	}
-	new_node->next = NULL;
-	if (add_new_entry(ms, new_node))
-		return (1);
 	return (0);
 }
 
