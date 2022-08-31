@@ -6,39 +6,27 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:37 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/26 17:26:10 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/08/31 11:58:22 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-
-
-
 int	main(int argc, char **argv, char **envp)
 {
 	t_ms *ms;
 	ms = ft_calloc(1 + 1, sizeof(t_ms));
+	if (init_ms())
+		return (msg_err("Failed to initialize ms.", 1));
+	if (init_env(ms, envp))
+		return (msg_err("Failed to initialize env.", 1));
 
-	if (init_wrapper(ms, envp))
-		return (1);
-	env_add_entry(ms, "SHELL", "42");
-	env_add_entry(ms, "Thiswillbeaddedtothebottom", "See?");
-	dbg_print_env(ms);
-	//clean_ms_wrapper(ms);
-
-	char *tmp;
-	tmp = env_get_val(ms, "SHELL");
-	printf("%s\n", tmp);
-	int shlvl;
-	shlvl = env_get_shlvl(ms);
-	printf("%d\n", shlvl);
-	free (tmp);
-	clean_dp (ms->env);
-	free (ms);
-	ms_pwd();
+	show_prompt(ms);
 	(void)argc;
 	(void)argv;
+	(void)envp;
 	return 0;
 }
+
+// builtins made
+//ms_pwd();
