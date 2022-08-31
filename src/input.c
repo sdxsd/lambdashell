@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/30 11:47:20 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/31 13:05:35 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/08/31 21:00:10 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	check_first_char(char *line)
 	return (0);
 }
 
-int	get_last_char(char *line)
+int	last_char(char *line)
 {
 	char	last_char;
 	while (*line)
@@ -65,7 +65,7 @@ int	get_last_char(char *line)
 
 int check_last_char(char *line, char *charset)
 {
-	if (*line && ft_strchr(charset, get_last_char(line)))
+	if (*line && ft_strchr(charset, last_char(line)))
 	{
 		printf("Error. Found forbidden token at end of line.\n");
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:03:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/31 19:39:21 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/08/31 21:03:46 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int	env_add_entry(t_ms *ms, char *key, char *value)
 	return (0);
 }
 
-char *env_get_val(t_ms *ms, char *key)
+char *get_env_val(t_ms *ms, char *key)
 {
 	char	*entry;
 	char	**entry_split;
@@ -155,14 +155,14 @@ int	str_only_nbrs(char *s)
 	return (1);
 }
 
-int	env_get_shlvl(t_ms *ms)
+int	env_shlvl(t_ms *ms)
 {
 	int		i_shlvl;
 	char	*s_shlvl;
 
 	if (env_find_key(ms, "SHLVL") != -1)
 	{
-		s_shlvl = env_get_val(ms, "SHLVL");
+		s_shlvl = get_env_val(ms, "SHLVL");
 		if (!s_shlvl)
 			return (-1);
 		if (!str_only_nbrs(s_shlvl))
@@ -280,7 +280,7 @@ int	env_add_entry(t_ms *ms, char *key, char *value)
 	return (0);
 }
 
-char *env_get_val(t_ms *ms, char *key)
+char *get_env_val(t_ms *ms, char *key)
 {
 	char	*entry;
 	char	**entry_split;
@@ -326,14 +326,14 @@ int	str_only_nbrs(char *s)
 	return (1);
 }
 
-int	env_get_shlvl(t_ms *ms)
+int	env_shlvl(t_ms *ms)
 {
 	int		i_shlvl;
 	char	*s_shlvl;
 
 	if (env_find_key(ms, "SHLVL") != -1)
 	{
-		s_shlvl = env_get_val(ms, "SHLVL");
+		s_shlvl = get_env_val(ms, "SHLVL");
 		if (!s_shlvl)
 			return (-1);
 		if (!str_only_nbrs(s_shlvl))

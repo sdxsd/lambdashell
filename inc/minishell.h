@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:32 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/31 20:13:42 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/08/31 21:03:46 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,12 @@ int		init_env(t_ms *ms, char **envp);
 int		init_ms(t_ms *ms);
 
 // ENV_TOOLS.C
-int	add_idx_env(t_env **env);
-int	get_env_len(t_env **env);
+int	add_env_idx(t_env **env);
+int	env_len(t_env **env);
 int	add_new_entry(t_ms *ms, t_env *new_node);
 int	env_copier(t_ms *ms, char *line);
+int	env_key_idx(t_env **env, char *key);
+char	*get_env_val(t_env **env, char *key);
 
 
 // TOOLS.C
@@ -69,7 +71,7 @@ int		msg_err(char *s, int ret);
 void	show_prompt(t_ms *ms);
 int 	check_quotations(char *line);
 int		check_first_char(char *line);
-int		get_last_char(char *line);
+int		last_char(char *line);
 int 	check_last_char(char *line, char *charset);
 int		check_line_formatting(char *line, char *charset);
 int		parse_input(t_ms *ms, char *line);
@@ -88,5 +90,6 @@ int		ms_pwd(void);
 // DEBUG.C
 int		dbg_print_env(t_ms *ms);
 int		dbg_print_env_idx(t_ms *ms);
+int		dbg_print_env_keys(t_ms *ms);
 
 #endif
