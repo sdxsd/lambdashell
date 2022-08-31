@@ -6,12 +6,13 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:03:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/31 21:09:48 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/08/31 22:28:09 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// get number of env variables
 int	env_len(t_env **env)
 {
 	int		i;
@@ -34,15 +35,15 @@ int	env_len(t_env **env)
 	return (i);
 }
 
-// Note the -1 return value for errors
-// This function assumes you have added indices using add_env_idx()
-//add_env_idx(ms->env);
-int	get_env_key_idx(t_env **env, char *key)
+// find node position in env list of where the key node resides
+// can also be used to find out whether key exists (-1 means not exist)
+int	get_env_key_pos(t_env **env, char *key)
 {
 	t_env	*head;
+	int		i;
 
 	head = *env;
-	
+	i = 0;
 	if (!head)
 		return (-1);
 	else
@@ -50,32 +51,36 @@ int	get_env_key_idx(t_env **env, char *key)
 		while (head->next)
 		{
 			if (!ft_strncmp(head->key, key, ft_strlen(key)))
-				return (head->idx);
+				return (i);
 			head = head->next;
+			i++;
 		}
 	}
-	return (0);	
+	return (-1);
 }
 
-// returns value corresponding to key. Used together with get_env_key_idx()
+// returns value corresponding to key. Used together with get_env_key_pos()
+// get value of chosen env key
 char	*get_env_val(t_env **env, char *key)
 {
 	t_env	*head;
+	int	i;
 
 	head = *env;
-	
+	i = 0;
 	if (!head)
 		return (NULL);
 	else
 	{
 		while (head->next)
 		{
-			if (head->idx == get_env_key_idx(env, key))
+			if (i == get_env_key_pos(env, key))
 				return (head->val);
 			head = head->next;
+			i++;
 		}
 	}
-	return (NULL);	
+	return (NULL);
 }
 
 int	add_env_idx(t_env **env)
@@ -101,7 +106,7 @@ int	add_env_idx(t_env **env)
 	return (0);
 }
 
-int	add_new_entry(t_ms *ms, t_env *node)
+int	add_env_entry(t_ms *ms, t_env *node)
 {
 	t_env *cur;
 
@@ -117,7 +122,7 @@ int	add_new_entry(t_ms *ms, t_env *node)
 	return (0);
 }
 
-int	env_copier(t_ms *ms, char *line)
+int	env_cloner(t_ms *ms, char *line)
 {
 	t_env	*node;
 
@@ -135,7 +140,39 @@ int	env_copier(t_ms *ms, char *line)
 			return (1);
 	}
 	node->next = NULL;
-	if (add_new_entry(ms, node))
+	if (add_env_entry(ms, node))
 		return (1);
 	return (0);
 }
+
+int	env_edit_val(t_env **env, char *key, char *new_val)
+{
+	t_env	*head;
+	int		i;
+
+	head = *env;
+	i = 0;
+	if (!head)
+		return (1);
+	else
+	{
+		while (head->next)
+		{
+			if (!ft_strncmp(head->key, key, ft_strlen(key)))
+			{
+				free (head->val);
+				head->val = ft_strdup(new_val);
+				if (!head->val)
+					return (1);
+				return (0);
+			}
+			head = head->next;
+			i++;
+		}
+	}
+	return (1);
+}
+
+
+// TODO: ADD NEW ENV ENTRY. MAKE SURE TO CHECK WHETHER KEY ALREADY EXISTS USING GET_ENV_KEY_POS()
+// TODO: DELETE KEY FROM ENV LIST
