@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:37 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/31 21:11:07 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/08/31 22:23:37 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,17 @@ int	main(int argc, char **argv, char **envp)
 	if (init_env(ms, envp))
 		return (msg_err("Failed to initialize env.", 1));
 	//show_prompt(ms);
+	env_edit_val(ms->env, "SHELL", "JohnnyBravo");
 	dbg_print_env(ms);
-	add_env_idx(ms->env);
-	//dbg_print_env_idx(ms);
-	//dbg_print_env_keys(ms);
-
-	printf("%s", get_env_val(ms->env, "SHLVL"));
-	//printf("%d", a);
+	//printf("%s", get_env_val(ms->env, "SHELL"));
 	(void)argc;
 	(void)argv;
-	system ("leaks minishell");
+	// system ("leaks minishell");
 	return 0;
 }
 
 // builtins made
 //ms_pwd();
+
+// todo: be able to delete key-value
+// todo: change value of key

@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:32 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/31 21:03:46 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/08/31 22:28:26 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,14 @@ int		init_env(t_ms *ms, char **envp);
 int		init_ms(t_ms *ms);
 
 // ENV_TOOLS.C
-int	add_env_idx(t_env **env);
-int	env_len(t_env **env);
-int	add_new_entry(t_ms *ms, t_env *new_node);
-int	env_copier(t_ms *ms, char *line);
-int	env_key_idx(t_env **env, char *key);
+int		add_env_idx(t_env **env);
+int		env_len(t_env **env);
+int		add_env_entry(t_ms *ms, t_env *new_node);
+int		env_cloner(t_ms *ms, char *line);
+int		get_env_key_pos(t_env **env, char *key);
 char	*get_env_val(t_env **env, char *key);
-
+int		env_edit_val(t_env **env, char *key, char *new_val);
+// void	env_del_key(t_ms *ms, char *key);
 
 // TOOLS.C
 int		msg_err(char *s, int ret);
