@@ -1,33 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   clean.c                                            :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/08/19 21:20:37 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/31 18:23:15 by mikuiper      ########   odam.nl         */
+/*   Created: 2022/08/31 15:07:36 by mikuiper      #+#    #+#                 */
+/*   Updated: 2022/08/31 15:07:44 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char **argv, char **envp)
+int	clean_dp(char **dp)
 {
-	t_ms *ms;
-	ms = ft_calloc(1 + 1, sizeof(t_ms));
-	if (init_start())
-		return (1);
-	if (init_ms(ms))
-		return (msg_err("Failed to initialize ms.", 1));
-	if (init_env(ms, envp))
-		return (msg_err("Failed to initialize env.", 1));
-	//show_prompt(ms);
-	//dbg_print_env(ms);
-	(void)argc;
-	(void)argv;
-	return 0;
-}
+	int	i;
 
-// builtins made
-//ms_pwd();
+	i = 0;
+	while (dp[i])
+	{
+		free (dp[i]);
+		i++;
+	}
+	free (dp);
+	return (0);
+}

@@ -6,7 +6,7 @@
 #    By: mikuiper <mikuiper@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/08/19 09:07:48 by mikuiper      #+#    #+#                  #
-#    Updated: 2022/08/31 11:58:05 by mikuiper      ########   odam.nl          #
+#    Updated: 2022/08/31 15:09:30 by mikuiper      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,11 @@ SRCS		= 	$(SRC_DIR)main.c \
 				$(SRC_DIR)init.c \
 				$(SRC_DIR)tools.c \
 				$(SRC_DIR)builtins.c \
-				$(SRC_DIR)input.c
+				$(SRC_DIR)input.c \
+				$(SRC_DIR)prompt.c \
+				$(SRC_DIR)env_tools.c \
+				$(SRC_DIR)debug.c \
+				$(SRC_DIR)clean.c
 OBJS		= 	$(SRCS:.c=.o)
 
 # COLORS
