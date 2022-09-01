@@ -1,6 +1,7 @@
 # Install readline
 	Debian
 		1. sudo apt-get install -y readline-common
+		2. sudo apt-get install libreadline-dev
 	macOS
 		1. rm -rf $HOME/.brew && curl -fsSL https://rawgit.com/kube/42homebrew/master/install.sh | zs
 		2. brew install readline
