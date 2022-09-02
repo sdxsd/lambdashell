@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/22 12:24:35 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/02 11:31:08 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/02 15:42:31 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	init_env(t_ms *ms, char **envp)
 			return (msg_err("Failed to duplicate env.", 1));
 		i++;
 	}
+	init_env_idx(ms->env);
 	return (0);
 }
 
