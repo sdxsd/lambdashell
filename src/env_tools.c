@@ -6,13 +6,16 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:03:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/02 16:38:17 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/02 16:58:52 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// get number of env variables
+/*
+env_len() returns the number of nodes in the environment linked list.s
+*/
+
 int	env_len(t_env **env)
 {
 	int		i;
@@ -35,29 +38,11 @@ int	env_len(t_env **env)
 	return (i);
 }
 
-// find node position in env list of where the key node resides
-// can also be used to find out whether key exists (-1 means not exist)
-int	get_env_key_pos(t_env **env, char *key)
-{
-	t_env	*head;
-	int		i;
-
-	head = *env;
-	i = 0;
-	if (!head)
-		return (-1);
-	else
-	{
-		while (head->next)
-		{
-			if (!ft_strncmp(head->key, key, ft_strlen(key)))
-				return (i);
-			head = head->next;
-			i++;
-		}
-	}
-	return (-1);
-}
+/*
+get_env_key_idx() returns the index value of a desired key in the environment
+linked list.If the key does not exist, or if no linked list is provided, it 
+returns -1.
+*/
 
 int	get_env_key_idx(t_env **env, char *key)
 {
@@ -81,9 +66,12 @@ int	get_env_key_idx(t_env **env, char *key)
 	return (-1);
 }
 
+/*
+get_env_val() returns the value corresponding to a desired key in the
+environment linked list. If the key does not exist, or if no linked list is
+provided, it returns NULL.
+*/
 
-// returns value corresponding to key. Used together with get_env_key_pos()
-// get value of chosen env key
 char	*get_env_val(t_env **env, char *key)
 {
 	t_env	*head;
@@ -91,13 +79,13 @@ char	*get_env_val(t_env **env, char *key)
 
 	head = *env;
 	i = 0;
-	if (!head)
+	if (!head || get_env_key_idx(env, key) == -1)
 		return (NULL);
 	else
 	{
 		while (head->next)
 		{
-			if (i == get_env_key_pos(env, key))
+			if (i == get_env_key_idx(env, key))
 				return (head->val);
 			head = head->next;
 			i++;
@@ -105,6 +93,11 @@ char	*get_env_val(t_env **env, char *key)
 	}
 	return (NULL);
 }
+
+/*
+init_env_idx() is used to assign index values to each node in the environment
+linked list.
+*/
 
 int	init_env_idx(t_env **env)
 {
@@ -129,6 +122,12 @@ int	init_env_idx(t_env **env)
 	return (0);
 }
 
+/*
+add_env_entry() adds a new node to the end of the environment linked list. 
+It is repeatedly called by env_entry_cloner(), which creates a new node for each
+system environment line.
+*/
+
 int	add_env_entry(t_ms *ms, t_env *node)
 {
 	t_env *cur;
@@ -147,6 +146,13 @@ int	add_env_entry(t_ms *ms, t_env *node)
 	return (0);
 }
 
+/*
+env_entry_cloner() can be used to clone the system environment into memory.
+The new environment is represenetd in a linked list, where each node contains
+the data of a single line of the system environment. Each node separates the
+data from a system environment line into key and value pairs.
+*/
+
 int	env_entry_cloner(t_ms *ms, char *line)
 {
 	t_env	*node;
@@ -160,7 +166,7 @@ int	env_entry_cloner(t_ms *ms, char *line)
 	node->val = NULL;
 	if (ft_strchr(line, '='))
 	{
-		node->val = ft_strdup(&ft_strchr((line), '=')[1]); // Trick to remove the "=""
+		node->val = ft_strdup(&ft_strchr((line), '=')[1]);
 		if (node->val == NULL)
 			return (1);
 	}
