@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:03:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/02 12:14:05 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/02 16:38:17 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,29 @@ int	get_env_key_pos(t_env **env, char *key)
 	return (-1);
 }
 
+int	get_env_key_idx(t_env **env, char *key)
+{
+	t_env	*head;
+	int		i;
+
+	head = *env;
+	i = 0;
+	if (!head)
+		return (-1);
+	else
+	{
+		while (head->next)
+		{
+			if (!ft_strncmp(head->key, key, ft_strlen(key)))
+				return (head->idx);
+			head = head->next;
+			i++;
+		}
+	}
+	return (-1);
+}
+
+
 // returns value corresponding to key. Used together with get_env_key_pos()
 // get value of chosen env key
 char	*get_env_val(t_env **env, char *key)
@@ -83,7 +106,7 @@ char	*get_env_val(t_env **env, char *key)
 	return (NULL);
 }
 
-int	add_env_idx(t_env **env)
+int	init_env_idx(t_env **env)
 {
 	int		i;
 	t_env	*head;
@@ -147,6 +170,14 @@ int	env_entry_cloner(t_ms *ms, char *line)
 	return (0);
 }
 
+/*
+env_edit_val() allows for changes the value corresponding to a particular
+key in your environment. It does this by searching for the key in the linked
+list environment, starting at the head. Note: This function assumes that your 
+environment has no duplicate keys. If a duplicate key exists, this function will
+only update the value of the first occurring key.
+*/
+
 int	env_edit_val(t_env **env, char *key, char *new_val)
 {
 	t_env	*head;
@@ -175,7 +206,11 @@ int	env_edit_val(t_env **env, char *key, char *new_val)
 	return (1);
 }
 
-// free env node (free key and free val)
+/*
+free_env_node() frees the memory that was allocated per environment node.
+It is used by env_del_entry_helper().
+*/
+
 int	free_env_node(t_env *node)
 {
 	free (node->key);
@@ -184,37 +219,57 @@ int	free_env_node(t_env *node)
 	return (0);
 }
 
+/*
+env_del_entry_helper() is a helper function used by env_del_entry().
+It merely exists to make env_del_entry() comply with the 42 norme.
+*/
 
-void env_del_key_val(t_env **head, char *key)
+static int	env_del_entry_helper(t_env **head, char *key)
 {
-	t_env *tmp1;
-	t_env *tmp2;
-	
-	
-	if(!ft_strncmp((*head)->key, key, ft_strlen(key)))
+	t_env *current;
+	t_env *next_node;
+	t_env *next_next_node;
+
+	current = *head;
+	while(current->next != NULL)
 	{
-		tmp1 = *head;
-		*head = (*head)->next;
-		free_env_node(tmp1);
-	}
-	else
-	{
-		t_env *current  = *head;
-		while(current->next != NULL)
+		next_node = current->next;
+		if(next_node->idx == get_env_key_idx(head, key))
 		{
-			tmp1 = current->next;
-			if(!ft_strncmp((*head)->key, key, ft_strlen(key)))
-			{
-				tmp2 = tmp1->next;
-				current->next = tmp2;
-				free_env_node(tmp1);
-				break;
-			}
-			else
-				current = current->next;
+			next_next_node = next_node->next;
+			current->next = next_next_node;
+			free_env_node(next_node);
+			return (0);
 		}
+		else
+			current = current->next;
 	}
+	return (0);
 }
 
+/*
+env_del_entry() allows for the deletion of an environment entry by providing
+the entry's corresponding key. If the key does not exist it returns 1, else 0.
+*/
+
+int	env_del_entry(t_env **env, char *key)
+{
+	t_env *current;
+	t_env *next_node;
+	
+	if (get_env_key_idx(env, key) == -1)
+		return (1);
+	current = *env;
+	if((*env)->idx == get_env_key_idx(env, key))
+	{
+		next_node = *env;
+		*env = (*env)->next;
+		free_env_node(next_node);
+	}
+	else
+		env_del_entry_helper(env, key);
+	return (0);
+}
+
+
 // TODO: ADD NEW ENV ENTRY. MAKE SURE TO CHECK WHETHER KEY ALREADY EXISTS USING GET_ENV_KEY_POS()
-// TODO: DELETE KEY FROM ENV LIST
