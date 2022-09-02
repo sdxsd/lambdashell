@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:37 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/02 16:54:11 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/02 17:39:40 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,11 @@ int	main(int argc, char **argv, char **envp)
 		return (msg_err("Failed to initialize ms.", 1));
 	if (init_env(ms, envp))
 		return (msg_err("Failed to initialize env.", 1));
-	//show_prompt(ms);
-	//dbg_print_env(ms);
-	printf("%s\n\n", get_env_val(ms->env, "HOME"));
-
-	//printf("%s", get_env_val(ms->env, "SHELL"));
+	show_prompt(ms);
 	(void)argc;
 	(void)argv;
 	return 0;
 }
-
 
 // builtins made
 //ms_pwd();
