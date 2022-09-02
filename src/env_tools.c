@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:03:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/31 22:28:09 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/02 12:14:05 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,11 +118,13 @@ int	add_env_entry(t_ms *ms, t_env *node)
 		cur->next = node;
 	}
 	else
+	{
 		*ms->env = node;
+	}
 	return (0);
 }
 
-int	env_cloner(t_ms *ms, char *line)
+int	env_entry_cloner(t_ms *ms, char *line)
 {
 	t_env	*node;
 
@@ -173,6 +175,46 @@ int	env_edit_val(t_env **env, char *key, char *new_val)
 	return (1);
 }
 
+// free env node (free key and free val)
+int	free_env_node(t_env *node)
+{
+	free (node->key);
+	free (node->val);
+	free (node);
+	return (0);
+}
+
+
+void env_del_key_val(t_env **head, char *key)
+{
+	t_env *tmp1;
+	t_env *tmp2;
+	
+	
+	if(!ft_strncmp((*head)->key, key, ft_strlen(key)))
+	{
+		tmp1 = *head;
+		*head = (*head)->next;
+		free_env_node(tmp1);
+	}
+	else
+	{
+		t_env *current  = *head;
+		while(current->next != NULL)
+		{
+			tmp1 = current->next;
+			if(!ft_strncmp((*head)->key, key, ft_strlen(key)))
+			{
+				tmp2 = tmp1->next;
+				current->next = tmp2;
+				free_env_node(tmp1);
+				break;
+			}
+			else
+				current = current->next;
+		}
+	}
+}
 
 // TODO: ADD NEW ENV ENTRY. MAKE SURE TO CHECK WHETHER KEY ALREADY EXISTS USING GET_ENV_KEY_POS()
 // TODO: DELETE KEY FROM ENV LIST

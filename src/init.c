@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/22 12:24:35 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/31 22:22:01 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/02 11:31:08 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	init_env(t_ms *ms, char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		if (env_cloner(ms, envp[i]))
+		if (env_entry_cloner(ms, envp[i]))
 			return (msg_err("Failed to duplicate env.", 1));
 		i++;
 	}
