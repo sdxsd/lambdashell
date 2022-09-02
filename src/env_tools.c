@@ -50,19 +50,19 @@ t_env	*env_create_node(char *key, char *val)
 
 	node = ft_calloc(1, sizeof(t_env));
 	if (!node)
-		return (1);
+		return (NULL);
 	node->key = ft_strdup(key);
 	if (!node->key)
-		return (1);
+		return (NULL);
 	node->val = ft_strdup(val);
 	if (!node->val)
 	{
 		free (node->val);
-		return (1);
+		return (NULL);
 	}
 	node->idx = -1;
 	node->next = NULL;
-	returns (node)
+	return (node);
 }
 
 /*
@@ -287,12 +287,10 @@ the entry's corresponding key. If the key does not exist it returns 1, else 0.
 
 int	env_del_entry(t_env **env, char *key)
 {
-	t_env *current;
 	t_env *next_node;
 	
 	if (get_env_key_idx(env, key) == -1)
 		return (1);
-	current = *env;
 	if((*env)->idx == get_env_key_idx(env, key))
 	{
 		next_node = *env;
