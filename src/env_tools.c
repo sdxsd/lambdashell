@@ -6,14 +6,14 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:03:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/02 16:58:52 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/02 17:07:38 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-env_len() returns the number of nodes in the environment linked list.s
+env_len() returns the number of nodes in the environment linked list.
 */
 
 int	env_len(t_env **env)
@@ -36,6 +36,33 @@ int	env_len(t_env **env)
 		i++;
 	}
 	return (i);
+}
+
+/*
+env_create_node() can be used to create a new node for the environment linked
+list. Following the creation, it can be added to the linked list using 
+add_env_entry().
+*/
+
+t_env	*env_create_node(char *key, char *val)
+{
+	t_env	*node;
+
+	node = ft_calloc(1, sizeof(t_env));
+	if (!node)
+		return (1);
+	node->key = ft_strdup(key);
+	if (!node->key)
+		return (1);
+	node->val = ft_strdup(val);
+	if (!node->val)
+	{
+		free (node->val);
+		return (1);
+	}
+	node->idx = -1;
+	node->next = NULL;
+	returns (node)
 }
 
 /*
@@ -276,6 +303,3 @@ int	env_del_entry(t_env **env, char *key)
 		env_del_entry_helper(env, key);
 	return (0);
 }
-
-
-// TODO: ADD NEW ENV ENTRY. MAKE SURE TO CHECK WHETHER KEY ALREADY EXISTS USING GET_ENV_KEY_POS()
