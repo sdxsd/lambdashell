@@ -1,29 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   builtins.c                                         :+:    :+:            */
+/*   ft_strcpy.c                                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/08/26 16:25:57 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/05 13:58:14 by mikuiper      ########   odam.nl         */
+/*   Created: 2022/09/06 20:01:17 by mikuiper      #+#    #+#                 */
+/*   Updated: 2022/09/06 20:01:25 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-
-
-
-/*
-ms_pwd() imitates pwd().
-*/
-int	ms_pwd(void)
+void	ft_strcpy(char *dst, char *src)
 {
-	char	pwd[4096];
+	int	i;
 
-	if (getcwd(pwd, 4096) == NULL)
-		return (1);
-	printf("%s\n", pwd);
-	return (0);
+	i = 0;
+	while (src[i])
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = '\0';
 }

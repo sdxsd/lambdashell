@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:37 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/02 17:39:40 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/05 20:39:34 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,19 @@ int	main(int argc, char **argv, char **envp)
 		return (msg_err("Failed to initialize ms.", 1));
 	if (init_env(ms, envp))
 		return (msg_err("Failed to initialize env.", 1));
-	show_prompt(ms);
+	// printf("pannekoek value: %s\n", get_env_val(ms->env, ""));
+	if (minishell_start(ms))
+		return (1);
 	(void)argc;
 	(void)argv;
 	return 0;
 }
 
-// builtins made
-//ms_pwd();
+/*
+builtins made:
+- pwd(), saved as ms_pwd()
 
-// todo: be able to delete key-value
-// todo: change value of key
+todo [short-term]
+- find out how work with global variables without getting multiple def. error.
+
+*/

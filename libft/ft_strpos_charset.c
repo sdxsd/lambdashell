@@ -1,29 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   builtins.c                                         :+:    :+:            */
+/*   ft_strpos_charset.c                                :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/08/26 16:25:57 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/05 13:58:14 by mikuiper      ########   odam.nl         */
+/*   Created: 2022/09/06 20:11:26 by mikuiper      #+#    #+#                 */
+/*   Updated: 2022/09/06 20:11:52 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-
-
-
-/*
-ms_pwd() imitates pwd().
-*/
-int	ms_pwd(void)
+int	ft_strpos_charset(char *s, char *charset)
 {
-	char	pwd[4096];
+	int	i;
 
-	if (getcwd(pwd, 4096) == NULL)
-		return (1);
-	printf("%s\n", pwd);
-	return (0);
+	i = 0;
+	while (s[i])
+	{
+		if (ft_strchr(charset, s[i]))
+			break;
+		i++;
+	}
+	return (i);
 }

@@ -6,17 +6,17 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/22 12:24:35 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/02 15:42:31 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/05 18:51:02 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // TODO!
+
 int	init_ms(t_ms *ms)
 {
-	ms->input_line = NULL;
-	ms->cmd = NULL;
+	ms->line = NULL;
 	return (0);
 }
 
@@ -44,6 +44,6 @@ int	init_start(void)
 		return(msg_err("Standard output fd does not refer to terminal.", 1));
 	if (!isatty(2))
 		return(msg_err("Standard error fd does not refer to terminal.", 1));
-	global_sig = 0;
+	//global_sig = 0;
 	return (0);
 }

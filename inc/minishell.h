@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:32 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/02 17:08:03 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/05 18:50:45 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,24 @@
 #include <readline/history.h>
 
 // GLOBAL VARIABLE
-int		global_sig;
+//int		global_sig;
 
 
-typedef struct s_cmd
-{
-	int			fd_input;
-	int			fd_output;
-	int			fd_pipe[2];
-	char		**cmd_split;
-	char		*path;
-}				t_cmd;
+// typedef struct s_cmd
+// {
+// 	int			fd_input;
+// 	int			fd_output;
+// 	int			fd_pipe[2];
+// 	char		**split;
+// 	char		*path;
+// }				t_cmd;
+
+// typedef struct s_token
+// {
+// 	char			*value;
+// 	struct s_token	*prev;
+// 	struct s_token	*next;
+// }					t_token;
 
 typedef struct	s_env
 {
@@ -42,9 +49,8 @@ typedef struct	s_env
 
 typedef struct s_ms
 {
-	//char	**env;
-	char	*input_line;
-	t_cmd	*cmd;
+	char	*line;
+	//t_cmd	*commands;
 	int		env_len;
 	t_env	**env;
 }			t_ms;
@@ -54,6 +60,9 @@ typedef struct s_ms
 int		init_start(void);
 int		init_env(t_ms *ms, char **envp);
 int		init_ms(t_ms *ms);
+
+// MINISHELL_START.C
+int		minishell_start(t_ms *ms);
 
 // ENV_TOOLS.C
 int		init_env_idx(t_env **env);
@@ -70,16 +79,13 @@ int		get_env_key_idx(t_env **env, char *key);
 int		msg_err(char *s, int ret);
 
 // INPUT.C
-void	show_prompt(t_ms *ms);
+void	prompt_start(t_ms *ms);
 int 	check_quotations(char *line);
 int		check_first_char(char *line);
 int		last_char(char *line);
 int 	check_last_char(char *line, char *charset);
 int		check_line_formatting(char *line, char *charset);
 int		parse_input(t_ms *ms, char *line);
-
-// PROMPT.C
-void	show_prompt(t_ms *ms);
 
 // CLEAN.C
 int		clean_dp(char **dp);

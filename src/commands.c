@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   prompt.c                                           :+:    :+:            */
+/*   commands.c                                         :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/08/31 13:05:43 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/08/31 13:05:48 by mikuiper      ########   odam.nl         */
+/*   Created: 2022/09/05 13:58:26 by mikuiper      #+#    #+#                 */
+/*   Updated: 2022/09/05 16:46:12 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	show_prompt(t_ms *ms)
+/*
+// WIP
+int	cmd_is_builtin(t_ms *ms)
 {
-	while (1)
-	{
-		ms->input_line = readline(">");
-		if (ms->input_line)
-		{
-			parse_input(ms, ms->input_line);
-		}
-	}
-	(void)ms;
+	if (ft_strncmp(ms->cmd, "pwd", ft_strlen("pwd")))
+		return (1);
+	return (0);
 }
+*/

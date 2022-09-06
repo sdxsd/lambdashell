@@ -6,7 +6,7 @@
 #    By: mikuiper <mikuiper@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/08/19 09:07:48 by mikuiper      #+#    #+#                  #
-#    Updated: 2022/08/31 21:04:52 by mikuiper      ########   odam.nl          #
+#    Updated: 2022/09/05 18:51:31 by mikuiper      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@
 NAME	= minishell
 CC		= gcc
 CFLAGS	= -Wall -Wextra -Werror
+
 LEAKS	= -g3 -fsanitize=address
 
 # LIBRARIES
@@ -34,10 +35,11 @@ SRCS		= 	$(SRC_DIR)main.c \
 				$(SRC_DIR)tools.c \
 				$(SRC_DIR)builtins.c \
 				$(SRC_DIR)input.c \
-				$(SRC_DIR)prompt.c \
+				$(SRC_DIR)minishell_start.c \
 				$(SRC_DIR)env_tools.c \
 				$(SRC_DIR)debug.c \
-				$(SRC_DIR)clean.c
+				$(SRC_DIR)clean.c \
+				$(SRC_DIR)commands.c
 OBJS		= 	$(SRCS:.c=.o)
 
 # COLORS

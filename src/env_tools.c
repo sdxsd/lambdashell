@@ -6,14 +6,14 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:03:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/02 17:07:38 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/05 20:39:16 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-env_len() returns the number of nodes in the environment linked list.
+env_len() returns the number of nodes in the env linked list.
 */
 
 int	env_len(t_env **env)
@@ -39,8 +39,8 @@ int	env_len(t_env **env)
 }
 
 /*
-env_create_node() can be used to create a new node for the environment linked
-list. Following the creation, it can be added to the linked list using 
+env_create_node() can be used to create a new node for the env linked list.
+Following the creation, it can be added to the linked list using 
 add_env_entry().
 */
 
@@ -66,9 +66,8 @@ t_env	*env_create_node(char *key, char *val)
 }
 
 /*
-get_env_key_idx() returns the index value of a desired key in the environment
-linked list.If the key does not exist, or if no linked list is provided, it 
-returns -1.
+get_env_key_idx() returns the index value of a desired key in the env linked
+list.If the key does not exist, or if no linked list is provided, it returns -1.
 */
 
 int	get_env_key_idx(t_env **env, char *key)
@@ -94,9 +93,9 @@ int	get_env_key_idx(t_env **env, char *key)
 }
 
 /*
-get_env_val() returns the value corresponding to a desired key in the
-environment linked list. If the key does not exist, or if no linked list is
-provided, it returns NULL.
+get_env_val() returns the value corresponding to a desired key in the env linked
+list. If the key does not exist, or if no linked list is provided, it returns
+NULL.
 */
 
 char	*get_env_val(t_env **env, char *key)
@@ -104,6 +103,8 @@ char	*get_env_val(t_env **env, char *key)
 	t_env	*head;
 	int	i;
 
+	if (strlen(key) == 0)
+		return ("");
 	head = *env;
 	i = 0;
 	if (!head || get_env_key_idx(env, key) == -1)
@@ -122,8 +123,8 @@ char	*get_env_val(t_env **env, char *key)
 }
 
 /*
-init_env_idx() is used to assign index values to each node in the environment
-linked list.
+init_env_idx() is used to assign index values to each node in the env linked
+list.
 */
 
 int	init_env_idx(t_env **env)
@@ -150,9 +151,9 @@ int	init_env_idx(t_env **env)
 }
 
 /*
-add_env_entry() adds a new node to the end of the environment linked list. 
-It is repeatedly called by env_entry_cloner(), which creates a new node for each
-system environment line.
+add_env_entry() adds a new node to the end of the env linked list. It is
+repeatedly called by env_entry_cloner(), which creates a new node for each 
+system env line.
 */
 
 int	add_env_entry(t_ms *ms, t_env *node)
@@ -174,10 +175,10 @@ int	add_env_entry(t_ms *ms, t_env *node)
 }
 
 /*
-env_entry_cloner() can be used to clone the system environment into memory.
-The new environment is represenetd in a linked list, where each node contains
-the data of a single line of the system environment. Each node separates the
-data from a system environment line into key and value pairs.
+env_entry_cloner() can be used to clone the system env into memory. The new env
+is represenetd in a linked list, where each node contains the data of a single
+line of the system env. Each node separates the data from a system env line into
+key and value pairs.
 */
 
 int	env_entry_cloner(t_ms *ms, char *line)
@@ -204,11 +205,11 @@ int	env_entry_cloner(t_ms *ms, char *line)
 }
 
 /*
-env_edit_val() allows for changes the value corresponding to a particular
-key in your environment. It does this by searching for the key in the linked
-list environment, starting at the head. Note: This function assumes that your 
-environment has no duplicate keys. If a duplicate key exists, this function will
-only update the value of the first occurring key.
+env_edit_val() allows for changing the value of a particular key in your env.
+It does this by searching for the key in the linked list env, starting at the
+head. Note: This function assumes that your env has no duplicate keys. If a
+duplicate key exists, this function will only update the value of the first 
+occurring key.
 */
 
 int	env_edit_val(t_env **env, char *key, char *new_val)
