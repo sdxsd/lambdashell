@@ -41,3 +41,54 @@ int	get_shell_lvl(char **envp)
 
 }
 */
+
+
+
+/*
+int	get_n_commands(char *line)
+{
+	int		n_commands;
+	int		i;
+
+	n_commands = 0;
+	i = 0;
+	while (line[i])
+	{
+		if (((line[i] == '\'') || (line[i] == '"')))
+		{
+			i++;
+			while (line[i] && ((line[i] == '\'') || (line[i] == '"')))
+			{
+				i++;
+			}
+		}
+		if (line[i] == '|')
+			n_commands++;
+		i++;
+	}
+	n_commands++;
+	return (n_commands);
+}
+
+int init_commands(t_ms *ms, char *line)
+{
+	ms->commands = ft_calloc(get_n_commands(line), sizeof(t_cmd));
+	//printf("n commands: %d\n", get_n_commands(line));
+	
+	return (0);
+}
+
+void	prompt_start(t_ms *ms)
+{
+	while (1)
+	{
+		ms->input_line = readline("");
+		if (ms->input_line)
+		{
+			init_commands(ms, ms->input_line);
+		}
+	}
+	printf("exit\n");
+	exit(1);
+}
+*/
