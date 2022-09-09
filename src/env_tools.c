@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:03:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/05 20:39:16 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/09 13:55:20 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ t_env	*env_create_node(char *key, char *val)
 
 /*
 get_env_key_idx() returns the index value of a desired key in the env linked
-list.If the key does not exist, or if no linked list is provided, it returns -1.
+list. If the key does not exist, or if no linked list is provided, it returns -1.
 */
 
 int	get_env_key_idx(t_env **env, char *key)
@@ -83,8 +83,9 @@ int	get_env_key_idx(t_env **env, char *key)
 	{
 		while (head->next)
 		{
-			if (!ft_strncmp(head->key, key, ft_strlen(key)))
-				return (head->idx);
+			if (ft_strlen(head->key) == ft_strlen(key))
+				if (!ft_strncmp(head->key, key, ft_strlen(head->key)))
+					return (head->idx);
 			head = head->next;
 			i++;
 		}
@@ -119,7 +120,8 @@ char	*get_env_val(t_env **env, char *key)
 			i++;
 		}
 	}
-	return (NULL);
+	return (head->val);
+	//return (NULL);
 }
 
 /*
