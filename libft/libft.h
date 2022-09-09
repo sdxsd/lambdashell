@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/08 13:46:18 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/06 20:11:17 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/09 15:46:12 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,5 +88,6 @@ int		ft_strlen_fd(int fd);
 int		ft_strlen_char(char *s, int c);
 void	ft_strcpy(char *dst, char *src);
 int		ft_strpos_charset(char *s, char *charset);
+int		ft_strpos_first_nonalpha(char *s);
 
 #endif
