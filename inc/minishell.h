@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:32 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/05 18:50:45 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/07 23:45:58 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,25 @@ typedef struct	s_env
 typedef struct s_ms
 {
 	char	*line;
-	//t_cmd	*commands;
 	int		env_len;
 	t_env	**env;
 }			t_ms;
+
+typedef enum e_token_tag
+{
+	tkn_pipe,
+	tkn_str,
+	tkn_heredoc,
+	tkn_read,
+	tkn_write,
+	tkn_append
+}				t_token_tag;
+
+typedef struct s_token
+{
+	t_token_tag	tag;
+	char		*txt;
+}				t_token;
 
 // PROTOTYPES
 // INIT.C
@@ -61,8 +76,12 @@ int		init_start(void);
 int		init_env(t_ms *ms, char **envp);
 int		init_ms(t_ms *ms);
 
-// MINISHELL_START.C
-int		minishell_start(t_ms *ms);
+// PROMPT.C
+int		prompt(t_ms *ms);
+
+// EXPANDER.C
+char	*line_expander(char *line, t_env **env);
+char	*line_expander_helper(char *line, int pos, t_env **env);
 
 // ENV_TOOLS.C
 int		init_env_idx(t_env **env);
