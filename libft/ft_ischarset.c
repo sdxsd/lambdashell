@@ -1,30 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   commands.c                                         :+:    :+:            */
+/*   ft_ischarset.c                                     :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/05 13:58:26 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/10 18:07:11 by mikuiper      ########   odam.nl         */
+/*   Created: 2022/09/09 21:14:48 by mikuiper      #+#    #+#                 */
+/*   Updated: 2022/09/09 21:17:57 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-/*
-Create function that will check whether the entered command is part of the
-builtin commands that we need to manually code. If that's the case, make sure
-that the entered command is run with our own implementation, not the official
-unix one.
-*/
-
-/*
-// blabla
-int	cmd_is_builtin(t_ms *ms)
+int	ft_ischarset(char c, char *charset)
 {
-	if (ft_strncmp(ms->cmd, "pwd", ft_strlen("pwd")))
-		return (1);
+	int	i;
+
+	i = 0;
+	while (charset[i])
+	{
+		if (c == charset[i])
+			return (1);
+		i++;
+	}
 	return (0);
 }
-*/

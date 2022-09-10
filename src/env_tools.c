@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:03:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/09 13:55:20 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/11 01:19:49 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,9 @@ int	env_entry_cloner(t_ms *ms, char *line)
 		return (1);
 	node->key = ft_substr(line, 0, ft_strchr(line, '=') - line);
 	if (!node->key)
+	{
 		return (1);
+	}
 	node->val = NULL;
 	if (ft_strchr(line, '='))
 	{
