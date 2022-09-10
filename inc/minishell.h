@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:32 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/10 23:23:30 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/11 01:42:10 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,8 @@ void	line_parser(t_ms *ms);
 void	prompt_start(t_ms *ms);
 
 // CLEAN.C
-int		clean_dp(char **dp);
+int		clean_tokens(t_list **tokenlist);
+int		clean_env(t_env **env);
 
 // BUILTINS.C
 int		ms_pwd(void);
