@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/07 23:19:47 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/11 01:37:59 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/11 01:43:00 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ void	line_parser(t_ms *ms)
 int	prompt(t_ms *ms)
 {
 	///*
-	// This small section only serves for debugging.
-	ms->line = ft_strdup("Mithras Kuipers test");
+	// This small section only serves for quick testing/debugging.
+	ms->line = ft_strdup("Mithras Kuipers test <<");
 	line_parser(ms);
 	//*/
 	/*
