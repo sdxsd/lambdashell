@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:32 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/07 23:45:58 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/10 23:23:30 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,16 +51,17 @@ typedef struct s_ms
 {
 	char	*line;
 	int		env_len;
+	t_list	*tokens;
 	t_env	**env;
 }			t_ms;
 
 typedef enum e_token_tag
 {
-	tkn_pipe,
 	tkn_str,
-	tkn_heredoc,
 	tkn_read,
 	tkn_write,
+	tkn_pipe,
+	tkn_heredoc,
 	tkn_append
 }				t_token_tag;
 
@@ -72,9 +73,9 @@ typedef struct s_token
 
 // PROTOTYPES
 // INIT.C
-int		init_start(void);
 int		init_env(t_ms *ms, char **envp);
 int		init_ms(t_ms *ms);
+int		init_start(void);
 
 // PROMPT.C
 int		prompt(t_ms *ms);
@@ -84,27 +85,27 @@ char	*line_expander(char *line, t_env **env);
 char	*line_expander_helper(char *line, int pos, t_env **env);
 
 // ENV_TOOLS.C
-int		init_env_idx(t_env **env);
-int		env_len(t_env **env);
-int		add_env_entry(t_ms *ms, t_env *new_node);
-int		env_entry_cloner(t_ms *ms, char *line);
 char	*get_env_val(t_env **env, char *key);
-int		env_edit_val(t_env **env, char *key, char *new_val);
 int		env_del_entry(t_env **head, char *key);
+int		env_edit_val(t_env **env, char *key, char *new_val);
+int		env_entry_cloner(t_ms *ms, char *line);
+int		env_len(t_env **env);
 int		free_env_node(t_env *node);
 int		get_env_key_idx(t_env **env, char *key);
+int		init_env_idx(t_env **env);
 
 // TOOLS.C
 int		msg_err(char *s, int ret);
 
 // INPUT.C
-void	prompt_start(t_ms *ms);
-int 	check_quotations(char *line);
 int		check_first_char(char *line);
-int		last_char(char *line);
-int 	check_last_char(char *line, char *charset);
 int		check_line_formatting(char *line, char *charset);
+int		last_char(char *line);
 int		parse_input(t_ms *ms, char *line);
+int 	check_last_char(char *line, char *charset);
+int 	check_quotations(char *line);
+void	line_parser(t_ms *ms);
+void	prompt_start(t_ms *ms);
 
 // CLEAN.C
 int		clean_dp(char **dp);
@@ -112,11 +113,18 @@ int		clean_dp(char **dp);
 // BUILTINS.C
 int		ms_pwd(void);
 
-// CMD.C
+// TOKENIZER.C
+int		token_make_and_add(char *token, t_list **tokens);
+int		tokenizer(char *line, t_list **tokens);
+void	token_add_tags(void *in);
+
+// COMMANDS.C
 
 // DEBUG.C
 int		dbg_print_env(t_ms *ms);
 int		dbg_print_env_idx(t_ms *ms);
 int		dbg_print_env_keys(t_ms *ms);
+int		dbg_print_tokens_txt(t_list **tokenlist);
+int		dbg_print_tokens(t_list **tokenlist);
 
 #endif

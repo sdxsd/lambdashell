@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/07 23:19:47 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/09 15:48:12 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/11 01:37:59 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,37 @@
 void	line_parser(t_ms *ms)
 {
 	ms->line = line_expander(ms->line, ms->env);
-	printf("\n%s\n", ms->line);
+	tokenizer(ms->line, &ms->tokens);
+	
+	// IMPORTANT: token list has bug where first node is null. Hence removal
+	t_list *head;
+	head = ms->tokens;
+	ms->tokens = ms->tokens->next;
+	free (head);
+
+	ft_lstiter(ms->tokens, token_add_tags);
+	dbg_print_tokens(&ms->tokens);
 }
 
 int	prompt(t_ms *ms)
 {
-
-	ms->line = ft_strdup("$HOME@@@$HOME");
+	///*
+	// This small section only serves for debugging.
+	ms->line = ft_strdup("Mithras Kuipers test");
 	line_parser(ms);
-	// while (1)
-	// {
-	// 	ms->line = readline("\033[;32m$> \033[0;0m\2");
-	// 	if (ms->line == NULL)
-	// 		break ;
-	// 	if (ms->line[0] != 0)
-	// 	{
-	// 		add_history(ms->line);
-	// 		line_parser(ms);
-	// 	}
-	// }
+	//*/
+	/*
+	while (1)
+	{
+		ms->line = readline("\033[;32m$> \033[0;0m\2");
+		if (ms->line == NULL)
+			break ;
+		if (ms->line[0] != 0)
+		{
+			add_history(ms->line);
+			line_parser(ms);
+		}
+	}
+	*/
 	return (0);
 }
-
-/*
-TODO:
-What if env key not exists? now $HOM will give segfault (vs $HOME)
-Fix that $HOMEF with return $HOME value
-*/

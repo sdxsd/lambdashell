@@ -6,9 +6,17 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/07 23:15:47 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/09 15:49:22 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/10 23:28:56 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*
+This file contains functions that are part of the input parsing section.
+It analyses the input string and expands variables if applicable. Next, the
+expanded string will be used for the tokenization process, where the expanded
+string will be cut into pieces (i.e. words) and chained together into a 
+linked list (see ms->tokens in minishell.h).
+*/
 
 #include "minishell.h"
 
@@ -52,8 +60,6 @@ char	*line_expander(char *line, t_env **env)
 	squote = 0;
 	while (line[i])
 	{
-		//printf("[%i] line now: %s\n", i, line);
-		//printf("[%i] cur char: %c\n\n", i, line[i]);
 		if (squote == 0)
 		{
 			if (line[i] == '\'')
@@ -63,10 +69,8 @@ char	*line_expander(char *line, t_env **env)
 				if (!(i - 3 >= 0 && line[i - 3] == '<' && line[i - 2] == '<'))
 				{
 					line = line_expander_helper(line, i, env);
-					i--;
+					//i--;
 				}
-				// if (!(i - 3 >= 0 && line[i - 3] == '<' && line[i - 2] == '<'))
-				// 	i--;
 			}
 		}
 		else
