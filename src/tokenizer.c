@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/07 23:17:12 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/11 01:32:28 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/11 12:56:37 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	token_make_and_add(char *token, t_list **tokens)
 	token_token = malloc(sizeof(t_token));
 	if (!token_token)
 		return (1);
-	token_token->txt = token;
+	token_token->val = token;
 	token_list = ft_lstnew((void *)token_token);
 	if (!token_list)
 		return (1);
@@ -61,24 +61,23 @@ int	tokenizer(char *line, t_list **tokens)
 		token = ft_substr(line, i, len);
 		if (ft_strlen(token) == 0)
 			return (1);
-		//printf("token line:%s\n", token);
 		token_make_and_add(token, tokens);
 		i = i + len;
 	}
 	return (0);
 }
 
-void	token_add_tags(void *token)
+void	token_add_types(void *token)
 {
-	((t_token *)token)->tag = tkn_str;
-	if (((t_token *)token)->txt[0] == '<')
-		((t_token *)token)->tag = tkn_read;
-	if (((t_token *)token)->txt[0] == '>')
-		((t_token *)token)->tag = tkn_write;
-	if (((t_token *)token)->txt[0] == '|')
-		((t_token *)token)->tag = tkn_pipe;
-	if (((t_token *)token)->txt[0] == '<' && ((t_token *)token)->txt[1] == '<')
-		((t_token *)token)->tag = tkn_heredoc;
-	if (((t_token *)token)->txt[0] == '>' && ((t_token *)token)->txt[1] == '>')
-		((t_token *)token)->tag = tkn_append;
+	((t_token *)token)->type = tkn_str;
+	if (((t_token *)token)->val[0] == '<')
+		((t_token *)token)->type = tkn_read;
+	if (((t_token *)token)->val[0] == '>')
+		((t_token *)token)->type = tkn_write;
+	if (((t_token *)token)->val[0] == '|')
+		((t_token *)token)->type = tkn_pipe;
+	if (((t_token *)token)->val[0] == '<' && ((t_token *)token)->val[1] == '<')
+		((t_token *)token)->type = tkn_heredoc;
+	if (((t_token *)token)->val[0] == '>' && ((t_token *)token)->val[1] == '>')
+		((t_token *)token)->type = tkn_append;
 }

@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/07 23:19:47 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/11 01:43:00 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/11 12:35:01 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	line_parser(t_ms *ms)
 	ms->tokens = ms->tokens->next;
 	free (head);
 
-	ft_lstiter(ms->tokens, token_add_tags);
+	ft_lstiter(ms->tokens, token_add_types);
 	dbg_print_tokens(&ms->tokens);
 }
 

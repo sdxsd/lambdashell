@@ -1,0 +1,57 @@
+Minishell can basically be divided into several "parts".
+	1. Parsing
+	2. Recreation of builtin functions
+	3. Redirections (i.e. pipes, file descriptors, heredoc, etc.)
+	4. Execution (i.e. forking, command running, etc.)
+
+What has not been done:
+	Assuming the above categories, parts 3 and 4, have not been touched
+	at all. Of part 2, only a very simple builtin command has been recreated,
+	namely pwd. Part 2 can perhaps be considered a stand-alone part that can be
+	picked up anything.
+	
+	Most of my time has been spent on parsing (part 1). In short, nothing has
+	been done with pipes, file descriptors and commands.
+	But I did lay the groundwork for that...
+
+What has been done:
+-	A lot of things to get us started quickly on minishell. Especially parts 3 and 4.
+-	Makefile that includes the readline library required for reading command line input.
+	The Makefile is also made such that we can quickly check for memory leaks
+	via fsanitize. Run "make leaks" to compile minishell with -g3 -fsanitize=address.
+-	Consequently, everything that has been done so far has been constantly checked for
+	memory leaks. Still, proper function protection and consequent clean-up, is not
+	finished.
+- 	Implemented data structures that can be used throughout the project. It is based on
+	the advice I received from talking with lots of students that are way ahead of us.
+-	Functions that can be used to copy over the system env into memory for use in our shell.
+	This "copied env" is stored as a linked list, where each node contains a key and value
+	char array, and also a void pointer to the next node. I get back to this later below.
+	This env should be mutable on the fly and various tools have been coded for this.
+-	Most of my hours went into parsing (part 1), which can be divided into sub sections.
+	For proper preparation for the execution of commands, the input parsing steps 
+	below have been done in successive order.
+	0.	[prompting] Prompting the user with an input line prompt.
+	1.	[storing] Storing the input line as a char array.
+	2.	[checking] Checking the input line for correct syntax.
+	3.	[expander] Expanding the variables in the input line. This demanded a
+		lot of work, and is the main reason I opted for working with a linked list
+		with key value pairs for storing the system environment variables.
+
+		While iterating over the input line, it checks for the presence of
+		variables (i.e. "$<var_name>"). If found, it extracts the "var_name"
+		and looks it up in our env linked list by comparing "var_name" with each
+		node's "key" value. When found, it retrieves the corresponding key's 
+		"value" value. I have coded many functions that can be used for
+		various practical purposes when working with our environment.
+		Such as:
+			(1) completely deleting an env variable entry on the basis of its key value alone
+			(2) easily changing a key's value with only the key name and the desired value
+			(3) obtaining a key's value with the key's name alone.
+			The latter (point 3) is especially useful for the [expansion] part.
+	4.	[tokenizer] Basically, cutting up the expanded input line into separate
+		words. These words are stored in a "tokens" linked list, where each node
+		holds two values: [1] the value of the token, and [2] the "type" of the token.
+		Here, value refers to simply the word that has been cut out from the expanded line,
+		(i.e. char array), whereas the type refers to what "kind" of token it is.
+		I distinguish between (1) string, (2) read, (3) write, (4) pipe, (5) heredoc and (6) append tokens.
