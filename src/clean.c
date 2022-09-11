@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:07:36 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/11 01:41:36 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/11 12:33:51 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	clean_tokens(t_list **tokenlist)
 	while (list_head)
 	{
 		token_tmp = list_head->content;
-		free(token_tmp->txt);
+		free(token_tmp->val);
 		tmp = list_head;
 		list_head = list_head->next;
 		free (tmp);

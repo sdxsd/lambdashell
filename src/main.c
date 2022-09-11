@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:37 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/11 01:41:30 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/11 14:15:51 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int	main(int argc, char **argv, char **envp)
 
 	free (ms->line);
 	clean_tokens(&ms->tokens);
-	//clean_list(&ms->tokens);
 	clean_env(ms->env);
 	free (ms);	
 	(void)argc;

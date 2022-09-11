@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:32 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/11 01:42:10 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/11 12:35:01 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ typedef struct s_ms
 	t_env	**env;
 }			t_ms;
 
-typedef enum e_token_tag
+typedef enum e_token_type
 {
 	tkn_str,
 	tkn_read,
@@ -63,12 +63,12 @@ typedef enum e_token_tag
 	tkn_pipe,
 	tkn_heredoc,
 	tkn_append
-}				t_token_tag;
+}				t_token_type;
 
 typedef struct s_token
 {
-	t_token_tag	tag;
-	char		*txt;
+	t_token_type	type;
+	char		*val;
 }				t_token;
 
 // PROTOTYPES
@@ -117,7 +117,7 @@ int		ms_pwd(void);
 // TOKENIZER.C
 int		token_make_and_add(char *token, t_list **tokens);
 int		tokenizer(char *line, t_list **tokens);
-void	token_add_tags(void *in);
+void	token_add_types(void *in);
 
 // COMMANDS.C
 
@@ -125,7 +125,7 @@ void	token_add_tags(void *in);
 int		dbg_print_env(t_ms *ms);
 int		dbg_print_env_idx(t_ms *ms);
 int		dbg_print_env_keys(t_ms *ms);
-int		dbg_print_tokens_txt(t_list **tokenlist);
+int		dbg_print_tokens_val(t_list **tokenlist);
 int		dbg_print_tokens(t_list **tokenlist);
 
 #endif
