@@ -5,78 +5,90 @@
 #                                                      +:+                     #
 #    By: mikuiper <mikuiper@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
-#    Created: 2022/08/19 09:07:48 by mikuiper      #+#    #+#                  #
-#    Updated: 2022/09/11 14:23:02 by mikuiper      ########   odam.nl          #
+#    Created: 2022/09/11 21:25:39 by mikuiper      #+#    #+#                  #
+#    Updated: 2022/09/11 21:37:26 by mikuiper      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
-# GENERAL CONFIG
-NAME	= minishell
-CC		= gcc
-CFLAGS	= -Wall -Wextra -Werror
-LEAKS	= -g3 -fsanitize=address
+NAME = 			minishell
+CC =			gcc
+CC_FLAGS =		-Wall -Wextra -Werror
 
-# LIBRARIES
-RD_LINE	= -lreadline -lncurses
-LIBS	= -L $(FT_DIR) -lft $(RD_LINE)
-FT = $(FT_DIR)/libft.a
+# MISC CONFIG
+GREEN =			\033[92m
+NOCOLOR =		\033[m
 
-# HEADERS
-HEADERS	=	-I ./inc
+# DIRECTORY NAMES
+DIR_SRC =		srcs
+DIR_INC =		includes
+DIR_OBJ =		obj
+DIR_LIB_FT =	libft
 
-# DIRECTORIES
-SRC_DIR		= ./src/
-OBJ_DIR		= ./obj/
-FT_DIR		= ./libft
+# SOURCE NAMES
+NAMES_SRCS =	main.c \
+				init.c \
+				error.c \
+				builtins.c \
+				input.c \
+				prompt.c \
+				env.c \
+				debug.c \
+				clean.c \
+				commands.c \
+				expander.c \
+				tokenizer.c
 
-SRCS		= 	$(SRC_DIR)main.c \
-				$(SRC_DIR)init.c \
-				$(SRC_DIR)error.c \
-				$(SRC_DIR)builtins.c \
-				$(SRC_DIR)input.c \
-				$(SRC_DIR)prompt.c \
-				$(SRC_DIR)env.c \
-				$(SRC_DIR)debug.c \
-				$(SRC_DIR)clean.c \
-				$(SRC_DIR)commands.c \
-				$(SRC_DIR)expander.c \
-				$(SRC_DIR)tokenizer.c
+# HEADER NAMES
+NAMES_HDRS =	minishell.h
 
-OBJS		= 	$(SRCS:.c=.o)
+# OBJECT NAMES
+NAMES_OBJS =	$(NAMES_SRCS:.c=.o)
 
-# COLORS
-GREEN = \033[92m
-NOCOLOR = \033[0;38m
+FULL_OBJS =		$(addprefix $(DIR_OBJ)/,$(NAMES_OBJS))
+FULL_HDRS =		$(addprefix $(DIR_INC)/,$(NAMES_HDRS))
 
-# RULES
-all: $(NAME)
+# OS-based readline library configuration
+SYS := $(shell gcc -dumpmachine)
+ifneq (, $(findstring linux, $(SYS)))
+	LIB_INC_RDLINE = -lreadline -lncurses
+else
+	LIB_INC_RDLINE = ~/.brew/opt/readline/lib -l readline -I \
+	~/.brew/opt/readline/include
+endif
 
-$(NAME): $(OBJS) $(FT)
-	@echo "$(GREEN)[minishell] - \t Compiled $(NAME).$(NOCOLOR)"
-	@$(CC) $(CFLAGS) -L ~/.brew/opt/readline/lib -l readline -I ~/.brew/opt/readline/include $(HEADERS) -o $(NAME) $(OBJS) $(LIBS)
+LIB_FT_NAME =	libft.a
+LIB_INC_FT =	$(DIR_LIB_FT) $(DIR_LIB_FT)/$(LIB_FT_NAME)
+HDR_INC =		-I $(DIR_INC)
+LIB_FULL =		-L $(LIB_INC_FT) $(LIB_INC_RDLINE)
 
-$(FT):
-	@$(MAKE) -sC $(FT_DIR)
+all: lib_ft $(NAME) 
 
-leaks: $(OBJS) $(FT)
-	@echo "$(GREEN)[minishell] - \t Compiled with leak check.$(NOCOLOR)"
-	@$(CC) $(CFLAGS) $(LEAKS) $(HEADERS) -o $(NAME) $(OBJS) $(LIBS)
-	
-.c.o:
-	@$(CC) $(CFLAGS) $(HEADERS) -c -o $@ $<
+$(NAME): $(DIR_LIB_FT)/$(LIB_FT_NAME) $(FULL_OBJS)
+	@rm -rf minishell
+	@$(CC) -g $(HDR_INC) $(FULL_OBJS) $(LIB_FULL)  -o $@
+	@echo "███╗░░░███╗██╗███╗░░██╗██╗░██████╗██╗░░██╗███████╗██╗░░░░░██╗░░░░░"
+	@echo "████╗░████║██║████╗░██║██║██╔════╝██║░░██║██╔════╝██║░░░░░██║░░░░░"
+	@echo "██╔████╔██║██║██╔██╗██║██║╚█████╗░███████║█████╗░░██║░░░░░██║░░░░░"
+	@echo "██║╚██╔╝██║██║██║╚████║██║░╚═══██╗██╔══██║██╔══╝░░██║░░░░░██║░░░░░"
+	@echo "██║░╚═╝░██║██║██║░╚███║██║██████╔╝██║░░██║███████╗███████╗███████╗"
+	@echo "╚═╝░░░░░╚═╝╚═╝╚═╝░░╚══╝╚═╝╚═════╝░╚═╝░░╚═╝╚══════╝╚══════╝╚══════╝"
+	@echo "$(GREEN)[minishell] - Compiled minishell!$(NOCOLOR)"
+
+lib_ft:
+	@make -sC $(DIR_LIB_FT)
+
+$(DIR_OBJ)/%.o: $(DIR_SRC)/%.c $(FULL_HDRS)
+	@mkdir -p $(DIR_OBJ) 
+	@$(CC) -g $(CC_FLAGS) $(HDR_INC) -g -o $@ -c $<
 
 clean:
-	#@$(MAKE) -sC $(FT_DIR) clean
-	@echo "$(GREEN)[minishell] - \t Running clean.$(NOCOLOR)"
-	@$(RM) $(OBJS)
+	@rm -rf $(DIR_OBJ)
+	@make clean -C $(DIR_LIB_FT)
+	@echo "$(GREEN)[minishell] - Running clean.$(NOCOLOR)"
 
-fclean:
-	#@$(MAKE) -sC $(FT_DIR) fclean
-	@echo "$(GREEN)[minishell] - \t Running fclean.$(NOCOLOR)"
-	@$(RM) $(OBJS)
-	@$(RM) $(NAME)
+fclean: clean
+	@rm -rf $(NAME)
+	@make fclean -C $(DIR_LIB_FT)
+	@echo "$(GREEN)[minishell] - Running fclean.$(NOCOLOR)"
 
-re: fclean all
-
-.PHONY: all clean fclean re
-
+re : fclean all

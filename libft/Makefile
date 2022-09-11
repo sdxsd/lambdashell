@@ -6,11 +6,13 @@
 #    By: mikuiper <mikuiper@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/02/21 15:29:25 by mikuiper      #+#    #+#                  #
-#    Updated: 2022/09/09 21:18:36 by mikuiper      ########   odam.nl          #
+#    Updated: 2022/09/11 14:42:57 by mikuiper      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 GREEN = \033[92m
+NOCOLOR = \033[m
+
 NAME = libft.a
 
 SRCS =	ft_atoi.c \
@@ -88,7 +90,7 @@ all: $(NAME)
 
 $(NAME): $(OFILES) $(INCLUDES)
 	@ar rcs $(NAME) $?
-	@echo "$(GREEN)[libft] - \t Compiled libft archive!$(NOCOLOR)"
+	@echo "$(GREEN)[libft] - Compiled libft archive!$(NOCOLOR)"
 
 %.o: %.c
 	@$(CC) -Wall -Wextra -Werror -c $<
@@ -96,10 +98,10 @@ $(NAME): $(OFILES) $(INCLUDES)
 clean:
 	@/bin/rm -f $(OFILES)
 	@/bin/rm -f a.out
-	@echo "$(GREEN)[libft] - \t Running clean.$(NOCOLOR)"
+	@echo "$(GREEN)[libft] - Running clean.$(NOCOLOR)"
 
 fclean: clean
 	@/bin/rm -f $(NAME)
-	@echo "$(GREEN)[libft] - \t Running fclean.$(NOCOLOR)"
+	@echo "$(GREEN)[libft] - Running fclean.$(NOCOLOR)"
 
 re: fclean all
