@@ -6,13 +6,14 @@
 #    By: mikuiper <mikuiper@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/09/11 21:25:39 by mikuiper      #+#    #+#                  #
-#    Updated: 2022/09/11 21:37:26 by mikuiper      ########   odam.nl          #
+#    Updated: 2022/09/11 22:24:09 by mikuiper      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = 			minishell
-CC =			gcc
-CC_FLAGS =		-Wall -Wextra -Werror
+COMP =			gcc
+FLAGS_COMP =	-Wall -Wextra -Werror
+FLAGS_LEAKS =	-g3 -fsanitize=address
 
 # MISC CONFIG
 GREEN =			\033[92m
@@ -20,7 +21,7 @@ NOCOLOR =		\033[m
 
 # DIRECTORY NAMES
 DIR_SRC =		srcs
-DIR_INC =		includes
+DIR_INC =		incs
 DIR_OBJ =		obj
 DIR_LIB_FT =	libft
 
@@ -56,16 +57,15 @@ else
 	~/.brew/opt/readline/include
 endif
 
-LIB_FT_NAME =	libft.a
-LIB_INC_FT =	$(DIR_LIB_FT) $(DIR_LIB_FT)/$(LIB_FT_NAME)
-HDR_INC =		-I $(DIR_INC)
-LIB_FULL =		-L $(LIB_INC_FT) $(LIB_INC_RDLINE)
+NAME_LIB_FT =	libft.a
+INC_LIB_FT =	$(DIR_LIB_FT) $(DIR_LIB_FT)/$(NAME_LIB_FT)
+INC_HDRS =		-I $(DIR_INC)
+INC_LIBS =		-L $(INC_LIB_FT) $(LIB_INC_RDLINE)
 
 all: lib_ft $(NAME) 
 
-$(NAME): $(DIR_LIB_FT)/$(LIB_FT_NAME) $(FULL_OBJS)
-	@rm -rf minishell
-	@$(CC) -g $(HDR_INC) $(FULL_OBJS) $(LIB_FULL)  -o $@
+$(NAME): lib_ft $(FULL_OBJS)
+	@$(COMP) -g $(INC_HDRS) $(FULL_OBJS) $(INC_LIBS) -o $(NAME)
 	@echo "███╗░░░███╗██╗███╗░░██╗██╗░██████╗██╗░░██╗███████╗██╗░░░░░██╗░░░░░"
 	@echo "████╗░████║██║████╗░██║██║██╔════╝██║░░██║██╔════╝██║░░░░░██║░░░░░"
 	@echo "██╔████╔██║██║██╔██╗██║██║╚█████╗░███████║█████╗░░██║░░░░░██║░░░░░"
@@ -77,9 +77,13 @@ $(NAME): $(DIR_LIB_FT)/$(LIB_FT_NAME) $(FULL_OBJS)
 lib_ft:
 	@make -sC $(DIR_LIB_FT)
 
+leaks: $(FULL_OBJS) lib_ft
+	@echo "$(GREEN)[minishell] - Compiled with $(FLAGS_LEAKS).$(NOCOLOR)"
+	@$(COMP) $(FLAGS_LEAKS) $(INC_HDRS) $(FULL_OBJS) $(INC_LIBS) -o $(NAME)
+
 $(DIR_OBJ)/%.o: $(DIR_SRC)/%.c $(FULL_HDRS)
 	@mkdir -p $(DIR_OBJ) 
-	@$(CC) -g $(CC_FLAGS) $(HDR_INC) -g -o $@ -c $<
+	@$(COMP) -g $(FLAGS_COMP) $(INC_HDRS) -o $@ -c $<
 
 clean:
 	@rm -rf $(DIR_OBJ)
@@ -92,3 +96,5 @@ fclean: clean
 	@echo "$(GREEN)[minishell] - Running fclean.$(NOCOLOR)"
 
 re : fclean all
+
+.PHONY: all clean fclean re leaks lib_ft

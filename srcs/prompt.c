@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/07 23:19:47 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/11 21:07:19 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/11 22:16:52 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ void	line_parser(t_ms *ms)
 
 int	prompt(t_ms *ms)
 {
-	/*
+	///*
 	ms->line = ft_strdup("Mithras Kuipers test <<");
 	line_parser(ms);
-	*/
-	///*
+	//*/
+	/*
 	while (1)
 	{
 		ms->line = readline("\033[;32m$> \033[0;0m\2");
@@ -45,6 +45,6 @@ int	prompt(t_ms *ms)
 			line_parser(ms);
 		}
 	}
-	//*/
+	*/
 	return (0);
 }
