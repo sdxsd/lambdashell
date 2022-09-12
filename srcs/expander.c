@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/07 23:15:47 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/10 23:28:56 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/12 13:18:15 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ char	*line_expander_helper(char *line, int pos, t_env **env)
 	ft_memcpy(newline, line, pos);
 	ft_memcpy(&newline[pos], val, ft_strlen(val));
 	ft_strcpy(&newline[pos + ft_strlen(val)], &line[pos + 1 + ft_strpos_first_nonalpha(&line[pos + 1])]);
-	if (ft_strlen(val) == 0)
-		newline = newline;
+	free (key);
+	free (line);
 	return (newline);
 }
 
@@ -69,6 +69,7 @@ char	*line_expander(char *line, t_env **env)
 				if (!(i - 3 >= 0 && line[i - 3] == '<' && line[i - 2] == '<'))
 				{
 					line = line_expander_helper(line, i, env);
+					printf("cur line:%s\n", line);
 					//i--;
 				}
 			}

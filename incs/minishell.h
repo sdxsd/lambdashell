@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:32 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/11 12:35:01 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/12 11:57:39 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,23 +21,6 @@
 
 // GLOBAL VARIABLE
 //int		global_sig;
-
-
-// typedef struct s_cmd
-// {
-// 	int			fd_input;
-// 	int			fd_output;
-// 	int			fd_pipe[2];
-// 	char		**split;
-// 	char		*path;
-// }				t_cmd;
-
-// typedef struct s_token
-// {
-// 	char			*value;
-// 	struct s_token	*prev;
-// 	struct s_token	*next;
-// }					t_token;
 
 typedef struct	s_env
 {
@@ -55,7 +38,7 @@ typedef struct s_ms
 	t_env	**env;
 }			t_ms;
 
-typedef enum e_token_type
+typedef enum	e_token_type
 {
 	tkn_str,
 	tkn_read,
@@ -68,7 +51,7 @@ typedef enum e_token_type
 typedef struct s_token
 {
 	t_token_type	type;
-	char		*val;
+	char			*val;
 }				t_token;
 
 // PROTOTYPES
@@ -108,7 +91,7 @@ void	line_parser(t_ms *ms);
 void	prompt_start(t_ms *ms);
 
 // CLEAN.C
-int		clean_tokens(t_list **tokenlist);
+int		clean_tokenlist(t_list **tokenlist);
 int		clean_env(t_env **env);
 
 // BUILTINS.C

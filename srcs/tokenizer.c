@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/07 23:17:12 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/11 12:56:37 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/12 11:42:42 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ token_make_and_add() ...
 
 int	token_make_and_add(char *token, t_list **tokens)
 {
-	t_token *token_token;
-	t_list *token_list;
+	t_token	*token_token;
+	t_list	*token_list;
 
 	if (!token || (ft_strlen(token) == 0))
 		return (1);
@@ -33,18 +33,26 @@ int	token_make_and_add(char *token, t_list **tokens)
 	if (!token_token)
 		return (1);
 	token_token->val = token;
-	token_list = ft_lstnew((void *)token_token);
+	token_list = ft_lstnew(token_token);
 	if (!token_list)
+	{
 		return (1);
+	}
 	ft_lstadd_back(tokens, token_list);
 	return (0);
 }
 
 /*
-tokenizer() ...
+tokenizer() scans the input line and isolates every word and turns it into a
+"token", which will be chained together in a linked list. Here, each node
+contains a "value" variable (i.e. the char array for the isolated word), and a
+"type" variable, describing the category to which the token belongs (e.g. 
+string, write operator, read operator, etc.)
+
+IMPORTANT: The function below is not finished. Text between single quotes
+should not be divided into separate tokens. 
 */
 
-// TODO: get len func not good, needs adjusted for considering quotes
 int	tokenizer(char *line, t_list **tokens)
 {
 	size_t	i;

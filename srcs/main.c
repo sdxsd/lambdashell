@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:37 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/11 22:20:47 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/12 13:13:15 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_ms *ms;
 
-	ms = ft_calloc(1 + 1, sizeof(t_ms));
+	ms = ft_calloc(1, sizeof(t_ms));
 	if (init_start())
 		return (1);
 	if (init_ms(ms))
@@ -26,9 +26,10 @@ int	main(int argc, char **argv, char **envp)
 	prompt(ms);
 
 	free (ms->line);
-	clean_tokens(&ms->tokens);
+	clean_tokenlist(&ms->tokens);
 	clean_env(ms->env);
-	free (ms);	
+	free (ms);
+
 	(void)argc;
 	(void)argv;
 	return 0;
