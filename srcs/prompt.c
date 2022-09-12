@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/07 23:19:47 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/11 22:16:52 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/12 13:29:23 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	line_parser(t_ms *ms)
 int	prompt(t_ms *ms)
 {
 	///*
-	ms->line = ft_strdup("Mithras Kuipers test <<");
+	ms->line = ft_strdup("Hi, the shell you are using is $SHELL");
 	line_parser(ms);
 	//*/
 	/*

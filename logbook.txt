@@ -22,6 +22,13 @@ What has been done:
 -	Consequently, everything that has been done so far has been constantly checked for
 	memory leaks. Still, proper function protection and consequent clean-up, is not
 	finished.
+-	During everything I tried to keep in mind the norm. The only aspect where I
+	ignored the norm was with regards with the number of functions in a single
+	source file. I did this simply for keeping a clear overview of what has
+	currently already been done without making it a spider's web through which
+	we need to navigate. It makes it also more easy to detect and solve memory leaks.
+	At the end we could simply divide the functions in the source files into separate
+	files to conform to the norm.
 - 	Implemented data structures that can be used throughout the project. It is based on
 	the advice I received from talking with lots of students that are way ahead of us.
 -	Functions that can be used to copy over the system env into memory for use in our shell.

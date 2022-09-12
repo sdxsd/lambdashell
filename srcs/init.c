@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/22 12:24:35 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/11 01:15:20 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/12 13:00:39 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ int	init_env(t_ms *ms, char **envp)
 
 	ms->env = ft_calloc(1, sizeof(t_env));
 	ms->tokens = ft_calloc(1, sizeof(t_list));
-	ms->tokens->content = ft_calloc(1, sizeof(t_token));
 	i = 0;
 	while (envp[i])
 	{
