@@ -10,11 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../incs/minishell.h"
 
-int	msg_err(char *s, int ret)
+void	msg_err(char *s, int ret)
 {
-	printf("Error: ");
-	printf("%s\n", s);
-	return (ret);
+	printf("Error: %s\n ", s);
 }
