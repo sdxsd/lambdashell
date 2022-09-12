@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:32 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/12 11:57:39 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/12 15:02:37 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,9 @@ int		msg_err(char *s, int ret);
 int		check_first_char(char *line);
 int		check_line_formatting(char *line, char *charset);
 int		last_char(char *line);
-int		parse_input(t_ms *ms, char *line);
 int 	check_last_char(char *line, char *charset);
 int 	check_quotations(char *line);
-void	line_parser(t_ms *ms);
+int		line_parser(t_ms *ms);
 void	prompt_start(t_ms *ms);
 
 // CLEAN.C
@@ -98,9 +97,10 @@ int		clean_env(t_env **env);
 int		ms_pwd(void);
 
 // TOKENIZER.C
-int		token_make_and_add(char *token, t_list **tokens);
-int		tokenizer(char *line, t_list **tokens);
-void	token_add_types(void *in);
+int		token_make_and_add(char *token, t_list **tokenlist);
+int		line_tokenizer(char *line, t_list **tokenlist);
+void	token_add_types(void *token);
+int		check_token_formatting(t_list **tokenlist);
 
 // COMMANDS.C
 

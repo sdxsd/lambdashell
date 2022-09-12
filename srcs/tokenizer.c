@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   tokenizer.c                                        :+:    :+:            */
+/*   line_tokenizer.c                                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 /*
-The tokenizer is also known as the "lexer". 
+The line_tokenizer is also known as the "lexer". 
 This section contains files for the tokenization chapter. It cuts the expanded
 input string into words and chains these words together in a linked list.
 */
@@ -22,7 +22,7 @@ input string into words and chains these words together in a linked list.
 token_make_and_add() ...
 */
 
-int	token_make_and_add(char *token, t_list **tokens)
+int	token_make_and_add(char *token, t_list **tokenlist)
 {
 	t_token	*token_token;
 	t_list	*token_list;
@@ -38,12 +38,12 @@ int	token_make_and_add(char *token, t_list **tokens)
 	{
 		return (1);
 	}
-	ft_lstadd_back(tokens, token_list);
+	ft_lstadd_back(tokenlist, token_list);
 	return (0);
 }
 
 /*
-tokenizer() scans the input line and isolates every word and turns it into a
+line_tokenizer() scans the input line and isolates every word and turns it into a
 "token", which will be chained together in a linked list. Here, each node
 contains a "value" variable (i.e. the char array for the isolated word), and a
 "type" variable, describing the category to which the token belongs (e.g. 
@@ -53,7 +53,7 @@ IMPORTANT: The function below is not finished. Text between single quotes
 should not be divided into separate tokens. 
 */
 
-int	tokenizer(char *line, t_list **tokens)
+int	line_tokenizer(char *line, t_list **tokenlist)
 {
 	size_t	i;
 	char	*token;
@@ -69,7 +69,7 @@ int	tokenizer(char *line, t_list **tokens)
 		token = ft_substr(line, i, len);
 		if (ft_strlen(token) == 0)
 			return (1);
-		token_make_and_add(token, tokens);
+		token_make_and_add(token, tokenlist);
 		i = i + len;
 	}
 	return (0);
@@ -89,3 +89,10 @@ void	token_add_types(void *token)
 	if (((t_token *)token)->val[0] == '>' && ((t_token *)token)->val[1] == '>')
 		((t_token *)token)->type = tkn_append;
 }
+
+int		check_token_formatting(t_list **tokenlist)
+{
+	(void)tokenlist;
+	return (0);
+}
+
