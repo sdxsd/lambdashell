@@ -78,7 +78,7 @@ int		get_env_key_idx(t_env **env, char *key);
 int		init_env_idx(t_env **env);
 
 // TOOLS.C
-int		msg_err(char *s, int ret);
+void	msg_err(char *s, int ret);
 
 // INPUT.C
 int		check_first_char(char *line);
