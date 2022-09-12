@@ -16,8 +16,8 @@
 // LIBRARIES
 # include "../libft/libft.h"
 # include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
 // GLOBAL VARIABLE
 //int		global_sig;
