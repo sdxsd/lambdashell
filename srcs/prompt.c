@@ -45,7 +45,7 @@ int	prompt(t_ms *ms)
 	/* 	return (1); */
 	while (1)
 	{
-		ms->line = readline("\033[;32m$> \033[0;0m\2");
+		ms->line = readline("\033[;32mλ :: > \033[0;0m\2");
 		if (ms->line == NULL)
 			break ;
 		if (ms->line[0] != 0)

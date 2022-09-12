@@ -16,8 +16,8 @@ FLAGS_COMP =	-Wall -Wextra -Werror
 FLAGS_LEAKS =	-g3 -fsanitize=address
 
 # MISC CONFIG
-GREEN =			\033[92m
-NOCOLOR =		\033[m
+GREEN =			\033[;92m
+NOCOLOR =		\033[;m
 
 # DIRECTORY NAMES
 DIR_SRC =		srcs
