@@ -1,0 +1,15 @@
+#+TITLE: MINISHELL
+
+* Minishell
+** Parsing:
+*** Expansion: [0/2]
++ [ ] Recognise names of ENV variables.
++ [ ] Print value of recognized environment variables.
++ [ ] Be able to use variables as input.
+*** Tokenization:
++ [ ]
+** Builtins
+
+** Redirections
+
+** Execution
