@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../incs/minishell.h"
 
 int	clean_tokenlist(t_list **tokenlist)
 {
@@ -31,7 +31,7 @@ int	clean_tokenlist(t_list **tokenlist)
 		free (list_tmp);
 		i++;
 	}
-	//free (list_tmp->content);
+	free (list_tmp->content);
 	free (list_head);
 	return (0);
 }

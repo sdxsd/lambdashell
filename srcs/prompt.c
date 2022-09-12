@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../incs/minishell.h"
 
 int	line_parser(t_ms *ms)
 {
@@ -34,16 +34,15 @@ int	line_parser(t_ms *ms)
 	ft_lstiter(ms->tokens, token_add_types);
 
 	// Print entire token list (values + types)
-	dbg_print_tokens(&ms->tokens);
+	/* dbg_print_tokens(&ms->tokens); */
 	return (0);
 }
 
 int	prompt(t_ms *ms)
 {
-	ms->line = ft_strdup("You use $SHELL and your home is at $HOME");
-	if (line_parser(ms))
-		return (1);
-	/*
+	/* ms->line = ft_strdup("You use $SHELL and your home is at $HOME"); */
+	/* if (line_parser(ms)) */
+	/* 	return (1); */
 	while (1)
 	{
 		ms->line = readline("\033[;32m$> \033[0;0m\2");
@@ -53,8 +52,8 @@ int	prompt(t_ms *ms)
 		{
 			add_history(ms->line);
 			line_parser(ms);
+			printf("%s\n", ms->line);
 		}
 	}
-	*/
 	return (0);
 }
