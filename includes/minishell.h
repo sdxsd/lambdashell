@@ -54,6 +54,45 @@ typedef struct s_token
 	char			*val;
 }				t_token;
 
+/*
+ * NOTE:
+ *                     +-----+
+ *    /example/file -> | cmd | -> stdout | /other/file
+ *                     +-----+
+*/
+
+typedef struct	s_cmd
+{
+	int		i_fd;
+	int		o_fd;
+	char	**args;
+	char	**env;
+	char	*path;
+}				t_cmd;
+
+/*
+ * NOTE:
+ *      PIPE BLOCK
+ * +--------------------+
+ * | cmd_one -> cmd_two | -> stdout
+ * +--------------------+
+ * +--------------------+    +------------------+
+ * | cmd_one -> cmd_two | -> | OTHER PIPE BLOCK |
+ * +--------------------+    +------------------+
+ * +--------------------+
+ * | cmd_one -> cmd_two | -> /something/example.file
+ * +--------------------+
+ */
+
+typedef struct	s_pipe_blck
+{
+	int		i_fd;
+	int		o_fd;
+	int		pipe[2];
+	t_cmd	*cmd_one;
+	t_cmd	*cmd_two;
+}				t_pipe_blck;
+
 // PROTOTYPES
 // INIT.C
 int		init_env(t_ms *ms, char **envp);

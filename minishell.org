@@ -2,26 +2,41 @@
 
 * Minishell
 ** Parsing:
-*** TODO Expansion: [0/2]
-+ [ ] Recognise names of ENV variables.
-+ [ ] Print value of recognized environment variables.
+I would imagine parsing to be one of the areas of the project
+with the most amount of edge cases, hence heavy testing is required here.
+Comparison with bash will be very useful in this case.
+*** TODO Expansion: [2/3]
++ [X] Recognise names of ENV variables.
++ [X] Print value of recognized environment variables.
 + [ ] Be able to use variables as input.
-*** TODO Tokenization:
-+ [ ]
+*** TODO Tokenization: [0/3]
++ [ ] Pipeline for converting strings to tokens.
++ [ ] Mapping tokens to set of common piping and execution instructions.
 
 ** Builtins
-*** TODO echo [/]
-+ [ ] echo
-+ [ ] -n
-*** TODO cd [/]
-+ [ ] absolute path
-+ [ ] relative path
+*** TODO echo
+*** TODO cd
 *** TODO pwd
 *** TODO export
 *** TODO unset
 *** TODO env
 *** TODO exit
 
-** Redirections
+** Redirections & execution
+[ NOTE: I've merged redirection and execution due to one being useless without the other. ]
 
-** Execution
+I imagine the best way to handle pipes is to create interoperable
+"blocks" consisting of a command to execute, and two mutable IO fields.
+Theoretically a function could be made which prepares the command to be executed.
+As arguments, the environment, the executable, and IO file descriptors.
+If the input for the file descriptors is NULL, then the default STDIN/STDOUT file
+descriptors shall be used.
+
+*** TODO Pipe Blocks [0/3]
++ [ ] block type
++ [ ] block constructor
++ [ ] block deallocator
++ [ ] block combiner (linked list?)
+*** TODO Executor [0/2]
++ [ ] Block executor
++ [ ] Process monitor
