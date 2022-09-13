@@ -84,14 +84,14 @@ typedef struct	s_cmd
  * +--------------------+
  */
 
-typedef struct	s_pipe_blck
+typedef struct	s_pipe_blk
 {
 	int		i_fd;
 	int		o_fd;
 	int		pipe[2];
 	t_cmd	*cmd_one;
 	t_cmd	*cmd_two;
-}				t_pipe_blck;
+}				t_pipe_blk;
 
 // PROTOTYPES
 // INIT.C
@@ -145,6 +145,7 @@ int		check_token_formatting(t_list **tokenlist);
 
 // PATH.C
 char	*get_path(char *prog_n, t_env **env);
+int		free_ptr_array(char *ptr[]);
 
 // DEBUG.C
 int		dbg_print_env(t_ms *ms);
