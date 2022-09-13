@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/07 23:19:47 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/13 21:52:40 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/13 22:53:20 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,27 +26,28 @@ void	line_parser(t_ms *ms)
 	ft_lstiter(ms->tokens, token_add_types);
 	token_checker(ms->tokens);
 
-	dbg_print_tokens(&ms->tokens);
+	//dbg_print_tokens(&ms->tokens);
 }
 
 int	prompt(t_ms *ms)
 {
-	///*
+	/*
 	ms->line = ft_strdup("Hi, the shell you are using is < | $SHELL");
 	line_parser(ms);
-	//*/
-	/*
+	*/
+	///*
 	while (1)
 	{
-		ms->line = readline("\033[;32m$> \033[0;0m\2");
+		ms->line = readline("\033[;32mλ :: > \033[0;0m\2");
 		if (ms->line == NULL)
 			break ;
 		if (ms->line[0] != 0)
 		{
 			add_history(ms->line);
 			line_parser(ms);
+			printf("%s\n", ms->line);
 		}
 	}
-	*/
+	//*/
 	return (0);
 }
