@@ -13,6 +13,7 @@ t_cmd	*cmd_constructor(char *prog_n, t_env **env)
 	if (!cmd->args)
 	{
 		free(cmd);
+		msg_err("cmd_constructor()", 1);
 		return (NULL);
 	}
 	cmd->env = env;
@@ -21,6 +22,20 @@ t_cmd	*cmd_constructor(char *prog_n, t_env **env)
 	{
 		free(cmd->args);
 		free(cmd);
+		msg_err("cmd_constructor()", 1);
 		return (NULL);
 	}
+	return (cmd);
+}
+
+void	cmd_deallocator(t_cmd *cmd)
+{
+	free_ptr_array(cmd->args);
+	free(cmd->path);
+	free(cmd);
+}
+
+t_pipe_blk	*pipe_block_constructor()
+{
+
 }

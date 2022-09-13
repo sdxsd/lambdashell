@@ -14,6 +14,6 @@
 
 int	msg_err(char *s, int ret)
 {
-	printf("Error: %s\n ", s);
+	perror(s);
 	return (ret);
 }

@@ -20,9 +20,9 @@ int	main(int argc, char **argv, char **envp)
 	if (init_start())
 		return (1);
 	if (init_ms(ms))
-		return (msg_err("Failed to initialize ms.", 1));
+		return (msg_err("init_ms()", 1));
 	if (init_env(ms, envp))
-		return (msg_err("Failed to initialize env.", 1));
+		return (msg_err("init_env()", 1));
 	if (prompt(ms))
 	{
 		clean_env(ms->env);
