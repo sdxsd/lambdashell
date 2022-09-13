@@ -32,8 +32,8 @@ As arguments, the environment, the executable, and IO file descriptors.
 If the input for the file descriptors is NULL, then the default STDIN/STDOUT file
 descriptors shall be used.
 
-*** TODO Pipe Blocks [0/3]
-+ [ ] block type
+*** TODO Pipe Blocks [1/4]
++ [X] block type
 + [ ] block constructor
 + [ ] block deallocator
 + [ ] block combiner (linked list?)

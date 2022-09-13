@@ -116,8 +116,8 @@ int		free_env_node(t_env *node);
 int		get_env_key_idx(t_env **env, char *key);
 int		init_env_idx(t_env **env);
 
-// TOOLS.C
-void	msg_err(char *s, int ret);
+// ERROR.C
+int	msg_err(char *s, int ret);
 
 // INPUT.C
 int		check_first_char(char *line);
@@ -142,6 +142,9 @@ void	token_add_types(void *token);
 int		check_token_formatting(t_list **tokenlist);
 
 // COMMANDS.C
+
+// PATH.C
+char	*get_path(char *prog_n, t_env **env);
 
 // DEBUG.C
 int		dbg_print_env(t_ms *ms);

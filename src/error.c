@@ -12,7 +12,8 @@
 
 #include "../includes/minishell.h"
 
-void	msg_err(char *s, int ret)
+int	msg_err(char *s, int ret)
 {
 	printf("Error: %s\n ", s);
+	return (ret);
 }
