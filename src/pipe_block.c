@@ -1,5 +1,7 @@
 #include "../includes/minishell.h"
 
+/* NOTE: Data type of env needs to be decided on */
+/* execve takes env as a string of characters. */
 t_cmd	*cmd_constructor(char *prog_n, t_env **env)
 {
 	t_cmd	*cmd;

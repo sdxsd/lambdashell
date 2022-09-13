@@ -28,7 +28,7 @@ int	init_env(t_ms *ms, char **envp)
 	while (envp[i])
 	{
 		if (env_entry_cloner(ms, envp[i]))
-			return (msg_err("env_entry_cloner()", 1));
+			return (msg_err("env_entry_cloner()", FAILURE));
 		i++;
 	}
 	init_env_idx(ms->env);
@@ -38,11 +38,11 @@ int	init_env(t_ms *ms, char **envp)
 int	init_start(void)
 {
 	if (!isatty(0))
-		return(msg_err("init_start()", 1));
+		return(msg_err("init_start()", FAILURE));
 	if (!isatty(1))
-		return(msg_err("init_start()", 1));
+		return(msg_err("init_start()", FAILURE));
 	if (!isatty(2))
-		return(msg_err("init_start()", 1));
+		return(msg_err("init_start()", FAILURE));
 	//global_sig = 0;
 	return (0);
 }
