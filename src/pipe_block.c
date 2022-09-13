@@ -56,8 +56,8 @@ t_cmd	*cmd_constructor(char *prog_n, t_env **env)
 	cmd->path = get_path(prog_n, env);
 	if (!cmd->path)
 	{
+		msg_err(cmd->args[0], FAILURE);
 		cmd_deallocator(cmd);
-		msg_err("cmd_constructor()", FAILURE);
 		return (NULL);
 	}
 	return (cmd);
