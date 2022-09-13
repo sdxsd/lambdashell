@@ -125,6 +125,9 @@ int		init_env_idx(t_env **env);
 // ERROR.C
 int	msg_err(char *s, int ret);
 
+// EXEC.C
+int	execute_command(t_cmd *cmd);
+
 // INPUT.C
 int		check_first_char(char *line);
 int		check_line_formatting(char *line, char *charset);
