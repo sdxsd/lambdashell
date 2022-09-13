@@ -40,20 +40,25 @@ int	line_parser(t_ms *ms)
 
 int	prompt(t_ms *ms)
 {
+	t_cmd	*cmd;
 	/* ms->line = ft_strdup("You use $SHELL and your home is at $HOME"); */
 	/* if (line_parser(ms)) */
 	/* 	return (1); */
-	while (1)
-	{
-		ms->line = readline("\033[;32mλ :: > \033[0;0m\2");
-		if (ms->line == NULL)
-			break ;
-		if (ms->line[0] != 0)
-		{
-			add_history(ms->line);
-			line_parser(ms);
-			printf("%s\n", ms->line);
-		}
-	}
+	cmd = cmd_constructor("vim", ms->env);
+	if (!cmd)
+		return (FAILURE);
+	execute_command(cmd);
+	/* while (TRUE) */
+	/* { */
+	/* 	ms->line = readline("\033[;32mλ :: > \033[0;0m\2"); */
+	/* 	if (ms->line == NULL) */
+	/* 		break ; */
+	/* 	if (ms->line[0] != 0) */
+	/* 	{ */
+	/* 		add_history(ms->line); */
+	/* 		line_parser(ms); */
+	/* 		printf("%s\n", ms->line); */
+	/* 	} */
+	/* } */
 	return (0);
 }
