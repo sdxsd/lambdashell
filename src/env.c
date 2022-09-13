@@ -178,7 +178,7 @@ int	add_env_entry(t_ms *ms, t_env *node)
 
 /*
 env_entry_cloner() can be used to clone the system env into memory. The new env
-is represenetd in a linked list, where each node contains the data of a single
+is represented in a linked list, where each node contains the data of a single
 line of the system env. Each node separates the data from a system env line into
 key and value pairs.
 */

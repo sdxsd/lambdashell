@@ -40,7 +40,6 @@ typedef struct	s_env
 typedef struct s_ms
 {
 	char	*line;
-	int		env_len;
 	t_list	*tokens;
 	t_env	**env;
 }			t_ms;
