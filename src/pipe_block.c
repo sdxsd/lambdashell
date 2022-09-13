@@ -1,5 +1,23 @@
 #include "../includes/minishell.h"
 
+char	**env_to_strings(t_env **env)
+{
+	char	**envp;
+	int		iter;
+	int		env_len;
+
+	iter = 0;
+	envp = malloc(sizeof(char *) * env_len(env));
+	if (!envp)
+	{
+		msg_err("env_to_strings()", FAILURE);
+		return (NULL);
+	}
+	while (iter < env_len)
+
+	return (envp);
+}
+
 /* NOTE: Data type of env needs to be decided on */
 /* execve takes env as a string of characters. */
 t_cmd	*cmd_constructor(char *prog_n, t_env **env)
@@ -18,7 +36,14 @@ t_cmd	*cmd_constructor(char *prog_n, t_env **env)
 		msg_err("cmd_constructor()", FAILURE);
 		return (NULL);
 	}
-	cmd->env = env;
+	cmd->env = env_to_strings(env);
+	if (!cmd->env)
+	{
+		free(cmd->args);
+		free(cmd);
+		msg_err("cmd_constructor()", FAILURE);
+		return (NULL);
+	}
 	cmd->path = get_path(prog_n, env);
 	if (!cmd->path)
 	{
