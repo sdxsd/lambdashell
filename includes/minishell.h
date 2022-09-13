@@ -24,6 +24,7 @@
 # define TRUE 1
 # define FALSE 0
 # define FAILURE 1
+# define SUCCESS 0
 
 // GLOBAL VARIABLE
 //int		global_sig;
@@ -148,6 +149,12 @@ void	token_add_types(void *token);
 int		check_token_formatting(t_list **tokenlist);
 
 // COMMANDS.C
+
+// PIPE_BLOCK.C
+t_cmd		*cmd_constructor(char *prog_n, t_env **env);
+void		cmd_deallocator(t_cmd *cmd);
+t_pipe_blk	*pipe_blk_alloc(t_cmd *cmd_one, t_cmd *cmd_two, int i, int o);
+void		pipe_blk_dealloc(t_pipe_blk *pipe_blk);
 
 // PATH.C
 char	*get_path(char *prog_n, t_env **env);
