@@ -3,19 +3,46 @@
 char	**env_to_strings(t_env **env)
 {
 	char	**envp;
+	t_env	*env_element;
 	int		iter;
-	int		env_len;
+	int		len;
 
 	iter = 0;
 	envp = malloc(sizeof(char *) * env_len(env));
+	env_element = *env;
 	if (!envp)
 	{
 		msg_err("env_to_strings()", FAILURE);
 		return (NULL);
 	}
-	while (iter < env_len)
-
+	while (iter < len)
+	{
+		envp[iter] = env_element->val;
+		env_element = env_element->next;
+		iter++;
+	}
 	return (envp);
+}
+
+static int	check_cmd_malloc(t_cmd *cmd)
+{
+	if (!cmd->args)
+	{
+		free(cmd);
+		return (msg_err("cmd_constructor()", FAILURE));
+	}
+	if (!cmd->env)
+	{
+		free_ptr_array(cmd->args);
+		return (msg_err("cmd_constructor()", FAILURE));
+	}
+	if (!cmd->path)
+	{
+		free_ptr_array(cmd->args);
+		free_ptr_array(cmd->env);
+		return (msg_err("cmd_constructor()", FAILURE));
+	}
+	return (SUCCESS);
 }
 
 /* NOTE: Data type of env needs to be decided on */
@@ -26,32 +53,21 @@ t_cmd	*cmd_constructor(char *prog_n, t_env **env)
 
 	cmd = malloc(sizeof(t_cmd));
 	if (!cmd)
+	{
+		msg_err("cmd_constructor()", FAILURE);
 		return (NULL);
+	}
 	cmd->i_fd = STDIN_FILENO;
 	cmd->o_fd = STDOUT_FILENO;
 	cmd->args = ft_split(prog_n, ' ');
-	if (!cmd->args)
-	{
-		free(cmd);
-		msg_err("cmd_constructor()", FAILURE);
+	if (check_cmd_malloc(cmd))
 		return (NULL);
-	}
 	cmd->env = env_to_strings(env);
-	if (!cmd->env)
-	{
-		free(cmd->args);
-		free(cmd);
-		msg_err("cmd_constructor()", FAILURE);
+	if (check_cmd_malloc(cmd))
 		return (NULL);
-	}
 	cmd->path = get_path(prog_n, env);
-	if (!cmd->path)
-	{
-		free(cmd->args);
-		free(cmd);
-		msg_err("cmd_constructor()", FAILURE);
+	if (check_cmd_malloc(cmd))
 		return (NULL);
-	}
 	return (cmd);
 }
 
