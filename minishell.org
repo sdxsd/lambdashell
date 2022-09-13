@@ -31,11 +31,14 @@ Theoretically a function could be made which prepares the command to be executed
 As arguments, the environment, the executable, and IO file descriptors.
 If the input for the file descriptors is NULL, then the default STDIN/STDOUT file
 descriptors shall be used.
-
-*** TODO Pipe Blocks [1/4]
+*** DONE CMD type [3/3]
++ [X] cmd type
++ [X] cmd constructor
++ [X] cmd deallocator
+*** TODO Pipe Blocks [3/4]
 + [X] block type
-+ [ ] block constructor
-+ [ ] block deallocator
++ [X] block constructor
++ [X] block deallocator
 + [ ] block combiner (linked list?)
 *** TODO Executor [0/2]
 + [ ] Block executor
