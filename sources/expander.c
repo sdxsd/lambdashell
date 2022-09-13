@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/07 23:15:47 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/13 21:52:40 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/13 22:52:42 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,7 @@ char	*line_expander(char *line, t_env **env)
 			if (line[i] == '$')
 			{
 				if (!(i - 3 >= 0 && line[i - 3] == '<' && line[i - 2] == '<'))
-				{
 					line = line_expander_helper(line, i, env);
-					printf("cur line:%s\n", line);
-					//i--;
-				}
 			}
 		}
 		else

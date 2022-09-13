@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/07 23:17:12 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/13 21:52:40 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/13 22:50:24 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,7 @@ int	token_make_and_add(char *token, t_list **tokens)
 	token_token->val = token;
 	token_list = ft_lstnew(token_token);
 	if (!token_list)
-	{
 		return (1);
-	}
 	ft_lstadd_back(tokens, token_list);
 	return (0);
 }
