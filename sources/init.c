@@ -6,11 +6,11 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/22 12:24:35 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/12 13:00:39 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/13 21:52:40 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 int	init_ms(t_ms *ms)
 {

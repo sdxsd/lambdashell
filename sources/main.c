@@ -6,11 +6,11 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:37 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/12 15:01:33 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/13 21:52:40 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -23,14 +23,7 @@ int	main(int argc, char **argv, char **envp)
 		return (msg_err("Failed to initialize ms.", 1));
 	if (init_env(ms, envp))
 		return (msg_err("Failed to initialize env.", 1));
-	if (prompt(ms))
-	{
-		clean_env(ms->env);
-		free (ms->line);
-		free (ms->tokens);
-		free (ms);
-		return (1);
-	}
+	prompt(ms);
 
 	free (ms->line);
 	clean_tokenlist(&ms->tokens);

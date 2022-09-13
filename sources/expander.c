@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/07 23:15:47 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/12 14:21:44 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/13 21:52:40 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ string will be cut into pieces (i.e. words) and chained together into a
 linked list (see ms->tokens in minishell.h).
 */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 /*
 updates the line it receives on a specific location
@@ -31,21 +31,18 @@ char	*line_expander_helper(char *line, int pos, t_env **env)
 {
 	char	*key;
 	char	*val;
-	char	*tmp;
-	char	*res;
-
+	char	*newline;
 	key = ft_substr(line, pos + 1, ft_strpos_first_nonalpha(&line[pos + 1]));
 	val = get_env_val(env, key);
 	if (val == NULL)
 		val = "";
-	tmp = malloc((ft_strlen(line) + ft_strlen(val) + 1) * sizeof(char));
-	ft_strncpy(tmp, line, pos);
-	ft_strncpy(&tmp[pos], val, ft_strlen(val));
-	res = ft_strjoin(tmp, &line[pos + 1 + ft_strpos_first_nonalpha(&line[pos + 1])]);
+	newline = malloc((ft_strlen(line) + ft_strlen(val) + 1) * sizeof(char));
+	ft_memcpy(newline, line, pos);
+	ft_memcpy(&newline[pos], val, ft_strlen(val));
+	ft_strcpy(&newline[pos + ft_strlen(val)], &line[pos + 1 + ft_strpos_first_nonalpha(&line[pos + 1])]);
 	free (key);
 	free (line);
-	free (tmp);
-	return (res);
+	return (newline);
 }
 
 /*
@@ -72,6 +69,8 @@ char	*line_expander(char *line, t_env **env)
 				if (!(i - 3 >= 0 && line[i - 3] == '<' && line[i - 2] == '<'))
 				{
 					line = line_expander_helper(line, i, env);
+					printf("cur line:%s\n", line);
+					//i--;
 				}
 			}
 		}

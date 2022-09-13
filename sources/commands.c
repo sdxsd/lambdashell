@@ -1,26 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_strncpy.c                                       :+:    :+:            */
+/*   commands.c                                         :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/12 14:04:54 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/12 14:07:56 by mikuiper      ########   odam.nl         */
+/*   Created: 2022/09/05 13:58:26 by mikuiper      #+#    #+#                 */
+/*   Updated: 2022/09/13 21:52:40 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../includes/minishell.h"
 
-void	ft_strncpy(char *dst, char *src, int n)
+/*
+Create function that will check whether the entered command is part of the
+builtin commands that we need to manually code. If that's the case, make sure
+that the entered command is run with our own implementation, not the official
+unix one.
+*/
+
+/*
+// blabla
+int	cmd_is_builtin(t_ms *ms)
 {
-	int	i;
-
-	i = 0;
-	while (src[i] && i < n)
-	{
-		dst[i] = src[i];
-		i++;
-	}
-	dst[i] = '\0';
+	if (ft_strncmp(ms->cmd, "pwd", ft_strlen("pwd")))
+		return (1);
+	return (0);
 }
+*/

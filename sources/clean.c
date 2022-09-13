@@ -6,11 +6,11 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:07:36 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/12 12:57:07 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/13 21:52:40 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../incs/minishell.h"
+#include "../includes/minishell.h"
 
 int	clean_tokenlist(t_list **tokenlist)
 {
@@ -31,7 +31,7 @@ int	clean_tokenlist(t_list **tokenlist)
 		free (list_tmp);
 		i++;
 	}
-	free (list_tmp->content);
+	//free (list_tmp->content);
 	free (list_head);
 	return (0);
 }
