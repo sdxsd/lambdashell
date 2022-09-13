@@ -18,6 +18,12 @@
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+// DEFINES
+# define READ 0
+# define WRITE 1
+# define TRUE 1
+# define FALSE 0
+# define FAILURE 1
 
 // GLOBAL VARIABLE
 //int		global_sig;
