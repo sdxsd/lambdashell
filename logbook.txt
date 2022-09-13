@@ -56,7 +56,7 @@ What has been done:
 			(2) easily changing a key's value with only the key name and the desired value
 			(3) obtaining a key's value with the key's name alone.
 			The latter (point 3) is especially useful for the [expansion] part.
-	4.	[line_tokenizer] Basically, cutting up the expanded input line into separate
+	4.	[tokenizer] Basically, cutting up the expanded input line into separate
 		words. These words are stored in a "tokens" linked list, where each node
 		holds two values: [1] the value of the token, and [2] the "type" of the token.
 		Here, value refers to simply the word that has been cut out from the expanded line,

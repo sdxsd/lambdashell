@@ -6,11 +6,11 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/30 11:47:20 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/12 14:34:35 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/13 21:52:40 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 int check_quotations(char *line)
 {
@@ -85,3 +85,13 @@ int	check_line_formatting(char *line, char *charset)
 	return (0);
 }
 
+int	parse_input(t_ms *ms, char *line)
+{
+	char	*tmp;
+
+	if (check_line_formatting(line, "<>|"))
+		return (1);
+	(void)tmp;
+	(void)ms;
+	return (0);
+}

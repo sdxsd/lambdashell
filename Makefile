@@ -6,7 +6,7 @@
 #    By: mikuiper <mikuiper@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/09/11 21:25:39 by mikuiper      #+#    #+#                  #
-#    Updated: 2022/09/12 14:46:08 by mikuiper      ########   odam.nl          #
+#    Updated: 2022/09/13 20:24:58 by mikuiper      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,13 +16,13 @@ FLAGS_COMP =	-Wall -Wextra -Werror
 FLAGS_LEAKS =	-g3 -fsanitize=address
 
 # MISC CONFIG
-GREEN =			\033[;92m
-NOCOLOR =		\033[;m
+GREEN =			\033[92m
+NOCOLOR =		\033[m
 
 # DIRECTORY NAMES
-DIR_SRC =		srcs
-DIR_INC =		incs
-DIR_OBJ =		obj
+DIR_SRC =		sources
+DIR_INC =		includes
+DIR_OBJ =		objects
 DIR_LIB_FT =	libft
 
 # SOURCE NAMES

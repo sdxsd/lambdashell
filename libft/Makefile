@@ -6,7 +6,7 @@
 #    By: mikuiper <mikuiper@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/02/21 15:29:25 by mikuiper      #+#    #+#                  #
-#    Updated: 2022/09/12 14:05:43 by mikuiper      ########   odam.nl          #
+#    Updated: 2022/09/11 14:42:57 by mikuiper      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -81,9 +81,7 @@ SRCS =	ft_atoi.c \
 		ft_strcpy.c \
 		ft_strpos_charset.c \
 		ft_strpos_first_nonalpha.c \
-		ft_ischarset.c \
-		ft_strjoin_until.c \
-		ft_strncpy.c
+		ft_ischarset.c
 
 OFILES = $(SRCS:.c=.o)
 INCLUDES = libft.h get_next_line.h ft_printf.h

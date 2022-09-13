@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   env_tools.c                                        :+:    :+:            */
+/*   env.c                                              :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:03:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/11 12:35:37 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/13 21:53:50 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../incs/minishell.h"
+#include "minishell.h"
 
 /*
 env_len() returns the number of nodes in the env linked list.

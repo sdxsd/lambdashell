@@ -1,30 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   commands.c                                         :+:    :+:            */
+/*   builtins.c                                         :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/05 13:58:26 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/10 18:07:11 by mikuiper      ########   odam.nl         */
+/*   Created: 2022/08/26 16:25:57 by mikuiper      #+#    #+#                 */
+/*   Updated: 2022/09/13 21:55:13 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
+#include <limits.h>
+#include <unistd.h>
+#include <stdio.h>
 
 /*
-Create function that will check whether the entered command is part of the
-builtin commands that we need to manually code. If that's the case, make sure
-that the entered command is run with our own implementation, not the official
-unix one.
+NOTE:
+_POSIX_PATH_MAX is used to maintain compatibility on
+POSIX compatible systems. This ensures that the buffer size of pwd
+is always large enough to hold the path.
 */
 
-/*
-// blabla
-int	cmd_is_builtin(t_ms *ms)
+int	ms_pwd(void)
 {
-	if (ft_strncmp(ms->cmd, "pwd", ft_strlen("pwd")))
+	char	pwd[_POSIX_PATH_MAX];
+
+	if (getcwd(pwd, _POSIX_PATH_MAX) == NULL)
 		return (1);
+	printf("%s\n", pwd);
 	return (0);
 }
-*/
