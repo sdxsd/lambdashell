@@ -46,8 +46,6 @@ t_pipe_blk	*pipe_blk_alloc(t_cmd *cmd_one, t_cmd *cmd_two, int i, int o)
 		msg_err("pipe_blk_alloc()", FAILURE);
 		return (NULL);
 	}
-	pipe_blk->i_fd = i;
-	pipe_blk->o_fd = o;
 	pipe_blk->cmd_one = cmd_one;
 	pipe_blk->cmd_two = cmd_two;
 	if (pipe(pipe_blk->pipe) == -1)
@@ -56,10 +54,10 @@ t_pipe_blk	*pipe_blk_alloc(t_cmd *cmd_one, t_cmd *cmd_two, int i, int o)
 		msg_err("pipe_blk_alloc()", FAILURE);
 		return (NULL);
 	}
-	cmd_one->i_fd = pipe_blk->i_fd;
+	cmd_one->i_fd = pipe_blk->i_fd = i;
 	cmd_one->o_fd = pipe_blk->pipe[WRITE];
 	cmd_two->i_fd = pipe_blk->pipe[READ];
-	cmd_two->o_fd = pipe_blk->o_fd;
+	cmd_two->o_fd = pipe_blk->o_fd = o;
 	return (pipe_blk);
 }
 
