@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../incs/minishell.h"
+#include "../includes/minishell.h"
 
 int	line_parser(t_ms *ms)
 {

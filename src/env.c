@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../incs/minishell.h"
+#include "../includes/minishell.h"
 
 /*
 env_len() returns the number of nodes in the env linked list.

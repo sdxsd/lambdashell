@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../incs/minishell.h"
+#include "../includes/minishell.h"
 
 /*
 The line_tokenizer is also known as the "lexer". 

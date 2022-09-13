@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../incs/minishell.h"
+#include "../includes/minishell.h"
 
 int	clean_tokenlist(t_list **tokenlist)
 {

@@ -20,8 +20,8 @@ GREEN =			\033[;92m
 NOCOLOR =		\033[;m
 
 # DIRECTORY NAMES
-DIR_SRC =		srcs
-DIR_INC =		incs
+DIR_SRC =		src
+DIR_INC =		includes
 DIR_OBJ =		obj
 DIR_LIB_FT =	libft
 
