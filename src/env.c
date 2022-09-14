@@ -6,11 +6,11 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:03:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/13 21:53:50 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/14 10:28:21 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../incs/minishell.h"
 
 /*
 env_len() returns the number of nodes in the env linked list.
@@ -178,7 +178,7 @@ int	add_env_entry(t_ms *ms, t_env *node)
 
 /*
 env_entry_cloner() can be used to clone the system env into memory. The new env
-is represenetd in a linked list, where each node contains the data of a single
+is represented in a linked list, where each node contains the data of a single
 line of the system env. Each node separates the data from a system env line into
 key and value pairs.
 */

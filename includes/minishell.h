@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:32 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/13 22:59:52 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/14 10:25:12 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,15 @@
 // LIBRARIES
 # include "../libft/libft.h"
 # include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+// DEFINES
+# define READ 0
+# define WRITE 1
+# define TRUE 1
+# define FALSE 0
+# define FAILURE 1
+# define SUCCESS 0
 
 // GLOBAL VARIABLE
 //int		global_sig;
@@ -71,6 +78,45 @@ typedef struct s_token
 	char			*val;
 }				t_token;
 
+/*
+ * NOTE:
+ *                     +-----+
+ *    /example/file -> | cmd | -> stdout | /other/file
+ *                     +-----+
+*/
+
+typedef struct	s_cmd
+{
+	int		i_fd;
+	int		o_fd;
+	char	**args;
+	char	**env;
+	char	*path;
+}				t_cmd;
+
+/*
+ * NOTE:
+ *      PIPE BLOCK
+ * +--------------------+
+ * | cmd_one -> cmd_two | -> stdout
+ * +--------------------+
+ * +--------------------+    +------------------+
+ * | cmd_one -> cmd_two | -> | OTHER PIPE BLOCK |
+ * +--------------------+    +------------------+
+ * +--------------------+
+ * | cmd_one -> cmd_two | -> /something/example.file
+ * +--------------------+
+ */
+
+typedef struct	s_pipe_blk
+{
+	int		i_fd;
+	int		o_fd;
+	int		pipe[2];
+	t_cmd	*cmd_one;
+	t_cmd	*cmd_two;
+}				t_pipe_blk;
+
 // PROTOTYPES
 // INIT.C
 int		init_env(t_ms *ms, char **envp);
@@ -94,8 +140,11 @@ int		free_env_node(t_env *node);
 int		get_env_key_idx(t_env **env, char *key);
 int		init_env_idx(t_env **env);
 
-// TOOLS.C
-int		msg_err(char *s, int ret);
+// ERROR.C
+int	msg_err(char *s, int ret);
+
+// EXEC.C
+int	execute_command(t_cmd *cmd);
 
 // INPUT.C
 int		check_first_char(char *line);
@@ -121,6 +170,16 @@ void	token_add_types(void *in);
 int		token_checker(t_list *tokenlist);
 
 // COMMANDS.C
+
+// PIPE_BLOCK.C
+t_cmd		*cmd_constructor(char *prog_n, t_env **env);
+void		cmd_deallocator(t_cmd *cmd);
+t_pipe_blk	*pipe_blk_alloc(t_cmd *cmd_one, t_cmd *cmd_two, int i, int o);
+void		pipe_blk_dealloc(t_pipe_blk *pipe_blk);
+
+// PATH.C
+char	*get_path(char *prog_n, t_env **env);
+int		free_ptr_array(char *ptr[]);
 
 // DEBUG.C
 int		dbg_print_env(t_ms *ms);
