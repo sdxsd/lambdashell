@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/07 23:19:47 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/14 15:08:11 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/14 21:06:17 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,23 +20,37 @@ void	clear_screen(void)
 
 void	line_parser(t_ms *ms)
 {
+	/* Expand line */
 	ms->line = line_expander(ms->line, ms->env);
+
+	/* Tokenize line */
 	tokenizer(ms->line, &ms->tokens);
 	
-	// IMPORTANT: token list has bug where first node is null. Hence removal
+	/* IMPORTANT: Please keep the following 4 lines of code for now. First elem of list is NULL. */
 	t_list *head;
 	head = ms->tokens;
 	ms->tokens = ms->tokens->next;
 	free (head);
 
+	/* Add labels to tokens */
 	ft_lstiter(ms->tokens, token_add_types);
-	//token_checker(ms->tokens);
 
-	//dbg_print_tokens(&ms->tokens);
+	/* Check for valid token syntax */
+	token_checker(ms->tokens);
+	
+	/* Demonstrate the creation of token blocks */
+	t_list	*token_block_list;
+	token_block_list = make_token_block_list(&ms->tokens);
+	dbg_print_token_block_list(token_block_list);
 }
 
 int	prompt(t_ms *ms)
 {
+	clear_screen();
+	splash();
+	ms->line = ft_strdup("Good evening $USER | Do you want your Ferrari keys? | Blabla");
+	printf("Minishell is currently parsing:\n%s\n\n", ms->line);
+	line_parser(ms);
 	/*
 	t_cmd	*cmd;
 	ms->line = ft_strdup("Hi, the shell you are using is < | $SHELL");
@@ -47,8 +61,7 @@ int	prompt(t_ms *ms)
 		return (FAILURE);
 	execute_command(cmd);
 	*/
-	clear_screen();
-	splash();
+	/*
 	while (TRUE)
 	{
 		color_orange();
@@ -64,5 +77,6 @@ int	prompt(t_ms *ms)
 			printf("result: %s\n", ms->line);
 		}
 	}
+	*/
 	return (0);
 }

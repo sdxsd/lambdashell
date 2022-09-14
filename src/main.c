@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:37 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/14 13:26:32 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/14 16:57:35 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int	main(int argc, char **argv, char **envp)
 
 	if (argc == 1 && argv)
 	{
-		splash();
 		ms = ft_calloc(1, sizeof(t_ms));
 		if (init_start())
 			return (1);
@@ -32,17 +31,14 @@ int	main(int argc, char **argv, char **envp)
 			clean_tokenlist(&ms->tokens);
 			clean_env(ms->env);
 			free (ms);
-			color_reset();
 			return (msg_err("Something went wrong.", 1));
 		}
 		free (ms->line);
 		clean_tokenlist(&ms->tokens);
 		clean_env(ms->env);
 		free (ms);
-		color_reset();
 		return (0);
 	}
-	color_reset();
 	return (msg_err("Please do not provide any arguments.", 1));
 }
 
