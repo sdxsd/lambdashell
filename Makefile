@@ -6,7 +6,7 @@
 #    By: mikuiper <mikuiper@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/09/11 21:25:39 by mikuiper      #+#    #+#                  #
-#    Updated: 2022/09/13 20:24:58 by mikuiper      ########   odam.nl          #
+#    Updated: 2022/09/14 10:23:36 by mikuiper      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,9 +20,9 @@ GREEN =			\033[92m
 NOCOLOR =		\033[m
 
 # DIRECTORY NAMES
-DIR_SRC =		sources
+DIR_SRC =		src
 DIR_INC =		includes
-DIR_OBJ =		objects
+DIR_OBJ =		obj
 DIR_LIB_FT =	libft
 
 # SOURCE NAMES
