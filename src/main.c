@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:37 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/13 22:59:15 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/14 10:26:34 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ int	main(int argc, char **argv, char **envp)
 		if (init_start())
 			return (1);
 		if (init_ms(ms))
-			return (msg_err("Failed to initialize ms.", 1));
+			return (msg_err("init_ms()", FAILURE));
 		if (init_env(ms, envp))
-			return (msg_err("Failed to initialize env.", 1));
+			return (msg_err("init_env()", FAILURE));
 		if (prompt(ms))
 			return (msg_err("Something went wrong.", 1));
 		free (ms->line);

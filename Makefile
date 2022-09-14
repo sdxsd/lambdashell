@@ -37,6 +37,9 @@ NAMES_SRCS =	main.c \
 				clean.c \
 				commands.c \
 				expander.c \
+				path.c \
+				pipe_block.c \
+				exec.c \
 				tokenizer.c
 
 # HEADER NAMES
