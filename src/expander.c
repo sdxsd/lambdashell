@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/07 23:15:47 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/13 22:52:42 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/14 15:17:46 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ linked list (see ms->tokens in minishell.h).
 #include "../includes/minishell.h"
 
 /*
-updates the line it receives on a specific location
+line_expander_helper() pdates the line it receives on a specific location
 idea is that it is run several times so it can update the line completely
 it is run when another functions came across env var in the line
 with the repeated ft_memcpy it iteratively builds the updated line with an
@@ -39,7 +39,8 @@ char	*line_expander_helper(char *line, int pos, t_env **env)
 	newline = malloc((ft_strlen(line) + ft_strlen(val) + 1) * sizeof(char));
 	ft_memcpy(newline, line, pos);
 	ft_memcpy(&newline[pos], val, ft_strlen(val));
-	ft_strcpy(&newline[pos + ft_strlen(val)], &line[pos + 1 + ft_strpos_first_nonalpha(&line[pos + 1])]);
+	ft_strcpy(&newline[pos + ft_strlen(val)], &line[pos + 1 + \
+	ft_strpos_first_nonalpha(&line[pos + 1])]);
 	free (key);
 	free (line);
 	return (newline);
