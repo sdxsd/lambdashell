@@ -6,11 +6,17 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/07 23:19:47 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/14 13:44:10 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/14 15:08:11 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	clear_screen(void)
+{
+	write(STDOUT_FILENO, "\x1b[2J", 4);
+	write(STDOUT_FILENO, "\x1b[H", 3);
+}
 
 void	line_parser(t_ms *ms)
 {
@@ -41,6 +47,8 @@ int	prompt(t_ms *ms)
 		return (FAILURE);
 	execute_command(cmd);
 	*/
+	clear_screen();
+	splash();
 	while (TRUE)
 	{
 		color_orange();
