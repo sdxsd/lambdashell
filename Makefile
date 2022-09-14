@@ -6,7 +6,7 @@
 #    By: mikuiper <mikuiper@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/09/11 21:25:39 by mikuiper      #+#    #+#                  #
-#    Updated: 2022/09/14 10:23:36 by mikuiper      ########   odam.nl          #
+#    Updated: 2022/09/14 13:15:38 by mikuiper      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ COMP =			gcc
 FLAGS_COMP =	-Wall -Wextra -Werror
 FLAGS_LEAKS =	-g3 -fsanitize=address
 
-# MISC CONFIG
+# COLOR CONFIG
 GREEN =			\033[92m
 NOCOLOR =		\033[m
 
@@ -40,7 +40,9 @@ NAMES_SRCS =	main.c \
 				path.c \
 				pipe_block.c \
 				exec.c \
-				tokenizer.c
+				tokenizer.c \
+				splash.c \
+				colors.c
 
 # HEADER NAMES
 NAMES_HDRS =	minishell.h

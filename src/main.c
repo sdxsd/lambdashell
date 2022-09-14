@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:37 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/14 10:26:34 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/14 13:26:32 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	main(int argc, char **argv, char **envp)
 
 	if (argc == 1 && argv)
 	{
-		write(STDOUT_FILENO, SPLASH, 1361);
+		splash();
 		ms = ft_calloc(1, sizeof(t_ms));
 		if (init_start())
 			return (1);
@@ -27,13 +27,22 @@ int	main(int argc, char **argv, char **envp)
 		if (init_env(ms, envp))
 			return (msg_err("init_env()", FAILURE));
 		if (prompt(ms))
+		{
+			free (ms->line);
+			clean_tokenlist(&ms->tokens);
+			clean_env(ms->env);
+			free (ms);
+			color_reset();
 			return (msg_err("Something went wrong.", 1));
+		}
 		free (ms->line);
 		clean_tokenlist(&ms->tokens);
 		clean_env(ms->env);
 		free (ms);
+		color_reset();
 		return (0);
 	}
+	color_reset();
 	return (msg_err("Please do not provide any arguments.", 1));
 }
 
@@ -43,5 +52,5 @@ builtins made:
 
 todo [short-term]
 - find out how work with global variables without getting multiple def. error.
-- get_env_key_idx(t_env **env, char *key) results in segfault if the key does not exist. Fix this. What is the desired behavior?
+- get_env_key_idx(t_env **env, char *key) results in segfault if the key does not exist. Fix this. What is the desicolor_red behavior?
 */
