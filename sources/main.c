@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:37 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/13 22:50:10 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/13 22:59:15 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	main(int argc, char **argv, char **envp)
 
 	if (argc == 1 && argv)
 	{
-		write(STDOUT_FILENO, SPLASH, 1368);
+		write(STDOUT_FILENO, SPLASH, 1361);
 		ms = ft_calloc(1, sizeof(t_ms));
 		if (init_start())
 			return (1);
