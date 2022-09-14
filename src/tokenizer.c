@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/07 23:17:12 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/13 22:50:24 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/14 20:35:32 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,8 @@ void	token_add_types(void *token)
 
 int	token_checker(t_list *tokenlist)
 {
-	t_token	*tkn_cur;
-	t_token	*tkn_nxt;
+	t_token	*current;
+	t_token	*next;
 
 	if ((((t_token *)tokenlist->content)->type == tkn_pipe) || \
 	(((t_token *)ft_lstlast(tokenlist)->content)->type != tkn_str))
@@ -101,19 +101,111 @@ int	token_checker(t_list *tokenlist)
 		return (0);
 	while (tokenlist && tokenlist->next)
 	{
-		tkn_cur = (t_token *)tokenlist->content;
-		tkn_nxt = (t_token *)tokenlist->next->content;
-		if (tkn_cur->type == tkn_read && tkn_nxt->type != tkn_str)
+		current = (t_token *)tokenlist->content;
+		next = (t_token *)tokenlist->next->content;
+		if (current->type == tkn_read && next->type != tkn_str)
 				return(msg_err("< was not followed by string\n", 1));
-		if (tkn_cur->type == tkn_write && tkn_nxt->type != tkn_str)
+		if (current->type == tkn_write && next->type != tkn_str)
 				return(msg_err("> was not followed by string\n", 1));
-		if (tkn_cur->type == tkn_pipe && tkn_nxt->type == tkn_pipe)
+		if (current->type == tkn_pipe && next->type == tkn_pipe)
 				return(msg_err("| was followed by |\n", 1));
-		if (tkn_cur->type == tkn_heredoc && tkn_nxt->type != tkn_str)
+		if (current->type == tkn_heredoc && next->type != tkn_str)
 				return(msg_err("<< was not followed by string\n", 1));
-		if (tkn_cur->type == tkn_append && tkn_nxt->type != tkn_str)
+		if (current->type == tkn_append && next->type != tkn_str)
 				return(msg_err(">> was not followed by string\n", 1));
 		tokenlist = tokenlist->next;
 	}
 	return (0);
+}
+
+int	token_chunk_size(t_list *tokenlist)
+{
+	size_t	size;
+
+	size = 0;
+	t_token	*current;
+
+	if (((t_token *)tokenlist->content)->type == tkn_pipe)
+		tokenlist = tokenlist->next;
+	if (tokenlist->next == NULL)
+		return (1);
+	while (tokenlist)
+	{
+		current = tokenlist->content;
+		if (current->type == tkn_pipe)
+			return (size);
+		size++;
+		tokenlist = tokenlist->next;
+	}
+	return (size);
+}
+
+int	make_and_add_token_block(t_list **pipe_block_list, char **token_array)
+{
+	t_pipe_blk	*pipe_block;
+	t_list		*pipe_block_list_node;
+
+	pipe_block = malloc(1 * sizeof(t_pipe_blk));
+	pipe_block->cmd_one = malloc(1 * sizeof(t_cmd));
+	/* TODO protect */
+	pipe_block->cmd_one->args = token_array;
+	pipe_block->o_fd = STDOUT_FILENO;
+	pipe_block->i_fd = STDIN_FILENO;
+	/* TODO */
+	// pipe_block->cmd_two = ...;
+	// pipe_block->pipe[0] = ...;
+	// pipe_block->pipe[1] = ...;
+	pipe_block_list_node = ft_lstnew((void *)pipe_block);
+	/* TODO protect */
+	ft_lstadd_back(pipe_block_list, pipe_block_list_node);
+	return (0);
+}
+
+char	**get_token_array(t_list *tokenlist)
+{
+	int		token;
+	char	**token_array;
+	t_token	*current;
+
+	token = 0;
+	token_array = malloc((token_chunk_size(tokenlist) + 1) * sizeof(char *));
+	if (((t_token *)tokenlist->content)->type == tkn_pipe)
+		tokenlist = tokenlist->next;
+	while (tokenlist)
+	{
+		current = ((t_token *)tokenlist->content);
+		if (current->type == tkn_pipe)
+			break;
+		token_array[token] = ft_strdup(current->val);
+		token++;
+		tokenlist = tokenlist->next;
+	}
+	token_array[token] = '\0';
+	return (token_array);
+}
+
+t_list	*make_token_block_list(t_list **tokenlist)
+{
+	char	**token_array;
+	t_list	*token_array_list;
+	t_token	*current;
+
+	token_array_list = 0;
+	token_array = get_token_array(*tokenlist);
+	make_and_add_token_block(&token_array_list, token_array);
+	while (*tokenlist)
+	{
+		current = (*tokenlist)->content;
+		if (current->type == tkn_pipe)
+		{
+			token_array = get_token_array(*tokenlist);
+			/* TODO protect */
+			make_and_add_token_block(&token_array_list, token_array);
+		}
+		tokenlist = &(*tokenlist)->next; // let op hier..afwijking
+	}
+	(void)token_array_list;
+	(void)token_array;
+	(void)tokenlist;
+	return (token_array_list);
 }

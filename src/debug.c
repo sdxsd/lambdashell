@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/25 14:38:27 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/13 21:52:40 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/14 20:55:20 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,31 @@ int	dbg_print_tokens(t_list **tokenlist)
 		printf("[%d]type:%d\n\n", i, token_tmp->type);
 		list_head = list_head->next;
 		i++;
+	}
+	return (0);
+}
+
+int	dbg_print_token_block_list(t_list *token_block_list)
+{
+	t_list		*current_block_list;
+	t_pipe_blk	*current_pipe_block;
+	size_t		arg_i;
+	size_t		block_i;
+
+	block_i = 0;
+	while(token_block_list)
+	{
+		arg_i = 0;
+		printf("\nContents of block [%ld]..\n", block_i);
+		current_block_list = token_block_list->content;
+		current_pipe_block = (t_pipe_blk *)current_block_list;
+		while (current_pipe_block->cmd_one->args[arg_i])
+		{
+			printf("[%ld]%s\n", arg_i, current_pipe_block->cmd_one->args[arg_i]);			
+			arg_i++;
+		}
+		block_i++;
+		token_block_list = token_block_list->next;
 	}
 	return (0);
 }

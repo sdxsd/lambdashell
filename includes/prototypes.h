@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 13:35:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/14 13:41:34 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/14 20:49:17 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,12 @@ int		token_make_and_add(char *token, t_list **tokens);
 int		tokenizer(char *line, t_list **tokens);
 void	token_add_types(void *in);
 int		token_checker(t_list *tokenlist);
+int		token_chunk_size(t_list *tokenlist);
+t_list	*token_chunking(t_list **tokenlist);
+char	**get_token_array(t_list *tokenlist);
+t_list	*make_token_block_list(t_list **tokenlist);
+
+
 
 /* PIPE_BLOCK.C */
 t_cmd		*cmd_constructor(char *prog_n, t_env **env);
@@ -83,6 +89,7 @@ int		dbg_print_env_idx(t_ms *ms);
 int		dbg_print_env_keys(t_ms *ms);
 int		dbg_print_tokens_val(t_list **tokenlist);
 int		dbg_print_tokens(t_list **tokenlist);
+int		dbg_print_token_block_list(t_list *token_block_list);
 
 /* COLORS.C */
 void	color_red();
