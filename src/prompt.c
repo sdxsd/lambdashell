@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/07 23:19:47 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/14 10:27:46 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/14 13:44:10 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,35 +24,37 @@ void	line_parser(t_ms *ms)
 	free (head);
 
 	ft_lstiter(ms->tokens, token_add_types);
-	token_checker(ms->tokens);
+	//token_checker(ms->tokens);
 
 	//dbg_print_tokens(&ms->tokens);
 }
 
 int	prompt(t_ms *ms)
 {
-	t_cmd	*cmd;
 	/*
+	t_cmd	*cmd;
 	ms->line = ft_strdup("Hi, the shell you are using is < | $SHELL");
 	line_parser(ms);
-	*/
-	///*
-	cmd = cmd_constructor("vim", ms->env);
+	(void)cmd;
+	cmd = cmd_constructor("nano", ms->env);
 	if (!cmd)
 		return (FAILURE);
 	execute_command(cmd);
-	/* while (TRUE) */
-	/* { */
-	/* 	ms->line = readline("\033[;32mλ :: > \033[0;0m\2"); */
-	/* 	if (ms->line == NULL) */
-	/* 		break ; */
-	/* 	if (ms->line[0] != 0) */
-	/* 	{ */
-	/* 		add_history(ms->line); */
-	/* 		line_parser(ms); */
-	/* 		printf("%s\n", ms->line); */
-	/* 	} */
-	/* } */
-	//*/
+	*/
+	while (TRUE)
+	{
+		color_orange();
+		printf("λ :: > ");
+		color_reset();
+		ms->line = readline("");
+		if (ms->line == NULL)
+			break ;
+		if (ms->line[0] != 0)
+		{
+			add_history(ms->line);
+			line_parser(ms);
+			printf("result: %s\n", ms->line);
+		}
+	}
 	return (0);
 }
