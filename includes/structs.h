@@ -92,7 +92,7 @@ typedef struct	s_pipe_blk
 
 /*
  * NOTE:
- *      TOKEN LIST
+ *    EXECUTION LIST
  * +------------------+
  * | element[command] |
  * +------------------+
@@ -104,6 +104,7 @@ typedef struct	s_pipe_blk
  *        --------> +---------------+
  *                  | element[file] |
  *                  +---------------+
+ *
  * (int type) -> specifies the type of the element
  *               i.e. command
  *                    pipe
@@ -115,15 +116,15 @@ typedef struct	s_pipe_blk
  *                       t_pipe_blk
  * (void *next)  -> next token element in the list.
  *
- * ALLOCATOR   : token_list_generator();
- * DEALLOCATOR : token_list_deallocator();
+ * ALLOCATOR   : execution_list_generator();
+ * DEALLOCATOR : execution_list_deallocator();
 */
 
-typedef struct s_token_element
+typedef struct s_exec_element
 {
 	int		type;
 	void	*value;
 	void	*next;
-}	t_token_element;
+}	t_exec_element;
 
 #endif
