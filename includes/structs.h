@@ -21,36 +21,39 @@ typedef struct	s_env
 	char	*val;
 	int		idx;
 	void	*next;
-}				t_env;
+}	t_env;
 
 typedef struct s_ms
 {
 	char	*line;
 	t_list	*tokens;
 	t_env	**env;
-}			t_ms;
+}	t_ms;
 
 typedef enum	e_token_type
 {
 	tkn_str,
+	tkn_cmd,
 	tkn_read,
 	tkn_write,
 	tkn_pipe,
 	tkn_heredoc,
 	tkn_append
-}				t_token_type;
+}	t_token_type;
 
 typedef struct s_token
 {
 	t_token_type	type;
 	char			*val;
-}				t_token;
+}	t_token;
 
 /*
  * NOTE:
  *                     +-----+
  *    /example/file -> | cmd | -> stdout | /other/file
  *                     +-----+
+ * ALLOCATOR   : cmd_constructor()
+ * DEALLOCATOR : cmd_deallocator()
 */
 
 typedef struct	s_cmd
@@ -60,7 +63,7 @@ typedef struct	s_cmd
 	char	**args;
 	char	**env;
 	char	*path;
-}				t_cmd;
+}	t_cmd;
 
 /*
  * NOTE:
@@ -74,6 +77,8 @@ typedef struct	s_cmd
  * +--------------------+
  * | cmd_one -> cmd_two | -> /something/example.file
  * +--------------------+
+ * ALLOCATOR   : pipe_blk_alloc()
+ * DEALLOCATOR : pipe_blk_dealloc()
  */
 
 typedef struct	s_pipe_blk
@@ -84,5 +89,42 @@ typedef struct	s_pipe_blk
 	t_cmd	*cmd_one;
 	t_cmd	*cmd_two;
 }				t_pipe_blk;
+
+/*
+ * NOTE:
+ *    EXECUTION LIST
+ * +------------------+
+ * | element[command] |
+ * +------------------+
+ *   | void *next
+ *   ---> +----------------------+
+ *        | element[redirection] |
+ *        +----------------------+
+ *        | void *next
+ *        --------> +---------------+
+ *                  | element[file] |
+ *                  +---------------+
+ *
+ * (int type) -> specifies the type of the element
+ *               i.e. command
+ *                    pipe
+ *                    builtin
+ *                    file
+ *                    redirection
+ * (void *value) -> structure of the element
+ *                  i.e. t_cmd
+ *                       t_pipe_blk
+ * (void *next)  -> next token element in the list.
+ *
+ * ALLOCATOR   : execution_list_generator();
+ * DEALLOCATOR : execution_list_deallocator();
+*/
+
+typedef struct s_exec_element
+{
+	int		type;
+	void	*value;
+	void	*next;
+}	t_exec_element;
 
 #endif

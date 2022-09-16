@@ -12,6 +12,7 @@
 
 #ifndef PROTOTYPES_H
 # define PROTOTYPES_H
+# include "structs.h"
 
 /* SPLASH.C */
 void	splash();
