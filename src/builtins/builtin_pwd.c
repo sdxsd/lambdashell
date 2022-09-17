@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   builtins.c                                         :+:    :+:            */
+/*   builtin_pwd.c                                      :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/08/26 16:25:57 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/13 21:55:13 by mikuiper      ########   odam.nl         */
+/*   Created: 2022/09/17 20:59:54 by mikuiper      #+#    #+#                 */
+/*   Updated: 2022/09/17 21:09:46 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ POSIX compatible systems. This ensures that the buffer size of pwd
 is always large enough to hold the path.
 */
 
-int	ms_pwd(void)
+int	builtin_pwd(void)
 {
 	char	pwd[_POSIX_PATH_MAX];
 

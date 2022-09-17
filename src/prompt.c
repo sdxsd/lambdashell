@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/07 23:19:47 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/14 21:06:17 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/17 21:36:30 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,12 @@ int	prompt(t_ms *ms)
 {
 	clear_screen();
 	splash();
+	
 	ms->line = ft_strdup("Good evening $USER | Do you want your Ferrari keys? | Blabla");
-	printf("Minishell is currently parsing:\n%s\n\n", ms->line);
+	//printf("Minishell is currently parsing:\n%s\n\n", ms->line);
 	line_parser(ms);
+	builtin_pwd();
+
 	/*
 	t_cmd	*cmd;
 	ms->line = ft_strdup("Hi, the shell you are using is < | $SHELL");

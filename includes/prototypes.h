@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 13:35:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/14 20:49:17 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/17 21:09:37 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,10 @@ void	prompt_start(t_ms *ms);
 int		clean_tokenlist(t_list **tokenlist);
 int		clean_env(t_env **env);
 
-/* BUILTINS.C */
-int		ms_pwd(void);
+/* BUILTINS */
+/* ENV.C */
+void	builtin_env(t_ms *ms, int fd);
+int		builtin_pwd(void);
 
 /* TOKENIZER.C */
 int		token_make_and_add(char *token, t_list **tokens);
