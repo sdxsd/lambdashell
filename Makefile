@@ -6,7 +6,7 @@
 #    By: mikuiper <mikuiper@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/09/11 21:25:39 by mikuiper      #+#    #+#                  #
-#    Updated: 2022/09/17 21:32:54 by mikuiper      ########   odam.nl          #
+#    Updated: 2022/09/17 23:02:22 by mikuiper      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,8 @@ NAMES_SRCS =	main.c \
 				splash.c \
 				colors.c \
 				$(DIR_SRC_BUILTINS)/builtin_env.c \
-				$(DIR_SRC_BUILTINS)/builtin_pwd.c
+				$(DIR_SRC_BUILTINS)/builtin_pwd.c \
+				$(DIR_SRC_BUILTINS)/builtin_unset.c
 
 # HEADER NAMES
 NAMES_HDRS =	minishell.h
@@ -87,8 +88,8 @@ $(DIR_OBJ)/%.o: $(DIR_SRC)/%.c $(FULL_HDRS)
 	@$(COMP) -g $(FLAGS_COMP) $(INC_HDRS) -o $@ -c $<
 
 make_obj_dirs:
-	@mkdir obj
-	@mkdir obj/builtins
+	@mkdir -p obj
+	@mkdir -p obj/builtins
 
 clean:
 	@rm -rf $(DIR_OBJ)

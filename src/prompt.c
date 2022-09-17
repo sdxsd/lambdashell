@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/07 23:19:47 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/17 21:36:30 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/17 22:59:49 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ int	prompt(t_ms *ms)
 	ms->line = ft_strdup("Good evening $USER | Do you want your Ferrari keys? | Blabla");
 	//printf("Minishell is currently parsing:\n%s\n\n", ms->line);
 	line_parser(ms);
-	builtin_pwd();
 
 	/*
 	t_cmd	*cmd;
