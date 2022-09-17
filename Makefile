@@ -6,7 +6,7 @@
 #    By: mikuiper <mikuiper@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/09/11 21:25:39 by mikuiper      #+#    #+#                  #
-#    Updated: 2022/09/17 23:02:22 by mikuiper      ########   odam.nl          #
+#    Updated: 2022/09/17 23:05:13 by mikuiper      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ NOCOLOR =		\033[m
 # DIRECTORY NAMES
 DIR_SRC =			src
 DIR_SRC_BUILTINS =	builtins
+DIR_SRC_ENV =		env
 DIR_INC =			includes
 DIR_OBJ =			obj
 DIR_LIB_FT =		libft
@@ -32,7 +33,6 @@ NAMES_SRCS =	main.c \
 				error.c \
 				input.c \
 				prompt.c \
-				env.c \
 				debug.c \
 				clean.c \
 				commands.c \
@@ -45,7 +45,8 @@ NAMES_SRCS =	main.c \
 				colors.c \
 				$(DIR_SRC_BUILTINS)/builtin_env.c \
 				$(DIR_SRC_BUILTINS)/builtin_pwd.c \
-				$(DIR_SRC_BUILTINS)/builtin_unset.c
+				$(DIR_SRC_BUILTINS)/builtin_unset.c \
+				$(DIR_SRC_ENV)/env.c
 
 # HEADER NAMES
 NAMES_HDRS =	minishell.h
@@ -89,7 +90,7 @@ $(DIR_OBJ)/%.o: $(DIR_SRC)/%.c $(FULL_HDRS)
 
 make_obj_dirs:
 	@mkdir -p obj
-	@mkdir -p obj/builtins
+	@mkdir -p obj/builtins obj/env
 
 clean:
 	@rm -rf $(DIR_OBJ)
