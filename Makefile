@@ -6,7 +6,7 @@
 #    By: mikuiper <mikuiper@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/09/11 21:25:39 by mikuiper      #+#    #+#                  #
-#    Updated: 2022/09/17 23:05:13 by mikuiper      ########   odam.nl          #
+#    Updated: 2022/09/18 12:18:46 by mikuiper      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,11 @@ NOCOLOR =		\033[m
 # DIRECTORY NAMES
 DIR_SRC =			src
 DIR_SRC_BUILTINS =	builtins
+DIR_SRC_EXPANDER =	expander
+DIR_SRC_SPLASH	=	splash
+DIR_SRC_DEBUG =		debug
+DIR_SRC_TOKENIZER =	tokenizer
+DIR_SRC_MISC =		misc
 DIR_SRC_ENV =		env
 DIR_INC =			includes
 DIR_OBJ =			obj
@@ -33,19 +38,19 @@ NAMES_SRCS =	main.c \
 				error.c \
 				input.c \
 				prompt.c \
-				debug.c \
 				clean.c \
 				commands.c \
-				expander.c \
 				path.c \
 				pipe_block.c \
 				exec.c \
-				tokenizer.c \
-				splash.c \
-				colors.c \
+				$(DIR_SRC_EXPANDER)/expander.c \
 				$(DIR_SRC_BUILTINS)/builtin_env.c \
 				$(DIR_SRC_BUILTINS)/builtin_pwd.c \
 				$(DIR_SRC_BUILTINS)/builtin_unset.c \
+				$(DIR_SRC_SPLASH)/splash.c \
+				$(DIR_SRC_DEBUG)/debug.c \
+				$(DIR_SRC_TOKENIZER)/tokenizer.c \
+				$(DIR_SRC_MISC)/colors.c \
 				$(DIR_SRC_ENV)/env.c
 
 # HEADER NAMES
@@ -89,8 +94,14 @@ $(DIR_OBJ)/%.o: $(DIR_SRC)/%.c $(FULL_HDRS)
 	@$(COMP) -g $(FLAGS_COMP) $(INC_HDRS) -o $@ -c $<
 
 make_obj_dirs:
-	@mkdir -p obj
-	@mkdir -p obj/builtins obj/env
+	@mkdir -p $(DIR_OBJ)
+	@mkdir -p $(DIR_OBJ)/$(DIR_SRC_SPLASH)
+	@mkdir -p $(DIR_OBJ)/$(DIR_SRC_BUILTINS)
+	@mkdir -p $(DIR_OBJ)/$(DIR_SRC_ENV)
+	@mkdir -p $(DIR_OBJ)/$(DIR_SRC_EXPANDER)
+	@mkdir -p $(DIR_OBJ)/$(DIR_SRC_TOKENIZER)
+	@mkdir -p $(DIR_OBJ)/$(DIR_SRC_MISC)
+	@mkdir -p $(DIR_OBJ)/$(DIR_SRC_DEBUG)
 
 clean:
 	@rm -rf $(DIR_OBJ)
