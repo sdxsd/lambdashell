@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 13:35:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/18 13:38:13 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/18 15:52:22 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,14 @@ char	*line_expander(char *line, t_env **env);
 char	*line_expander_helper(char *line, int pos, t_env **env);
 
 /* ENV_TOOLS.C */
-char	*get_env_val(t_env **env, char *key);
+char	*env_get_val(t_env **env, char *key);
 int		env_del_entry(t_env **head, char *key);
 int		env_edit_val(t_env **env, char *key, char *new_val);
 int		env_entry_cloner(t_ms *ms, char *line);
 int		env_len(t_env **env);
 int		free_env_node(t_env *node);
-int		get_env_key_idx(t_env **env, char *key);
-int		init_env_idx(t_env **env);
+int		env_get_key_idx(t_env **env, char *key);
+int		env_init_idx(t_env **env);
 
 /* ERROR.C */
 int		msg_err(char *s, int ret);
