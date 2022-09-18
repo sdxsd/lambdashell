@@ -6,11 +6,11 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 13:25:48 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/18 13:26:01 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/18 19:03:43 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 int	clean_env(t_env **env)
 {

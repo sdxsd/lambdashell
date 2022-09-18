@@ -6,13 +6,13 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/30 11:47:20 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/18 13:28:58 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/18 19:12:20 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int check_quotations(char *line)
+int line_check_quotations(char *line)
 {
 	int	quote;
 	int	squote;
@@ -39,7 +39,7 @@ int check_quotations(char *line)
 	return (0);
 }
 
-int	check_first_char(char *line)
+int	line_check_first_char(char *line)
 {
 	while (*line == ' ')
 		line++;
@@ -51,7 +51,7 @@ int	check_first_char(char *line)
 	return (0);
 }
 
-int	last_char(char *line)
+int	line_get_last_char(char *line)
 {
 	char	last_char;
 	while (*line)
@@ -63,9 +63,9 @@ int	last_char(char *line)
 	return (last_char);
 }
 
-int check_last_char(char *line, char *charset)
+int line_check_last_char(char *line, char *charset)
 {
-	if (*line && ft_strchr(charset, last_char(line)))
+	if (*line && ft_strchr(charset, line_get_last_char(line)))
 	{
 		printf("Error. Found forbidden token at end of line.\n");
 		return (1);
@@ -74,24 +74,21 @@ int check_last_char(char *line, char *charset)
 }
 
 // very simple to get started, requires more checks
-int	check_line_formatting(char *line, char *charset)
+int	line_check_syntax(char *line, char *charset)
 {
-	if (check_first_char(line))
+	if (line_check_first_char(line))
 		return (1);
-	if (check_last_char(line, charset))
+	if (line_check_last_char(line, charset))
 		return (1);
-	if (check_quotations(line))
+	if (line_check_quotations(line))
 		return (1);
 	return (0);
 }
 
 int	parse_input(t_ms *ms, char *line)
 {
-	char	*tmp;
-
-	if (check_line_formatting(line, "<>|"))
+	if (line_check_syntax(line, "<>|"))
 		return (1);
-	(void)tmp;
 	(void)ms;
 	return (0);
 }
@@ -102,26 +99,22 @@ void	line_parser(t_ms *ms)
 	ms->line = line_expander(ms->line, ms->env);
 
 	/* Tokenize line */
-	tokenizer(ms->line, &ms->tokens);
+	tokenlist_populate_tokenlist(ms->line, &ms->tokenlist);
 	
 	/* IMPORTANT: Please keep the following 4 lines of code for now. First elem of list is NULL. */
 	t_list *head;
-	head = ms->tokens;
-	ms->tokens = ms->tokens->next;
+	head = ms->tokenlist;
+	ms->tokenlist = ms->tokenlist->next;
 	free (head);
 
 	/* Add labels to tokens */
-
-	token_add_types(ms->tokens);
-	dbg_print_tokens(&ms->tokens);
-
-	//ft_lstiter(ms->tokens, token_add_types);
-
-	/* Check for valid token syntax */
-	token_checker(ms->tokens);
+	tokenlist_add_types(ms->tokenlist);
 	
-	/* Demonstrate the creation of token blocks */
-	//t_list	*token_block_list;
-	//token_block_list = make_token_block_list(&ms->tokens);
-	//dbg_print_token_block_list(token_block_list);
+	/* Check for valid token syntax */
+	tokenlist_check_syntax(ms->tokenlist);
+	
+	/* Demonstrate token blks */
+	t_list	*token_blks_list;
+	token_blks_list = make_token_blks_list(&ms->tokenlist);
+	debug_print_token_blks_list(token_blks_list);
 }

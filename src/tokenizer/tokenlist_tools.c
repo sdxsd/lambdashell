@@ -1,46 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   tokenizer.c                                        :+:    :+:            */
+/*   tokenlist_tools.c                                  :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/07 23:17:12 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/18 13:36:56 by mikuiper      ########   odam.nl         */
+/*   Created: 2022/09/18 19:00:10 by mikuiper      #+#    #+#                 */
+/*   Updated: 2022/09/18 19:05:40 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-/*
-The tokenizer is also known as the "lexer". 
-This section contains files for the tokenization chapter. It cuts the expanded
-input string into words and chains these words together in a linked list.
-*/
-
-/*
-token_make_and_add() ...
-*/
-
-int	token_make_and_add(char *token, t_list **tokens)
-{
-	t_token	*token_token;
-	t_list	*token_list;
-
-	if (!token || (ft_strlen(token) == 0))
-		return (1);
-	token_token = malloc(sizeof(t_token));
-	if (!token_token)
-		return (1);
-	token_token->val = token;
-	token_list = ft_lstnew(token_token);
-	if (!token_list)
-		return (1);
-	ft_lstadd_back(tokens, token_list);
-	return (0);
-}
-
-void	token_add_types(t_list *tokenlist)
+void	tokenlist_add_types(t_list *tokenlist)
 {
 	t_token	*curr;
 
@@ -64,7 +36,7 @@ void	token_add_types(t_list *tokenlist)
 	}
 }
 
-int	token_checker(t_list *tokenlist)
+int	tokenlist_check_syntax(t_list *tokenlist)
 {
 	t_token	*current;
 	t_token	*next;

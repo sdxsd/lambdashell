@@ -6,19 +6,19 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 13:30:01 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/18 13:30:23 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/18 19:05:40 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 /*
-dbg_print_tokens_val() is here for debugging purposes. It serves to check what is 
+debug_print_tokenlist_val() is here for debugging purposes. It serves to check what is 
 currently stored in the token linked list. It will not be part of the final 
 minishell program.
 */
 
-int	dbg_print_tokens_val(t_list **tokenlist)
+int	debug_print_tokenlist_val(t_list **tokenlist)
 {
 	int			i;
 	t_list		*list_head;
@@ -26,7 +26,7 @@ int	dbg_print_tokens_val(t_list **tokenlist)
 
 	i = 0;
 	list_head = (*tokenlist);
-	printf("\ndbg_print_tokens_val()\n");
+	printf("\ndebug_print_tokenlist_val()\n");
 	while (list_head)
 	{
 		token_tmp = list_head->content;
@@ -37,7 +37,7 @@ int	dbg_print_tokens_val(t_list **tokenlist)
 	return (0);
 }
 
-int	dbg_print_tokens(t_list **tokenlist)
+int	debug_print_tokens(t_list **tokenlist)
 {
 	int			i;
 	t_list		*list_head;
@@ -45,7 +45,7 @@ int	dbg_print_tokens(t_list **tokenlist)
 
 	i = 0;
 	list_head = (*tokenlist);
-	printf("\ndbg_print_tokens()\n");
+	printf("\ndebug_print_tokens()\n");
 	while (list_head)
 	{
 		token_tmp = list_head->content;
@@ -57,27 +57,27 @@ int	dbg_print_tokens(t_list **tokenlist)
 	return (0);
 }
 
-int	dbg_print_token_block_list(t_list *token_block_list)
+int	debug_print_token_blks_list(t_list *token_blks_list)
 {
-	t_list		*current_block_list;
-	t_pipe_blk	*current_pipe_block;
+	t_list		*current_blk_list;
+	t_pipe_blk	*current_pipe_blk;
 	size_t		arg_i;
-	size_t		block_i;
+	size_t		blk_i;
 
-	block_i = 0;
-	while(token_block_list)
+	blk_i = 0;
+	while(token_blks_list)
 	{
 		arg_i = 0;
-		printf("\nContents of block [%ld]..\n", block_i);
-		current_block_list = token_block_list->content;
-		current_pipe_block = (t_pipe_blk *)current_block_list;
-		while (current_pipe_block->cmd_one->args[arg_i])
+		printf("\nContents of blk [%ld]..\n", blk_i);
+		current_blk_list = token_blks_list->content;
+		current_pipe_blk = (t_pipe_blk *)current_blk_list;
+		while (current_pipe_blk->cmd_one->args[arg_i])
 		{
-			printf("[%ld]%s\n", arg_i, current_pipe_block->cmd_one->args[arg_i]);			
+			printf("[%ld]%s\n", arg_i, current_pipe_blk->cmd_one->args[arg_i]);			
 			arg_i++;
 		}
-		block_i++;
-		token_block_list = token_block_list->next;
+		blk_i++;
+		token_blks_list = token_blks_list->next;
 	}
 	return (0);
 }

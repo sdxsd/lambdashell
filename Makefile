@@ -6,7 +6,7 @@
 #    By: mikuiper <mikuiper@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/09/11 21:25:39 by mikuiper      #+#    #+#                  #
-#    Updated: 2022/09/18 13:33:32 by mikuiper      ########   odam.nl          #
+#    Updated: 2022/09/18 19:07:35 by mikuiper      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,10 +41,10 @@ NAMES_SRCS =	main.c \
 				cleanup/clean_tokenlist.c \
 				debug/debug_env.c \
 				debug/debug_tokenlist.c \
-				tokenizer/tokenizer.c \
-				tokenizer/make_tokenlist.c \
+				tokenizer/tokenlist_tools.c \
+				tokenizer/tokenlist.c \
 				parser/input.c \
-				error/error.c \
+				misc/error.c \
 				misc/colors.c \
 				init/init.c \
 				env/env.c
