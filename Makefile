@@ -6,7 +6,7 @@
 #    By: mikuiper <mikuiper@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/09/11 21:25:39 by mikuiper      #+#    #+#                  #
-#    Updated: 2022/09/18 12:18:46 by mikuiper      ########   odam.nl          #
+#    Updated: 2022/09/18 13:22:59 by mikuiper      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,37 +21,30 @@ NOCOLOR =		\033[m
 
 # DIRECTORY NAMES
 DIR_SRC =			src
-DIR_SRC_BUILTINS =	builtins
-DIR_SRC_EXPANDER =	expander
-DIR_SRC_SPLASH	=	splash
-DIR_SRC_DEBUG =		debug
-DIR_SRC_TOKENIZER =	tokenizer
-DIR_SRC_MISC =		misc
-DIR_SRC_ENV =		env
 DIR_INC =			includes
 DIR_OBJ =			obj
 DIR_LIB_FT =		libft
 
 # SOURCE NAMES
 NAMES_SRCS =	main.c \
-				init.c \
-				error.c \
-				input.c \
 				prompt.c \
-				clean.c \
 				commands.c \
 				path.c \
 				pipe_block.c \
 				exec.c \
-				$(DIR_SRC_EXPANDER)/expander.c \
-				$(DIR_SRC_BUILTINS)/builtin_env.c \
-				$(DIR_SRC_BUILTINS)/builtin_pwd.c \
-				$(DIR_SRC_BUILTINS)/builtin_unset.c \
-				$(DIR_SRC_SPLASH)/splash.c \
-				$(DIR_SRC_DEBUG)/debug.c \
-				$(DIR_SRC_TOKENIZER)/tokenizer.c \
-				$(DIR_SRC_MISC)/colors.c \
-				$(DIR_SRC_ENV)/env.c
+				expander/expander.c \
+				builtins/builtin_env.c \
+				builtins/builtin_pwd.c \
+				builtins/builtin_unset.c \
+				splash/splash.c \
+				cleanup/clean.c \
+				debug/debug.c \
+				tokenizer/tokenizer.c \
+				parser/input.c \
+				error/error.c \
+				misc/colors.c \
+				init/init.c \
+				env/env.c
 
 # HEADER NAMES
 NAMES_HDRS =	minishell.h
@@ -95,13 +88,18 @@ $(DIR_OBJ)/%.o: $(DIR_SRC)/%.c $(FULL_HDRS)
 
 make_obj_dirs:
 	@mkdir -p $(DIR_OBJ)
-	@mkdir -p $(DIR_OBJ)/$(DIR_SRC_SPLASH)
-	@mkdir -p $(DIR_OBJ)/$(DIR_SRC_BUILTINS)
-	@mkdir -p $(DIR_OBJ)/$(DIR_SRC_ENV)
-	@mkdir -p $(DIR_OBJ)/$(DIR_SRC_EXPANDER)
-	@mkdir -p $(DIR_OBJ)/$(DIR_SRC_TOKENIZER)
-	@mkdir -p $(DIR_OBJ)/$(DIR_SRC_MISC)
-	@mkdir -p $(DIR_OBJ)/$(DIR_SRC_DEBUG)
+	@mkdir -p $(DIR_OBJ)/splash
+	@mkdir -p $(DIR_OBJ)/builtins
+	@mkdir -p $(DIR_OBJ)/env
+	@mkdir -p $(DIR_OBJ)/expander
+	@mkdir -p $(DIR_OBJ)/tokenizer
+	@mkdir -p $(DIR_OBJ)/executor
+	@mkdir -p $(DIR_OBJ)/parser
+	@mkdir -p $(DIR_OBJ)/cleanup
+	@mkdir -p $(DIR_OBJ)/error
+	@mkdir -p $(DIR_OBJ)/misc
+	@mkdir -p $(DIR_OBJ)/init
+	@mkdir -p $(DIR_OBJ)/debug
 
 clean:
 	@rm -rf $(DIR_OBJ)
