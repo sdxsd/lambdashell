@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:37 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/17 21:34:11 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/18 13:28:09 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,3 @@ int	main(int argc, char **argv, char **envp)
 	}
 	return (msg_err("Please do not provide any arguments.", 1));
 }
-
-/*
-builtins made:
-- pwd(), saved as ms_pwd()
-
-todo [short-term]
-- find out how work with global variables without getting multiple def. error.
-- get_env_key_idx(t_env **env, char *key) results in segfault if the key does not exist. Fix this. What is the desicolor_red behavior?
-*/

@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/30 11:47:20 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/13 21:52:40 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/18 13:28:58 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,4 +94,34 @@ int	parse_input(t_ms *ms, char *line)
 	(void)tmp;
 	(void)ms;
 	return (0);
+}
+
+void	line_parser(t_ms *ms)
+{
+	/* Expand line */
+	ms->line = line_expander(ms->line, ms->env);
+
+	/* Tokenize line */
+	tokenizer(ms->line, &ms->tokens);
+	
+	/* IMPORTANT: Please keep the following 4 lines of code for now. First elem of list is NULL. */
+	t_list *head;
+	head = ms->tokens;
+	ms->tokens = ms->tokens->next;
+	free (head);
+
+	/* Add labels to tokens */
+
+	token_add_types(ms->tokens);
+	dbg_print_tokens(&ms->tokens);
+
+	//ft_lstiter(ms->tokens, token_add_types);
+
+	/* Check for valid token syntax */
+	token_checker(ms->tokens);
+	
+	/* Demonstrate the creation of token blocks */
+	//t_list	*token_block_list;
+	//token_block_list = make_token_block_list(&ms->tokens);
+	//dbg_print_token_block_list(token_block_list);
 }

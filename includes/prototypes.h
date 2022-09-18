@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 13:35:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/18 11:58:35 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/18 13:38:13 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,15 @@ void	builtin_unset(char **keys, t_ms *ms);
 
 /* TOKENIZER.C */
 int		token_make_and_add(char *token, t_list **tokens);
-int		tokenizer(char *line, t_list **tokens);
 int		token_checker(t_list *tokenlist);
-int		token_chunk_size(t_list *tokenlist);
-t_list	*token_chunking(t_list **tokenlist);
-char	**get_token_array(t_list *tokenlist);
-t_list	*make_token_block_list(t_list **tokenlist);
 void	token_add_types(t_list *tokenlist);
 
+/* MAKE_TOKENLIST */
+int		tokenizer(char *line, t_list **tokens);
+int		token_chunk_size(t_list *tokenlist);
+t_list	*make_token_block_list(t_list **tokenlist);
+char	**get_token_array(t_list *tokenlist);
+int		make_and_add_token_block(t_list **pipe_block_list, char **token_array);
 
 /* PIPE_BLOCK.C */
 t_cmd		*cmd_constructor(char *prog_n, t_env **env);
@@ -87,10 +88,12 @@ void		pipe_blk_dealloc(t_pipe_blk *pipe_blk);
 char	*get_path(char *prog_n, t_env **env);
 int		free_ptr_array(char *ptr[]);
 
-/* DEBUG.C */
+/* DEBUG_ENV.C */
 int		dbg_print_env(t_ms *ms);
 int		dbg_print_env_idx(t_ms *ms);
 int		dbg_print_env_keys(t_ms *ms);
+
+/* DEBUG_TOKENLIST.C */
 int		dbg_print_tokens_val(t_list **tokenlist);
 int		dbg_print_tokens(t_list **tokenlist);
 int		dbg_print_token_block_list(t_list *token_block_list);
