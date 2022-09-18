@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/07 23:17:12 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/14 20:35:32 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/18 11:58:14 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,20 +73,28 @@ int	tokenizer(char *line, t_list **tokens)
 	return (0);
 }
 
-
-void	token_add_types(void *token)
+void	token_add_types(t_list *tokenlist)
 {
-	((t_token *)token)->type = tkn_str;
-	if (((t_token *)token)->val[0] == '<')
-		((t_token *)token)->type = tkn_read;
-	if (((t_token *)token)->val[0] == '>')
-		((t_token *)token)->type = tkn_write;
-	if (((t_token *)token)->val[0] == '|')
-		((t_token *)token)->type = tkn_pipe;
-	if (((t_token *)token)->val[0] == '<' && ((t_token *)token)->val[1] == '<')
-		((t_token *)token)->type = tkn_heredoc;
-	if (((t_token *)token)->val[0] == '>' && ((t_token *)token)->val[1] == '>')
-		((t_token *)token)->type = tkn_append;
+	t_token	*curr;
+
+	if (!(tokenlist))
+		return ;
+	while (tokenlist)
+	{
+		curr = tokenlist->content;
+		curr->type = tkn_str;
+		if (curr->val[0] == '<')
+			curr->type = tkn_read;
+		if (curr->val[0] == '>')
+			curr->type = tkn_write;
+		if (curr->val[0] == '|')
+			curr->type = tkn_pipe;
+		if (curr->val[0] == '<' && curr->val[1] == '<')
+			curr->type = tkn_heredoc;
+		if (curr->val[0] == '>' && curr->val[1] == '>')
+			curr->type = tkn_append;	
+		tokenlist = tokenlist->next;
+	}
 }
 
 int	token_checker(t_list *tokenlist)

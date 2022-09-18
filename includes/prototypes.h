@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 13:35:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/17 22:48:04 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/18 11:58:35 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 
 /* SPLASH.C */
 void	splash();
+void	clear_screen(void);
 
 /* INIT.C */
 int		init_env(t_ms *ms, char **envp);
@@ -40,10 +41,10 @@ int		get_env_key_idx(t_env **env, char *key);
 int		init_env_idx(t_env **env);
 
 /* ERROR.C */
-int	msg_err(char *s, int ret);
+int		msg_err(char *s, int ret);
 
 /* EXEC.C */
-int	execute_command(t_cmd *cmd);
+int		execute_command(t_cmd *cmd);
 
 /* INPUT.C */
 int		check_first_char(char *line);
@@ -68,12 +69,13 @@ void	builtin_unset(char **keys, t_ms *ms);
 /* TOKENIZER.C */
 int		token_make_and_add(char *token, t_list **tokens);
 int		tokenizer(char *line, t_list **tokens);
-void	token_add_types(void *in);
 int		token_checker(t_list *tokenlist);
 int		token_chunk_size(t_list *tokenlist);
 t_list	*token_chunking(t_list **tokenlist);
 char	**get_token_array(t_list *tokenlist);
 t_list	*make_token_block_list(t_list **tokenlist);
+void	token_add_types(t_list *tokenlist);
+
 
 /* PIPE_BLOCK.C */
 t_cmd		*cmd_constructor(char *prog_n, t_env **env);
