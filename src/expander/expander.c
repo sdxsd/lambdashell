@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/07 23:15:47 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/18 15:59:56 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/18 18:56:53 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@ This file contains functions that are part of the input parsing section.
 It analyses the input string and expands variables if applicable. Next, the
 expanded string will be used for the tokenization process, where the expanded
 string will be cut into pieces (i.e. words) and chained together into a 
-linked list (see ms->tokens in minishell.h).
+linked list (see ms->tokenlist in minishell.h).
 */
 
 #include "../includes/minishell.h"

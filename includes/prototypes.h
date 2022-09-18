@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 13:35:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/18 15:59:03 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/18 19:11:25 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,12 @@ int		msg_err(char *s, int ret);
 int		execute_command(t_cmd *cmd);
 
 /* INPUT.C */
-int		check_first_char(char *line);
-int		check_line_formatting(char *line, char *charset);
-int		last_char(char *line);
+int		line_check_first_char(char *line);
+int		line_check_syntax(char *line, char *charset);
+int		line_get_last_char(char *line);
 int		parse_input(t_ms *ms, char *line);
-int 	check_last_char(char *line, char *charset);
-int 	check_quotations(char *line);
+int 	line_check_last_char(char *line, char *charset);
+int 	line_check_quotations(char *line);
 void	line_parser(t_ms *ms);
 void	prompt_start(t_ms *ms);
 
@@ -66,19 +66,19 @@ void	builtin_env(t_ms *ms, int fd);
 int		builtin_pwd(void);
 void	builtin_unset(char **keys, t_ms *ms);
 
-/* TOKENIZER.C */
-int		token_make_and_add(char *token, t_list **tokens);
-int		token_checker(t_list *tokenlist);
-void	token_add_types(t_list *tokenlist);
+/* tokenlist_populate_tokenlist.C */
+int		tokenlist_check_syntax(t_list *tokenlist);
+void	tokenlist_add_types(t_list *tokenlist);
 
 /* MAKE_TOKENLIST */
-int		tokenizer(char *line, t_list **tokens);
-int		token_chunk_size(t_list *tokenlist);
-t_list	*make_token_block_list(t_list **tokenlist);
-char	**get_token_array(t_list *tokenlist);
-int		make_and_add_token_block(t_list **pipe_block_list, char **token_array);
+int		tokenlist_make_and_add(char *token, t_list **tokens);
+int		tokenlist_populate_tokenlist(char *line, t_list **tokens);
+int		tokenlist_get_pipe_blk_len(t_list *tokenlist);
+t_list	*make_token_blks_list(t_list **tokenlist);
+char	**get_tokenlist_array(t_list *tokenlist);
+int		tokenlist_make_and_add_token_blk(t_list **pipe_blk_list, char **token_array);
 
-/* PIPE_BLOCK.C */
+/* PIPE_blk.C */
 t_cmd		*cmd_constructor(char *prog_n, t_env **env);
 void		cmd_deallocator(t_cmd *cmd);
 t_pipe_blk	*pipe_blk_alloc(t_cmd *cmd_one, t_cmd *cmd_two, int i, int o);
@@ -89,14 +89,14 @@ char	*get_path(char *prog_n, t_env **env);
 int		free_ptr_array(char *ptr[]);
 
 /* DEBUG_ENV.C */
-int		dbg_print_env(t_ms *ms);
-int		dbg_print_env_idx(t_ms *ms);
-int		dbg_print_env_keys(t_ms *ms);
+int		debug_print_env(t_ms *ms);
+int		debug_print_env_idx(t_ms *ms);
+int		debug_print_env_keys(t_ms *ms);
 
 /* DEBUG_TOKENLIST.C */
-int		dbg_print_tokens_val(t_list **tokenlist);
-int		dbg_print_tokens(t_list **tokenlist);
-int		dbg_print_token_block_list(t_list *token_block_list);
+int		debug_print_tokenlist_val(t_list **tokenlist);
+int		debug_print_tokens(t_list **tokenlist);
+int		debug_print_token_blks_list(t_list *token_blks_list);
 
 /* COLORS.C */
 void	color_red();

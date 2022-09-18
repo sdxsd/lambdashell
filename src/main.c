@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:37 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/18 13:28:09 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/18 18:56:53 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ int	main(int argc, char **argv, char **envp)
 		if (prompt(ms))
 		{
 			free (ms->line);
-			clean_tokenlist(&ms->tokens);
+			clean_tokenlist(&ms->tokenlist);
 			clean_env(ms->env);
 			free (ms);
 			return (msg_err("Something went wrong.", 1));
 		}
 		free (ms->line);
-		clean_tokenlist(&ms->tokens);
+		clean_tokenlist(&ms->tokenlist);
 		clean_env(ms->env);
 		free (ms);
 		return (0);

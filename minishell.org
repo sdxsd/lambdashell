@@ -42,7 +42,7 @@ Comparison with bash will be very useful in this case.
 [ NOTE: I've merged redirection and execution due to one being useless without the other. ]
 
 I imagine the best way to handle pipes is to create interoperable
-"blocks" consisting of a command to execute, and two mutable IO fields.
+"blks" consisting of a command to execute, and two mutable IO fields.
 Theoretically a function could be made which prepares the command to be executed.
 As arguments, the environment, the executable, and IO file descriptors.
 If the input for the file descriptors is NULL, then the default STDIN/STDOUT file
@@ -51,13 +51,13 @@ descriptors shall be used.
 + [X] cmd type
 + [X] cmd constructor
 + [X] cmd deallocator
-*** TODO Pipe Blocks [3/4]
-+ [X] block type
-+ [X] block constructor
-+ [X] block deallocator
-+ [ ] block combiner (linked list?)
+*** TODO Pipe blks [3/4]
++ [X] blk type
++ [X] blk constructor
++ [X] blk deallocator
++ [ ] blk combiner (linked list?)
 *** TODO Executor [0/2]
-+ [ ] Block executor
++ [ ] blk executor
 + [ ] Process monitor
 
 * Logbook
