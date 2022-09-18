@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 13:35:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/18 19:17:33 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/18 19:18:54 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ int		line_get_last_char(char *line);
 int 	line_check_last_char(char *line, char *charset);
 int 	line_check_quotations(char *line);
 int		line_parser(t_ms *ms);
-void	prompt_start(t_ms *ms);
 
 /* CLEAN.C */
 int		clean_tokenlist(t_list **tokenlist);
