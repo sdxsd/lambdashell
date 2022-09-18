@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   clean.c                                            :+:    :+:            */
+/*   clean_tokenlist.c                                  :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/08/31 15:07:36 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/14 10:45:03 by mikuiper      ########   odam.nl         */
+/*   Created: 2022/09/18 13:24:57 by mikuiper      #+#    #+#                 */
+/*   Updated: 2022/09/18 13:25:39 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+# include "minishell.h"
 
 int	clean_tokenlist(t_list **tokenlist)
 {
@@ -33,24 +33,5 @@ int	clean_tokenlist(t_list **tokenlist)
 	}
 	//free (list_tmp->content);
 	free (list_head);
-	return (0);
-}
-
-int	clean_env(t_env **env)
-{
-	t_env *tmp1;
-	t_env *tmp2;
-
-	tmp1 = (*env);
-	while (tmp1)
-	{
-		free (tmp1->key);
-		free (tmp1->val);
-		tmp2 = tmp1->next;
-		free (tmp1);
-		tmp1 = tmp2;
-	}
-	free (tmp1);
-	free (env);
 	return (0);
 }

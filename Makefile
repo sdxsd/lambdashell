@@ -6,7 +6,7 @@
 #    By: mikuiper <mikuiper@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/09/11 21:25:39 by mikuiper      #+#    #+#                  #
-#    Updated: 2022/09/18 13:22:59 by mikuiper      ########   odam.nl          #
+#    Updated: 2022/09/18 13:33:32 by mikuiper      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,9 +37,12 @@ NAMES_SRCS =	main.c \
 				builtins/builtin_pwd.c \
 				builtins/builtin_unset.c \
 				splash/splash.c \
-				cleanup/clean.c \
-				debug/debug.c \
+				cleanup/clean_env.c \
+				cleanup/clean_tokenlist.c \
+				debug/debug_env.c \
+				debug/debug_tokenlist.c \
 				tokenizer/tokenizer.c \
+				tokenizer/make_tokenlist.c \
 				parser/input.c \
 				error/error.c \
 				misc/colors.c \
