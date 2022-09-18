@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/07 23:15:47 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/14 15:17:46 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/18 15:59:56 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*line_expander_helper(char *line, int pos, t_env **env)
 	char	*val;
 	char	*newline;
 	key = ft_substr(line, pos + 1, ft_strpos_first_nonalpha(&line[pos + 1]));
-	val = get_env_val(env, key);
+	val = env_get_val(env, key);
 	if (val == NULL)
 		val = "";
 	newline = malloc((ft_strlen(line) + ft_strlen(val) + 1) * sizeof(char));

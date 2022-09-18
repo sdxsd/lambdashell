@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:03:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/14 10:37:30 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/18 15:58:46 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	env_len(t_env **env)
 /*
 env_create_node() can be used to create a new node for the env linked list.
 Following the creation, it can be added to the linked list using 
-add_env_entry().
+env_add_entry().
 */
 
 t_env	*env_create_node(char *key, char *val)
@@ -66,11 +66,11 @@ t_env	*env_create_node(char *key, char *val)
 }
 
 /*
-get_env_key_idx() returns the index value of a desired key in the env linked
+env_get_key_idx() returns the index value of a desired key in the env linked
 list. If the key does not exist, or if no linked list is provided, it returns -1.
 */
 
-int	get_env_key_idx(t_env **env, char *key)
+int	env_get_key_idx(t_env **env, char *key)
 {
 	t_env	*head;
 	int		i;
@@ -94,12 +94,12 @@ int	get_env_key_idx(t_env **env, char *key)
 }
 
 /*
-get_env_val() returns the value corresponding to a desired key in the env linked
+env_get_val() returns the value corresponding to a desired key in the env linked
 list. If the key does not exist, or if no linked list is provided, it returns
 NULL.
 */
 
-char	*get_env_val(t_env **env, char *key)
+char	*env_get_val(t_env **env, char *key)
 {
 	t_env	*head;
 	int	i;
@@ -108,13 +108,13 @@ char	*get_env_val(t_env **env, char *key)
 		return ("");
 	head = *env;
 	i = 0;
-	if (!head || get_env_key_idx(env, key) == -1)
+	if (!head || env_get_key_idx(env, key) == -1)
 		return (NULL);
 	else
 	{
 		while (head->next)
 		{
-			if (i == get_env_key_idx(env, key))
+			if (i == env_get_key_idx(env, key))
 				return (head->val);
 			head = head->next;
 			i++;
@@ -125,11 +125,11 @@ char	*get_env_val(t_env **env, char *key)
 }
 
 /*
-init_env_idx() is used to assign index values to each node in the env linked
+env_init_idx() is used to assign index values to each node in the env linked
 list.
 */
 
-int	init_env_idx(t_env **env)
+int	env_init_idx(t_env **env)
 {
 	int		i;
 	t_env	*head;
@@ -153,12 +153,12 @@ int	init_env_idx(t_env **env)
 }
 
 /*
-add_env_entry() adds a new node to the end of the env linked list. It is
+env_add_entry() adds a new node to the end of the env linked list. It is
 repeatedly called by env_entry_cloner(), which creates a new node for each 
 system env line.
 */
 
-int	add_env_entry(t_ms *ms, t_env *node)
+int	env_add_entry(t_ms *ms, t_env *node)
 {
 	t_env *cur;
 
@@ -203,7 +203,7 @@ int	env_entry_cloner(t_ms *ms, char *line)
 			return (1);
 	}
 	node->next = NULL;
-	if (add_env_entry(ms, node))
+	if (env_add_entry(ms, node))
 		return (1);
 	return (0);
 }
@@ -272,7 +272,7 @@ static int	env_del_entry_helper(t_env **head, char *key)
 	while(current->next != NULL)
 	{
 		next_node = current->next;
-		if(next_node->idx == get_env_key_idx(head, key))
+		if(next_node->idx == env_get_key_idx(head, key))
 		{
 			next_next_node = next_node->next;
 			current->next = next_next_node;
@@ -294,9 +294,9 @@ int	env_del_entry(t_env **env, char *key)
 {
 	t_env *next_node;
 	
-	if (get_env_key_idx(env, key) == -1)
+	if (env_get_key_idx(env, key) == -1)
 		return (1);
-	if((*env)->idx == get_env_key_idx(env, key))
+	if((*env)->idx == env_get_key_idx(env, key))
 	{
 		next_node = *env;
 		*env = (*env)->next;
