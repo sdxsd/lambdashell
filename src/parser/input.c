@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/30 11:47:20 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/18 19:12:20 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/18 19:17:23 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,16 +85,12 @@ int	line_check_syntax(char *line, char *charset)
 	return (0);
 }
 
-int	parse_input(t_ms *ms, char *line)
+int	line_parser(t_ms *ms)
 {
-	if (line_check_syntax(line, "<>|"))
-		return (1);
-	(void)ms;
-	return (0);
-}
 
-void	line_parser(t_ms *ms)
-{
+	if (line_check_syntax(ms->line, "<>|"))
+		return (1);
+
 	/* Expand line */
 	ms->line = line_expander(ms->line, ms->env);
 
@@ -117,4 +113,5 @@ void	line_parser(t_ms *ms)
 	t_list	*token_blks_list;
 	token_blks_list = make_token_blks_list(&ms->tokenlist);
 	debug_print_token_blks_list(token_blks_list);
+	return (0);
 }

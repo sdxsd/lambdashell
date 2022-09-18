@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 13:35:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/18 19:11:25 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/18 19:17:33 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,9 @@ int		execute_command(t_cmd *cmd);
 int		line_check_first_char(char *line);
 int		line_check_syntax(char *line, char *charset);
 int		line_get_last_char(char *line);
-int		parse_input(t_ms *ms, char *line);
 int 	line_check_last_char(char *line, char *charset);
 int 	line_check_quotations(char *line);
-void	line_parser(t_ms *ms);
+int		line_parser(t_ms *ms);
 void	prompt_start(t_ms *ms);
 
 /* CLEAN.C */
