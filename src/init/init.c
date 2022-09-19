@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/22 12:24:35 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/18 18:56:53 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/19 14:59:42 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ int	init_env(t_ms *ms, char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		if (env_entry_cloner(ms, envp[i]))
-			return (msg_err("env_entry_cloner()", FAILURE));
+		if (env_var_cloner(ms, envp[i]))
+			return (msg_err("env_var_cloner()", FAILURE));
 		i++;
 	}
 	env_init_idx(ms->env);
