@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 13:35:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/18 19:18:54 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/19 15:11:53 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,25 @@ int		prompt(t_ms *ms);
 char	*line_expander(char *line, t_env **env);
 char	*line_expander_helper(char *line, int pos, t_env **env);
 
+/* ENV */
+/* ENV_ADD_VAR.C */
+t_env	*env_create_var(char *key, char *val);
+int		env_add_var(t_ms *ms, t_env *node);
+
 /* ENV_TOOLS.C */
-char	*env_get_val(t_env **env, char *key);
-int		env_del_entry(t_env **head, char *key);
-int		env_edit_val(t_env **env, char *key, char *new_val);
-int		env_entry_cloner(t_ms *ms, char *line);
 int		env_len(t_env **env);
-int		free_env_node(t_env *node);
-int		env_get_key_idx(t_env **env, char *key);
+int		env_get_var_key_idx(t_env **env, char *key);
+char	*env_get_val(t_env **env, char *key);
 int		env_init_idx(t_env **env);
+int		env_edit_var_val(t_env **env, char *key, char *new_val);
+
+/* ENV_CLONE_ENV */
+int	env_var_cloner(t_ms *ms, char *line);
+
+/* ENV_DELETE_VAR */
+int		free_env_var(t_env *node);
+int		env_del_var_helper(t_env **head, char *key);
+int		env_del_var(t_env **env, char *key);
 
 /* ERROR.C */
 int		msg_err(char *s, int ret);

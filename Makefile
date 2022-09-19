@@ -6,7 +6,7 @@
 #    By: mikuiper <mikuiper@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/09/11 21:25:39 by mikuiper      #+#    #+#                  #
-#    Updated: 2022/09/18 19:07:35 by mikuiper      ########   odam.nl          #
+#    Updated: 2022/09/19 15:11:19 by mikuiper      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,11 +43,15 @@ NAMES_SRCS =	main.c \
 				debug/debug_tokenlist.c \
 				tokenizer/tokenlist_tools.c \
 				tokenizer/tokenlist.c \
-				parser/input.c \
+				parser/line_parser.c \
+				parser/line_check_tools.c \
 				misc/error.c \
 				misc/colors.c \
 				init/init.c \
-				env/env.c
+				env/env_delete_var.c \
+				env/env_add_var.c \
+				env/env_clone_env.c \
+				env/env_tools.c
 
 # HEADER NAMES
 NAMES_HDRS =	minishell.h
