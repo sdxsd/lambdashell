@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 13:35:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/19 15:11:53 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/19 16:25:58 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	splash();
 void	clear_screen(void);
 
 /* INIT.C */
-int		init_env(t_ms *ms, char **envp);
-int		init_ms(t_ms *ms);
+int		init_env_struct(t_ms *ms, char **envp);
+int		init_ms_struct(t_ms *ms);
 int		init_start(void);
 
 /* PROMPT.C */
@@ -105,6 +105,10 @@ int		debug_print_env_keys(t_ms *ms);
 int		debug_print_tokenlist_val(t_list **tokenlist);
 int		debug_print_tokens(t_list **tokenlist);
 int		debug_print_token_blks_list(t_list *token_blks_list);
+
+/* MISC */
+/* CHECK_FD.C */
+int		check_fd(void);
 
 /* COLORS.C */
 void	color_red();

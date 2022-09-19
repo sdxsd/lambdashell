@@ -6,7 +6,7 @@
 #    By: mikuiper <mikuiper@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/09/11 21:25:39 by mikuiper      #+#    #+#                  #
-#    Updated: 2022/09/19 15:11:19 by mikuiper      ########   odam.nl          #
+#    Updated: 2022/09/19 16:32:09 by mikuiper      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,9 @@ NAMES_SRCS =	main.c \
 				parser/line_check_tools.c \
 				misc/error.c \
 				misc/colors.c \
-				init/init.c \
+				misc/check_fd.c \
+				init/init_ms_struct.c \
+				init/init_env_struct.c \
 				env/env_delete_var.c \
 				env/env_add_var.c \
 				env/env_clone_env.c \
