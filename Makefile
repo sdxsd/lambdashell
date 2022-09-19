@@ -6,7 +6,7 @@
 #    By: mikuiper <mikuiper@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/09/11 21:25:39 by mikuiper      #+#    #+#                  #
-#    Updated: 2022/09/19 16:32:09 by mikuiper      ########   odam.nl          #
+#    Updated: 2022/09/19 16:54:39 by mikuiper      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,6 @@ DIR_LIB_FT =		libft
 
 # SOURCE NAMES
 NAMES_SRCS =	main.c \
-				prompt.c \
 				commands.c \
 				path.c \
 				pipe_block.c \
@@ -36,18 +35,18 @@ NAMES_SRCS =	main.c \
 				builtins/builtin_env.c \
 				builtins/builtin_pwd.c \
 				builtins/builtin_unset.c \
-				splash/splash.c \
-				cleanup/clean_env.c \
-				cleanup/clean_tokenlist.c \
-				debug/debug_env.c \
-				debug/debug_tokenlist.c \
+				misc/cleanup/clean_env.c \
+				misc/cleanup/clean_tokenlist.c \
+				misc/debug/debug_env.c \
+				misc/debug/debug_tokenlist.c \
+				misc/splash.c \
+				misc/error.c \
+				misc/colors.c \
+				misc/check_fd.c \
 				tokenizer/tokenlist_tools.c \
 				tokenizer/tokenlist.c \
 				parser/line_parser.c \
 				parser/line_check_tools.c \
-				misc/error.c \
-				misc/colors.c \
-				misc/check_fd.c \
 				init/init_ms_struct.c \
 				init/init_env_struct.c \
 				env/env_delete_var.c \
@@ -97,18 +96,17 @@ $(DIR_OBJ)/%.o: $(DIR_SRC)/%.c $(FULL_HDRS)
 
 make_obj_dirs:
 	@mkdir -p $(DIR_OBJ)
-	@mkdir -p $(DIR_OBJ)/splash
 	@mkdir -p $(DIR_OBJ)/builtins
 	@mkdir -p $(DIR_OBJ)/env
 	@mkdir -p $(DIR_OBJ)/expander
 	@mkdir -p $(DIR_OBJ)/tokenizer
 	@mkdir -p $(DIR_OBJ)/executor
 	@mkdir -p $(DIR_OBJ)/parser
-	@mkdir -p $(DIR_OBJ)/cleanup
 	@mkdir -p $(DIR_OBJ)/error
-	@mkdir -p $(DIR_OBJ)/misc
 	@mkdir -p $(DIR_OBJ)/init
-	@mkdir -p $(DIR_OBJ)/debug
+	@mkdir -p $(DIR_OBJ)/misc
+	@mkdir -p $(DIR_OBJ)/misc/cleanup
+	@mkdir -p $(DIR_OBJ)/misc/debug
 
 clean:
 	@rm -rf $(DIR_OBJ)
