@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:37 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/18 18:56:53 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/19 16:30:59 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,16 @@ int	main(int argc, char **argv, char **envp)
 
 	if (argc == 1 && argv)
 	{
+		//global_sig = 0;
+		if (check_fd())
+			return (msg_err("fd problem()", FAILURE));
 		ms = ft_calloc(1, sizeof(t_ms));
-		if (init_start())
+		if (!ms)
 			return (1);
-		if (init_ms(ms))
-			return (msg_err("init_ms()", FAILURE));
-		if (init_env(ms, envp))
-			return (msg_err("init_env()", FAILURE));
+		if (init_ms_struct(ms))
+			return (msg_err("init_ms_struct()", FAILURE));
+		if (init_env_struct(ms, envp))
+			return (msg_err("init_env_struct()", FAILURE));
 		if (prompt(ms))
 		{
 			free (ms->line);
