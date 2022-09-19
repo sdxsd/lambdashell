@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 13:35:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/19 16:25:58 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/19 16:54:51 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int		init_env_struct(t_ms *ms, char **envp);
 int		init_ms_struct(t_ms *ms);
 int		init_start(void);
 
-/* PROMPT.C */
+/* MAIN.C */
 int		prompt(t_ms *ms);
 
 /* EXPANDER.C */
