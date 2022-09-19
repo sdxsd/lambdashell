@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/07 23:15:47 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/18 18:56:53 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/19 23:32:03 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ linked list (see ms->tokenlist in minishell.h).
 #include "../includes/minishell.h"
 
 /*
-line_expander_helper() pdates the line it receives on a specific location
+line_insert_var() pdates the line it receives on a specific location
 idea is that it is run several times so it can update the line completely
 it is run when another functions came across env var in the line
 with the repeated ft_memcpy it iteratively builds the updated line with an
 expanded var
 */
-char	*line_expander_helper(char *line, int pos, t_env **env)
+char	*line_insert_var(char *line, int pos, t_env **env)
 {
 	char	*key;
 	char	*val;
@@ -46,35 +46,55 @@ char	*line_expander_helper(char *line, int pos, t_env **env)
 	return (newline);
 }
 
-/*
-Loops over string until finds env var, replaces it, continues looping over string etc.
-checks for single squote (squote) presence, because everything inside them needs to be
-literal without expansion
-*/
+int	line_dollar_presence(char *line)
+{
+	size_t	i;
+
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] == '\'' && line[i + 1])
+		{
+			i++;
+			while (line[i] && line[i] != '\'')
+			{
+				i++;
+			}
+		}
+		else if (line[i] == '$')
+		{
+			return (1);
+		}
+		if (line[i])
+		{
+			i++;
+		}
+	}
+	return (0);
+}
 
 char	*line_expander(char *line, t_env **env)
 {
-	int	squote;
-	int	i;
+	size_t	i;
+	size_t	n;
 
-	i = 0;
-	squote = 0;
-	while (line[i])
+	n = 0;
+	while (line && line_dollar_presence(line))
 	{
-		if (squote == 0)
+		i = 0;
+		while (line[i])
 		{
-			if (line[i] == '\'')
-				squote = 1;
 			if (line[i] == '$')
 			{
-				if (!(i - 3 >= 0 && line[i - 3] == '<' && line[i - 2] == '<'))
-					line = line_expander_helper(line, i, env);
+				line = line_insert_var(line, i, env);
+				break ;
 			}
+			if (line[i])
+				i++;
 		}
-		else
-			if (line[i] == '\'')
-				squote = 0;
-		i++;
+		n++;
 	}
+	if (n == 0)
+		return (ft_strdup(line));
 	return (line);
 }

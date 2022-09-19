@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 13:35:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/19 16:54:51 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/19 23:31:59 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ int		prompt(t_ms *ms);
 
 /* EXPANDER.C */
 char	*line_expander(char *line, t_env **env);
-char	*line_expander_helper(char *line, int pos, t_env **env);
+char	*line_insert_var(char *line, int pos, t_env **env);
+int		line_dollar_presence(char *line)
 
 /* ENV */
 /* ENV_ADD_VAR.C */
