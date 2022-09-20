@@ -6,19 +6,19 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 13:30:01 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/18 19:05:40 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/20 13:19:52 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 /*
-debug_print_tokenlist_val() is here for debugging purposes. It serves to check what is 
+debug_print_tokens_val() is here for debugging purposes. It serves to check what is 
 currently stored in the token linked list. It will not be part of the final 
 minishell program.
 */
 
-int	debug_print_tokenlist_val(t_list **tokenlist)
+int	debug_print_tokens_val(t_list **tokenlist)
 {
 	int			i;
 	t_list		*list_head;
@@ -26,7 +26,7 @@ int	debug_print_tokenlist_val(t_list **tokenlist)
 
 	i = 0;
 	list_head = (*tokenlist);
-	printf("\ndebug_print_tokenlist_val()\n");
+	printf("\ndebug_print_tokens_val()\n");
 	while (list_head)
 	{
 		token_tmp = list_head->content;

@@ -6,7 +6,7 @@
 #    By: mikuiper <mikuiper@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/09/11 21:25:39 by mikuiper      #+#    #+#                  #
-#    Updated: 2022/09/19 16:54:39 by mikuiper      ########   odam.nl          #
+#    Updated: 2022/09/20 13:21:43 by mikuiper      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,8 +43,8 @@ NAMES_SRCS =	main.c \
 				misc/error.c \
 				misc/colors.c \
 				misc/check_fd.c \
-				tokenizer/tokenlist_tools.c \
-				tokenizer/tokenlist.c \
+				tokenizer/tokens_tools.c \
+				tokenizer/tokens.c \
 				parser/line_parser.c \
 				parser/line_check_tools.c \
 				init/init_ms_struct.c \

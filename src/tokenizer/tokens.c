@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   make_tokenlist.c                                   :+:    :+:            */
+/*   tokenlist.c                                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 13:32:47 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/18 19:05:40 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/20 13:19:52 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 /*
-tokenlist_populate_tokenlist() scans the input line and isolates every word and turns it into a
+tokens_populate_tokenlist() scans the input line and isolates every word and turns it into a
 "token", which will be chained together in a linked list. Here, each node
 contains a "value" variable (i.e. the char array for the isolated word), and a
 "type" variable, describing the category to which the token belongs (e.g. 
@@ -24,7 +24,7 @@ should not be divided into separate tokens.
 */
 
 
-char	*tokenlist_get_array(char *line)
+char	*tokens_get_array(char *line)
 {
 	char	*token_array;
 	size_t	token_end;
@@ -40,7 +40,7 @@ char	*tokenlist_get_array(char *line)
 	return (token_array);
 }
 
-int	tokenlist_populate_tokenlist(char *line, t_list **tokens)
+int	tokens_populate_tokenlist(char *line, t_list **tokens)
 {
 	size_t	token_start;
 	char	*token_array;
@@ -50,23 +50,23 @@ int	tokenlist_populate_tokenlist(char *line, t_list **tokens)
 	token_end = 0;
 	while (token_start < ft_strlen(line))
 	{
-		token_array = tokenlist_get_array(&line[token_start]);
+		token_array = tokens_get_array(&line[token_start]);
 		if (!token_array)
 			return (1);
 		token_end = ft_strlen(token_array);
-		tokenlist_make_and_add(token_array, tokens);
+		tokens_make_and_add(token_array, tokens);
 		token_start = token_start + token_end + 1;
 	}
 	return (0);
 }
 
 /*
-The tokenlist_populate_tokenlist is also known as the "lexer". 
+The tokens_populate_tokenlist is also known as the "lexer". 
 This section contains files for the tokenization chapter. It cuts the expanded
 input string into words and chains these words together in a linked list.
 */
 
-int	tokenlist_make_and_add(char *token_array, t_list **tokens)
+int	tokens_make_and_add(char *token_array, t_list **tokens)
 {
 	t_token	*token_obj;
 	t_list	*token_list_elem;
@@ -87,7 +87,7 @@ int	tokenlist_make_and_add(char *token_array, t_list **tokens)
 	return (0);
 }
 
-int	tokenlist_get_pipe_blk_len(t_list *tokenlist)
+int	tokens_get_pipe_blk_len(t_list *tokenlist)
 {
 	size_t	size;
 
@@ -109,7 +109,7 @@ int	tokenlist_get_pipe_blk_len(t_list *tokenlist)
 	return (size);
 }
 
-int	tokenlist_make_and_add_token_blk(t_list **pipe_blk_list, char **token_array)
+int	tokens_make_and_add_token_blk(t_list **pipe_blk_list, char **token_array)
 {
 	t_pipe_blk	*pipe_blk;
 	t_list		*pipe_blk_list_node;
@@ -130,14 +130,14 @@ int	tokenlist_make_and_add_token_blk(t_list **pipe_blk_list, char **token_array)
 	return (0);
 }
 
-char	**get_tokenlist_array(t_list *tokenlist)
+char	**get_tokens_array(t_list *tokenlist)
 {
 	int		token;
 	char	**token_array;
 	t_token	*current;
 
 	token = 0;
-	token_array = malloc((tokenlist_get_pipe_blk_len(tokenlist) + 1) * sizeof(char *));
+	token_array = malloc((tokens_get_pipe_blk_len(tokenlist) + 1) * sizeof(char *));
 	if (((t_token *)tokenlist->content)->type == tkn_pipe)
 		tokenlist = tokenlist->next;
 	while (tokenlist)
@@ -160,16 +160,16 @@ t_list	*make_token_blks_list(t_list **tokenlist)
 	t_token	*current;
 
 	token_array_list = 0;
-	token_array = get_tokenlist_array(*tokenlist);
-	tokenlist_make_and_add_token_blk(&token_array_list, token_array);
+	token_array = get_tokens_array(*tokenlist);
+	tokens_make_and_add_token_blk(&token_array_list, token_array);
 	while (*tokenlist)
 	{
 		current = (*tokenlist)->content;
 		if (current->type == tkn_pipe)
 		{
-			token_array = get_tokenlist_array(*tokenlist);
+			token_array = get_tokens_array(*tokenlist);
 			/* TODO protect */
-			tokenlist_make_and_add_token_blk(&token_array_list, token_array);
+			tokens_make_and_add_token_blk(&token_array_list, token_array);
 		}
 		tokenlist = &(*tokenlist)->next; // let op hier..afwijking
 	}
