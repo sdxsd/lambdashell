@@ -42,22 +42,17 @@ An idea for how minishell should be structured.
     ↓     builtins (umimplemented)
     ↓     files (who needs those? just stick everything in ram like javascript developers.)
     ↓
-+--------------------------------------+
-| exec_list (please face the wall lel) |
-+--------------------------------------+
++-----------+
+| EXEC_LIST |
++-----------+
     ↓
     ↓ The executor is a function which takes as input the exec_list (defined in structs.h)
     ↓ With full knowledge of the list it will setup pipes, fork, dup2, and fulfill other
-    ↓ preparations before mission takeoff.
+    ↓ preparations before takeoff.
     ↓
-    ↓
-    ↓
-    ↓
-    ↓
-    ↓
-+-------------------------------------------------------+
-| executor (one by one execution of dissid... programs) |
-+-------------------------------------------------------+
++----------+
+| EXECUTOR |
++----------+
 
 * Minishell
 ** Parsing:
