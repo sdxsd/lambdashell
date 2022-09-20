@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 13:35:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/20 13:19:52 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/20 21:46:53 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,8 @@ void	tokens_add_types(t_list *tokenlist);
 
 /* MAKE_TOKENLIST */
 int		tokens_make_and_add(char *token, t_list **tokens);
-int		tokens_populate_tokenlist(char *line, t_list **tokens);
+//int		tokens_populate_tokenlist(char *line, t_list **tokens);
+int	tokens_populate_tokenlist(char **lines, t_list **tokens);
 int		tokens_get_pipe_blk_len(t_list *tokenlist);
 t_list	*make_token_blks_list(t_list **tokenlist);
 char	**get_tokens_array(t_list *tokenlist);

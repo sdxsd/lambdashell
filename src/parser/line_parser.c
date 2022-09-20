@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/30 11:47:20 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/20 15:50:21 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/20 21:55:15 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,23 +147,24 @@ int	line_parser(t_ms *ms)
 	}
 	//*/
 	/* Tokenize line */
-	//tokens_populate_tokenlist(ms->line, &ms->tokenlist);
+	tokens_populate_tokenlist(lines, &ms->tokenlist);
 	
 	/* IMPORTANT: Please keep the following 4 lines of code for now. First elem of list is NULL. */
-	//t_list *head;
-	//head = ms->tokenlist;
-	//ms->tokenlist = ms->tokenlist->next;
-	//free (head);
+	t_list *head;
+	head = ms->tokenlist;
+	ms->tokenlist = ms->tokenlist->next;
+	free (head);
+
 
 	/* Add labels to tokens */
-	//tokens_add_types(ms->tokenlist);
+	tokens_add_types(ms->tokenlist);
 	
 	/* Check for valid token syntax */
-	//tokens_check_syntax(ms->tokenlist);
+	tokens_check_syntax(ms->tokenlist);
 	
 	/* Demonstrate token blks */
-	//t_list	*token_blks_list;
-	//token_blks_list = make_token_blks_list(&ms->tokenlist);
-	//debug_print_token_blks_list(token_blks_list);
+	t_list	*token_blks_list;
+	token_blks_list = make_token_blks_list(&ms->tokenlist);
+	debug_print_token_blks_list(token_blks_list);
 	return (0);
 }

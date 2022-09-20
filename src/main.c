@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:37 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/20 15:52:27 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/20 21:21:15 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ int	main(int argc, char **argv, char **envp)
 	}
 	return (msg_err("Please do not provide any arguments.", 1));
 }
-
 
 /*
 while (TRUE)
