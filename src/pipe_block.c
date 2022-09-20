@@ -130,6 +130,15 @@ t_pipe_blk	*pipe_blk_alloc(char *cmd_one, char *cmd_two, int i, int o, t_env **e
 	}
 	pipe_blk->cmd_one = cmd_constructor(cmd_one, env);
 	pipe_blk->cmd_two = cmd_constructor(cmd_two, env);
+	if (!pipe_blk->cmd_one || !pipe_blk->cmd_two)
+	{
+		if (pipe_blk->cmd_one)
+			free(pipe_blk->cmd_one);
+		if (pipe_blk->cmd_two)
+			free(pipe_blk->cmd_two);
+		msg_err("pipe_blk_alloc()", FAILURE);
+		return (NULL);
+	}
 	if (pipe(pipe_blk->pipe) == -1)
 	{
 		free(pipe_blk);
