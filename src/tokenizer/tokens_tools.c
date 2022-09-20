@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   tokenlist_tools.c                                  :+:    :+:            */
+/*   tokens_tools.c                                  :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-void	tokenlist_add_types(t_list *tokenlist)
+void	tokens_add_types(t_list *tokenlist)
 {
 	t_token	*curr;
 
@@ -36,7 +36,7 @@ void	tokenlist_add_types(t_list *tokenlist)
 	}
 }
 
-int	tokenlist_check_syntax(t_list *tokenlist)
+int	tokens_check_syntax(t_list *tokenlist)
 {
 	t_token	*current;
 	t_token	*next;

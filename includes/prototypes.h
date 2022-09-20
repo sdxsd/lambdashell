@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 13:35:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/19 23:31:59 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/20 13:19:52 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int		prompt(t_ms *ms);
 /* EXPANDER.C */
 char	*line_expander(char *line, t_env **env);
 char	*line_insert_var(char *line, int pos, t_env **env);
-int		line_dollar_presence(char *line)
+int		line_dollar_presence(char *line);
 
 /* ENV */
 /* ENV_ADD_VAR.C */
@@ -75,17 +75,17 @@ void	builtin_env(t_ms *ms, int fd);
 int		builtin_pwd(void);
 void	builtin_unset(char **keys, t_ms *ms);
 
-/* tokenlist_populate_tokenlist.C */
-int		tokenlist_check_syntax(t_list *tokenlist);
-void	tokenlist_add_types(t_list *tokenlist);
+/* tokens_populate_tokenlist.C */
+int		tokens_check_syntax(t_list *tokenlist);
+void	tokens_add_types(t_list *tokenlist);
 
 /* MAKE_TOKENLIST */
-int		tokenlist_make_and_add(char *token, t_list **tokens);
-int		tokenlist_populate_tokenlist(char *line, t_list **tokens);
-int		tokenlist_get_pipe_blk_len(t_list *tokenlist);
+int		tokens_make_and_add(char *token, t_list **tokens);
+int		tokens_populate_tokenlist(char *line, t_list **tokens);
+int		tokens_get_pipe_blk_len(t_list *tokenlist);
 t_list	*make_token_blks_list(t_list **tokenlist);
-char	**get_tokenlist_array(t_list *tokenlist);
-int		tokenlist_make_and_add_token_blk(t_list **pipe_blk_list, char **token_array);
+char	**get_tokens_array(t_list *tokenlist);
+int		tokens_make_and_add_token_blk(t_list **pipe_blk_list, char **token_array);
 
 /* PIPE_blk.C */
 t_cmd		*cmd_constructor(char *prog_n, t_env **env);
@@ -103,7 +103,7 @@ int		debug_print_env_idx(t_ms *ms);
 int		debug_print_env_keys(t_ms *ms);
 
 /* DEBUG_TOKENLIST.C */
-int		debug_print_tokenlist_val(t_list **tokenlist);
+int		debug_print_tokens_val(t_list **tokenlist);
 int		debug_print_tokens(t_list **tokenlist);
 int		debug_print_token_blks_list(t_list *token_blks_list);
 

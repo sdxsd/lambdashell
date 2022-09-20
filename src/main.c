@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:37 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/19 16:55:09 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/20 13:19:16 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,18 +47,11 @@ int	main(int argc, char **argv, char **envp)
 			return (msg_err("init_ms_struct()", FAILURE));
 		if (init_env_struct(ms, envp))
 			return (msg_err("init_env_struct()", FAILURE));
-		if (prompt(ms))
-		{
-			free (ms->line);
-			clean_tokenlist(&ms->tokenlist);
-			clean_env(ms->env);
-			free (ms);
-			return (msg_err("Something went wrong.", 1));
-		}
-		free (ms->line);
-		clean_tokenlist(&ms->tokenlist);
-		clean_env(ms->env);
-		free (ms);
+		prompt(ms);
+		//free (ms->line);
+		//clean_tokenlist(&ms->tokenlist);
+		//clean_env(ms->env);
+		//free (ms);
 		return (0);
 	}
 	return (msg_err("Please do not provide any arguments.", 1));
