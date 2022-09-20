@@ -100,7 +100,8 @@ void	cmd_deallocator(t_cmd *cmd)
 // two t_cmds, to be later executed.
 // It then creates a pipe, and maps the output of cmd_one to the input of cmd_two
 
-// NOTE In the case that the inputted line = (cat example.txt | grep "hello" | wc -l)
+// NOTE: UNEVEN INPUT
+// In the case that the inputted line = (cat example.txt | grep "hello" | wc -l)
 // The following layout will be used in the exec list:
 // 	Note that "->" is used to represent output flow
 // 	+----------------------------------------------+
