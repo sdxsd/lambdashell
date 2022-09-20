@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   tokenlist.c                                        :+:    :+:            */
+/*   tokens.c                                           :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 13:32:47 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/20 13:19:52 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/20 22:00:21 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ IMPORTANT: The function below is not finished. Text between single quotes
 should not be divided into separate tokens. 
 */
 
-
+/*
 char	*tokens_get_array(char *line)
 {
 	char	*token_array;
@@ -39,7 +39,9 @@ char	*tokens_get_array(char *line)
 		return (NULL);
 	return (token_array);
 }
+*/
 
+/*
 int	tokens_populate_tokenlist(char *line, t_list **tokens)
 {
 	size_t	token_start;
@@ -59,12 +61,25 @@ int	tokens_populate_tokenlist(char *line, t_list **tokens)
 	}
 	return (0);
 }
-
-/*
-The tokens_populate_tokenlist is also known as the "lexer". 
-This section contains files for the tokenization chapter. It cuts the expanded
-input string into words and chains these words together in a linked list.
 */
+
+
+// TODO HERE..NOT WORKING!
+
+int	tokens_populate_tokenlist(char **lines, t_list **tokens)
+{
+	int	i;
+
+	i = 0;
+	while (lines[i])
+	{
+		tokens_make_and_add(lines[i], tokens);
+		i++;
+	}
+	return (0);
+}
+
+
 
 int	tokens_make_and_add(char *token_array, t_list **tokens)
 {
