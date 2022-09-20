@@ -52,6 +52,13 @@ t_exec_element *assign_exec_element(t_exec_element *element, int type, t_env **e
 	}
 }
 
+// NOTE: INFO
+// This function Generates a linked list of t_exec_elements.
+// This list is in essence a list of instructions and allocated
+// structs for the executor to execute.
+// Each element contains a type, for example, cmd or pipe_blk.
+// Then a pointer to an equivalent struct, i.e. t_cmd, or t_pipe_blk.
+// Finally a pointer to the next element in the list.
 t_exec_element	*exec_list_generator(int *token_list)
 {
 	t_exec_element	*head;
