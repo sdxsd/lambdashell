@@ -4,7 +4,7 @@
 // the shell environment in form of string array.
 // Used in cmd_constructor() to provide the shell env in
 // the correct format for execve()
-char	**env_to_strings(t_env **env)
+char	**env_to_arrays(t_env **env)
 {
 	char	**envp;
 	t_env	*env_element;
@@ -17,7 +17,7 @@ char	**env_to_strings(t_env **env)
 	env_element = *env;
 	if (!envp)
 	{
-		msg_err("env_to_strings()", FAILURE);
+		msg_err("env_to_arrays()", FAILURE);
 		return (NULL);
 	}
 	while (iter < len)
@@ -64,7 +64,7 @@ t_cmd	*cmd_constructor(char *prog_n, t_env **env)
 		msg_err("cmd_constructor()", FAILURE);
 		return (NULL);
 	}
-	cmd->env = env_to_strings(env);
+	cmd->env = env_to_arrays(env);
 	if (!cmd->env)
 	{
 		cmd_deallocator(cmd);

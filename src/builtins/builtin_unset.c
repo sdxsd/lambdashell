@@ -1,19 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   error.c                                            :+:    :+:            */
+/*   builtin_unset.c                                    :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/08/29 18:24:05 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/13 22:24:16 by mikuiper      ########   odam.nl         */
+/*   Created: 2022/09/17 22:25:48 by mikuiper      #+#    #+#                 */
+/*   Updated: 2022/09/19 14:57:46 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	msg_err(char *s, int ret)
+/*
+[t_cmd object]->args
+*/
+
+void	builtin_unset(char **args, t_ms *ms)
 {
-	perror(s);
-	return (ret);
+	size_t	i;
+
+	i = 1;
+	while (args[i] != NULL)
+	{
+		env_del_var(ms->env, args[i]);
+		i++;
+	}
 }
