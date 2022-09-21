@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 14:55:32 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/19 14:55:34 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/21 11:14:01 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ int line_check_last_char(char *line, char *charset)
 	return (0);
 }
 
-// very simple to get started, requires more checks
 int	line_check_syntax(char *line, char *charset)
 {
 	if (line_check_first_char(line))

@@ -6,7 +6,7 @@
 #    By: mikuiper <mikuiper@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/09/11 21:25:39 by mikuiper      #+#    #+#                  #
-#    Updated: 2022/09/20 13:21:43 by mikuiper      ########   odam.nl          #
+#    Updated: 2022/09/21 11:15:29 by mikuiper      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ NAMES_SRCS =	main.c \
 				path.c \
 				pipe_block.c \
 				exec.c \
-				expander/expander.c \
+				expander/line_expander.c \
 				builtins/builtin_env.c \
 				builtins/builtin_pwd.c \
 				builtins/builtin_unset.c \
@@ -46,6 +46,7 @@ NAMES_SRCS =	main.c \
 				tokenizer/tokens_tools.c \
 				tokenizer/tokens.c \
 				parser/line_parser.c \
+				parser/line_split_into_lines.c \
 				parser/line_check_tools.c \
 				init/init_ms_struct.c \
 				init/init_env_struct.c \
@@ -109,13 +110,13 @@ make_obj_dirs:
 	@mkdir -p $(DIR_OBJ)/misc/debug
 
 clean:
-	@rm -rf $(DIR_OBJ)
+	#@rm -rf $(DIR_OBJ)
 	@make clean -C $(DIR_LIB_FT)
 	@echo "$(GREEN)[minishell] - Running clean.$(NOCOLOR)"
 
 fclean: clean
 	@rm -rf $(NAME)
-	@make fclean -C $(DIR_LIB_FT)
+	#@make fclean -C $(DIR_LIB_FT)
 	@echo "$(GREEN)[minishell] - Running fclean.$(NOCOLOR)"
 
 re : fclean all
