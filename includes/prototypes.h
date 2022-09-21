@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 13:35:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/20 21:46:53 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/21 11:16:08 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,23 @@ int		msg_err(char *s, int ret);
 /* EXEC.C */
 int		execute_command(t_cmd *cmd);
 
-/* INPUT.C */
+/* PARSER */
+/* LINE_PARSER.C */
+int	line_parser(t_ms *ms);
+
+/* LINE_SPLIT_INTO_LINES.C */
+size_t	line_get_n_words(char *line);
+size_t	line_get_line_len(char *line, size_t i);
+char	**line_split_line_helper(char **lines, char *line);
+char	**line_trim_lines(char **lines);
+char	**line_split_line(char *line);
+
+/* LINE_CHECK_TOOLS */
+int 	line_check_quotations(char *line);
 int		line_check_first_char(char *line);
-int		line_check_syntax(char *line, char *charset);
 int		line_get_last_char(char *line);
 int 	line_check_last_char(char *line, char *charset);
-int 	line_check_quotations(char *line);
-int		line_parser(t_ms *ms);
+int		line_check_syntax(char *line, char *charset);
 
 /* CLEAN.C */
 int		clean_tokenlist(t_list **tokenlist);
@@ -82,7 +92,7 @@ void	tokens_add_types(t_list *tokenlist);
 /* MAKE_TOKENLIST */
 int		tokens_make_and_add(char *token, t_list **tokens);
 //int		tokens_populate_tokenlist(char *line, t_list **tokens);
-int	tokens_populate_tokenlist(char **lines, t_list **tokens);
+int		tokens_populate_tokenlist(char **lines, t_list **tokens);
 int		tokens_get_pipe_blk_len(t_list *tokenlist);
 t_list	*make_token_blks_list(t_list **tokenlist);
 char	**get_tokens_array(t_list *tokenlist);

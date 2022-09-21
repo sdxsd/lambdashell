@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:32 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/18 19:01:36 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/21 11:29:25 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_ms
 	char	*line;
 	t_list	*tokenlist;
 	t_env	**env;
+	char	**lines;
 }	t_ms;
 
 typedef enum	e_token_type
