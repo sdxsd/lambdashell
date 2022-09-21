@@ -35,7 +35,7 @@ An idea for how minishell should be structured.
 | PARSING |
 +---------+
     ↓
-    ↓ Other than sounding like a list written by Stalin, the execution list is essentially
+    ↓ Other than sounding like a list written by    Stalin, the execution list is essentially
     ↓ an instruction for our next cold blooded component, the executor.
     ↓ The execution list in form of essence is by species a linked list
     ↓ with a few important variables, int type, which is an integer representing the type
