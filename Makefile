@@ -6,7 +6,7 @@
 #    By: mikuiper <mikuiper@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/09/11 21:25:39 by mikuiper      #+#    #+#                  #
-#    Updated: 2022/09/21 11:15:29 by mikuiper      ########   odam.nl          #
+#    Updated: 2022/09/21 12:43:11 by mikuiper      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,7 @@ NAMES_SRCS =	main.c \
 				tokenizer/tokens.c \
 				parser/line_parser.c \
 				parser/line_split_into_lines.c \
-				parser/line_check_tools.c \
+				parser/line_parser_checks.c \
 				init/init_ms_struct.c \
 				init/init_env_struct.c \
 				env/env_delete_var.c \
