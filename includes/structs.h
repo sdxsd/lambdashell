@@ -66,21 +66,19 @@ typedef struct	s_cmd
 	char	*path;
 }	t_cmd;
 
-/*
- * NOTE:
- *      PIPE blk
- * +--------------------+
- * | cmd_one -> cmd_two | -> stdout
- * +--------------------+
- * +--------------------+    +------------------+
- * | cmd_one -> cmd_two | -> | OTHER PIPE blk |
- * +--------------------+    +------------------+
- * +--------------------+
- * | cmd_one -> cmd_two | -> /something/example.file
- * +--------------------+
- * ALLOCATOR   : pipe_blk_alloc()
- * DEALLOCATOR : pipe_blk_dealloc()
- */
+// NOTE:
+//      PIPE BLK
+// +--------------------+
+// | cmd_one -> cmd_two | -> stdout
+// +--------------------+
+// +--------------------+    +------------------+
+// | cmd_one -> cmd_two | -> | OTHER PIPE blk |
+// +--------------------+    +------------------+
+// +--------------------+
+// | cmd_one -> cmd_two | -> /something/example.file
+// +--------------------+
+// ALLOCATOR   : pipe_blk_alloc()
+// DEALLOCATOR : pipe_blk_dealloc()
 
 typedef struct	s_pipe_blk
 {
@@ -91,35 +89,33 @@ typedef struct	s_pipe_blk
 	t_cmd	*cmd_two;
 }				t_pipe_blk;
 
-/*
- * NOTE:
- *    EXECUTION LIST
- * +------------------+
- * | element[command] |
- * +------------------+
- *   | void *next
- *   ---> +----------------------+
- *        | element[redirection] |
- *        +----------------------+
- *        | void *next
- *        --------> +---------------+
- *                  | element[file] |
- *                  +---------------+
- *
- * (int type) -> specifies the type of the element
- *               i.e. command
- *                    pipe
- *                    builtin
- *                    file
- *                    redirection
- * (void *value) -> structure of the element
- *                  i.e. t_cmd
- *                       t_pipe_blk
- * (void *next)  -> next token element in the list.
- *
- * ALLOCATOR   : execution_list_generator();
- * DEALLOCATOR : execution_list_deallocator();
-*/
+// NOTE:
+//    EXECUTION LIST
+// +------------------+
+// | element[command] |
+// +------------------+
+//   | void *next
+//   ---> +----------------------+
+//        | element[redirection] |
+//        +----------------------+
+//        | void *next
+//        --------> +---------------+
+//                  | element[file] |
+//                  +---------------+
+
+// (int type) -> specifies the type of the element
+//               i.e. command
+//                    pipe
+//                    builtin
+//                    file
+//                    redirection
+// (void *value) -> structure of the element
+//                  i.e. t_cmd
+//                       t_pipe_blk
+// (void *next)  -> next token element in the list.
+
+// ALLOCATOR   : execution_list_generator();
+// DEALLOCATOR : execution_list_deallocator();
 
 typedef struct s_exec_element
 {
@@ -127,5 +123,17 @@ typedef struct s_exec_element
 	void	*value;
 	void	*next;
 }	t_exec_element;
+
+// NOTE:
+//     LINE BLK
+// The line block contains a type specifier
+// and an array of two strings.
+// In all cases save for type denoting a pipe_blk the second string is null.
+
+typedef struct s_line_blk
+{
+	int type;
+	char *val[2];
+}	t_line_blk;
 
 #endif
