@@ -45,7 +45,7 @@ char	**env_to_arrays(t_env **env)
 // Finally getting the full path to the binary returning the fully formed t_cmd.
 // If any part fails, all memory will be freed before returning.
 // Memory leaks SHOULD be impossible.
-t_cmd	*cmd_constructor(char *prog_n, t_env **env)
+t_cmd	*cmd_constructor(char *prog_n_args, t_env **env)
 {
 	t_cmd	*cmd;
 
@@ -57,7 +57,7 @@ t_cmd	*cmd_constructor(char *prog_n, t_env **env)
 	}
 	cmd->i_fd = STDIN_FILENO;
 	cmd->o_fd = STDOUT_FILENO;
-	cmd->args = ft_split(prog_n, ' ');
+	cmd->args = ft_split(prog_n_args, ' ');
 	if (!cmd->args)
 	{
 		cmd_deallocator(cmd);
@@ -71,7 +71,7 @@ t_cmd	*cmd_constructor(char *prog_n, t_env **env)
 		msg_err("cmd_constructor()", FAILURE);
 		return (NULL);
 	}
-	cmd->path = get_path(prog_n, env);
+	cmd->path = get_path(prog_n_args, env);
 	if (!cmd->path)
 	{
 		msg_err(cmd->args[0], FAILURE);

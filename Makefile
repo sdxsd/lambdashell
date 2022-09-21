@@ -30,7 +30,6 @@ NAMES_SRCS =	main.c \
 				commands.c \
 				path.c \
 				pipe_block.c \
-				exec.c \
 				expander/line_expander.c \
 				builtins/builtin_env.c \
 				builtins/builtin_pwd.c \
