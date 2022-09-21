@@ -15,7 +15,7 @@ int	execute_command(t_cmd *cmd)
 	return (SUCCESS);
 }
 
-int	executor(t_exec_element *list)
-{
+/* int	executor(t_exec_element *list) */
+/* { */
 
-}
+/* } */
