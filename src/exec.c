@@ -1,5 +1,7 @@
 #include "../includes/minishell.h"
 
+/* NOTE: INFO */
+/* Takes a t_cmd and executes it. */
 int	execute_command(t_cmd *cmd)
 {
 	dup2(cmd->i_fd, STDIN_FILENO);
@@ -11,4 +13,9 @@ int	execute_command(t_cmd *cmd)
 		return (FAILURE);
 	}
 	return (SUCCESS);
+}
+
+int	executor(t_exec_element *list)
+{
+
 }

@@ -16,6 +16,48 @@
 ** macOS
 + -L ~/.brew/opt/readline/lib -l readline -I ~/.brew/opt/readline/include
 
+* Minishell Architecture
+An idea for how minishell should be structured.
+** Graph:
+    This stage takes raw input from the commandline.
+    And places a prompt when finished.
+    Before passing it on to the parsing stage.
++----------------------+
+| INPUT (GNU readline) |
++----------------------+
+    ↓
+    ↓ The parsing stage takes a string of text
+    ↓ and converts it to a series of tokens or meanings.
+    ↓ For an example, take the string "cat streng-geheim.txt | grep "blanke frank" > output_file"
+    ↓ This would become (pipe_blk redirection file) with pipe blk defined as (cmd_one, cmd_two)
+    ↓
++---------+
+| PARSING |
++---------+
+    ↓
+    ↓ Other than sounding like a list written by Stalin, the execution list is essentially
+    ↓ an instruction for our next cold blooded component, the executor.
+    ↓ The execution list in form of essence is by species a linked list
+    ↓ with a few important variables, int type, which is an integer representing the type
+    ↓ of the element i.e. :
+    ↓     singular commands (t_cmd),
+    ↓     pipe blocks (t_pipe_blk),
+    ↓     redirections (unimplemented).
+    ↓     builtins (umimplemented)
+    ↓     files (who needs those? just stick everything in ram like javascript developers.)
+    ↓
++-----------+
+| EXEC_LIST |
++-----------+
+    ↓
+    ↓ The executor is a function which takes as input the exec_list (defined in structs.h)
+    ↓ With full knowledge of the list it will setup pipes, fork, dup2, and fulfill other
+    ↓ preparations before takeoff.
+    ↓
++----------+
+| EXECUTOR |
++----------+
+
 * Minishell
 ** Parsing:
 I would imagine parsing to be one of the areas of the project
