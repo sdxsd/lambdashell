@@ -114,9 +114,9 @@ void	cmd_deallocator(t_cmd *cmd)
 // 	  +---------------+
 // 	      |
 // 	      V Final output.
-// 	       +---------------+
-// 	       | STDOUT_FILENO |
-//         +---------------+
+// 	     +---------------+
+// 	     | STDOUT_FILENO |
+//       +---------------+
 
 t_pipe_blk	*pipe_blk_alloc(char *cmd_one, char *cmd_two, int i, int o, t_env **env)
 {
