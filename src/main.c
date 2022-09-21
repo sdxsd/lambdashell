@@ -33,10 +33,16 @@
 
 int	prompt(t_ms *ms)
 {
+	t_line_blk	*lblk;
+	t_cmd		*cmd;
+
 	splash();
-	ms->line = ft_strdup("Good evening $USER | Do you want your 'Ferrari | Blabla'");
+	ms->line = readline("λ :: > ");
 	printf("Minishell is currently parsing:\n%s\n\n", ms->line);
 	line_parser(ms);
+	lblk = line_blk_array_generator(ms->lines, 1);
+	cmd = cmd_constructor(lblk->val[0], ms->env);
+	execute_command(cmd);
 	/*
 	t_cmd	*cmd;
 	ms->line = ft_strdup("Hi, the shell you are using is < | $SHELL");
@@ -66,7 +72,10 @@ int	main(int argc, char **argv, char **envp)
 			return (msg_err("init_ms_struct()", FAILURE));
 		if (init_env_struct(ms, envp))
 			return (msg_err("init_env_struct()", FAILURE));
-		prompt(ms);
+		while (prompt(ms))
+		{
+
+		}
 		//free (ms->line);
 		//clean_tokenlist(&ms->tokenlist);
 		//clean_env(ms->env);

@@ -118,6 +118,9 @@ int		debug_print_tokens_val(t_list **tokenlist);
 int		debug_print_tokens(t_list **tokenlist);
 int		debug_print_token_blks_list(t_list *token_blks_list);
 
+// LINE BLOCKS
+t_line_blk *line_blk_array_generator(char **lines, int n_blocks);
+
 /* MISC */
 /* CHECK_FD.C */
 int		check_fd(void);
