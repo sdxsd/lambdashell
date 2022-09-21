@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   input.c                                            :+:    :+:            */
+/*   line_check_tools.c                                 :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/08/30 11:47:20 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/13 21:52:40 by mikuiper      ########   odam.nl         */
+/*   Created: 2022/09/19 14:55:32 by mikuiper      #+#    #+#                 */
+/*   Updated: 2022/09/21 11:14:01 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int check_quotations(char *line)
+int line_check_quotations(char *line)
 {
 	int	quote;
 	int	squote;
@@ -39,7 +39,7 @@ int check_quotations(char *line)
 	return (0);
 }
 
-int	check_first_char(char *line)
+int	line_check_first_char(char *line)
 {
 	while (*line == ' ')
 		line++;
@@ -51,7 +51,7 @@ int	check_first_char(char *line)
 	return (0);
 }
 
-int	last_char(char *line)
+int	line_get_last_char(char *line)
 {
 	char	last_char;
 	while (*line)
@@ -63,9 +63,9 @@ int	last_char(char *line)
 	return (last_char);
 }
 
-int check_last_char(char *line, char *charset)
+int line_check_last_char(char *line, char *charset)
 {
-	if (*line && ft_strchr(charset, last_char(line)))
+	if (*line && ft_strchr(charset, line_get_last_char(line)))
 	{
 		printf("Error. Found forbidden token at end of line.\n");
 		return (1);
@@ -73,25 +73,13 @@ int check_last_char(char *line, char *charset)
 	return (0);
 }
 
-// very simple to get started, requires more checks
-int	check_line_formatting(char *line, char *charset)
+int	line_check_syntax(char *line, char *charset)
 {
-	if (check_first_char(line))
+	if (line_check_first_char(line))
 		return (1);
-	if (check_last_char(line, charset))
+	if (line_check_last_char(line, charset))
 		return (1);
-	if (check_quotations(line))
+	if (line_check_quotations(line))
 		return (1);
-	return (0);
-}
-
-int	parse_input(t_ms *ms, char *line)
-{
-	char	*tmp;
-
-	if (check_line_formatting(line, "<>|"))
-		return (1);
-	(void)tmp;
-	(void)ms;
 	return (0);
 }

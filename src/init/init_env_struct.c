@@ -1,27 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_ischarset.c                                     :+:    :+:            */
+/*   init_env_struct.c                                         :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/09 21:14:48 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/18 18:37:52 by mikuiper      ########   odam.nl         */
+/*   Created: 2022/09/19 16:16:17 by mikuiper      #+#    #+#                 */
+/*   Updated: 2022/09/19 16:16:32 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../includes/minishell.h"
 
-int	ft_ischarset(char c, char *charset)
+int	init_env_struct(t_ms *ms, char **envp)
 {
 	int	i;
 
+	ms->env = ft_calloc(1, sizeof(t_env));
+	ms->tokenlist = ft_calloc(1, sizeof(t_list));
 	i = 0;
-	while (charset[i])
+	while (envp[i])
 	{
-		if (c == charset[i])
-			return (1);
+		if (env_var_cloner(ms, envp[i]))
+			return (msg_err("env_var_cloner()", FAILURE));
 		i++;
 	}
+	env_init_idx(ms->env);
 	return (0);
 }

@@ -1,33 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   builtins.c                                         :+:    :+:            */
+/*   clean_tokenlist.c                                  :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/08/26 16:25:57 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/13 21:55:13 by mikuiper      ########   odam.nl         */
+/*   Created: 2022/09/18 13:24:57 by mikuiper      #+#    #+#                 */
+/*   Updated: 2022/09/18 13:25:39 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
-#include <limits.h>
-#include <unistd.h>
-#include <stdio.h>
+# include "minishell.h"
 
-/*
-NOTE:
-_POSIX_PATH_MAX is used to maintain compatibility on
-POSIX compatible systems. This ensures that the buffer size of pwd
-is always large enough to hold the path.
-*/
-
-int	ms_pwd(void)
+int	clean_tokenlist(t_list **tokenlist)
 {
-	char	pwd[_POSIX_PATH_MAX];
+	int			i;
+	t_list		*list_head;
+	t_token		*token_tmp;
+	t_list		*list_tmp;
 
-	if (getcwd(pwd, _POSIX_PATH_MAX) == NULL)
-		return (1);
-	printf("%s\n", pwd);
+	i = 0;
+	list_head = (*tokenlist);
+	while (list_head)
+	{
+		token_tmp = list_head->content;
+		free(token_tmp->val);
+		list_tmp = list_head;
+		free (list_tmp->content);
+		list_head = list_head->next;
+		free (list_tmp);
+		i++;
+	}
+	//free (list_tmp->content);
+	free (list_head);
 	return (0);
 }

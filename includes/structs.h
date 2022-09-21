@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:32 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/14 13:43:24 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/21 11:29:25 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,9 @@ typedef struct	s_env
 typedef struct s_ms
 {
 	char	*line;
-	t_list	*tokens;
+	t_list	*tokenlist;
 	t_env	**env;
+	char	**lines;
 }	t_ms;
 
 typedef enum	e_token_type
@@ -67,12 +68,12 @@ typedef struct	s_cmd
 
 /*
  * NOTE:
- *      PIPE BLOCK
+ *      PIPE blk
  * +--------------------+
  * | cmd_one -> cmd_two | -> stdout
  * +--------------------+
  * +--------------------+    +------------------+
- * | cmd_one -> cmd_two | -> | OTHER PIPE BLOCK |
+ * | cmd_one -> cmd_two | -> | OTHER PIPE blk |
  * +--------------------+    +------------------+
  * +--------------------+
  * | cmd_one -> cmd_two | -> /something/example.file

@@ -1,27 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_ischarset.c                                     :+:    :+:            */
+/*   builtin_env.c                                      :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/09 21:14:48 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/18 18:37:52 by mikuiper      ########   odam.nl         */
+/*   Created: 2022/09/17 21:00:17 by mikuiper      #+#    #+#                 */
+/*   Updated: 2022/09/17 21:35:50 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../includes/minishell.h"
 
-int	ft_ischarset(char c, char *charset)
+void	builtin_env(t_ms *ms, int fd)
 {
-	int	i;
+	t_env	*env;
 
-	i = 0;
-	while (charset[i])
+	env = *ms->env;
+	while (env)
 	{
-		if (c == charset[i])
-			return (1);
-		i++;
+		if (env->key)
+		{
+			ft_putstr_fd(env->key, fd);
+			ft_putstr_fd("=", fd);
+			ft_putstr_fd(env->val, fd);
+			ft_putchar_fd('\n', fd);
+		}
+		env = env->next;
 	}
-	return (0);
 }

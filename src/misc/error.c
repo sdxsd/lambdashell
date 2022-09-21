@@ -1,27 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_ischarset.c                                     :+:    :+:            */
+/*   error.c                                            :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/09 21:14:48 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/18 18:37:52 by mikuiper      ########   odam.nl         */
+/*   Created: 2022/08/29 18:24:05 by mikuiper      #+#    #+#                 */
+/*   Updated: 2022/09/18 11:53:41 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../includes/minishell.h"
 
-int	ft_ischarset(char c, char *charset)
+int	msg_err(char *s, int ret)
 {
-	int	i;
-
-	i = 0;
-	while (charset[i])
-	{
-		if (c == charset[i])
-			return (1);
-		i++;
-	}
-	return (0);
+	perror(s);
+	return (ret);
 }

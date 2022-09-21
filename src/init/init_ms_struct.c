@@ -1,27 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_ischarset.c                                     :+:    :+:            */
+/*   init_ms_struct.c                                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/09 21:14:48 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/18 18:37:52 by mikuiper      ########   odam.nl         */
+/*   Created: 2022/09/19 16:15:46 by mikuiper      #+#    #+#                 */
+/*   Updated: 2022/09/19 16:16:07 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../includes/minishell.h"
 
-int	ft_ischarset(char c, char *charset)
+int	init_ms_struct(t_ms *ms)
 {
-	int	i;
-
-	i = 0;
-	while (charset[i])
-	{
-		if (c == charset[i])
-			return (1);
-		i++;
-	}
+	ms->line = NULL;
 	return (0);
 }
