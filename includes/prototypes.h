@@ -101,7 +101,7 @@ int		tokens_make_and_add_token_blk(t_list **pipe_blk_list, char **token_array);
 /* PIPE_blk.C */
 t_cmd		*cmd_constructor(char *prog_n, t_env **env);
 void		cmd_deallocator(t_cmd *cmd);
-t_pipe_blk	*pipe_blk_alloc(t_cmd *cmd_one, t_cmd *cmd_two, int i, int o);
+t_pipe_blk	*pipe_blk_alloc(char *cmd_one, char *cmd_two, int i, int o, t_env **env);
 void		pipe_blk_dealloc(t_pipe_blk *pipe_blk);
 
 /* PATH.C */
