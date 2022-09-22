@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 13:35:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/21 11:16:08 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/22 15:07:49 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,12 @@ int		clean_env(t_env **env);
 /* BUILTINS */
 /* ENV.C */
 void	builtin_env(t_ms *ms, int fd);
-int		builtin_pwd(void);
-void	builtin_unset(char **keys, t_ms *ms);
+int		builtin_pwd(int fd);
+void	builtin_unset(t_ms *ms, char **args);
+void	builtin_echo(t_cmd *cmd_object, int fd);
+
+/* EXE_BUILTIN.C */
+int	exe_builtin(t_cmd *element, t_ms *ms);
 
 /* tokens_populate_tokenlist.C */
 int		tokens_check_syntax(t_list *tokenlist);

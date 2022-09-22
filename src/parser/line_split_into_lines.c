@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/21 11:14:12 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/21 11:15:06 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/22 14:17:46 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ char	**line_split_line_helper(char **lines, char *line)
 	i = 0;
 	start = 0;
 	n_words = line_get_n_words(line);
-	printf("n_words: %ld\n\n", n_words);
 	while (i < n_words)
 	{
 		j = 0;
