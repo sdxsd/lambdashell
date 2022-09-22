@@ -56,6 +56,7 @@ int		msg_err(char *s, int ret);
 
 /* EXEC.C */
 int		execute_command(t_cmd *cmd);
+int		execute_pipe_blk(t_pipe_blk *pipe_blk);
 
 /* PARSER */
 /* LINE_PARSER.C */
@@ -98,7 +99,7 @@ t_list	*make_token_blks_list(t_list **tokenlist);
 char	**get_tokens_array(t_list *tokenlist);
 int		tokens_make_and_add_token_blk(t_list **pipe_blk_list, char **token_array);
 
-/* PIPE_blk.C */
+/* PIPE_BLK.C */
 t_cmd		*cmd_constructor(char *prog_n, t_env **env);
 void		cmd_deallocator(t_cmd *cmd);
 t_pipe_blk	*pipe_blk_alloc(char *cmd_one, char *cmd_two, int i, int o, t_env **env);
