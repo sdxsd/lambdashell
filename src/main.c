@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:37 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/22 19:38:54 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/22 22:24:22 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int	prompt(t_ms *ms)
 	(void)lblk;
 	cmd = cmd_constructor(lblk->val[0], ms->env);
 	(void)cmd;
+	cmd->args = ft_split("hoihoi ikik ben=ben", ' ');
 	builtin_export(ms, cmd, 1);
 	//execute_command(cmd);
 	//printf("cmd->args: %s\n", ms->lines[1]);
