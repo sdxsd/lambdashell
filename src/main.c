@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:37 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/20 21:21:15 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/22 14:28:10 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,16 @@ int	prompt(t_ms *ms)
 	t_cmd		*cmd;
 
 	splash();
-	ms->line = readline("λ :: > ");
-	printf("Minishell is currently parsing:\n%s\n\n", ms->line);
+	//ms->line = readline("λ :: > ");
+	ms->line = ft_strdup("ls | wc");
+	//printf("Minishell is currently parsing:\n%s\n\n", ms->line);
 	line_parser(ms);
 	lblk = line_blk_array_generator(ms->lines, 1);
+	(void)lblk;
 	cmd = cmd_constructor(lblk->val[0], ms->env);
+	(void)cmd;
 	execute_command(cmd);
+	//printf("cmd->args: %s\n", ms->lines[1]);
 	/*
 	t_cmd	*cmd;
 	ms->line = ft_strdup("Hi, the shell you are using is < | $SHELL");
