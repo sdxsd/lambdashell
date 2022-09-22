@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 13:35:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/22 18:43:02 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/22 19:38:31 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	builtin_env(t_ms *ms, int fd);
 int		builtin_pwd(int fd);
 void	builtin_unset(t_ms *ms, char **args);
 void	builtin_echo(t_cmd *cmd_object, int fd);
-int		builtin_export(t_ms *ms, t_cmd *cmd_object); // WIP!
+int		builtin_export(t_ms *ms, t_cmd *cmd_object, int fd);
 
 /* EXE_BUILTIN.C */
 int	exe_builtin(t_cmd *element, t_ms *ms);

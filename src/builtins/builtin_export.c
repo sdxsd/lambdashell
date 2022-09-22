@@ -6,61 +6,106 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/22 15:47:24 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/22 18:39:04 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/22 19:43:29 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-/*
-int	print_env_sorted(t_ms *ms)
+char	*get_key_string(char *s)
 {
-	
-	//char	**ordered_env;
-	//ordered_env = hashmap_to_env_with_quotes(g_minishell.env);
-	//quick_sort_2d_array(ordered_env, 0, get_2d_array_len(ordered_env));
-	//join_2d_array("declare -x ", ordered_env);
-	//print_2d_array_fd(ordered_env, STDOUT_FILENO);
-	//free_2d_array(ordered_env);
-	//return (0);
-	
+	char	*key;
+	int		i;
 
-
-	(void)env_arrays;
-	int i = 0;
-	while (env_arrays[i])
+	i = 0;
+	if (!(key = malloc(sizeof(char) * (ft_print_until_char(s, '=') + 1))))
 	{
-		printf("%s\n", env_arrays[i]);
+		return (NULL);
+	}
+	while (s[i] != '=' && s[i])
+	{
+		key[i] = s[i];
 		i++;
 	}
-	return (0);
+	key[i] = '\0';
+	return (key);
 }
-*/
 
-
-
-int	builtin_export(t_ms *ms, t_cmd *cmd_object)
+char	*get_val_string(char *s)
 {
-	/*
-	if (cmd_object->args[1])
-		return (export_variable(cmd_object, 1));
-	else
-		return (print_ordered_env());
-	*/
-	(void)cmd_object;
-	(void)ms;
-	char **env_arrays;
-	env_arrays = env_entries_to_arrays(ms->env);
-	(void)env_arrays;
-	int i;
-	ft_sort_array_strings(env_arrays);
+	char	*key;
+	int		key_len;
 
+	key = get_key_string(s);
+	key_len = ft_strlen(key);
+	if (!ft_strchr(s, '='))
+	{
+		free(key);
+		key = NULL;
+		return (NULL);
+	}
+	free(key);
+	key = NULL;
+	return (&s[key_len + 1]);
+}
+
+void	builtin_export_print(char **env_arrays, int fd)
+{
+	int		i;
+	char	*tmp;
+
+	if (!env_arrays)
+		return ;
 	i = 0;
 	while (env_arrays[i])
 	{
-		printf("%s\n", env_arrays[i]);
+		tmp = get_key_string(env_arrays[i]);
+		if (ft_strncmp("_", tmp, ft_strlen(env_arrays[i])))
+		{
+			ft_putstr_fd("declare -x ", fd);
+			ft_putstr_fd(tmp, fd);
+			if (get_val_string(env_arrays[i]))
+			{
+				ft_putstr_fd("=\"", fd);
+				ft_putstr_fd(get_val_string(env_arrays[i]), fd);
+				ft_putstr_fd("\"", fd);
+			}
+			ft_putstr_fd("\n", fd);
+		}
+		free(tmp);
+		tmp = NULL;
 		i++;
 	}
+}
 
+int	builtin_export_without_args(t_ms *ms, int fd)
+{
+	char	**env_arrays;
+
+	env_arrays = env_entries_to_arrays(ms->env);
+	ft_sort_array_strings(env_arrays);
+	builtin_export_print(env_arrays, fd);
+	ft_free_array_strings(env_arrays);
 	return (0);
 }
+
+int	builtin_export(t_ms *ms, t_cmd *cmd_object, int fd)
+{
+	if (ft_get_n_strings(cmd_object->args) == 1)
+	{
+		builtin_export_without_args(ms, fd);
+	}
+	else
+	{
+		// TODO!
+		printf("builtin_exports, else, TODO!\n");
+	}
+	return (0);
+}
+
+/*
+if (cmd_object->args[1])
+	return (export_variable(cmd_object, 1));
+else
+	return (print_ordered_env());
+*/
