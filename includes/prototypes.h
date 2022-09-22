@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 13:35:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/22 15:07:49 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/22 18:43:02 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,11 @@ char	*line_insert_var(char *line, int pos, t_env **env);
 int		line_dollar_presence(char *line);
 
 /* ENV */
+/* ENV_TO_ARRAYS.C */
+char	**env_to_arrays(t_env **env);
+char	**env_vals_to_arrays(t_env **env);
+char	**env_entries_to_arrays(t_env **env);
+
 /* ENV_ADD_VAR.C */
 t_env	*env_create_var(char *key, char *val);
 int		env_add_var(t_ms *ms, t_env *node);
@@ -59,7 +64,7 @@ int		execute_command(t_cmd *cmd);
 
 /* PARSER */
 /* LINE_PARSER.C */
-int	line_parser(t_ms *ms);
+int		line_parser(t_ms *ms);
 
 /* LINE_SPLIT_INTO_LINES.C */
 size_t	line_get_n_words(char *line);
@@ -85,6 +90,7 @@ void	builtin_env(t_ms *ms, int fd);
 int		builtin_pwd(int fd);
 void	builtin_unset(t_ms *ms, char **args);
 void	builtin_echo(t_cmd *cmd_object, int fd);
+int		builtin_export(t_ms *ms, t_cmd *cmd_object); // WIP!
 
 /* EXE_BUILTIN.C */
 int	exe_builtin(t_cmd *element, t_ms *ms);
