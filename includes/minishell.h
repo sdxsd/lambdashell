@@ -31,6 +31,9 @@
 # define FALSE 0
 # define FAILURE 1
 # define SUCCESS 0
+# define FORK_FAILURE -1
+# define FORK_CHILD 0
+# define FORK_PARENT 1
 
 /* GLOBAL VARIABLE */
 /* int		global_sig; */

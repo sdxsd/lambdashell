@@ -1,4 +1,5 @@
 #include "../includes/minishell.h"
+#include <sys/wait.h>
 
 /* NOTE: INFO */
 /* Takes a t_cmd and executes it. */
@@ -12,6 +13,26 @@ int	execute_command(t_cmd *cmd)
 		cmd_deallocator(cmd);
 		return (FAILURE);
 	}
+	return (SUCCESS);
+}
+
+int	execute_pipe_blk(t_pipe_blk *pipe_blk)
+{
+	int	pid;
+
+	pid = fork();
+	if (pid == FORK_FAILURE)
+		return (msg_err("execute_pipe_blk()", FAILURE));
+	if (pid == FORK_CHILD)
+	{
+		close(pipe_blk->pipe[WRITE]);
+		if (execute_command(pipe_blk->cmd_two))
+			exit (msg_err("execute_pipe_blk()", -1));
+	}
+	close(pipe_blk->pipe[READ]);
+	if (execute_command(pipe_blk->cmd_one))
+		exit (msg_err("execute_pipe_blk()", -1));
+	waitpid(pid, NULL, 1);
 	return (SUCCESS);
 }
 

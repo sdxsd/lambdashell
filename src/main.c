@@ -34,25 +34,17 @@
 int	prompt(t_ms *ms)
 {
 	t_line_blk	*lblk;
-	t_cmd		*cmd;
+	t_pipe_blk	*pipe_blk_test;
 
 	splash();
 	ms->line = readline("λ :: > ");
 	printf("Minishell is currently parsing:\n%s\n\n", ms->line);
 	line_parser(ms);
-	lblk = line_blk_array_generator(ms->lines, 1);
-	cmd = cmd_constructor(lblk->val[0], ms->env);
-	execute_command(cmd);
-	/*
-	t_cmd	*cmd;
-	ms->line = ft_strdup("Hi, the shell you are using is < | $SHELL");
-	line_parser(ms);
-	(void)cmd;
-	cmd = cmd_constructor("nano", ms->env);
-	if (!cmd)
-		return (FAILURE);
-	execute_command(cmd);
-	*/
+	lblk = line_blk_array_generator(ms->lines, 2);
+	pipe_blk_test = pipe_blk_alloc(lblk->val[0], lblk->val[1], STDIN_FILENO, STDOUT_FILENO, ms->env);
+	if (!pipe_blk_test)
+		return FAILURE;
+	execute_pipe_blk(pipe_blk_test);
 	return (0);
 }
 
