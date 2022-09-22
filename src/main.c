@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:37 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/22 14:28:10 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/22 16:23:52 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ int	prompt(t_ms *ms)
 	(void)lblk;
 	cmd = cmd_constructor(lblk->val[0], ms->env);
 	(void)cmd;
-	execute_command(cmd);
+	builtin_export(ms, cmd);
+	//execute_command(cmd);
 	//printf("cmd->args: %s\n", ms->lines[1]);
 	/*
 	t_cmd	*cmd;

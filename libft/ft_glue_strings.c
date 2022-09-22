@@ -1,28 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_undigits_base.c                                 :+:    :+:            */
+/*   ft_glue_strings.c                                  :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/11/19 16:49:20 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/22 16:36:32 by mikuiper      ########   odam.nl         */
+/*   Created: 2022/09/22 16:38:36 by mikuiper      #+#    #+#                 */
+/*   Updated: 2022/09/22 16:38:39 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_undigits_base(unsigned long long n, int base)
+char	*ft_glue_strings(char *s1, char *s2, char glue)
 {
-	int	ndigits;
+	int		i;
+	int		j;
+	char	*s3;
 
-	if (n == 0)
-		return (1);
-	ndigits = 0;
-	while (n > 0)
+	i = 0;
+	j = 0;
+	s3 = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 2));
+	if (!s3)
+		return (NULL);
+	while (s1[i])
 	{
-		n = n / base;
-		ndigits++;
+		s3[i] = s1[i];
+		i++;
 	}
-	return (ndigits);
+	s3[i] = glue;
+	i++;
+	while (s2[j])
+	{
+		s3[i] = s2[j];
+		i++;
+		j++;
+	}
+	s3[i] = '\0';
+	return (s3);
 }

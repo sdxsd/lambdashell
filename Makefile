@@ -6,7 +6,7 @@
 #    By: mikuiper <mikuiper@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/09/11 21:25:39 by mikuiper      #+#    #+#                  #
-#    Updated: 2022/09/21 12:43:11 by mikuiper      ########   odam.nl          #
+#    Updated: 2022/09/22 18:43:46 by mikuiper      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,8 @@ NAMES_SRCS =	main.c \
 				builtins/builtin_env.c \
 				builtins/builtin_pwd.c \
 				builtins/builtin_unset.c \
+				builtins/builtin_echo.c \
+				builtins/builtin_export.c \
 				misc/cleanup/clean_env.c \
 				misc/cleanup/clean_tokenlist.c \
 				misc/debug/debug_env.c \
@@ -50,6 +52,7 @@ NAMES_SRCS =	main.c \
 				init/init_ms_struct.c \
 				init/init_env_struct.c \
 				env/env_delete_var.c \
+				env/env_to_arrays.c \
 				env/env_add_var.c \
 				env/env_clone_env.c \
 				env/env_tools.c \
@@ -111,13 +114,13 @@ make_obj_dirs:
 	@mkdir -p $(DIR_OBJ)/misc/debug
 
 clean:
-	#@rm -rf $(DIR_OBJ)
+	@rm -rf $(DIR_OBJ)
 	@make clean -C $(DIR_LIB_FT)
 	@echo "$(GREEN)[minishell] - Running clean.$(NOCOLOR)"
 
 fclean: clean
 	@rm -rf $(NAME)
-	#@make fclean -C $(DIR_LIB_FT)
+	@make fclean -C $(DIR_LIB_FT)
 	@echo "$(GREEN)[minishell] - Running fclean.$(NOCOLOR)"
 
 re : fclean all
