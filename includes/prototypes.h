@@ -57,6 +57,7 @@ int		msg_err(char *s, int ret);
 /* EXEC.C */
 int		execute_command(t_cmd *cmd);
 int		execute_pipe_blk(t_pipe_blk *pipe_blk);
+void	lnk_pipe_blk(t_pipe_blk *pipe_one, t_pipe_blk *pipe_two);
 
 /* PARSER */
 /* LINE_PARSER.C */

@@ -36,7 +36,21 @@ int	execute_pipe_blk(t_pipe_blk *pipe_blk)
 	return (SUCCESS);
 }
 
-/* int	executor(t_exec_element *list) */
-/* { */
+int	executor(t_exec_element *head)
+{
+	t_exec_element	*list;
+	t_exec_element	*next;
 
-/* } */
+	list = head;
+	while (list->next)
+	{
+		if (list->type == tkn_pipe)
+		{
+			next = list->next;
+			if (next->type == tkn_pipe)
+			{
+				lnk_pipe_blk((t_pipe_blk *)list->value, (t_pipe_blk *)next->value);
+			}
+		}
+	}
+}

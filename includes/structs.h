@@ -85,6 +85,7 @@ typedef struct	s_pipe_blk
 	int		i_fd;
 	int		o_fd;
 	int		pipe[2];
+	int		ext_pipe[2];
 	t_cmd	*cmd_one;
 	t_cmd	*cmd_two;
 }				t_pipe_blk;

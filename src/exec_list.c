@@ -78,3 +78,12 @@ t_exec_element	*exec_list_generator(int *token_list)
 	}
 	return (head);
 }
+
+void	lnk_pipe_blk(t_pipe_blk *pipe_one, t_pipe_blk *pipe_two)
+{
+	int	new_pipe[2];
+
+	pipe(new_pipe);
+	pipe_one->cmd_two->o_fd = new_pipe[WRITE];
+	pipe_two->cmd_one->i_fd = new_pipe[READ];
+}
