@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/08 13:46:18 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/22 18:42:29 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/22 19:42:04 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,5 +93,7 @@ int		ft_ischarset(char c, char *charset);
 char	*ft_glue_strings(char *s1, char *s2, char glue);
 void	ft_sort_array_strings(char **lines);
 size_t	ft_get_n_strings(char **lines);
+int		ft_print_until_char(char *s, char c);
+void	ft_free_array_strings(char **s);
 
 #endif

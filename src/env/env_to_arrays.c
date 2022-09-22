@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/22 16:22:08 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/22 18:34:08 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/22 19:45:20 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	**env_to_arrays(t_env **env)
 
 	iter = 0;
 	len = env_len(env);
-	envp = malloc(sizeof(char *) * len);
+	envp = malloc(sizeof(char *) * (len + 1));
 	env_element = *env;
 	if (!envp)
 	{
@@ -38,6 +38,7 @@ char	**env_to_arrays(t_env **env)
 		env_element = env_element->next;
 		iter++;
 	}
+	envp[iter] = NULL;
 	return (envp);
 }
 
@@ -46,23 +47,22 @@ char	**env_vals_to_arrays(t_env **env)
 	char	**envp;
 	t_env	*env_element;
 	int		iter;
-	int		len;
 
 	iter = 0;
-	len = env_len(env);
-	envp = malloc(sizeof(char *) * len);
+	envp = malloc(sizeof(char *) * (env_len(env) + 1));
 	env_element = *env;
 	if (!envp)
 	{
 		msg_err("env_to_arrays()", FAILURE);
 		return (NULL);
 	}
-	while (iter < len)
+	while (iter < env_len(env))
 	{
 		envp[iter] = env_element->val;
 		env_element = env_element->next;
 		iter++;
 	}
+	envp[iter] = NULL;
 	return (envp);
 }
 
