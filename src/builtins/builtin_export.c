@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/22 15:47:24 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/22 19:43:29 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/22 21:29:33 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,10 +102,3 @@ int	builtin_export(t_ms *ms, t_cmd *cmd_object, int fd)
 	}
 	return (0);
 }
-
-/*
-if (cmd_object->args[1])
-	return (export_variable(cmd_object, 1));
-else
-	return (print_ordered_env());
-*/
