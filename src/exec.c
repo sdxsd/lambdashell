@@ -25,11 +25,11 @@ int	execute_pipe_blk(t_pipe_blk *pipe_blk)
 		return (msg_err("execute_pipe_blk()", FAILURE));
 	if (pid == FORK_CHILD)
 	{
-		close(pipe_blk->pipe[WRITE]);
+		close(pipe_blk->internal_pipe[WRITE]);
 		if (execute_command(pipe_blk->cmd_two))
 			exit (msg_err("execute_pipe_blk()", -1));
 	}
-	close(pipe_blk->pipe[READ]);
+	close(pipe_blk->internal_pipe[READ]);
 	if (execute_command(pipe_blk->cmd_one))
 		exit (msg_err("execute_pipe_blk()", -1));
 	waitpid(pid, NULL, 1);
@@ -52,5 +52,6 @@ int	executor(t_exec_element *head)
 				lnk_pipe_blk((t_pipe_blk *)list->value, (t_pipe_blk *)next->value);
 			}
 		}
+		list = next;
 	}
 }
