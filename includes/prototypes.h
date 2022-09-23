@@ -60,7 +60,8 @@ int		execute_pipe_blk(t_pipe_blk *pipe_blk);
 void	lnk_pipe_blk(t_pipe_blk *pipe_one, t_pipe_blk *pipe_two);
 
 // EXEC_LIST.C
-void	lnk_pipe_blk(t_pipe_blk *pipe_one, t_pipe_blk *pipe_two);
+void			lnk_pipe_blk(t_pipe_blk *pipe_one, t_pipe_blk *pipe_two);
+t_exec_element	*exec_list_generator(t_line_blk *line_blks, int n_blocks, t_env **env);
 
 /* PARSER */
 /* LINE_PARSER.C */
