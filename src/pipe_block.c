@@ -93,6 +93,19 @@ void	cmd_deallocator(t_cmd *cmd)
 	free(cmd);
 }
 
+// NOTE: This function only exists to save on lines.
+void	set_file_descriptors(t_pipe_blk *pipe_blk, int i, int o)
+{
+	pipe_blk->cmd_one->i_fd = pipe_blk->i_fd = i;
+	pipe_blk->cmd_one->o_fd = pipe_blk->internal_pipe[WRITE];
+	pipe_blk->cmd_two->i_fd = pipe_blk->internal_pipe[READ];
+	pipe_blk->cmd_two->o_fd = pipe_blk->o_fd = o;
+	pipe_blk->input_pipe[0] = -1;
+	pipe_blk->input_pipe[1] = -1;
+	pipe_blk->output_pipe[0] = -1;
+	pipe_blk->output_pipe[1] = -1;
+}
+
 // NOTE: INFO
 // the t_pipe_blk is just a grouping of two commands piped together for the purpose of
 // convenience.
@@ -139,16 +152,13 @@ t_pipe_blk	*pipe_blk_alloc(char *cmd_one, char *cmd_two, int i, int o, t_env **e
 		msg_err("pipe_blk_alloc()", FAILURE);
 		return (NULL);
 	}
-	if (pipe(pipe_blk->pipe) == -1)
+	if (pipe(pipe_blk->internal_pipe) == -1)
 	{
 		free(pipe_blk);
 		msg_err("pipe_blk_alloc()", FAILURE);
 		return (NULL);
 	}
-	pipe_blk->cmd_one->i_fd = pipe_blk->i_fd = i;
-	pipe_blk->cmd_one->o_fd = pipe_blk->pipe[WRITE];
-	pipe_blk->cmd_two->i_fd = pipe_blk->pipe[READ];
-	pipe_blk->cmd_two->o_fd = pipe_blk->o_fd = o;
+	set_file_descriptors(pipe_blk, i, o);
 	return (pipe_blk);
 }
 
@@ -157,7 +167,7 @@ void	pipe_blk_dealloc(t_pipe_blk *pipe_blk)
 {
 	cmd_deallocator(pipe_blk->cmd_one);
 	cmd_deallocator(pipe_blk->cmd_two);
-	close(pipe_blk->pipe[READ]);
-	close(pipe_blk->pipe[WRITE]);
+	close(pipe_blk->internal_pipe[READ]);
+	close(pipe_blk->internal_pipe[WRITE]);
 	free(pipe_blk);
 }
