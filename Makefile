@@ -54,7 +54,8 @@ NAMES_SRCS =	main.c \
 				env/env_clone_env.c \
 				env/env_tools.c \
 				line_blk.c \
-				exec.c
+				exec.c \
+				exec_list.c
 
 # HEADER NAMES
 NAMES_HDRS =	minishell.h
