@@ -15,6 +15,7 @@
 int	prompt(t_ms *ms)
 {
 	t_line_blk	*lblk;
+	t_exec_element *exec_list;
 	t_pipe_blk	*pipe_blk_test;
 
 	splash();
@@ -22,9 +23,8 @@ int	prompt(t_ms *ms)
 	printf("Minishell is currently parsing:\n%s\n\n", ms->line);
 	line_parser(ms);
 	lblk = line_blk_array_generator(ms->lines, 2);
-	pipe_blk_test = pipe_blk_alloc(lblk->val[0], lblk->val[1], STDIN_FILENO, STDOUT_FILENO, ms->env);
-	if (!pipe_blk_test)
-		return FAILURE;
+	exec_list = exec_list_generator(lblk, 2, ms->env);
+	pipe_blk_test = exec_list->value;
 	execute_pipe_blk(pipe_blk_test);
 	return (0);
 }
