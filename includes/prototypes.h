@@ -59,6 +59,9 @@ int		execute_command(t_cmd *cmd);
 int		execute_pipe_blk(t_pipe_blk *pipe_blk);
 void	lnk_pipe_blk(t_pipe_blk *pipe_one, t_pipe_blk *pipe_two);
 
+// EXEC_LIST.C
+void	lnk_pipe_blk(t_pipe_blk *pipe_one, t_pipe_blk *pipe_two);
+
 /* PARSER */
 /* LINE_PARSER.C */
 int	line_parser(t_ms *ms);

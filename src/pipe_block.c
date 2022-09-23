@@ -29,6 +29,15 @@ char	**env_to_arrays(t_env **env)
 	return (envp);
 }
 
+void	lnk_pipe_blk(t_pipe_blk *pipe_one, t_pipe_blk *pipe_two)
+{
+	pipe(pipe_one->output_pipe);
+	pipe_two->input_pipe[READ] = pipe_one->output_pipe[READ];
+	pipe_two->input_pipe[WRITE] = pipe_one->output_pipe[WRITE];
+	pipe_one->cmd_two->o_fd = pipe_one->output_pipe[WRITE];
+	pipe_two->cmd_one->i_fd = pipe_two->input_pipe[READ];
+}
+
 // NOTE: INFO
 // cmd_constructor() is the constructor for the type
 // t_cmd, which contains all the data required for execve() to be called.

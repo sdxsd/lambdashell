@@ -12,25 +12,6 @@
 
 #include "../includes/minishell.h"
 
-//              @@@@@@@                    Ommmm.  Ommmm.
-//             @@     @@                   Blessed be UNIX.
-//            @@  ^ ^  @@                  Blessed be the UNIX keepers.
-//            @@   "   @@                  May they look kindly upon
-//             @\  O  /@                   humble petitioners.
-//               '---'
-//            ____| |____                  Ommmm.  Ommmm.
-//           /   |   |   \                 May the poor receive more CPU time.
-//         __| |  \ /  | |__               May Magic crash less often.
-//        /  | |   *   | |  \              May Mercury receive more virtual
-//       /   / |       | \   \             memory space for swapping.
-//      /   / /|==%====|\ \   \
-//     / _O/ / /   _   \ \ \O_ \           Ommmm.  Ommmm.
-//    /  =,_/ /   / \   \ \_,=  \          Blessed be UNIX.
-//   /       /   // \\   \       \         Blessed be the UNIX keepers.
-//  /        \__//   \\__/        \        May they act swiftly and surely
-// /                               \       on these humble requests.
-// #################################
-
 int	prompt(t_ms *ms)
 {
 	t_line_blk	*lblk;

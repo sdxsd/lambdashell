@@ -54,4 +54,5 @@ int	executor(t_exec_element *head)
 		}
 		list = next;
 	}
+	return (SUCCESS);
 }

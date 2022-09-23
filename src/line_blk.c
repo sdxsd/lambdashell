@@ -25,11 +25,26 @@
 //                 .z$$$$$$$$$$$$$$""
 //                .$$$*"^**"  "
 //              =P"  "
-//              BORN  TO  ROYAL
-//                KINGDOM  IS  A  FUCK
-//                   EXECUTE  EM  ALL  1660
-//                      I AM CROWN MAN
-//                          410,757,864,530  GOLD  DUCATS
+//      BORN  TO  ROYAL
+//        KINGDOM  IS  A  FUCK
+//           EXECUTE  EM  ALL  1660
+//              I AM CROWN MAN
+//                  410,757,864,530  GOLD  DUCATS
+
+void	dbg_pline_blks(t_line_blk *line_blks, int n_blocks)
+{
+	int	iter;
+
+	iter = 0;
+	while (iter < n_blocks)
+	{
+		printf("%d: %s\n", iter, line_blks->val[0]);
+		if (line_blks->val[1])
+			printf("%d-1: %s\n", iter, line_blks->val[1]);
+		iter++;
+		line_blks++;
+	}
+}
 
 // NOTE: IMPORTANT
 // This function is terribly temporary. Currently interprets
@@ -56,5 +71,6 @@ t_line_blk *line_blk_array_generator(char **lines, int n_blocks)
 		line_blk[0].val[0] = lines[0];
 		line_blk[0].val[1] = NULL;
 	}
+	dbg_pline_blks(line_blk, n_blocks);
 	return (line_blk);
 }
