@@ -45,16 +45,35 @@ t_exec_element	*new_exec_element(void)
 //
 t_exec_element *assign_exec_element(t_exec_element *element, int type, t_env **env, char **input)
 {
-	element->type = type;
-	if (type == tkn_cmd)
+	if (element->type == tkn_cmd)
 	{
-
+		element->value = cmd_constructor(*input, env);
+		if (!element->value)
+		{
+			msg_err("assign_exec_element()", FAILURE);
+			return (NULL);
+		}
 	}
+	else if (element->type == tkn_pipe)
+	{
+		pipe_blk_alloc(input[0], input[1], STDIN_FILENO, STDOUT_FILENO, env);
+		if (!element->value)
+		{
+			msg_err("assign_exec_element()", FAILURE);
+			return (NULL);
+		}
+	}
+	return (element);
 }
 
 void	dealloc_exec_list(t_exec_element *head)
 {
-
+	if (head->type == tkn_cmd)
+		cmd_deallocator(head->value);
+	if (head->type == tkn_pipe)
+		pipe_blk_dealloc(head->value);
+	dealloc_exec_list(head->next);
+	free(head);
 }
 
 // NOTE: INFO
