@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:37 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/26 22:42:18 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/27 23:12:46 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ int	prompt(t_ms *ms)
 	(void)lblk;
 	cmd = cmd_constructor(lblk->val[0], ms->env);
 	(void)cmd;
-	cmd->args = ft_split("hoi dag=maandag", ' ');
+	cmd->args = ft_split("USER=mik'uipersss TERM=c'o''d'am", ' ');
+	//printf("%s", cmd->args[3]); // segfault @ 3
 	builtin_export(ms, cmd, 1);
 	//execute_command(cmd);
 	//printf("cmd->args: %s\n", ms->lines[1]);

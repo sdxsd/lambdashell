@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 13:35:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/22 19:38:31 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/27 22:09:09 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int		env_get_var_key_idx(t_env **env, char *key);
 char	*env_get_val(t_env **env, char *key);
 int		env_init_idx(t_env **env);
 int		env_edit_var_val(t_env **env, char *key, char *new_val);
+int		env_key_exist(t_env **env, char *key);
 
 /* ENV_CLONE_ENV */
 int	env_var_cloner(t_ms *ms, char *line);
