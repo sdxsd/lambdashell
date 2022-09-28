@@ -6,30 +6,28 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:37 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/27 23:12:46 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/28 15:59:34 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-/*              @@@@@@@                    Ommmm.  Ommmm. */
-/*             @@     @@                   Blessed be UNIX. */
-/*            @@  ^ ^  @@                  Blessed be the UNIX keepers. */
-/*            @@   "   @@                  May they look kindly upon */
-/*             @\  O  /@                   humble petitioners. */
-/*               '---' */
-/*            ____| |____                  Ommmm.  Ommmm. */
-/*           /   |   |   \                 May the poor receive more CPU time. */
-/*         __| |  \ /  | |__               May Magic crash less often. */
-/*        /  | |   *   | |  \              May Mercury receive more virtual */
-/*       /   / |       | \   \             memory space for swapping. */
-/*      /   / /|==%====|\ \   \ */
-/*     / _O/ / /   _   \ \ \O_ \           Ommmm.  Ommmm. */
-/*    /  =,_/ /   / \   \ \_,=  \          Blessed be UNIX. */
-/*   /       /   // \\   \       \         Blessed be the UNIX keepers. */
-/*  /        \__//   \\__/        \        May they act swiftly and surely */
-/* /                               \       on these humble requests. */
-/* ################################# */
+
+
+int	clean_strings(char **dp)
+{
+	size_t	i;
+
+	i = 0;
+	while (dp[i])
+	{
+		free(dp[i]);
+		i++;
+	}
+	free(dp);
+	return (0);
+}
+
 
 int	prompt(t_ms *ms)
 {
@@ -48,6 +46,15 @@ int	prompt(t_ms *ms)
 	cmd->args = ft_split("USER=mik'uipersss TERM=c'o''d'am", ' ');
 	//printf("%s", cmd->args[3]); // segfault @ 3
 	builtin_export(ms, cmd, 1);
+	//clean_strings(cmd->env);
+	
+	clean_strings(cmd->args);
+	free(cmd);
+	clean_strings(ms->lines);
+	//free(ms->line);
+	//clean_strings(ms->lines);
+	//free (cmd);
+	
 	//execute_command(cmd);
 	//printf("cmd->args: %s\n", ms->lines[1]);
 	/*
@@ -62,6 +69,9 @@ int	prompt(t_ms *ms)
 	*/
 	return (0);
 }
+
+
+
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -79,11 +89,7 @@ int	main(int argc, char **argv, char **envp)
 			return (msg_err("init_ms_struct()", FAILURE));
 		if (init_env_struct(ms, envp))
 			return (msg_err("init_env_struct()", FAILURE));
-		while (prompt(ms))
-		{
-
-		}
-		//free (ms->line);
+		prompt(ms);
 		//clean_tokenlist(&ms->tokenlist);
 		//clean_env(ms->env);
 		//free (ms);
