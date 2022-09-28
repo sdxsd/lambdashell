@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/22 16:22:08 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/22 19:45:20 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/28 16:01:17 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 // the shell environment in form of string array.
 // Used in cmd_constructor() to provide the shell env in
 // the correct format for execve()
+// Leaks in this function?
 char	**env_to_arrays(t_env **env)
 {
 	char	**envp;

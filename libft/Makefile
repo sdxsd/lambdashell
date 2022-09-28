@@ -6,7 +6,7 @@
 #    By: mikuiper <mikuiper@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/02/21 15:29:25 by mikuiper      #+#    #+#                  #
-#    Updated: 2022/09/22 19:42:24 by mikuiper      ########   odam.nl          #
+#    Updated: 2022/09/28 15:42:03 by mikuiper      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -86,7 +86,8 @@ SRCS =	ft_atoi.c \
 		ft_sort_array_strings.c \
 		ft_get_n_strings.c \
 		ft_print_until_char.c \
-		ft_free_array_strings.c
+		ft_free_array_strings.c \
+		ft_count_char_occurrence.c
 
 OFILES = $(SRCS:.c=.o)
 INCLUDES = libft.h get_next_line.h ft_printf.h
