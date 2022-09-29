@@ -1,31 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   builtin_env.c                                      :+:    :+:            */
+/*   ft_get_n_strings.c                                 :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/17 21:00:17 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/22 12:24:44 by mikuiper      ########   odam.nl         */
+/*   Created: 2022/09/22 18:41:31 by mikuiper      #+#    #+#                 */
+/*   Updated: 2022/09/22 18:42:13 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-void	builtin_env(t_ms *ms, int fd)
+size_t	ft_get_n_strings(char **lines)
 {
-	t_env	*env;
+	int	i;
 
-	env = *ms->env;
-	while (env)
-	{
-		if (env->key)
-		{
-			ft_putstr_fd(env->key, fd);
-			ft_putstr_fd("=", fd);
-			ft_putstr_fd(env->val, fd);
-			ft_putchar_fd('\n', fd);
-		}
-		env = env->next;
-	}
+	i = 0;
+	while (lines[i])
+		i++;
+	return (i);
 }

@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/17 22:25:48 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/19 14:57:46 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/22 12:20:29 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 [t_cmd object]->args
 */
 
-void	builtin_unset(char **args, t_ms *ms)
+void	builtin_unset(t_ms *ms, char **args)
 {
 	size_t	i;
 

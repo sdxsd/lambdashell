@@ -1,31 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   builtin_env.c                                      :+:    :+:            */
+/*   ft_print_until_char.c                              :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/17 21:00:17 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/22 12:24:44 by mikuiper      ########   odam.nl         */
+/*   Created: 2022/09/22 19:29:13 by mikuiper      #+#    #+#                 */
+/*   Updated: 2022/09/22 19:29:23 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	builtin_env(t_ms *ms, int fd)
+int		ft_print_until_char(char *s, char c)
 {
-	t_env	*env;
+	int		i;
 
-	env = *ms->env;
-	while (env)
-	{
-		if (env->key)
-		{
-			ft_putstr_fd(env->key, fd);
-			ft_putstr_fd("=", fd);
-			ft_putstr_fd(env->val, fd);
-			ft_putchar_fd('\n', fd);
-		}
-		env = env->next;
-	}
+	i = 0;
+	while (s[i] != c && s[i])
+		i++;
+	return (i);
 }

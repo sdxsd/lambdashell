@@ -1,31 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   builtin_env.c                                      :+:    :+:            */
+/*   ft_glue_strings.c                                  :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/17 21:00:17 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/22 12:24:44 by mikuiper      ########   odam.nl         */
+/*   Created: 2022/09/22 16:38:36 by mikuiper      #+#    #+#                 */
+/*   Updated: 2022/09/22 16:38:39 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-void	builtin_env(t_ms *ms, int fd)
+char	*ft_glue_strings(char *s1, char *s2, char glue)
 {
-	t_env	*env;
+	int		i;
+	int		j;
+	char	*s3;
 
-	env = *ms->env;
-	while (env)
+	i = 0;
+	j = 0;
+	s3 = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 2));
+	if (!s3)
+		return (NULL);
+	while (s1[i])
 	{
-		if (env->key)
-		{
-			ft_putstr_fd(env->key, fd);
-			ft_putstr_fd("=", fd);
-			ft_putstr_fd(env->val, fd);
-			ft_putchar_fd('\n', fd);
-		}
-		env = env->next;
+		s3[i] = s1[i];
+		i++;
 	}
+	s3[i] = glue;
+	i++;
+	while (s2[j])
+	{
+		s3[i] = s2[j];
+		i++;
+		j++;
+	}
+	s3[i] = '\0';
+	return (s3);
 }

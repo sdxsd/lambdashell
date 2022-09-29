@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/08 13:46:18 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/18 19:12:40 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/28 15:41:49 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,5 +90,11 @@ void	ft_strcpy(char *dst, char *src);
 int		ft_strpos_charset(char *s, char *charset);
 int		ft_strpos_first_nonalpha(char *s);
 int		ft_ischarset(char c, char *charset);
+char	*ft_glue_strings(char *s1, char *s2, char glue);
+void	ft_sort_array_strings(char **lines);
+size_t	ft_get_n_strings(char **lines);
+int		ft_print_until_char(char *s, char c);
+void	ft_free_array_strings(char **s);
+int		ft_count_char_occurrence(char *s, char c);
 
 #endif
