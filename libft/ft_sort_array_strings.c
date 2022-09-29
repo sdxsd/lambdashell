@@ -1,31 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   builtin_env.c                                      :+:    :+:            */
+/*   ft_sort_array_strings.c                            :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/17 21:00:17 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/22 12:24:44 by mikuiper      ########   odam.nl         */
+/*   Created: 2022/09/22 18:39:22 by mikuiper      #+#    #+#                 */
+/*   Updated: 2022/09/22 18:42:56 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-void	builtin_env(t_ms *ms, int fd)
+void	ft_sort_array_strings(char **lines)
 {
-	t_env	*env;
+	int		i;
+	int		j;
+	int		n_lines;
+	char	*tmp;
 
-	env = *ms->env;
-	while (env)
+	i = 0;
+	n_lines = ft_get_n_strings(lines);
+	while ((i <= n_lines) && (lines[i]))
 	{
-		if (env->key)
+		j = i;
+		j++;
+		while ((j <= n_lines) && lines[j])
 		{
-			ft_putstr_fd(env->key, fd);
-			ft_putstr_fd("=", fd);
-			ft_putstr_fd(env->val, fd);
-			ft_putchar_fd('\n', fd);
+			if (ft_memcmp(lines[i], lines[j], ft_strlen(lines[j])) > 0)
+			{
+				tmp = lines[i];
+				lines[i] = lines[j];
+				lines[j] = tmp;
+			}
+			j++;
 		}
-		env = env->next;
+		i++;
 	}
 }

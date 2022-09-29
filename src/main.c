@@ -6,11 +6,25 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/19 21:20:37 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/20 21:21:15 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/28 15:59:34 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	clean_strings(char **dp)
+{
+	size_t	i;
+
+	i = 0;
+	while (dp[i])
+	{
+		free(dp[i]);
+		i++;
+	}
+	free(dp);
+	return (0);
+}
 
 int	prompt(t_ms *ms)
 {
@@ -19,8 +33,9 @@ int	prompt(t_ms *ms)
 	t_pipe_blk	*pipe_blk_test;
 
 	splash();
-	ms->line = readline("λ :: > ");
-	printf("Minishell is currently parsing:\n%s\n\n", ms->line);
+	//ms->line = readline("λ :: > ");
+	ms->line = ft_strdup("ls | wc");
+	//printf("Minishell is currently parsing:\n%s\n\n", ms->line);
 	line_parser(ms);
 	lblk = line_blk_array_generator(ms->lines, 2);
 	exec_list = exec_list_generator(lblk, 2, ms->env);
@@ -45,11 +60,7 @@ int	main(int argc, char **argv, char **envp)
 			return (msg_err("init_ms_struct()", FAILURE));
 		if (init_env_struct(ms, envp))
 			return (msg_err("init_env_struct()", FAILURE));
-		while (prompt(ms))
-		{
-
-		}
-		//free (ms->line);
+		prompt(ms);
 		//clean_tokenlist(&ms->tokenlist);
 		//clean_env(ms->env);
 		//free (ms);

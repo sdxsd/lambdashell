@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   builtin_env.c                                      :+:    :+:            */
+/*   ft_count_char_occurrence.c                         :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/17 21:00:17 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/22 12:24:44 by mikuiper      ########   odam.nl         */
+/*   Created: 2022/09/28 15:41:29 by mikuiper      #+#    #+#                 */
+/*   Updated: 2022/09/28 15:41:37 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-void	builtin_env(t_ms *ms, int fd)
+int	ft_count_char_occurrence(char *s, char c)
 {
-	t_env	*env;
+	size_t	i;
+	size_t	count;
 
-	env = *ms->env;
-	while (env)
+	i = 0;
+	count = 0;
+	while (s[i])
 	{
-		if (env->key)
+		if (s[i] == c)
 		{
-			ft_putstr_fd(env->key, fd);
-			ft_putstr_fd("=", fd);
-			ft_putstr_fd(env->val, fd);
-			ft_putchar_fd('\n', fd);
+			count++;
 		}
-		env = env->next;
+		i++;
 	}
+	return (count);
 }

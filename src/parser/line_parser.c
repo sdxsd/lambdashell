@@ -6,23 +6,11 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/30 11:47:20 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/21 12:40:48 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/22 18:41:55 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-size_t	get_n_lines(char **lines)
-{
-	int	i;
-
-	i = 0;
-	while (lines[i])
-	{
-		i++;
-	}
-	return (i);
-}
 
 int	line_parser(t_ms *ms)
 {
@@ -36,9 +24,6 @@ int	line_parser(t_ms *ms)
 	ms->lines = line_split_line(ms->line);
 	// Trim lines
 	ms->lines = line_trim_lines(ms->lines);
-
-	int a = get_n_lines(ms->lines);
-	printf("get_n_lines: %d\n", a);
 	return (0);
 }
 

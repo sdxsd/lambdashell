@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 13:35:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/21 11:16:08 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/27 22:09:09 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,11 @@ char	*line_insert_var(char *line, int pos, t_env **env);
 int		line_dollar_presence(char *line);
 
 /* ENV */
+/* ENV_TO_ARRAYS.C */
+char	**env_to_arrays(t_env **env);
+char	**env_vals_to_arrays(t_env **env);
+char	**env_entries_to_arrays(t_env **env);
+
 /* ENV_ADD_VAR.C */
 t_env	*env_create_var(char *key, char *val);
 int		env_add_var(t_ms *ms, t_env *node);
@@ -42,6 +47,7 @@ int		env_get_var_key_idx(t_env **env, char *key);
 char	*env_get_val(t_env **env, char *key);
 int		env_init_idx(t_env **env);
 int		env_edit_var_val(t_env **env, char *key, char *new_val);
+int		env_key_exist(t_env **env, char *key);
 
 /* ENV_CLONE_ENV */
 int	env_var_cloner(t_ms *ms, char *line);
@@ -65,7 +71,7 @@ t_exec_element	*exec_list_generator(t_line_blk *line_blks, int n_blocks, t_env *
 
 /* PARSER */
 /* LINE_PARSER.C */
-int	line_parser(t_ms *ms);
+int		line_parser(t_ms *ms);
 
 /* LINE_SPLIT_INTO_LINES.C */
 size_t	line_get_n_words(char *line);
@@ -88,8 +94,13 @@ int		clean_env(t_env **env);
 /* BUILTINS */
 /* ENV.C */
 void	builtin_env(t_ms *ms, int fd);
-int		builtin_pwd(void);
-void	builtin_unset(char **keys, t_ms *ms);
+int		builtin_pwd(int fd);
+void	builtin_unset(t_ms *ms, char **args);
+void	builtin_echo(t_cmd *cmd_object, int fd);
+int		builtin_export(t_ms *ms, t_cmd *cmd_object, int fd);
+
+/* EXE_BUILTIN.C */
+int	exe_builtin(t_cmd *element, t_ms *ms);
 
 /* tokens_populate_tokenlist.C */
 int		tokens_check_syntax(t_list *tokenlist);

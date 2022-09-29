@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 15:10:00 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/19 15:10:02 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/27 23:15:14 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,17 +136,16 @@ occurring key.
 int	env_edit_var_val(t_env **env, char *key, char *new_val)
 {
 	t_env	*head;
-	int		i;
 
 	head = *env;
-	i = 0;
 	if (!head)
 		return (1);
 	else
 	{
 		while (head->next)
 		{
-			if (!ft_strncmp(head->key, key, ft_strlen(key)))
+			if (!ft_strncmp(head->key, key, ft_strlen(key)) && \
+			ft_strlen(head->key) == ft_strlen(key))
 			{
 				free (head->val);
 				head->val = ft_strdup(new_val);
@@ -155,8 +154,30 @@ int	env_edit_var_val(t_env **env, char *key, char *new_val)
 				return (0);
 			}
 			head = head->next;
-			i++;
 		}
 	}
 	return (1);
+}
+
+/* checks if key exists in environment, used for export builtin */
+
+int	env_key_exist(t_env **env, char *key)
+{
+	t_env	*head;
+
+	head = *env;
+	if (!head)
+		return (1);
+	else
+	{
+		while (head->next)
+		{
+			if (!ft_strncmp(head->key, key, ft_strlen(key)))
+			{
+				return (1);
+			}
+			head = head->next;
+		}
+	}
+	return (0);
 }

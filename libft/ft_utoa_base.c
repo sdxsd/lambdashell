@@ -6,12 +6,11 @@
 /*   By: mkuipers <mkuipers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/11/17 17:43:43 by mkuipers      #+#    #+#                 */
-/*   Updated: 2021/11/19 13:43:00 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/22 16:36:42 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
 
 char	*ft_utoa_base(unsigned long long n, int base)
 {

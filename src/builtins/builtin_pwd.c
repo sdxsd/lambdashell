@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/17 20:59:54 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/17 21:09:46 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/09/22 15:07:34 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,13 @@ POSIX compatible systems. This ensures that the buffer size of pwd
 is always large enough to hold the path.
 */
 
-int	builtin_pwd(void)
+int	builtin_pwd(int fd)
 {
 	char	pwd[_POSIX_PATH_MAX];
 
 	if (getcwd(pwd, _POSIX_PATH_MAX) == NULL)
 		return (1);
-	printf("%s\n", pwd);
+	ft_putstr_fd(pwd, fd);
+	ft_putstr_fd("\n", fd);
 	return (0);
 }
