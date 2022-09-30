@@ -1,34 +1,5 @@
 #include "../includes/minishell.h"
 
-// NOTE: Takes an t_env double pointer and returns
-// the shell environment in form of string array.
-// Used in cmd_constructor() to provide the shell env in
-// the correct format for execve()
-char	**env_to_arrays(t_env **env)
-{
-	char	**envp;
-	t_env	*env_element;
-	int		iter;
-	int		len;
-
-	iter = 0;
-	len = env_len(env);
-	envp = malloc(sizeof(char *) * len);
-	env_element = *env;
-	if (!envp)
-	{
-		msg_err("env_to_arrays()", FAILURE);
-		return (NULL);
-	}
-	while (iter < len)
-	{
-		envp[iter] = env_element->val;
-		env_element = env_element->next;
-		iter++;
-	}
-	return (envp);
-}
-
 void	lnk_pipe_blk(t_pipe_blk *pipe_one, t_pipe_blk *pipe_two)
 {
 	pipe(pipe_one->output_pipe);
