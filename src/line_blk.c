@@ -71,6 +71,6 @@ t_line_blk *line_blk_array_generator(char **lines, int n_blocks)
 		line_blk[0].val[0] = lines[0];
 		line_blk[0].val[1] = NULL;
 	}
-	dbg_pline_blks(line_blk, n_blocks);
+	//dbg_pline_blks(line_blk, n_blocks);
 	return (line_blk);
 }

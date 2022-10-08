@@ -9,7 +9,7 @@ int	free_ptr_array(char *ptr[])
 	iter = 0;
 	while (ptr[iter] != NULL)
 	{
-		free(ptr[iter]);
+		//free(ptr[iter]);
 		iter++;
 	}
 	free(ptr);

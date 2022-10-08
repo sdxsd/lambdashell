@@ -6,7 +6,7 @@
 /*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 13:35:21 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/27 22:09:09 by mikuiper      ########   odam.nl         */
+/*   Updated: 2022/10/08 18:49:10 by mikuiper      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,9 +96,11 @@ int		builtin_pwd(int fd);
 void	builtin_unset(t_ms *ms, char **args);
 void	builtin_echo(t_cmd *cmd_object, int fd);
 int		builtin_export(t_ms *ms, t_cmd *cmd_object, int fd);
+int	builtin_cd(t_cmd *cmd_object, t_ms *ms);
+int	builtin_cd2(char **args, t_ms *ms); // just for testing, couldnt get builtin_cd to work for struct objects
 
 /* EXE_BUILTIN.C */
-int	exe_builtin(t_cmd *element, t_ms *ms);
+int		exe_builtin(t_cmd *element, t_ms *ms);
 
 /* tokens_populate_tokenlist.C */
 int		tokens_check_syntax(t_list *tokenlist);
