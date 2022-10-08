@@ -6,7 +6,7 @@
 #    By: mikuiper <mikuiper@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/09/11 21:25:39 by mikuiper      #+#    #+#                  #
-#    Updated: 2022/09/22 18:43:46 by mikuiper      ########   odam.nl          #
+#    Updated: 2022/10/08 12:10:06 by mikuiper      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,7 @@ NAMES_SRCS =	main.c \
 				builtins/builtin_unset.c \
 				builtins/builtin_echo.c \
 				builtins/builtin_export.c \
+				builtins/builtin_cd.c \
 				misc/cleanup/clean_env.c \
 				misc/cleanup/clean_tokenlist.c \
 				misc/debug/debug_env.c \
