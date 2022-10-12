@@ -26,12 +26,20 @@ int	clean_strings(char **dp)
 	return (0);
 }
 
+static void	dbg_print_lines(char **lines)
+{
+	int	iter;
+
+	iter = 0;
+	while (lines[iter])
+	{
+		printf("%d: %s\n", iter, lines[iter]);
+		iter++;
+	}
+}
+
 int	prompt(t_ms *ms)
 {
-	t_line_blk	*lblk;
-	t_exec_element *exec_list;
-	t_pipe_blk	*pipe_blk_test;
-
 	splash();
 	//ms->line = readline("λ :: > ");
 	ms->line = ft_strdup("cd | cd");
