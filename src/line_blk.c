@@ -49,28 +49,27 @@ void	dbg_pline_blks(t_line_blk *line_blks, int n_blocks)
 // NOTE: IMPORTANT
 // This function is terribly temporary. Currently interprets
 // bloody everything as either a command or a pipe_blk.
-t_line_blk *line_blk_array_generator(char **lines, int n_blocks)
-{
-	t_line_blk	*line_blk;
-
-	line_blk = malloc(sizeof(t_line_blk) * n_blocks);
-	if (!line_blk)
-	{
-		msg_err("line_blk_array_generator()", FAILURE);
-		return (NULL);
-	}
-	if (n_blocks == 2)
-	{
-		line_blk[0].type = tkn_pipe;
-		line_blk[0].val[0] = lines[0];
-		line_blk[0].val[1] = lines[1];
-	}
-	else
-	{
-		line_blk[0].type = tkn_cmd;
-		line_blk[0].val[0] = lines[0];
-		line_blk[0].val[1] = NULL;
-	}
-	//dbg_pline_blks(line_blk, n_blocks);
-	return (line_blk);
-}
+/* t_line_blk	*line_blk_array_generator(t_list *token_list, int n_blocks) */
+/* { */
+/* 	t_line_blk	*line_blk; */
+/* 	line_blk = malloc(sizeof(t_line_blk) * n_blocks); */
+/* 	if (!line_blk) */
+/* 	{ */
+/* 		msg_err("line_blk_array_generator()", FAILURE); */
+/* 		return (NULL); */
+/* 	} */
+	/* if (n_blocks == 2) */
+	/* { */
+	/* 	line_blk[0].type = tkn_pipe; */
+	/* 	line_blk[0].val[0] = lines[0]; */
+	/* 	line_blk[0].val[1] = lines[1]; */
+	/* } */
+	/* else */
+	/* { */
+	/* 	line_blk[0].type = tkn_cmd; */
+	/* 	line_blk[0].val[0] = lines[0]; */
+	/* 	line_blk[0].val[1] = NULL; */
+	/* } */
+/* 	dbg_pline_blks(line_blk, n_blocks); */
+/* 	return (line_blk); */
+/* } */
