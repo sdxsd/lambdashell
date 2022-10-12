@@ -72,7 +72,7 @@ typedef struct	s_cmd
 // | cmd_one -> cmd_two | -> stdout
 // +--------------------+
 // +--------------------+    +------------------+
-// | cmd_one -> cmd_two | -> | OTHER PIPE blk |
+// | cmd_one -> cmd_two | -> | OTHER PIPE blk   |
 // +--------------------+    +------------------+
 // +--------------------+
 // | cmd_one -> cmd_two | -> /something/example.file

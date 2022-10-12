@@ -26,21 +26,24 @@ int	clean_strings(char **dp)
 	return (0);
 }
 
+static void	dbg_print_lines(char **lines)
+{
+	int	iter;
+
+	iter = 0;
+	while (lines[iter])
+	{
+		printf("%d: %s\n", iter, lines[iter]);
+		iter++;
+	}
+}
+
 int	prompt(t_ms *ms)
 {
-	t_line_blk	*lblk;
-	t_exec_element *exec_list;
-	t_pipe_blk	*pipe_blk_test;
-
 	splash();
-	//ms->line = readline("λ :: > ");
-	ms->line = ft_strdup("ls | wc");
-	//printf("Minishell is currently parsing:\n%s\n\n", ms->line);
+	ms->line = readline("λ :: > ");
 	line_parser(ms);
-	lblk = line_blk_array_generator(ms->lines, 2);
-	exec_list = exec_list_generator(lblk, 2, ms->env);
-	pipe_blk_test = exec_list->value;
-	execute_pipe_blk(pipe_blk_test);
+	dbg_print_lines(ms->lines);
 	return (0);
 }
 
