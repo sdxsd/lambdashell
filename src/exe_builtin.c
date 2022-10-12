@@ -29,13 +29,13 @@ Your shell must implement the following builtins:
 int	exe_builtin(t_cmd *cmd_object, t_ms *ms)
 {
 	if (ft_strcmp(cmd_object->args[0], "echo") == 0)
-		builtin_echo(cmd_object->args, ms);
+		builtin_echo(cmd_object, STDOUT_FILENO);
 	else if (ft_strcmp(cmd_object->args[0], "env") == 0)
 		builtin_env(ms, 1); // fd = 1
 	else if (ft_strcmp(cmd_object->args[0], "pwd") == 0)
 		builtin_pwd(1); // fd = 1
 	else if (ft_strcmp(cmd_object->args[0], "unset") == 0)
-		builtin_unset(cmd_object->args, ms);
+		builtin_unset(ms, cmd_object->args);
 
 	// to add: exit, export, cd. Each of which still needs to be made.
 	return (0);
