@@ -41,22 +41,8 @@ static void	dbg_print_lines(char **lines)
 int	prompt(t_ms *ms)
 {
 	splash();
-	//ms->line = readline("λ :: > ");
-	ms->line = ft_strdup("cd | cd");
-	//printf("Minishell is currently parsing:\n%s\n\n", ms->line);
+	ms->line = readline("λ :: > ");
 	line_parser(ms);
-	lblk = line_blk_array_generator(ms->lines, 2);
-	exec_list = exec_list_generator(lblk, 2, ms->env);
-	pipe_blk_test = exec_list->value;
-	//execute_pipe_blk(pipe_blk_test);
-	(void)pipe_blk_test;
-	char **fake_cmd1;
-	fake_cmd1 = ft_split("cd /home/mkuipers/Desktop", ' ');
-	builtin_cd2(fake_cmd1, ms);
-	printf("processed builtin_cd2()\n");
-	char s[100];
-	printf("%s\n", getcwd(s, 100));
-	return (0);
 }
 
 int	main(int argc, char **argv, char **envp)
