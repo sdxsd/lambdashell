@@ -54,7 +54,7 @@ int	check_type(char *line, t_env **env)
 		return (tkn_cmd);
 }
 
-t_list	*tokenizer(t_ms *shell)
+t_exec_element	*tokenizer(t_ms *shell)
 {
 	t_exec_element 	*exec_list;
 	t_exec_element	*prev;
@@ -79,6 +79,9 @@ t_list	*tokenizer(t_ms *shell)
 			free_exec_list(exec_list);
 			return (NULL);
 		}
+		curr->type = check_type(shell->lines[1], shell->env);
+		prev->next = curr;
+		prev = curr;
 		iter++;
 	}
 	return (exec_list);
