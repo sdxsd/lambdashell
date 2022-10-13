@@ -12,6 +12,7 @@
 
 #include "../includes/minishell.h"
 
+// NOTE: Returns TRUE if input is a builtin.
 int	is_builtin(char *line)
 {
 	if (!ft_strncmp(line, "cd", ft_strlen(line)) || \
@@ -25,7 +26,7 @@ int	is_builtin(char *line)
 		return (FALSE);
 }
 
-// NOTE: Returns TRUE if input is a command
+// NOTE: Returns TRUE if input is a command.
 int	is_command(char *line, t_env **env)
 {
 	char	**split_line;
@@ -45,15 +46,21 @@ int	is_command(char *line, t_env **env)
 	}
 }
 
-int	check_type(char *line)
+int	check_type(char *line, t_env **env)
 {
-
+	if (is_builtin(line) == TRUE)
+		return (tkn_bltin);
+	else if (is_command(line, env) == TRUE)
+		return (tkn_cmd);
 }
 
-t_list	*tokenizer(char	**lines, t_env **env)
+t_list	*tokenizer(t_ms *shell)
 {
 	t_list	*token_list;
 
+	while (shell->lines)
+	{
 
+	}
 	return (token_list);
 }

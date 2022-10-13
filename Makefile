@@ -27,9 +27,10 @@ DIR_LIB_FT =		libft
 
 # SOURCE NAMES
 NAMES_SRCS =	main.c \
-				commands.c \
-				path.c \
-				pipe_block.c \
+				exec/path.c \
+				exec/cmd.c \
+				exec/exec.c \
+				exec/exec_list.c \
 				expander/line_expander.c \
 				builtins/builtin_env.c \
 				builtins/builtin_pwd.c \
@@ -37,16 +38,14 @@ NAMES_SRCS =	main.c \
 				builtins/builtin_echo.c \
 				builtins/builtin_export.c \
 				builtins/builtin_cd.c \
-				misc/cleanup/clean_env.c \
-				misc/cleanup/clean_tokenlist.c \
-				misc/debug/debug_env.c \
-				misc/debug/debug_tokenlist.c \
-				misc/splash.c \
-				misc/error.c \
-				misc/colors.c \
-				misc/check_fd.c \
+				dealloc/clean_env.c \
+				dealloc/clean_tokenlist.c \
+				debug/debug_env.c \
+				cosmetic/splash.c \
+				error/error.c \
+				cosmetic/colors.c \
+				checks/check_fd.c \
 				tokenizer/tokens_tools.c \
-				tokenizer/tokens.c \
 				parser/line_parser.c \
 				parser/line_split_into_lines.c \
 				parser/line_parser_checks.c \
@@ -56,10 +55,7 @@ NAMES_SRCS =	main.c \
 				env/env_to_arrays.c \
 				env/env_add_var.c \
 				env/env_clone_env.c \
-				env/env_tools.c \
-				line_blk.c \
-				exec.c \
-				exec_list.c
+				env/env_tools.c
 
 # HEADER NAMES
 NAMES_HDRS =	minishell.h
@@ -107,13 +103,14 @@ make_obj_dirs:
 	@mkdir -p $(DIR_OBJ)/env
 	@mkdir -p $(DIR_OBJ)/expander
 	@mkdir -p $(DIR_OBJ)/tokenizer
-	@mkdir -p $(DIR_OBJ)/executor
+	@mkdir -p $(DIR_OBJ)/exec
 	@mkdir -p $(DIR_OBJ)/parser
 	@mkdir -p $(DIR_OBJ)/error
 	@mkdir -p $(DIR_OBJ)/init
-	@mkdir -p $(DIR_OBJ)/misc
-	@mkdir -p $(DIR_OBJ)/misc/cleanup
-	@mkdir -p $(DIR_OBJ)/misc/debug
+	@mkdir -p $(DIR_OBJ)/dealloc
+	@mkdir -p $(DIR_OBJ)/debug
+	@mkdir -p $(DIR_OBJ)/cosmetic
+	@mkdir -p $(DIR_OBJ)/checks
 
 clean:
 	@rm -rf $(DIR_OBJ)

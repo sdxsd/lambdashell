@@ -16,26 +16,6 @@ int	execute_command(t_cmd *cmd)
 	return (SUCCESS);
 }
 
-int	execute_pipe_blk(t_pipe_blk *pipe_blk)
-{
-	int	pid;
-
-	pid = fork();
-	if (pid == FORK_FAILURE)
-		return (msg_err("execute_pipe_blk()", FAILURE));
-	if (pid == FORK_CHILD)
-	{
-		close(pipe_blk->internal_pipe[WRITE]);
-		if (execute_command(pipe_blk->cmd_two))
-			exit (msg_err("execute_pipe_blk()", -1));
-	}
-	close(pipe_blk->internal_pipe[READ]);
-	if (execute_command(pipe_blk->cmd_one))
-		exit (msg_err("execute_pipe_blk()", -1));
-	waitpid(pid, NULL, 1);
-	return (SUCCESS);
-}
-
 int	executor(t_exec_element *head)
 {
 	t_exec_element	*list;
@@ -47,10 +27,6 @@ int	executor(t_exec_element *head)
 		if (list->type == tkn_pipe)
 		{
 			next = list->next;
-			if (next->type == tkn_pipe)
-			{
-				lnk_pipe_blk((t_pipe_blk *)list->value, (t_pipe_blk *)next->value);
-			}
 		}
 		list = next;
 	}

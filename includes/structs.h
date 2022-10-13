@@ -34,6 +34,7 @@ typedef struct s_ms
 typedef enum	e_token_type
 {
 	tkn_str,
+	tkn_bltin,
 	tkn_cmd,
 	tkn_read,
 	tkn_write,
@@ -65,31 +66,6 @@ typedef struct	s_cmd
 	char	**env;
 	char	*path;
 }	t_cmd;
-
-// NOTE:
-//      PIPE BLK
-// +--------------------+
-// | cmd_one -> cmd_two | -> stdout
-// +--------------------+
-// +--------------------+    +------------------+
-// | cmd_one -> cmd_two | -> | OTHER PIPE blk   |
-// +--------------------+    +------------------+
-// +--------------------+
-// | cmd_one -> cmd_two | -> /something/example.file
-// +--------------------+
-// ALLOCATOR   : pipe_blk_alloc()
-// DEALLOCATOR : pipe_blk_dealloc()
-
-typedef struct	s_pipe_blk
-{
-	int		i_fd;
-	int		o_fd;
-	int		internal_pipe[2];
-	int		input_pipe[2];
-	int		output_pipe[2];
-	t_cmd	*cmd_one;
-	t_cmd	*cmd_two;
-}				t_pipe_blk;
 
 // NOTE:
 //    EXECUTION LIST
@@ -125,17 +101,5 @@ typedef struct s_exec_element
 	void	*value;
 	void	*next;
 }	t_exec_element;
-
-// NOTE:
-//     LINE BLK
-// The line block contains a type specifier
-// and an array of two strings.
-// In all cases save for type denoting a pipe_blk the second string is null.
-
-typedef struct s_line_blk
-{
-	int type;
-	char *val[2];
-}	t_line_blk;
 
 #endif
