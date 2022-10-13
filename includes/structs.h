@@ -43,12 +43,6 @@ typedef enum	e_token_type
 	tkn_append
 }	t_token_type;
 
-typedef struct s_token
-{
-	t_token_type	type;
-	char			*val;
-}	t_token;
-
 /*
  * NOTE:
  *                     +-----+
@@ -60,6 +54,7 @@ typedef struct s_token
 
 typedef struct	s_cmd
 {
+	int		ret;
 	int		i_fd;
 	int		o_fd;
 	char	**args;
@@ -98,6 +93,7 @@ typedef struct	s_cmd
 typedef struct s_exec_element
 {
 	int		type;
+	char	*line;
 	void	*value;
 	void	*next;
 }	t_exec_element;
