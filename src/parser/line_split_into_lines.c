@@ -122,12 +122,21 @@ char	**line_split_line(char *line)
 	char	**lines;
 
 	if (!line)
-		return (0);
+	{
+		msg_err("line_split_line()", FAILURE);
+		return (NULL);
+	}
 	lines = malloc ((line_get_n_words(line) + 1) * sizeof(char *));
 	if (!lines)
-		return (0);
+	{
+		msg_err("line_split_line()", FAILURE);
+		return (NULL);
+	}
 	lines = line_split_line_helper(lines, line);
 	if (!lines)
-		return (0);
+	{
+		msg_err("line_split_line()", FAILURE);
+		return (NULL);
+	}
 	return (lines);
 }
