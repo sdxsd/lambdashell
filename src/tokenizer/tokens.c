@@ -56,11 +56,30 @@ int	check_type(char *line, t_env **env)
 
 t_list	*tokenizer(t_ms *shell)
 {
-	t_list	*token_list;
+	t_exec_element 	*exec_list;
+	t_exec_element	*prev;
+	t_exec_element	*curr;
+	int				iter;
 
-	while (shell->lines)
+	iter = 1;
+	exec_list = malloc(sizeof(t_exec_element));
+	if (!exec_list)
 	{
-
+		msg_err("tokenizer()", FAILURE);
+		return (NULL);
 	}
-	return (token_list);
+	exec_list->type = check_type(shell->lines[0], shell->env);
+	prev = exec_list;
+	while (shell->lines[iter])
+	{
+		curr = malloc(sizeof(t_exec_element));
+		if (!curr)
+		{
+			msg_err("tokenizer()", FAILURE);
+			free_exec_list(exec_list);
+			return (NULL);
+		}
+		iter++;
+	}
+	return (exec_list);
 }
