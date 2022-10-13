@@ -33,6 +33,10 @@ size_t	line_get_n_words(char *line)
 		}
 		else if (line[i] && line[i] == '|')
 			words++;
+		else if (line[i] && line[i] == '>')
+			words++;
+		else if (line[i] && line[i] == '<')
+			words++;
 		i++;
 	}
 	return (words);
@@ -58,6 +62,10 @@ size_t	line_get_line_len(char *line, size_t i)
 				len++;
 		}
 		else if ((line[i + len]) && line[i + len] == '|')
+			return (len);
+		else if ((line[i + len]) && line[i + len] == '>')
+			return (len);
+		else if ((line[i + len]) && line[i + len] == '<')
 			return (len);
 		len++;
 	}

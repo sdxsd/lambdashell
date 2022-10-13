@@ -12,19 +12,35 @@
 
 #include "../includes/minishell.h"
 
-int	clean_strings(char **dp)
-{
-	size_t	i;
-
-	i = 0;
-	while (dp[i])
-	{
-		free(dp[i]);
-		i++;
-	}
-	free(dp);
-	return (0);
-}
+// NOTE: (implementation detail) God Save the King
+//              z   $b$$F
+//             F"  4$$P"
+//              r *$$$".c...
+//              %-4$$$$$$$$"
+//               J$*$$$$$$P
+//              ^r4$$$$$$"
+//                *f*$$*"
+//              ".4 *$$$$$$.
+//        4ee%.e.  .$$$$$$$$r DIEU ET MON DROIT
+//       4$$$$$$b  P$**)$$$$b REX ANGLIAE DEI GRATIA
+//    e..4$$$$$$$"     $$$$$$c.
+//    3$$$$$$$$*"   "  ^"$$$$$$c
+//   *$$$$$$$$$.        *$$$$$$$.
+//    ..$$$$$$$L    c ..J$$$$$$$b
+//    d"$$$$$$$F   .@$$$$$$$$$$$P"..
+// ..$$$$$$$$$$      d$$$$$$$$$$$$$$$
+// =$$$$$$P"" "    .e$$$$$$$$$$$$$$$$
+//   *""          $**$$$$$$$$$$$$$$*
+//                    "".$$$$$$$$$C .
+//                 .z$$$$$$$$$$$$$$""
+//                .$$$*"^**"  "
+//              =P"  "
+//      BORN  TO  ROYAL
+//        KINGDOM  IS  A  FUCK
+//           EXECUTE  EM  ALL  1660
+//              I AM CROWN MAN
+//                  410,757,864,530  GOLD  DUCATS
+//
 
 static void	dbg_print_lines(char **lines)
 {
@@ -43,6 +59,8 @@ int	prompt(t_ms *ms)
 	splash();
 	ms->line = readline("λ :: > ");
 	line_parser(ms);
+	dbg_print_lines(ms->lines);
+	return (SUCCESS);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -69,21 +87,3 @@ int	main(int argc, char **argv, char **envp)
 	}
 	return (msg_err("Please do not provide any arguments.", 1));
 }
-
-/*
-while (TRUE)
-{
-	color_orange();
-	printf("λ :: > ");
-	color_reset();
-	ms->line = readline("");
-	if (ms->line == NULL)
-		break ;
-	if (ms->line[0] != 0)
-	{
-		add_history(ms->line);
-		line_parser(ms);
-		printf("result: %s\n", ms->line);
-	}
-}
-*/

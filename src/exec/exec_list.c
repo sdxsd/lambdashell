@@ -55,16 +55,16 @@ t_exec_element *assign_exec_element(t_exec_element *element, int type, t_env **e
 			return (NULL);
 		}
 	}
-	else if (element->type == tkn_pipe)
-	{
-		element->value = pipe_blk_alloc(input[0], input[1], STDIN_FILENO, STDOUT_FILENO, env);
-		if (!element->value)
-		{
-			printf("input[0]: %s input[1]: %s\n", input[0], input[1]);
-			msg_err("assign_exec_element()", FAILURE);
-			return (NULL);
-		}
-	}
+	/* TODO: Write new code here. */
+	/* else if (element->type == tkn_pipe) */
+	/* { */
+	/* 	if (!element->value) */
+	/* 	{ */
+	/* 		printf("input[0]: %s input[1]: %s\n", input[0], input[1]); */
+	/* 		msg_err("assign_exec_element()", FAILURE); */
+	/* 		return (NULL); */
+	/* 	} */
+	/* } */
 	return (element);
 }
 
@@ -72,8 +72,6 @@ void	dealloc_exec_list(t_exec_element *head)
 {
 	if (head->type == tkn_cmd)
 		cmd_deallocator(head->value);
-	if (head->type == tkn_pipe)
-		pipe_blk_dealloc(head->value);
 	if (head->next)
 		dealloc_exec_list(head->next);
 	free(head);
@@ -86,7 +84,7 @@ void	dealloc_exec_list(t_exec_element *head)
 // Each element contains a type, for example, cmd or pipe_blk.
 // Then a pointer to an equivalent struct, i.e. t_cmd, or t_pipe_blk.
 // Finally a pointer to the next element in the list.
-t_exec_element	*exec_list_generator(t_line_blk *line_blks, int n_blocks, t_env **env)
+t_exec_element	*exec_list_generator(t_exec_element *line_blks, int n_blocks, t_env **env)
 {
 	t_exec_element	*head;
 	t_exec_element	*curr_element;
@@ -102,7 +100,7 @@ t_exec_element	*exec_list_generator(t_line_blk *line_blks, int n_blocks, t_env *
 	curr_element = head;
 	while (iter < n_blocks)
 	{
-		assign_exec_element(curr_element, line_blks->type, env, line_blks->val);
+		assign_exec_element(curr_element, line_blks->type, env, line_blks->value);
 		iter++;
 		line_blks++;
 		curr_element->next = new_exec_element();
