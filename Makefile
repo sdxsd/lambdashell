@@ -39,7 +39,6 @@ NAMES_SRCS =	main.c \
 				builtins/builtin_export.c \
 				builtins/builtin_cd.c \
 				dealloc/clean_env.c \
-				dealloc/clean_tokenlist.c \
 				debug/debug_env.c \
 				cosmetic/splash.c \
 				error/error.c \
