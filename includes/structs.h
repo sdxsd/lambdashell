@@ -26,7 +26,6 @@ typedef struct	s_env
 typedef struct s_ms
 {
 	char	*line;
-	t_list	*tokenlist;
 	t_env	**env;
 	char	**lines;
 }	t_ms;
