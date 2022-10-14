@@ -33,10 +33,6 @@ size_t	line_get_n_words(char *line)
 		}
 		else if (line[i] && line[i] == '|')
 			words++;
-		else if (line[i] && line[i] == '>')
-			words++;
-		else if (line[i] && line[i] == '<')
-			words++;
 		i++;
 	}
 	return (words);
@@ -63,10 +59,6 @@ size_t	line_get_line_len(char *line, size_t i)
 		}
 		else if ((line[i + len]) && line[i + len] == '|')
 			return (len);
-		else if ((line[i + len]) && line[i + len] == '>')
-			return (len);
-		else if ((line[i + len]) && line[i + len] == '<')
-			return (len);
 		len++;
 	}
 	return (len);
@@ -87,7 +79,10 @@ char	**line_split_line_helper(char **lines, char *line)
 		j = 0;
 		lines[i] = malloc(sizeof(char) * (line_get_line_len(line, start) + 1));
 		if (!lines[i])
+		{
+			msg_err("line_split_line_helper()", FAILURE);
 			return (0);
+		}
 		while (line[start + j] && (j < line_get_line_len(line, start)))
 		{
 			lines[i][j] = line[start + j];
