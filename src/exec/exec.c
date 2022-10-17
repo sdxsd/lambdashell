@@ -20,14 +20,23 @@ int	executor(t_exec_element *head)
 {
 	t_exec_element	*list;
 	t_exec_element	*next;
+	int				ret;
 
 	list = head;
 	if (!list->next)
 	{
-		if (list->type == tkn_cmd)
+		ret = fork();
+		if (ret == FORK_FAILURE)
+			return (msg_err("executor()", FAILURE));
+		if (ret == FORK_CHILD)
 		{
-			execute_command(list->value);
+			if (list->type == tkn_cmd)
+			{
+				execute_command(list->value);
+			}
 		}
+		waitpid(ret, NULL, 1);
+		return (SUCCESS);
 	}
 	while (list->next)
 	{

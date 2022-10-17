@@ -61,21 +61,19 @@ int	main(int argc, char **argv, char **envp)
 
 	if (argc == 1 && argv)
 	{
-		//global_sig = 0;
 		if (check_fd())
-			return (msg_err("fd problem()", FAILURE));
+			return (msg_err("main()", FAILURE));
 		ms = ft_calloc(1, sizeof(t_ms));
 		if (!ms)
-			return (1);
+			return (msg_err("main()", FAILURE));
 		if (init_ms_struct(ms))
-			return (msg_err("init_ms_struct()", FAILURE));
+			return (msg_err("main()", FAILURE));
 		if (init_env_struct(ms, envp))
-			return (msg_err("init_env_struct()", FAILURE));
-		prompt(ms);
-		//clean_tokenlist(&ms->tokenlist);
-		//clean_env(ms->env);
-		//free (ms);
-		return (0);
+			return (msg_err("main()", FAILURE));
+		while (TRUE)
+		{
+			prompt(ms);
+		}
 	}
-	return (msg_err("Please do not provide any arguments.", 1));
+	return (FAILURE);
 }
