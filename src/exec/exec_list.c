@@ -70,23 +70,12 @@ void	dealloc_exec_list(t_exec_element *head)
 // Finally a pointer to the next element in the list.
 t_exec_element	*exec_list_generator(t_exec_element *head, t_env **env)
 {
-	t_exec_element	*head;
 	t_exec_element	*curr_element;
-	int				iter;
 
-	iter = 0;
 	curr_element = head;
-	while (iter < n_blocks)
+	while (curr_element->next)
 	{
-		assign_exec_element(curr_element, line_blks->type, env, line_blks->value);
-		iter++;
-		line_blks++;
-		curr_element->next = new_exec_element();
-		if (!curr_element->next)
-		{
-			msg_err("exec_list_generator()", FAILURE);
-			dealloc_exec_list(head);
-		}
+		assign_exec_element(curr_element, env);
 		curr_element = curr_element->next;
 	}
 	return (head);
