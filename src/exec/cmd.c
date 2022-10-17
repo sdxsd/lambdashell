@@ -22,25 +22,20 @@ t_cmd	*cmd_constructor(char *prog_n_args, t_env **env)
 
 	cmd = malloc(sizeof(t_cmd));
 	if (!cmd)
-	{
-		msg_err("cmd_constructor()", FAILURE);
-		return (NULL);
-	}
+		return (null_msg_err("cmd_constructor()"));
 	cmd->i_fd = STDIN_FILENO;
 	cmd->o_fd = STDOUT_FILENO;
 	cmd->args = ft_split(prog_n_args, ' ');
 	if (!cmd->args)
 	{
 		cmd_deallocator(cmd);
-		msg_err("cmd_constructor()", FAILURE);
-		return (NULL);
+		return (null_msg_err("cmd_constructor()"));
 	}
 	cmd->env = env_to_arrays(env);
 	if (!cmd->env)
 	{
 		cmd_deallocator(cmd);
-		msg_err("cmd_constructor()", FAILURE);
-		return (NULL);
+		return (null_msg_err("cmd_constructor()"));
 	}
 	cmd->path = get_path(cmd->args[0], env);
 	if (!cmd->path)
