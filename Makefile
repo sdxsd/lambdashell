@@ -31,6 +31,7 @@ NAMES_SRCS =	main.c \
 				exec/cmd.c \
 				exec/exec.c \
 				exec/exec_list.c \
+				tokenizer/tokens.c \
 				expander/line_expander.c \
 				builtins/builtin_env.c \
 				builtins/builtin_pwd.c \
@@ -39,7 +40,9 @@ NAMES_SRCS =	main.c \
 				builtins/builtin_export.c \
 				builtins/builtin_cd.c \
 				dealloc/clean_env.c \
+				dealloc/dealloc_exec_list.c \
 				debug/debug_env.c \
+				debug/debug_print.c \
 				cosmetic/splash.c \
 				error/error.c \
 				cosmetic/colors.c \

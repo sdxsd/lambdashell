@@ -15,15 +15,26 @@
 // NOTE: Returns TRUE if input is a builtin.
 int	is_builtin(char *line)
 {
-	if (!ft_strncmp(line, "cd", ft_strlen(line)) || \
-		!ft_strncmp(line, "echo", ft_strlen(line)) || \
-		!ft_strncmp(line, "env", ft_strlen(line)) || \
-		!ft_strncmp(line, "export", ft_strlen(line)) || \
-		!ft_strncmp(line, "pwd", ft_strlen(line)) || \
-		!ft_strncmp(line, "unset", ft_strlen(line)))
+	char	**split_line;
+
+	split_line = ft_split(line, ' ');
+	if (!split_line)
+		return (msg_err("is_builtin()", FAILURE));
+	if (!ft_strncmp(split_line[0], "cd", ft_strlen(split_line[0])) || \
+		!ft_strncmp(split_line[0], "echo", ft_strlen(split_line[0])) || \
+		!ft_strncmp(split_line[0], "env", ft_strlen(split_line[0])) || \
+		!ft_strncmp(split_line[0], "export", ft_strlen(split_line[0])) || \
+		!ft_strncmp(split_line[0], "pwd", ft_strlen(split_line[0])) || \
+		!ft_strncmp(split_line[0], "unset", ft_strlen(split_line[0])))
+	{
+		free_ptr_array(split_line);
 		return (TRUE);
+	}
 	else
+	{
+		free_ptr_array(split_line);
 		return (FALSE);
+	}
 }
 
 // NOTE: Returns TRUE if input is a command.
@@ -53,6 +64,8 @@ int	check_type(char *line, t_env **env)
 		return (tkn_bltin);
 	else if (is_command(line, env) == TRUE)
 		return (tkn_cmd);
+	else
+		return (-1);
 }
 
 t_exec_element	*tokenizer(t_ms *shell)
@@ -67,6 +80,9 @@ t_exec_element	*tokenizer(t_ms *shell)
 	if (!exec_list)
 		return (null_msg_err("tokenizer()"));
 	exec_list->type = check_type(shell->lines[0], shell->env);
+	exec_list->next = NULL;
+	exec_list->value = NULL;
+	exec_list->line = shell->lines[0];
 	prev = exec_list;
 	while (shell->lines[iter])
 	{
@@ -76,7 +92,10 @@ t_exec_element	*tokenizer(t_ms *shell)
 			free_exec_list(exec_list);
 			return (null_msg_err("tokenizer()"));
 		}
+		curr->next = NULL;
 		curr->type = check_type(shell->lines[1], shell->env);
+		curr->line = shell->lines[iter];
+		curr->value = NULL;
 		prev->next = curr;
 		prev = curr;
 		iter++;
