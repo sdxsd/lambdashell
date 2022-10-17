@@ -83,7 +83,6 @@ typedef struct	s_cmd
 //                    redirection
 // (void *value) -> structure of the element
 //                  i.e. t_cmd
-//                       t_pipe_blk
 // (void *next)  -> next token element in the list.
 
 // ALLOCATOR   : execution_list_generator();

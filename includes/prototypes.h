@@ -95,24 +95,18 @@ int		builtin_pwd(int fd);
 void	builtin_unset(t_ms *ms, char **args);
 void	builtin_echo(t_cmd *cmd_object, int fd);
 int		builtin_export(t_ms *ms, t_cmd *cmd_object, int fd);
-int	builtin_cd(t_cmd *cmd_object, t_ms *ms);
-int	builtin_cd2(char **args, t_ms *ms); // just for testing, couldnt get builtin_cd to work for struct objects
+int		builtin_cd(t_cmd *cmd_object, t_ms *ms);
+int		builtin_cd2(char **args, t_ms *ms); // just for testing, couldnt get builtin_cd to work for struct objects
 
 /* EXE_BUILTIN.C */
 int		exe_builtin(t_cmd *element, t_ms *ms);
 
+/* DEALLOC/DEALLOC_EXEC_LIST.C */
+void	free_exec_list(t_exec_element *head);
+
 /* tokens_populate_tokenlist.C */
 int		tokens_check_syntax(t_list *tokenlist);
 void	tokens_add_types(t_list *tokenlist);
-
-/* MAKE_TOKENLIST */
-int		tokens_make_and_add(char *token, t_list **tokens);
-//int		tokens_populate_tokenlist(char *line, t_list **tokens);
-int		tokens_populate_tokenlist(char **lines, t_list **tokens);
-int		tokens_get_pipe_blk_len(t_list *tokenlist);
-t_list	*make_token_blks_list(t_list **tokenlist);
-char	**get_tokens_array(t_list *tokenlist);
-int		tokens_make_and_add_token_blk(t_list **pipe_blk_list, char **token_array);
 
 /* PIPE_BLK.C */
 t_cmd		*cmd_constructor(char *prog_n, t_env **env);
