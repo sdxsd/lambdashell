@@ -42,24 +42,16 @@
 //                  410,757,864,530  GOLD  DUCATS
 //
 
-static void	dbg_print_lines(char **lines)
-{
-	int	iter;
-
-	iter = 0;
-	while (lines[iter])
-	{
-		printf("%d: %s\n", iter, lines[iter]);
-		iter++;
-	}
-}
-
 int	prompt(t_ms *ms)
 {
+	t_exec_element *exec_list;
+
 	splash();
 	ms->line = readline("λ :: > ");
 	line_parser(ms);
 	dbg_print_lines(ms->lines);
+	exec_list = tokenizer(ms);
+	dbg_print_exec_list(exec_list);
 	return (SUCCESS);
 }
 

@@ -61,6 +61,9 @@ int		env_del_var(t_env **env, char *key);
 int		msg_err(char *s, int ret);
 void	*null_msg_err(char *s);
 
+/* TOKENS.C */
+t_exec_element	*tokenizer(t_ms *shell);
+
 /* EXEC.C */
 int		execute_command(t_cmd *cmd);
 
@@ -122,10 +125,9 @@ int		debug_print_env(t_ms *ms);
 int		debug_print_env_idx(t_ms *ms);
 int		debug_print_env_keys(t_ms *ms);
 
-/* DEBUG_TOKENLIST.C */
-int		debug_print_tokens_val(t_list **tokenlist);
-int		debug_print_tokens(t_list **tokenlist);
-int		debug_print_token_blks_list(t_list *token_blks_list);
+/* DEBUG/DEBUG_PRINT.C */
+void	dbg_print_exec_list(t_exec_element *head);
+void	dbg_print_lines(char **lines);
 
 /* MISC */
 /* CHECK_FD.C */
