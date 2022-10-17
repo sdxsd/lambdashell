@@ -17,7 +17,6 @@ int	init_env_struct(t_ms *ms, char **envp)
 	int	i;
 
 	ms->env = ft_calloc(1, sizeof(t_env));
-	ms->tokenlist = ft_calloc(1, sizeof(t_list));
 	i = 0;
 	while (envp[i])
 	{

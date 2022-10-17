@@ -19,7 +19,7 @@
 /* 		if (curr->val[0] == '<' && curr->val[1] == '<') */
 /* 			curr->type = tkn_heredoc; */
 /* 		if (curr->val[0] == '>' && curr->val[1] == '>') */
-/* 			curr->type = tkn_append;	 */
+/* 			curr->type = tkn_append; */
 /* 		tokenlist = tokenlist->next; */
 /* 	} */
 /* } */
