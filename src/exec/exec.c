@@ -22,6 +22,13 @@ int	executor(t_exec_element *head)
 	t_exec_element	*next;
 
 	list = head;
+	if (!list->next)
+	{
+		if (list->type == tkn_cmd)
+		{
+			execute_command(list->value);
+		}
+	}
 	while (list->next)
 	{
 		if (list->type == tkn_pipe)
