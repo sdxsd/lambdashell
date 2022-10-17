@@ -40,16 +40,18 @@
 //           EXECUTE  EM  ALL  1660
 //              I AM CROWN MAN
 //                  410,757,864,530  GOLD  DUCATS
-//
 
 int	prompt(t_ms *ms)
 {
 	t_exec_element *exec_list;
 
 	ms->line = readline("λ :: > ");
+	if (ft_strlen(ms->line) < 1)
+		return (SUCCESS);
 	line_parser(ms);
 	exec_list = tokenizer(ms);
 	exec_list_generator(exec_list, ms->env);
+	dbg_print_exec_list(exec_list);
 	executor(exec_list);
 	free(ms->line);
 	dealloc_exec_list(exec_list);
