@@ -46,12 +46,13 @@ int	prompt(t_ms *ms)
 {
 	t_exec_element *exec_list;
 
-	splash();
 	ms->line = readline("λ :: > ");
 	line_parser(ms);
 	exec_list = tokenizer(ms);
 	exec_list_generator(exec_list, ms->env);
 	executor(exec_list);
+	free(ms->line);
+	dealloc_exec_list(exec_list);
 	return (SUCCESS);
 }
 
@@ -59,6 +60,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_ms *ms;
 
+	splash();
 	if (argc == 1 && argv)
 	{
 		if (check_fd())
