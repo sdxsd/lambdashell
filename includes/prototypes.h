@@ -66,9 +66,11 @@ t_exec_element	*tokenizer(t_ms *shell);
 
 /* EXEC.C */
 int		execute_command(t_cmd *cmd);
+int		executor(t_exec_element *head);
 
 // EXEC_LIST.C
 t_exec_element	*exec_list_generator(t_exec_element *head, t_env **env);
+t_exec_element	*new_exec_element(void);
 
 /* PARSER */
 /* LINE_PARSER.C */

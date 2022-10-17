@@ -49,9 +49,9 @@ int	prompt(t_ms *ms)
 	splash();
 	ms->line = readline("λ :: > ");
 	line_parser(ms);
-	dbg_print_lines(ms->lines);
 	exec_list = tokenizer(ms);
-	dbg_print_exec_list(exec_list);
+	exec_list_generator(exec_list, ms->env);
+	executor(exec_list);
 	return (SUCCESS);
 }
 

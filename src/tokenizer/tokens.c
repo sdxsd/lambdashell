@@ -76,26 +76,22 @@ t_exec_element	*tokenizer(t_ms *shell)
 	int				iter;
 
 	iter = 1;
-	exec_list = malloc(sizeof(t_exec_element));
+	exec_list = new_exec_element();
 	if (!exec_list)
 		return (null_msg_err("tokenizer()"));
 	exec_list->type = check_type(shell->lines[0], shell->env);
-	exec_list->next = NULL;
-	exec_list->value = NULL;
 	exec_list->line = shell->lines[0];
 	prev = exec_list;
 	while (shell->lines[iter])
 	{
-		curr = malloc(sizeof(t_exec_element));
+		curr = new_exec_element();
 		if (!curr)
 		{
 			free_exec_list(exec_list);
 			return (null_msg_err("tokenizer()"));
 		}
-		curr->next = NULL;
 		curr->type = check_type(shell->lines[1], shell->env);
 		curr->line = shell->lines[iter];
-		curr->value = NULL;
 		prev->next = curr;
 		prev = curr;
 		iter++;

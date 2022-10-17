@@ -42,7 +42,7 @@ t_cmd	*cmd_constructor(char *prog_n_args, t_env **env)
 		msg_err("cmd_constructor()", FAILURE);
 		return (NULL);
 	}
-	cmd->path = get_path(prog_n_args, env);
+	cmd->path = get_path(cmd->args[0], env);
 	if (!cmd->path)
 	{
 		msg_err(cmd->args[0], FAILURE);
