@@ -31,11 +31,9 @@ int	executor(t_exec_element *head)
 		if (ret == FORK_CHILD)
 		{
 			if (list->type == tkn_cmd)
-			{
 				execute_command(list->value);
-			}
 		}
-		waitpid(ret, NULL, 1);
+		waitpid(0, NULL, 0);
 		return (SUCCESS);
 	}
 	while (list->next)
