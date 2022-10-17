@@ -46,6 +46,7 @@ int	is_command(char *line, t_env **env)
 	}
 }
 
+// NOTE: Takes line as input and returns type.
 int	check_type(char *line, t_env **env)
 {
 	if (is_builtin(line) == TRUE)
@@ -64,10 +65,7 @@ t_exec_element	*tokenizer(t_ms *shell)
 	iter = 1;
 	exec_list = malloc(sizeof(t_exec_element));
 	if (!exec_list)
-	{
-		msg_err("tokenizer()", FAILURE);
-		return (NULL);
-	}
+		return (null_msg_err("tokenizer()"));
 	exec_list->type = check_type(shell->lines[0], shell->env);
 	prev = exec_list;
 	while (shell->lines[iter])
@@ -75,9 +73,8 @@ t_exec_element	*tokenizer(t_ms *shell)
 		curr = malloc(sizeof(t_exec_element));
 		if (!curr)
 		{
-			msg_err("tokenizer()", FAILURE);
 			free_exec_list(exec_list);
-			return (NULL);
+			return (null_msg_err("tokenizer()"));
 		}
 		curr->type = check_type(shell->lines[1], shell->env);
 		prev->next = curr;

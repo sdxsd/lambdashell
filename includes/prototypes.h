@@ -59,6 +59,7 @@ int		env_del_var(t_env **env, char *key);
 
 /* ERROR.C */
 int		msg_err(char *s, int ret);
+void	*null_msg_err(char *s);
 
 /* EXEC.C */
 int		execute_command(t_cmd *cmd);
