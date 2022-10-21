@@ -11,16 +11,14 @@
 # **************************************************************************** #
 
 NAME = 			minishell
-COMP =			gcc
+CC =			gcc
 FLAGS_COMP =	-Wall -Wextra -Werror
-# DIRECTORY NAMES
 DIR_SRC =			src
 DIR_INC =			include
 DIR_OBJ =			obj
 LIBFT =		libft
 
-# SOURCE NAMES
-NAMES_SRCS =	main.c \
+NAMES_SRC =	main.c \
 				exec/path.c \
 				exec/cmd.c \
 				exec/exec.c \
@@ -28,7 +26,7 @@ NAMES_SRCS =	main.c \
 				tokenizer/tokens.c \
 				dealloc/dealloc_exec_list.c \
 				debug/debug_print.c \
-				error/error.c \
+				error/error.c
 
 # HEADER NAMES
 NAMES_HDRS =	minishell.h
@@ -56,8 +54,7 @@ INC_LIBS =		-L $(INC_LIBFT) $(LIB_INC_RDLINE)
 all: libft $(NAME)
 
 $(NAME): libft make_obj_dirs $(FULL_OBJS)
-	@$(COMP) -g $(INC_HDRS) $(FULL_OBJS) $(INC_LIBS) -o $(NAME)
-	@echo "$(GREEN)[minishell] - Compiled minishell!$(NOCOLOR)"
+	$(CC) -g $(INC_HDRS) $(FULL_OBJS) $(INC_LIBS) -o $(NAME)
 
 libft:
 	@make -sC $(LIBFT)
