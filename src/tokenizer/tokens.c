@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   tokens.c                                           :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/09/18 13:32:47 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/20 22:00:21 by mikuiper      ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../includes/minishell.h"
 
 // NOTE: Returns TRUE if input is a builtin.
