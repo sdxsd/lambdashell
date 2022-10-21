@@ -1,27 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_ischarset.c                                     :+:    :+:            */
+/*   ft_strncpy.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
+/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/09 21:14:48 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/18 18:37:52 by mikuiper      ########   odam.nl         */
+/*   Created: 2021/10/13 10:22:28 by keizerrijk    #+#    #+#                 */
+/*   Updated: 2021/10/20 16:18:32 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_ischarset(char c, char *charset)
+char	*ft_strncpy(char *dest, char *src, size_t n)
 {
-	int	i;
+	size_t	iterator;
 
-	i = 0;
-	while (charset[i])
+	iterator = 0;
+	while (iterator < n && src[iterator] != '\0')
 	{
-		if (c == charset[i])
-			return (1);
-		i++;
+		dest[iterator] = src[iterator];
+		++iterator;
 	}
-	return (0);
+	while (iterator < n)
+	{
+		dest[iterator] = '\0';
+		iterator++;
+	}
+	return (dest);
 }

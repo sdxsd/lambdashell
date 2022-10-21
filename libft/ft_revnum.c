@@ -1,33 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_ndigits.c                                       :+:    :+:            */
+/*   ft_revnum.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
+/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/11/17 10:49:11 by mikuiper      #+#    #+#                 */
-/*   Updated: 2021/11/17 11:55:22 by mikuiper      ########   odam.nl         */
+/*   Created: 2021/11/16 17:23:04 by wmaguire      #+#    #+#                 */
+/*   Updated: 2021/11/16 17:34:25 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_ndigits(long n)
+size_t	ft_revnum(size_t nb)
 {
-	int	ndigits;
+	size_t	rem;
+	size_t	reversed;
 
-	ndigits = 0;
-	if (n < 0)
+	reversed = 0;
+	while (nb != 0)
 	{
-		ndigits++;
-		n = n * -1;
+		rem = nb % 10;
+		reversed = reversed * 10 + rem;
+		nb /= 10;
 	}
-	if (n == 0)
-		return (1);
-	while (n > 0)
-	{
-		n = n / 10;
-		ndigits++;
-	}
-	return (ndigits);
+	return (reversed);
 }

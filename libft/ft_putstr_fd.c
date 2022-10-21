@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   ft_putstr_fd.c                                     :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
+/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/10/29 13:36:18 by mikuiper      #+#    #+#                 */
-/*   Updated: 2021/10/29 13:36:19 by mikuiper      ########   odam.nl         */
+/*   Created: 2021/10/13 10:23:16 by keizerrijk    #+#    #+#                 */
+/*   Updated: 2021/10/13 12:35:09 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,14 @@
 
 void	ft_putstr_fd(char *s, int fd)
 {
-	if (!s)
+	int	iterator;
+
+	if (s == NULL)
 		return ;
-	write(fd, s, ft_strlen(s));
+	iterator = 0;
+	while (s[iterator] != 0)
+	{
+		ft_putchar_fd(s[iterator], fd);
+		++iterator;
+	}
 }

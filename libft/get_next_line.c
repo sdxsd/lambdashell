@@ -3,111 +3,133 @@
 /*                                                        ::::::::            */
 /*   get_next_line.c                                    :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
+/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/02/21 14:20:34 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/03/09 22:43:04 by mikuiper      ########   odam.nl         */
+/*   Created: 2021/11/04 15:58:01 by wmaguire      #+#    #+#                 */
+/*   Updated: 2021/12/09 17:18:10 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+/*
+GET_NEXT_LINE (An implementation of get_next_line for Codam)
+Copyright (C) 2021  Will Maguire
 
-char	*gnl_strjoin(char *s1, char *s2, int i, int j)
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>
+
+The definition of Free Software is as follows:
+	- The freedom to run the program, for any purpose.
+	- The freedom to study how the program works, and adapt it to your needs.
+	- The freedom to redistribute copies so you can help your neighbor.
+	- The freedom to improve the program, and release
+	  your improvements to the public, so that the whole community benefits.
+
+A program is free software if users have all of these freedoms.
+*/
+
+#include "libft.h"
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdlib.h>
+
+// Resets offset and frees buf when
+// get_next_line reaches end of file, or needs to make a new buf.
+static char	*reset(int *offset, char **buf)
 {
-	char	*s_new;
+	*offset = 0;
+	free(*buf);
+	*buf = NULL;
+	return (NULL);
+}
 
-	if ((!(s1)) || (!(s2)))
+// Returns the resulting
+// String made by combining the two arguments.
+char	*merge(char **buf_1, char **buf_2)
+{
+	char	*merged;
+
+	merged = gnl_strjoin(*buf_1, *buf_2);
+	if (!merged)
 		return (NULL);
-	s_new = malloc(sizeof(char) * (pos_nl(s1) + pos_nl(s2) + 1));
-	if (!s_new)
-	{
-		free(s1);
-		return (NULL);
-	}
-	while (s1[i] != '\0')
-	{
-		s_new[i] = s1[i];
-		i++;
-	}
-	while (s2[j] != '\0' && s2[j] != '\n')
-	{
-		s_new[i + j] = s2[j];
-		j++;
-	}
-	free(s1);
-	s_new[i + j] = '\0';
-	return (s_new);
+	free(*buf_1);
+	free(*buf_2);
+	*buf_2 = NULL;
+	*buf_1 = merged;
+	return (merged);
 }
 
-int	pos_nl(const char *s)
+// Returns how many characters until the next newline.
+int	to_newline(char *buf)
 {
-	size_t	i;
+	ssize_t	iterator;
 
-	i = 0;
-	while (s[i] != '\n' && s[i] != '\0')
-		i++;
-	return (i);
+	iterator = 0;
+	while (buf[iterator] != '\0' && buf[iterator] != '\n')
+		iterator++;
+	if (buf[iterator] == '\0')
+		return (iterator);
+	return (iterator + 1);
 }
 
-void	*buff_mover(char *src)
+// Reads data continuously until buffer contains a newline character.
+// Reads into, and then merges a temporary buffer with the original buffer
+// until a newline is found.
+// Returns the amount of bytes read.
+static ssize_t	read_data(char **buf, int fd)
 {
-	size_t	i;
-	size_t	j;
+	ssize_t	bytes_read;
+	ssize_t	ret_2;
+	char	*buf_2;
 
-	i = 0;
-	j = 0;
-	while (src[j] != '\n')
-		j++;
-	j++;
-	while (src[j - 1] != '\0')
+	bytes_read = read(fd, *buf, BUFFER_SIZE);
+	if (bytes_read > 0 && to_newline(*buf) > 0)
 	{
-		src[i] = src[j];
-		i++;
-		j++;
-	}
-	return (src);
-}
-
-static int	buff_merge(char *buff, char **dp, int ret, int fd)
-{
-	if (buff[0] == '\0')
-	{
-		ret = read(fd, buff, BUFFER_SIZE);
-		if (ret < 0)
-		{
-			free(*dp);
-			return (-1);
-		}
-		else if (ret == 0)
+		buf_2 = ft_calloc(sizeof(char), BUFFER_SIZE + 1);
+		if (!buf_2)
 			return (0);
-		buff[ret] = '\0';
+		ret_2 = read_data(&buf_2, fd);
+		if (ret_2 > 0)
+		{
+			bytes_read += ret_2;
+			merge(buf, &buf_2);
+		}
+		else
+			free(buf_2);
 	}
-	*dp = gnl_strjoin(*dp, buff, 0, 0);
-	if (!(*dp))
-		return (-1);
-	if (buff[pos_nl(buff)] == '\n')
-	{
-		buff_mover(buff);
-		return (1);
-	}
-	buff[0] = '\0';
-	return (buff_merge(buff, dp, ret, fd));
+	return (bytes_read);
 }
 
-int	get_next_line(int fd, char **dp)
+char	*get_next_line(int fd)
 {
-	static char	buff[OPEN_MAX][BUFFER_SIZE + 1];
-	int			ret;
+	static char	*buf;
+	static int	offset;
+	ssize_t		bytes_read;
+	char		*line;
 
-	if ((!dp) || (fd < 0) || (BUFFER_SIZE <= 0) || (read(fd, 0, 0) < 0))
-		return (-1);
-	*dp = malloc(sizeof(char));
-	if (!*dp)
-		return (-1);
-	*dp[0] = '\0';
-	ret = 0;
-	ret = buff_merge(buff[fd], dp, ret, fd);
-	if (ret == -1)
-		*dp = NULL;
-	return (ret);
+	if (!buf)
+	{
+		buf = ft_calloc(sizeof(char), BUFFER_SIZE + 1);
+		if (!buf)
+			return (NULL);
+		bytes_read = read_data(&buf, fd);
+		if (bytes_read == 0)
+			return (reset(&offset, &buf));
+		else if (bytes_read < 0)
+			return (reset(&offset, &buf));
+	}
+	line = gnl_strndup((buf + offset), to_newline(buf + offset));
+	offset += ft_strlen(line);
+	if (offset >= (int)ft_strlen(buf))
+		reset(&offset, &buf);
+	return (line);
 }

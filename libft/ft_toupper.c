@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   ft_toupper.c                                       :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2021/10/07 16:35:14 by mikuiper      #+#    #+#                 */
-/*   Updated: 2021/10/26 22:13:12 by mkuipers      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   ft_toupper.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wmaguire <wmaguire@student.codam.nl>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/13 10:21:54 by keizerrijk        #+#    #+#             */
+/*   Updated: 2021/10/13 11:27:40 by wmaguire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 int	ft_toupper(int c)
 {
-	if (c >= 'a' && c <= 'z')
+	if (ft_islower(c) == TRUE)
 		return (c - 32);
-	return (c);
+	else
+		return (c);
 }

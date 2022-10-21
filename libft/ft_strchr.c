@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   ft_strchr.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
+/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/10/07 16:52:06 by mikuiper      #+#    #+#                 */
-/*   Updated: 2021/10/26 18:07:06 by mikuiper      ########   odam.nl         */
+/*   Created: 2021/10/13 10:23:03 by keizerrijk    #+#    #+#                 */
+/*   Updated: 2021/11/04 16:49:29 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,13 @@
 
 char	*ft_strchr(const char *s, int c)
 {
-	size_t	i;
-	char	*s_uc;
+	int		iterator;
 
-	i = 0;
-	s_uc = (char *)s;
-	while (s_uc[i])
-	{
-		if (s_uc[i] == (char)c)
-			return (&s_uc[i]);
-		i++;
-	}
-	if (s_uc[i] == (char)c)
-		return (&s_uc[i]);
-	return (NULL);
+	iterator = 0;
+	while (s[iterator] != (unsigned char)c && s[iterator] != '\0')
+		++iterator;
+	if (s[iterator] == (unsigned char)c)
+		return ((char *)s + iterator);
+	else
+		return (NULL);
 }
-
-/*
-ft_strchr(2) typecasts the user-specified const char array 's' to be mutable,
-and then iterates over each char in the array until it has found a match with 
-the the desired char 'c', of which you want to find the position in 's'. If a 
-match is found, return the address of the char in 's' where you found 'c'. If
-at the end of 's' there still has been found no match, check then if the user
-specified NULL to be the desired char to be found.
-*/

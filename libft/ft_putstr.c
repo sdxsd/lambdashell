@@ -1,33 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   colors.c                                           :+:    :+:            */
+/*   ft_putstr.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
+/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/14 12:54:30 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/14 13:33:51 by mikuiper      ########   odam.nl         */
+/*   Created: 2021/11/11 15:45:14 by wmaguire      #+#    #+#                 */
+/*   Updated: 2021/11/15 18:03:10 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include <unistd.h>
+#include "libft.h"
 
-void	color_red()
+void	ft_putstr(char *str)
 {
-	printf("\033[0;31m");
-}
+	int	iterator;
 
-void	color_orange()
-{
-	printf("\033[38;5;214m");
-}
-
-void	color_green()
-{
-	printf("\033[0;32m");
-}
-
-void	color_reset()
-{
-	printf("\033[0m");
+	if (!str)
+	{
+		ft_putstr("(null)");
+		return ;
+	}
+	iterator = 0;
+	while (str[iterator] != '\0')
+	{
+		write(1, &str[iterator], 1);
+		++iterator;
+	}
 }

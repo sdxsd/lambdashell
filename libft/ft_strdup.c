@@ -3,38 +3,27 @@
 /*                                                        ::::::::            */
 /*   ft_strdup.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
+/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/10/09 19:42:41 by mikuiper      #+#    #+#                 */
-/*   Updated: 2021/10/29 10:10:11 by mikuiper      ########   odam.nl         */
+/*   Created: 2021/10/13 10:22:58 by keizerrijk    #+#    #+#                 */
+/*   Updated: 2021/11/04 13:37:47 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
 char	*ft_strdup(const char *s1)
 {
-	size_t	i;
-	char	*dup;
+	char	*dupe_str;
 
-	i = 0;
-	dup = malloc((ft_strlen(s1) + 1) * sizeof(char));
-	if (!(dup))
+	dupe_str = malloc(sizeof(char) * (ft_strlen(s1) + 1));
+	if (!dupe_str)
 		return (NULL);
-	while (s1[i])
+	else
 	{
-		dup[i] = s1[i];
-		i++;
+		ft_memcpy(dupe_str, s1, ft_strlen((s1)));
+		dupe_str[ft_strlen((char *)s1)] = '\0';
+		return (dupe_str);
 	}
-	dup[i] = '\0';
-	return (dup);
 }
-
-// CALLOC ()
-
-/*
-ft_strdup(1) uses ft_strlen(1) to sufficient memory such that it can store the
-inputted char array 's1' in a new array 'dup'. Then, it iterates over each char
-in 's1' and stores that char in 'dup'. Finally, it adds a null terminator to 
-'dup'.
-*/
