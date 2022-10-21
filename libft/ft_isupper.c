@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   ft_isupper.c                                       :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2021/11/17 10:09:51 by mikuiper      #+#    #+#                 */
-/*   Updated: 2021/11/17 10:31:42 by mikuiper      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   ft_isupper.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wmaguire <wmaguire@student.codam.nl>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/13 10:24:26 by keizerrijk        #+#    #+#             */
+/*   Updated: 2021/10/13 11:27:15 by wmaguire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	ft_isupper(int c)
 {
 	if (c >= 'A' && c <= 'Z')
-		return (1);
-	return (0);
+		return (TRUE);
+	else
+		return (FALSE);
 }

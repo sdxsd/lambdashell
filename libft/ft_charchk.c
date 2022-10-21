@@ -1,31 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_count_char_occurrence.c                         :+:    :+:            */
+/*   ft_charchk.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
+/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/28 15:41:29 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/28 15:41:37 by mikuiper      ########   odam.nl         */
+/*   Created: 2022/02/01 10:24:22 by keizerrijk    #+#    #+#                 */
+/*   Updated: 2022/02/01 13:36:30 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_count_char_occurrence(char *s, char c)
+int	ft_charchk(int tc, char *dict)
 {
-	size_t	i;
-	size_t	count;
+	int	iterator;
 
-	i = 0;
-	count = 0;
-	while (s[i])
+	iterator = 0;
+	while (dict[iterator] != '\0')
 	{
-		if (s[i] == c)
-		{
-			count++;
-		}
-		i++;
+		if (tc == dict[iterator])
+			return (1);
+		iterator++;
 	}
-	return (count);
+	return (0);
 }

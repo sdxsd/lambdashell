@@ -3,80 +3,118 @@
 /*                                                        ::::::::            */
 /*   ft_split.c                                         :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
+/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/10/29 13:36:24 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/28 15:45:54 by mikuiper      ########   odam.nl         */
+/*   Created: 2021/10/19 13:22:31 by wmaguire      #+#    #+#                 */
+/*   Updated: 2021/11/04 13:37:08 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
-static int	ft_countparts(const char *s, char c)
+static int	ft_wordcount(const char *s, char c)
 {
-	size_t	i;
-	int		nparts;
+	int	wc;
 
-	i = 0;
-	nparts = 0;
-	while (s[i])
+	if (!s)
+		return (-1);
+	wc = 0;
+	while (*s)
 	{
-		if (s[i] && s[i] != c)
+		if (*s == c)
+			s++;
+		if (*s != c && *s != '\0')
 		{
-			nparts++;
-			while (s[i] && s[i] != c)
-				i++;
+			wc++;
+			while (*s != c && *s)
+				s++;
 		}
-		else if (s[i] && s[i] == c)
-			i++;
 	}
-	return (nparts);
+	return (wc);
 }
 
-static char	**dp_clean(char **dp, size_t dp_i)
+static int	ft_gndl(const char *s, char c)
 {
-	while (dp_i > 0)
-	{
-		dp_i--;
-		free(dp[dp_i]);
-	}
-	free(dp);
-	return (NULL);
+	int	iterator;
+
+	iterator = 0;
+	while (s[iterator] != c && s[iterator])
+		iterator++;
+	return (iterator);
 }
 
-static char	**ft_split_helper(char **dp, const char *s, char c)
+char	**ft_clean_split(char **s_array)
 {
-	size_t	s_i;
-	size_t	dp_i;
-	size_t	wordstart;
-
-	s_i = 0;
-	dp_i = 0;
-	while (s_i < ft_strlen(s))
+	while (s_array)
 	{
-		if ((s[s_i] != c) && (s_i < ft_strlen(s)))
-		{
-			wordstart = s_i;
-			while ((s[s_i] != c) && (s_i < ft_strlen(s)))
-				s_i++;
-			dp[dp_i] = ft_substr(s, wordstart, (s_i - wordstart));
-			if (!dp[dp_i])
-				return (dp_clean(dp, dp_i));
-			dp_i++;
-		}
-		s_i++;
+		if (*s_array)
+			free(*s_array);
+		s_array += 1;
 	}
-	return (dp);
+	free(s_array);
+	return ((char **)0x0);
 }
 
 char	**ft_split(char const *s, char c)
 {
-	char	**dp;
+	char	**s_array;
+	size_t	iterator;
 
-	if (!(s))
+	iterator = 0;
+	if (!s)
 		return (NULL);
-	dp = ft_calloc((ft_countparts(s, c) + 1), sizeof(char *));
-	if (!(dp))
+	s_array = malloc(sizeof(char *) * (ft_wordcount(s, c) + 1));
+	if (!s_array)
 		return (NULL);
-	return (ft_split_helper(dp, s, c));
+	while (s_array && iterator < ft_strlen(s))
+	{
+		while (s[iterator] == c && s[iterator] != '\0')
+			iterator++;
+		if (s[iterator] != c && s[iterator] != '\0')
+		{
+			*s_array = ft_strndup(&s[iterator], ft_gndl(&s[iterator], c));
+			if (!*s_array)
+				return (ft_clean_split(s_array - iterator));
+			iterator += ft_gndl(&s[iterator], c);
+			s_array += 1;
+		}
+	}
+	*s_array = NULL;
+	return (s_array - (ft_wordcount(s, c)));
 }
+
+/*
+int main()
+{
+	char	*s = "a//////////";
+	char	c = '/';
+	char	**s_array = ft_split(s, c);
+	
+	for (int i = 0; s_array[i] != NULL; i++)
+		printf("%s\n", s_array[i]);
+}
+*/
+
+/*
+int main()
+{
+	char	*s = "MacOS/Windows///GNU_LINUX/FreeBSD/////////OpenBSD/UNIX/";
+	char	c = '/';
+	char	**s_array = ft_split(s, c);
+	
+	for (int i = 0; s_array[i] != NULL; i++)
+		printf("%s\n", s_array[i]);
+}
+*/
+
+/*
+int main()
+{
+	char *s = "   split       this for   me  !       ";
+
+	char **s_array = ft_split(s, ' ');
+	for (int i = 0; s_array[i] != NULL; i++)
+		printf("%s\n", s_array[i]);
+}
+*/

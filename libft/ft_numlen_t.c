@@ -1,31 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_ndigits_base.c                                  :+:    :+:            */
+/*   ft_numlen_t.c                                      :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
+/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/11/17 12:02:25 by mikuiper      #+#    #+#                 */
-/*   Updated: 2021/11/28 13:31:05 by mikuiper      ########   odam.nl         */
+/*   Created: 2021/11/16 17:48:48 by wmaguire      #+#    #+#                 */
+/*   Updated: 2021/11/16 17:52:17 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_ndigits_base(long long n, int base)
+size_t	ft_numlen_t(size_t n)
 {
-	int	i;
+	size_t	dc;
 
-	i = 0;
-	if (n < 0)
+	dc = 2;
+	while (n > 10)
 	{
-		n = n * -1;
-		i++;
+		n /= 10;
+		dc++;
 	}
-	while (n > 0)
-	{
-		n /= base;
-		i++;
-	}
-	return (i);
+	return (dc);
 }

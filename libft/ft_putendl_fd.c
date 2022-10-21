@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   ft_putendl_fd.c                                    :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
+/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/10/29 13:36:08 by mikuiper      #+#    #+#                 */
-/*   Updated: 2021/10/29 13:36:09 by mikuiper      ########   odam.nl         */
+/*   Created: 2021/10/13 10:23:51 by keizerrijk    #+#    #+#                 */
+/*   Updated: 2021/10/20 16:36:58 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,15 @@
 
 void	ft_putendl_fd(char *s, int fd)
 {
-	if (!s)
+	int	iterator;
+
+	if (s == NULL)
 		return ;
-	ft_putstr_fd(s, fd);
+	iterator = 0;
+	while (s[iterator] != 0)
+	{
+		ft_putchar_fd(s[iterator], fd);
+		++iterator;
+	}
 	ft_putchar_fd('\n', fd);
 }

@@ -1,27 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_strpos_charset.c                                :+:    :+:            */
+/*   ft_putnbr.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
+/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/06 20:11:26 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/18 18:37:01 by mikuiper      ########   odam.nl         */
+/*   Created: 2021/11/15 11:36:23 by wmaguire      #+#    #+#                 */
+/*   Updated: 2021/11/15 11:37:30 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <unistd.h>
 
-int	ft_strpos_charset(char *s, char *charset)
+void	ft_putnbr(int nb)
 {
-	int	i;
-
-	i = 0;
-	while (s[i])
+	if (nb == -2147483648)
 	{
-		if (ft_strchr(charset, s[i]))
-			break;
-		i++;
+		write(1, "-2147483648", 11);
+		return ;
 	}
-	return (i);
+	if (nb < 0)
+	{
+		ft_putchar('-');
+		nb *= (-1);
+	}
+	if (nb < 10)
+	{
+		ft_putchar(nb + '0');
+		return ;
+	}	
+	ft_putnbr(nb / 10);
+	ft_putnbr((nb % 10));
 }

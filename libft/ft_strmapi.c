@@ -3,37 +3,32 @@
 /*                                                        ::::::::            */
 /*   ft_strmapi.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
+/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/10/16 15:15:18 by mikuiper      #+#    #+#                 */
-/*   Updated: 2021/10/29 12:29:10 by mikuiper      ########   odam.nl         */
+/*   Created: 2021/10/13 11:37:18 by wmaguire      #+#    #+#                 */
+/*   Updated: 2021/10/13 12:31:11 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
+char	*ft_strmapi(char const *s, char (*f) (unsigned int, char))
 {
-	size_t	i;
-	char	*s_new;
+	int		len;
+	int		iterator;
+	char	*n_str;
 
-	if (!(s) || (!(f)))
+	if (s == NULL || f == NULL)
 		return (NULL);
-	s_new = ft_strdup(s);
-	if (!(s_new))
+	iterator = 0;
+	len = ft_strlen(s);
+	n_str = ft_strdup(s);
+	if (n_str == NULL)
 		return (NULL);
-	i = 0;
-	while (s[i])
+	while (iterator < len)
 	{
-		s_new[i] = (*f)(i, s[i]);
-		i++;
+		n_str[iterator] = (*f)(iterator, s[iterator]);
+		++iterator;
 	}
-	return (s_new);
+	return (n_str);
 }
-
-/*
-ft_strmapi(2) starts by making a duplicate of the user inputted char const 
-array 's' using ft_strdup(1) as a way to obtain a mutable array 's_new'. Next, 
-for each char in the original array, I feed that char to the user inputted 
-function f() and store that function's return values inside 's_new'.
-*/

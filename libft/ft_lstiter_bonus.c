@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_lstiter_bonus.c                                 :+:    :+:            */
+/*   ft_lstiter.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
+/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/10/29 13:35:14 by mikuiper      #+#    #+#                 */
-/*   Updated: 2021/10/29 13:35:15 by mikuiper      ########   odam.nl         */
+/*   Created: 2021/10/28 15:01:40 by wmaguire      #+#    #+#                 */
+/*   Updated: 2021/10/28 15:09:58 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,9 @@
 
 void	ft_lstiter(t_list *lst, void (*f)(void *))
 {
-	if (!(lst) || (!(f)))
+	if (!lst || !f)
 		return ;
-	while (lst)
-	{
-		f(lst->content);
-		lst = lst->next;
-	}
+	(*f)(lst -> content);
+	if (lst -> next != NULL)
+		return (ft_lstiter(lst -> next, (*f)));
 }
-
-/*
-ft_lstiter(2) expects a linked list and iterates over each element in the list
-and performs the function f() to each of these elements. Here, it literally
-accesses the contents of the current element of the list and uses it as input to 
-the function f(). Afterwards, it moves over to the next element and continues
-this process until each element has been fed to f().
-*/

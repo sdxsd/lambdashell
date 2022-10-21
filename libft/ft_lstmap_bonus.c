@@ -1,41 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_lstmap_bonus.c                                  :+:    :+:            */
+/*   ft_lstmap.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
+/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/10/29 13:35:24 by mikuiper      #+#    #+#                 */
-/*   Updated: 2021/10/29 13:35:26 by mikuiper      ########   odam.nl         */
+/*   Created: 2021/10/28 15:10:58 by wmaguire      #+#    #+#                 */
+/*   Updated: 2021/11/02 16:56:10 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+// Þe funktion ft_lstmap
+// mæken ān nīwe list out
+// Þe sucessive gebrouk
+// fan Þe funktion (*f)(content)
+// ān et retürnt Þe
+// nīwe list nær Þe sender.
+
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
-	t_list	*new;
-	t_list	*newlst;
+	t_list	*n_lst;
+	t_list	*n_element;
 
-	if (!lst || !f)
-		return (NULL);
-	newlst = NULL;
+	n_lst = NULL;
 	while (lst)
 	{
-		new = ft_lstnew(f(lst->content));
-		if (!(new))
+		n_element = ft_lstnew((*f)(lst -> content));
+		if (!n_element)
 		{
-			ft_lstclear(&newlst, del);
+			ft_lstclear(&n_lst, del);
 			return (NULL);
 		}
-		ft_lstadd_back(&newlst, new);
-		lst = lst->next;
+		ft_lstadd_back(&n_lst, n_element);
+		lst = lst -> next;
 	}
-	return (newlst);
+	return (n_lst);
 }
-
-/*
-ft_lstmap(3) iterates over the list 'lst' and applies the function f() to each
-of its elements. Then, it stores the return values of f() in a newly made 
-linked list named 'newlst'. When done, it returns 'newlst'.
-*/

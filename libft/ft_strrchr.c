@@ -3,32 +3,47 @@
 /*                                                        ::::::::            */
 /*   ft_strrchr.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
+/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/10/07 17:21:40 by mikuiper      #+#    #+#                 */
-/*   Updated: 2021/10/26 18:15:13 by mikuiper      ########   odam.nl         */
+/*   Created: 2021/10/13 10:22:16 by keizerrijk    #+#    #+#                 */
+/*   Updated: 2021/11/02 18:08:36 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+// Þe funktion ft_strrchr begint
+// med iterateren þe string nær et end fan þe string. 
+// þan et setten ānd retürnt ān pointer af 
+// þe point wær et earst char þat c matchen gefunden is.
+// als et noght gefunden is, þan et checken als s[0] == b
+// als et retürnt true, þan et retürnt þe positïe.
+// noght? þan þe funktion retürnt NULL.
+
 char	*ft_strrchr(const char *s, int c)
 {
-	size_t	len;
-	char	*s_uc;
+	size_t			iterator;
+	unsigned char	b;
 
-	len = ft_strlen((char *)s);
-	s_uc = (char *)s;
-	while ((len != '\0') && (s_uc[len] != (char)c))
-		len--;
-	if (s_uc[len] == (char)c)
-		return (&s_uc[len]);
-	return (NULL);
+	b = (unsigned char)c;
+	iterator = ft_strlen(s);
+	while (iterator > 0)
+	{
+		if (s[iterator] == b)
+			return ((char *)&s[iterator]);
+		iterator--;
+	}
+	if (s[iterator] == b)
+		return ((char *)&s[iterator]);
+	else
+		return (NULL);
 }
 
 /*
-ft_strrchr(2) typecasts the user-specified const char array 's' to be mutable,
-and then iterates over each char in the array in a backwards manner for as long
-as no match has been found with 'c'. If a match is found, return the address of 
-the char in 's' where you found 'c'.
+int main()
+{
+	char *src = "";
+	printf("%s", ft_strrchr(src, 'a'));
+	return (0);
+}
 */

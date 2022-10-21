@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   ft_memmove.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
+/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/10/06 16:03:41 by mikuiper      #+#    #+#                 */
-/*   Updated: 2021/10/29 08:46:46 by mikuiper      ########   odam.nl         */
+/*   Created: 2021/10/13 10:24:04 by keizerrijk    #+#    #+#                 */
+/*   Updated: 2021/10/13 12:44:38 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,22 @@
 
 void	*ft_memmove(void *dst, const void *src, size_t len)
 {
-	unsigned char		*dst_uc;
-	unsigned const char	*src_uc;
+	char		*dst_c;
+	const char	*src_c;
 
-	dst_uc = (unsigned char *)dst;
-	src_uc = (unsigned const char *)src;
-	if ((dst == NULL) && (src == NULL) && (len > 0))
-		return (dst_uc);
-	else if (dst_uc < src_uc)
-		ft_memcpy(dst_uc, src_uc, len);
-	else
+	if (dst == NULL && src == NULL)
+		return (dst);
+	dst_c = dst;
+	src_c = src;
+	if (dst > src)
 	{
 		while (len)
 		{
-			dst_uc[(len - 1)] = src_uc[(len - 1)];
 			len--;
+			dst_c[len] = src_c[len];
 		}
 	}
+	else
+		ft_memcpy(dst, src, len);
 	return (dst);
 }

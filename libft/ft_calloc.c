@@ -3,34 +3,23 @@
 /*                                                        ::::::::            */
 /*   ft_calloc.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
+/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/12 11:30:14 by mikuiper      #+#    #+#                 */
-/*   Updated: 2022/09/12 11:30:14 by mikuiper      ########   odam.nl         */
+/*   Created: 2021/10/13 10:24:57 by keizerrijk    #+#    #+#                 */
+/*   Updated: 2021/11/04 13:37:33 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
 void	*ft_calloc(size_t count, size_t size)
 {
-	void			*ptr;
-	size_t			i;
-	size_t			len;
-	unsigned char	*b_uc;
-	unsigned char	c;
+	void	*block;
 
-	ptr = malloc(count * size);
-	if (!(ptr))
+	block = malloc(size * count);
+	if (!block)
 		return (NULL);
-	i = 0;
-	len = count * size;
-	b_uc = (unsigned char *)ptr;
-	c = 0;
-	while (i < len)
-	{
-		b_uc[i] = c;
-		i++;
-	}
-	return (ptr);
+	ft_bzero(block, (size * count));
+	return (block);
 }

@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   ft_striteri.c                                      :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
+/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/10/16 15:30:13 by mikuiper      #+#    #+#                 */
-/*   Updated: 2021/10/28 12:29:44 by mikuiper      ########   odam.nl         */
+/*   Created: 2021/11/04 12:04:59 by wmaguire      #+#    #+#                 */
+/*   Updated: 2021/11/04 12:30:55 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 void	ft_striteri(char *s, void (*f)(unsigned int, char*))
 {
-	size_t	i;
+	unsigned int	iterator;
 
-	i = 0;
-	if ((!(s)) || (!(f)))
+	if (!s || !f)
 		return ;
-	while (s[i])
+	iterator = 0;
+	while (s[iterator] != '\0')
 	{
-		f(i, (s + i));
-		i++;
+		(*f)(iterator, s + iterator);
+		iterator++;
 	}
 }

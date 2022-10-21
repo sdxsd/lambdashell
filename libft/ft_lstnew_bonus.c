@@ -3,29 +3,24 @@
 /*                                                        ::::::::            */
 /*   ft_lstnew_bonus.c                                  :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
+/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/10/29 13:35:32 by mikuiper      #+#    #+#                 */
-/*   Updated: 2021/10/29 13:35:33 by mikuiper      ########   odam.nl         */
+/*   Created: 2021/10/14 19:11:43 by wmaguire      #+#    #+#                 */
+/*   Updated: 2021/11/04 13:39:29 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
 t_list	*ft_lstnew(void *content)
 {
-	t_list	*new_elem;
+	t_list	*element;
 
-	new_elem = malloc(sizeof(t_list) * 1);
-	if (!(new_elem))
+	element = malloc(sizeof(t_list));
+	if (!element)
 		return (NULL);
-	new_elem->content = content;
-	new_elem->next = NULL;
-	return (new_elem);
+	element -> content = content;
+	element -> next = NULL;
+	return (element);
 }
-
-/*
-ft_lstnew(1) allocated memory for storing a new list element named 'new_elem'.
-Next, the contents of 'new_elem' filled with user-specified variable 'content'.
-Finally, the elements' variable 'next' is initialized as NULL.
-*/

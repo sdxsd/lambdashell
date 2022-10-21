@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   ft_isalpha.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
+/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/10/05 17:52:01 by mikuiper      #+#    #+#                 */
-/*   Updated: 2021/10/28 14:55:55 by mikuiper      ########   odam.nl         */
+/*   Created: 2021/10/13 10:24:48 by keizerrijk    #+#    #+#                 */
+/*   Updated: 2021/10/13 12:58:25 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,5 @@
 
 int	ft_isalpha(int c)
 {
-	return (((c >= 'A' && c <= 'Z')) || ((c >= 'a') && (c <= 'z')));
+	return ((ft_islower(c) || ft_isupper(c)));
 }

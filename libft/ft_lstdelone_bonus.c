@@ -3,25 +3,20 @@
 /*                                                        ::::::::            */
 /*   ft_lstdelone_bonus.c                               :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: mikuiper <mikuiper@student.codam.nl>         +#+                     */
+/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/10/29 13:35:10 by mikuiper      #+#    #+#                 */
-/*   Updated: 2021/10/29 13:35:11 by mikuiper      ########   odam.nl         */
+/*   Created: 2021/10/16 14:40:12 by wmaguire      #+#    #+#                 */
+/*   Updated: 2021/11/04 13:39:40 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
 void	ft_lstdelone(t_list *lst, void (*del)(void*))
 {
-	if ((!(lst)) || (!(del)))
+	if (!lst)
 		return ;
-	del(lst->content);
+	(*del)(lst -> content);
 	free(lst);
 }
-
-/*
-ft_lstdelone(2) first checks whether the user has inputted a linked list or a 
-'deletion function'. If not, it returns the function. Otherwise, using del(), 
-it removes the content that 'lst' is pointing towards.
-*/
