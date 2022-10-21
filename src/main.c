@@ -12,35 +12,6 @@
 
 #include "../includes/minishell.h"
 
-// NOTE: (implementation detail) God Save the King
-//              z   $b$$F
-//             F"  4$$P"
-//              r *$$$".c...
-//              %-4$$$$$$$$"
-//               J$*$$$$$$P
-//              ^r4$$$$$$"
-//                *f*$$*"
-//              ".4 *$$$$$$.
-//        4ee%.e.  .$$$$$$$$r DIEU ET MON DROIT
-//       4$$$$$$b  P$**)$$$$b REX ANGLIAE DEI GRATIA
-//    e..4$$$$$$$"     $$$$$$c.
-//    3$$$$$$$$*"   "  ^"$$$$$$c
-//   *$$$$$$$$$.        *$$$$$$$.
-//    ..$$$$$$$L    c ..J$$$$$$$b
-//    d"$$$$$$$F   .@$$$$$$$$$$$P"..
-// ..$$$$$$$$$$      d$$$$$$$$$$$$$$$
-// =$$$$$$P"" "    .e$$$$$$$$$$$$$$$$
-//   *""          $**$$$$$$$$$$$$$$*
-//                    "".$$$$$$$$$C .
-//                 .z$$$$$$$$$$$$$$""
-//                .$$$*"^**"  "
-//              =P"  "
-//      BORN  TO  ROYAL
-//        KINGDOM  IS  A  FUCK
-//           EXECUTE  EM  ALL  1660
-//              I AM CROWN MAN
-//                  410,757,864,530  GOLD  DUCATS
-
 int	prompt(t_ms *ms)
 {
 	t_exec_element *exec_list;
