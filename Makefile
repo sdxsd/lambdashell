@@ -13,17 +13,11 @@
 NAME = 			minishell
 COMP =			gcc
 FLAGS_COMP =	-Wall -Wextra -Werror
-FLAGS_LEAKS =	-g3 -fsanitize=address
-
-# COLOR CONFIG
-GREEN =			\033[92m
-NOCOLOR =		\033[m
-
 # DIRECTORY NAMES
 DIR_SRC =			src
-DIR_INC =			includes
+DIR_INC =			include
 DIR_OBJ =			obj
-DIR_LIB_FT =		libft
+LIBFT =		libft
 
 # SOURCE NAMES
 NAMES_SRCS =	main.c \
@@ -32,32 +26,9 @@ NAMES_SRCS =	main.c \
 				exec/exec.c \
 				exec/exec_list.c \
 				tokenizer/tokens.c \
-				expander/line_expander.c \
-				builtins/builtin_env.c \
-				builtins/builtin_pwd.c \
-				builtins/builtin_unset.c \
-				builtins/builtin_echo.c \
-				builtins/builtin_export.c \
-				builtins/builtin_cd.c \
-				dealloc/clean_env.c \
 				dealloc/dealloc_exec_list.c \
-				debug/debug_env.c \
 				debug/debug_print.c \
-				cosmetic/splash.c \
 				error/error.c \
-				cosmetic/colors.c \
-				checks/check_fd.c \
-				tokenizer/tokens_tools.c \
-				parser/line_parser.c \
-				parser/line_split_into_lines.c \
-				parser/line_parser_checks.c \
-				init/init_ms_struct.c \
-				init/init_env_struct.c \
-				env/env_delete_var.c \
-				env/env_to_arrays.c \
-				env/env_add_var.c \
-				env/env_clone_env.c \
-				env/env_tools.c
 
 # HEADER NAMES
 NAMES_HDRS =	minishell.h
@@ -77,23 +48,19 @@ else
 	~/.brew/opt/readline/include
 endif
 
-NAME_LIB_FT =	libft.a
-INC_LIB_FT =	$(DIR_LIB_FT) $(DIR_LIB_FT)/$(NAME_LIB_FT)
+LIBFT_NAME =	libft.a
+INC_LIBFT =	$(LIBFT) $(LIBFT)/$(LIBFT_NAME)
 INC_HDRS =		-I $(DIR_INC)
-INC_LIBS =		-L $(INC_LIB_FT) $(LIB_INC_RDLINE)
+INC_LIBS =		-L $(INC_LIBFT) $(LIB_INC_RDLINE)
 
-all: lib_ft $(NAME) 
+all: libft $(NAME)
 
-$(NAME): lib_ft make_obj_dirs $(FULL_OBJS)
+$(NAME): libft make_obj_dirs $(FULL_OBJS)
 	@$(COMP) -g $(INC_HDRS) $(FULL_OBJS) $(INC_LIBS) -o $(NAME)
 	@echo "$(GREEN)[minishell] - Compiled minishell!$(NOCOLOR)"
 
-lib_ft:
-	@make -sC $(DIR_LIB_FT)
-
-leaks: lib_ft make_obj_dirs $(FULL_OBJS)
-	@echo "$(GREEN)[minishell] - Compiled with $(FLAGS_LEAKS).$(NOCOLOR)"
-	@$(COMP) $(FLAGS_LEAKS) $(INC_HDRS) $(FULL_OBJS) $(INC_LIBS) -o $(NAME)
+libft:
+	@make -sC $(LIBFT)
 
 $(DIR_OBJ)/%.o: $(DIR_SRC)/%.c $(FULL_HDRS)
 	@mkdir -p $(DIR_OBJ) 
@@ -116,14 +83,14 @@ make_obj_dirs:
 
 clean:
 	@rm -rf $(DIR_OBJ)
-	@make clean -C $(DIR_LIB_FT)
+	@make clean -C $(LIBFT)
 	@echo "$(GREEN)[minishell] - Running clean.$(NOCOLOR)"
 
 fclean: clean
 	@rm -rf $(NAME)
-	@make fclean -C $(DIR_LIB_FT)
+	@make fclean -C $(LIBFT)
 	@echo "$(GREEN)[minishell] - Running fclean.$(NOCOLOR)"
 
 re : fclean all
 
-.PHONY: all clean fclean re leaks lib_ft make_obj_dirs
+.PHONY: all clean fclean re leaks libft make_obj_dirs
