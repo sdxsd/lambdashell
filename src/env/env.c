@@ -48,6 +48,10 @@ t_vector	*init_env(char **env)
 	while (env[iter])
 		iter++;
 	env_vector = alloc_vector(iter);
+	if (!env_vector)
+		return (NULL);
+	while (iter-- >= 0)
+		vec_assign_element(env_vector, iter, env[iter]);
 	return (env_vector);
 }
 

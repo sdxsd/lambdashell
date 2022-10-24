@@ -64,3 +64,12 @@ void	dbg_print_exec_list(t_exec_element *head)
 	if (head->next)
 		dbg_print_exec_list(head->next);
 }
+
+void	dbg_print_env(t_vector *head)
+{
+	printf("%s\n", (char *)head->data);
+	if (head->next)
+		dbg_print_env(head->next);
+	else
+		return ;
+}
