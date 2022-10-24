@@ -37,15 +37,23 @@ The definition of Free Software is as follows:
 A program is free software if users have all of these freedoms.
 */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
 t_vector	*init_env(char **env)
 {
 	t_vector	*env_vector;
 	int			iter;
 
+	iter = 0;
 	while (env[iter])
 		iter++;
 	env_vector = alloc_vector(iter);
 	return (env_vector);
+}
+
+char	*env_get_val(t_vector *env, char *val)
+{
+	if (env && val)
+		;
+	return (NULL);
 }

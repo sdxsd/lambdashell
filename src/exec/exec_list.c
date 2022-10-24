@@ -37,7 +37,8 @@ The definition of Free Software is as follows:
 A program is free software if users have all of these freedoms.
 */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
+#include <stdlib.h>
 
 // NOTE: INFO
 // Allocates a new t_exec_element in preparation for use.
@@ -72,7 +73,7 @@ t_exec_element	*new_exec_element(void)
 //  |          +----------------+            |
 //  +=---------------------------------------+
 //
-t_exec_element	*assign_exec_element(t_exec_element *element, t_env **env)
+t_exec_element	*assign_exec_element(t_exec_element *element, t_vector *env)
 {
 	if (element->type == tkn_cmd)
 	{
@@ -93,7 +94,7 @@ void	dealloc_exec_list(t_exec_element *head)
 }
 
 // NOTE: INFO [neads rewrite]
-t_exec_element	*exec_list_generator(t_exec_element *head, t_env **env)
+t_exec_element	*exec_list_generator(t_exec_element *head, t_vector *env)
 {
 	assign_exec_element(head, env);
 	if (head->next)

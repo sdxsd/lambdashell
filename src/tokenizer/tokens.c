@@ -37,7 +37,8 @@ The definition of Free Software is as follows:
 A program is free software if users have all of these freedoms.
 */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
+#include <stdlib.h>
 
 // NOTE: Returns TRUE if input is a builtin.
 int	is_builtin(char *line)
@@ -65,7 +66,7 @@ int	is_builtin(char *line)
 }
 
 // NOTE: Returns TRUE if input is a command.
-int	is_command(char *line, t_env **env)
+int	is_command(char *line, t_vector *env)
 {
 	char	**split_line;
 	char	*path;
@@ -85,7 +86,7 @@ int	is_command(char *line, t_env **env)
 }
 
 // NOTE: Takes line as input and returns type.
-int	check_type(char *line, t_env **env)
+int	check_type(char *line, t_vector *env)
 {
 	if (is_builtin(line) == TRUE)
 		return (tkn_bltin);

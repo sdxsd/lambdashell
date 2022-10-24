@@ -37,7 +37,9 @@ The definition of Free Software is as follows:
 A program is free software if users have all of these freedoms.
 */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
+#include <stdlib.h>
+#include <unistd.h>
 
 // NOTE: INFO
 // cmd_constructor() is the constructor for the type
@@ -55,7 +57,7 @@ A program is free software if users have all of these freedoms.
 // Finally getting the full path to the binary returning the fully formed t_cmd.
 // If any part fails, all memory will be freed before returning.
 // Memory leaks SHOULD be impossible.
-t_cmd	*cmd_constructor(char *prog_n_args, t_env **env)
+t_cmd	*cmd_constructor(char *prog_n_args, t_vector *env)
 {
 	t_cmd	*cmd;
 
