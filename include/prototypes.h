@@ -80,5 +80,6 @@ int				free_ptr_array(char *ptr[]);
 /* DEBUG */
 void			dbg_print_exec_list(t_exec_element *head);
 void			dbg_print_lines(char **lines);
+void			dbg_print_env(t_vector *head);
 
 #endif

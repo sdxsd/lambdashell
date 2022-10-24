@@ -61,6 +61,8 @@ t_shell	*shell_init(char **env)
 	t_shell	*lambda;
 
 	lambda = malloc(sizeof(t_shell));
+	if (!lambda)
+		return (NULL);
 	lambda->env = init_env(env);
 	if (!lambda->env)
 		return (NULL);
@@ -73,9 +75,14 @@ int	main(int argc, char **argv, char **env)
 
 	if (argc > 1 && argv[0])
 		return (SUCCESS);
+
 	lambda = shell_init(env);
-	if (argc == 1 && argv)
-		while (TRUE)
-			prompt(lambda);
+	if (!lambda)
+		return (FAILURE);
+	dbg_print_env(lambda->env);
+	return (SUCCESS);
+
+	while (TRUE)
+		prompt(lambda);
 	return (SUCCESS);
 }
