@@ -37,58 +37,33 @@ The definition of Free Software is as follows:
 A program is free software if users have all of these freedoms.
 */
 
-#include "../include/minishell.h"
-#include <stdlib.h>
+#include "libft.h"
 
-int	prompt(t_shell *lambda)
+// NOTE: Returns last element in vector.
+t_vector	*vector_get_last(t_vector *vec)
 {
-	t_exec_element	*exec_list;
-	lambda->line = readline("λ :: > ");
-	if (ft_strlen(lambda->line) < 1)
-		return (SUCCESS);
-	parse_line(lambda);
-	exec_list = tokenizer(lambda);
-	exec_list_generator(exec_list, lambda->env);
-	dbg_print_exec_list(exec_list);
-	executor(exec_list);
-	free(lambda->line);
-	dealloc_exec_list(exec_list);
-	return (SUCCESS);
+	if (vec->next)
+		return (vector_get_last(vec->next));
+	else
+		return (vec);
 }
 
-t_shell	*shell_init(char **env)
+// NOTE: Returns first element in vector.
+t_vector	*vector_get_first(t_vector *vec)
 {
-	t_shell		*lambda;
-	t_vector	*new_element;
-
-	new_element = malloc(sizeof(t_vector));
-	lambda = malloc(sizeof(t_shell));
-	if (!lambda)
+	if (vec->index == 0)
+		return (vec);
+	else if (vec->previous)
+		return (vector_get_first(vec->previous));
+	else
 		return (NULL);
-	lambda->env = init_env(env);
-	vector_push_back(lambda->env, new_element);
-	if (!lambda->env)
-	{
-		free(lambda);
-		return (NULL);
-	}
-	return (lambda);
 }
 
-int	main(int argc, char **argv, char **env)
+// NOTE: Returns size of vector.
+int	vector_size(t_vector *vec)
 {
-	t_shell	*lambda;
-
-	if (argc > 1 && argv[0])
-		return (SUCCESS);
-
-	lambda = shell_init(env);
-	if (!lambda)
-		return (FAILURE);
-	dbg_print_env(lambda->env);
-	return (SUCCESS);
-
-	while (TRUE)
-		prompt(lambda);
-	return (SUCCESS);
+	if (vec->next)
+		return (vector_size(vec) + 1);
+	else
+		return (1);
 }

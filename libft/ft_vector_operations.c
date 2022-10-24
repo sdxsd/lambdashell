@@ -37,58 +37,62 @@ The definition of Free Software is as follows:
 A program is free software if users have all of these freedoms.
 */
 
-#include "../include/minishell.h"
+#include "libft.h"
 #include <stdlib.h>
 
-int	prompt(t_shell *lambda)
+static void	update_indices(t_vector *vec, int arg)
 {
-	t_exec_element	*exec_list;
-	lambda->line = readline("λ :: > ");
-	if (ft_strlen(lambda->line) < 1)
-		return (SUCCESS);
-	parse_line(lambda);
-	exec_list = tokenizer(lambda);
-	exec_list_generator(exec_list, lambda->env);
-	dbg_print_exec_list(exec_list);
-	executor(exec_list);
-	free(lambda->line);
-	dealloc_exec_list(exec_list);
-	return (SUCCESS);
+	if (arg)
+		vec->index++;
+	else
+		vec->index--;
+	if (vec->next)
+		update_indices(vec->next, arg);
+	else
+		return ;
 }
 
-t_shell	*shell_init(char **env)
+t_vector	*vector_push_back(t_vector *head, t_vector *new)
 {
-	t_shell		*lambda;
-	t_vector	*new_element;
-
-	new_element = malloc(sizeof(t_vector));
-	lambda = malloc(sizeof(t_shell));
-	if (!lambda)
-		return (NULL);
-	lambda->env = init_env(env);
-	vector_push_back(lambda->env, new_element);
-	if (!lambda->env)
-	{
-		free(lambda);
-		return (NULL);
-	}
-	return (lambda);
+	head = vector_get_last(head);
+	head->next = new;
+	new->previous = head;
+	new->index = head->index + 1;
+	return (new);
 }
 
-int	main(int argc, char **argv, char **env)
+void	vector_pop_back(t_vector *head, void (*dealloc) (void *))
 {
-	t_shell	*lambda;
+	head = vector_get_last(head);
+	head->previous->next = NULL;
+	if (dealloc && head->data)
+		dealloc(head->data);
+	free(head);
+}
 
-	if (argc > 1 && argv[0])
-		return (SUCCESS);
+// NOTE: Requires first element.
+t_vector	*vector_push_front(t_vector **head, t_vector *new)
+{
+	if ((*head)->index != 0)
+		return (NULL);
+	(*head)->previous = new;
+	new->next = *head;
+	new->index = 0;
+	update_indices(*head, 1);
+	*head = new;
+	return (new);
+}
 
-	lambda = shell_init(env);
-	if (!lambda)
-		return (FAILURE);
-	dbg_print_env(lambda->env);
-	return (SUCCESS);
+t_vector	*vector_pop_front(t_vector *head, void (*dealloc) (void *))
+{
+	t_vector	*new_head;
 
-	while (TRUE)
-		prompt(lambda);
-	return (SUCCESS);
+	head = vector_get_first(head);
+	head->next->previous = NULL;
+	new_head = head->next;
+	if (dealloc && head->data)
+		dealloc(head->data);
+	update_indices(head, 0);
+	free(head);
+	return (new_head);
 }
