@@ -2,132 +2,42 @@
 # define PROTOTYPES_H
 # include "structs.h"
 
-/* SPLASH.C */
-void	splash();
-void	clear_screen(void);
-
-/* INIT.C */
-int		init_env_struct(t_ms *ms, char **envp);
-int		init_ms_struct(t_ms *ms);
-int		init_start(void);
-
-/* MAIN.C */
+/* SHELL */
 int		prompt(t_ms *ms);
 
-/* EXPANDER.C */
-char	*line_expander(char *line, t_env **env);
-char	*line_insert_var(char *line, int pos, t_env **env);
-int		line_dollar_presence(char *line);
-
-/* ENV */
-/* ENV_TO_ARRAYS.C */
+/* ENVIRONMENT */
 char	**env_to_arrays(t_env **env);
-char	**env_vals_to_arrays(t_env **env);
-char	**env_entries_to_arrays(t_env **env);
 
-/* ENV_ADD_VAR.C */
-t_env	*env_create_var(char *key, char *val);
-int		env_add_var(t_ms *ms, t_env *node);
-
-/* ENV_TOOLS.C */
-int		env_len(t_env **env);
-int		env_get_var_key_idx(t_env **env, char *key);
-char	*env_get_val(t_env **env, char *key);
-int		env_init_idx(t_env **env);
-int		env_edit_var_val(t_env **env, char *key, char *new_val);
-int		env_key_exist(t_env **env, char *key);
-
-/* ENV_CLONE_ENV */
-int	env_var_cloner(t_ms *ms, char *line);
-
-/* ENV_DELETE_VAR */
-int		free_env_var(t_env *node);
-int		env_del_var_helper(t_env **head, char *key);
-int		env_del_var(t_env **env, char *key);
-
-/* ERROR.C */
+/* ERROR MESSAGES */
 int		msg_err(char *s, int ret);
 void	*null_msg_err(char *s);
 
-/* TOKENS.C */
+/* TOKENISATION */
 t_exec_element	*tokenizer(t_ms *shell);
 
-/* EXEC.C */
+/* EXECUTION */
 int		execute_command(t_cmd *cmd);
 int		executor(t_exec_element *head);
 void	dealloc_exec_list(t_exec_element *head);
 
-// EXEC_LIST.C
+/* EXEC LIST */
 t_exec_element	*exec_list_generator(t_exec_element *head, t_env **env);
 t_exec_element	*new_exec_element(void);
+void			free_exec_list(t_exec_element *head);
 
-/* PARSER */
-/* LINE_PARSER.C */
-int		line_parser(t_ms *ms);
+/* LINE PARSER */
+char	**parse_line(t_ms *lambda);
 
-/* LINE_SPLIT_INTO_LINES.C */
-size_t	line_get_n_words(char *line);
-size_t	line_get_line_len(char *line, size_t i);
-char	**line_split_line_helper(char **lines, char *line);
-char	**line_trim_lines(char **lines);
-char	**line_split_line(char *line);
-
-/* LINE_CHECK_TOOLS */
-int 	line_check_quotations(char *line);
-int		line_check_first_char(char *line);
-int		line_get_last_char(char *line);
-int 	line_check_last_char(char *line, char *charset);
-int		line_check_syntax(char *line, char *charset);
-
-/* CLEAN.C */
-int		clean_tokenlist(t_list **tokenlist);
-int		clean_env(t_env **env);
-
-/* BUILTINS */
-/* ENV.C */
-void	builtin_env(t_ms *ms, int fd);
-int		builtin_pwd(int fd);
-void	builtin_unset(t_ms *ms, char **args);
-void	builtin_echo(t_cmd *cmd_object, int fd);
-int		builtin_export(t_ms *ms, t_cmd *cmd_object, int fd);
-int		builtin_cd(t_cmd *cmd_object, t_ms *ms);
-int		builtin_cd2(char **args, t_ms *ms); // just for testing, couldnt get builtin_cd to work for struct objects
-
-/* EXE_BUILTIN.C */
-int		exe_builtin(t_cmd *element, t_ms *ms);
-
-/* DEALLOC/DEALLOC_EXEC_LIST.C */
-void	free_exec_list(t_exec_element *head);
-
-/* tokens_populate_tokenlist.C */
-int		tokens_check_syntax(t_list *tokenlist);
-void	tokens_add_types(t_list *tokenlist);
-
-/* PIPE_BLK.C */
+/* CMD STRUCT */
 t_cmd		*cmd_constructor(char *prog_n, t_env **env);
 void		cmd_deallocator(t_cmd *cmd);
 
-/* PATH.C */
+/* PATH */
 char	*get_path(char *prog_n, t_env **env);
 int		free_ptr_array(char *ptr[]);
 
-/* DEBUG_ENV.C */
-int		debug_print_env(t_ms *ms);
-int		debug_print_env_idx(t_ms *ms);
-int		debug_print_env_keys(t_ms *ms);
-
-/* DEBUG/DEBUG_PRINT.C */
+/* DEBUG */
 void	dbg_print_exec_list(t_exec_element *head);
 void	dbg_print_lines(char **lines);
-
-/* MISC */
-/* CHECK_FD.C */
-int		check_fd(void);
-
-/* COLORS.C */
-void	color_red();
-void	color_orange();
-void	color_green();
-void	color_reset();
 
 #endif
