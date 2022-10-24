@@ -37,9 +37,7 @@ The definition of Free Software is as follows:
 A program is free software if users have all of these freedoms.
 */
 
-#include "../includes/prototypes.h"
 #include "../include/minishell.h"
-#include "../includes/structs.h"
 
 // NOTE: INFO
 // Allocates a new t_exec_element in preparation for use.
@@ -74,7 +72,7 @@ t_exec_element	*new_exec_element(void)
 //  |          +----------------+            |
 //  +=---------------------------------------+
 //
-t_exec_element *assign_exec_element(t_exec_element *element, t_env **env)
+t_exec_element	*assign_exec_element(t_exec_element *element, t_env **env)
 {
 	if (element->type == tkn_cmd)
 	{
