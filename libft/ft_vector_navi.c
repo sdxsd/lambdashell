@@ -63,7 +63,7 @@ t_vector	*vector_get_first(t_vector *vec)
 int	vector_size(t_vector *vec)
 {
 	if (vec->next)
-		return (vector_size(vec) + 1);
+		return (vector_size(vec->next) + 1);
 	else
 		return (1);
 }

@@ -59,14 +59,11 @@ int	prompt(t_shell *lambda)
 t_shell	*shell_init(char **env)
 {
 	t_shell		*lambda;
-	t_vector	*new_element;
 
-	new_element = malloc(sizeof(t_vector));
 	lambda = malloc(sizeof(t_shell));
 	if (!lambda)
 		return (NULL);
 	lambda->env = init_env(env);
-	vector_push_back(lambda->env, new_element);
 	if (!lambda->env)
 	{
 		free(lambda);
@@ -85,7 +82,7 @@ int	main(int argc, char **argv, char **env)
 	lambda = shell_init(env);
 	if (!lambda)
 		return (FAILURE);
-	dbg_print_env(lambda->env);
+	dbg_test_env(lambda->env);
 	return (SUCCESS);
 
 	while (TRUE)
