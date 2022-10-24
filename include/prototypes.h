@@ -45,7 +45,7 @@ A program is free software if users have all of these freedoms.
 int				prompt(t_ms *ms);
 
 /* ENVIRONMENT */
-char			**env_to_arrays(t_env **env);
+char			**env_to_arrays(t_vector **env);
 
 /* ERROR MESSAGES */
 int				msg_err(char *s, int ret);
@@ -60,7 +60,7 @@ int				executor(t_exec_element *head);
 void			dealloc_exec_list(t_exec_element *head);
 
 /* EXEC LIST */
-t_exec_element	*exec_list_generator(t_exec_element *head, t_env **env);
+t_exec_element	*exec_list_generator(t_exec_element *head, t_vector **env);
 t_exec_element	*new_exec_element(void);
 void			free_exec_list(t_exec_element *head);
 
@@ -68,11 +68,11 @@ void			free_exec_list(t_exec_element *head);
 char			**parse_line(t_ms *lambda);
 
 /* CMD STRUCT */
-t_cmd			*cmd_constructor(char *prog_n, t_env **env);
+t_cmd			*cmd_constructor(char *prog_n, t_vector **env);
 void			cmd_deallocator(t_cmd *cmd);
 
 /* PATH */
-char			*get_path(char *prog_n, t_env **env);
+char			*get_path(char *prog_n, t_vector **env);
 int				free_ptr_array(char *ptr[]);
 
 /* DEBUG */

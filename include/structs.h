@@ -103,8 +103,8 @@ typedef struct s_cmd
 //                  i.e. t_cmd
 // (void *next)  -> next token element in the list.
 
-// ALLOCATOR   : execution_list_generator();
-// DEALLOCATOR : execution_list_deallocator();
+// ALLOCATOR   : exec_list_generator();
+// DEALLOCATOR : exec_list_deallocator();
 
 typedef struct s_exec_element
 {
