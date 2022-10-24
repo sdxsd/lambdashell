@@ -24,6 +24,8 @@ CFILES = \
 		ft_revstr.c \
 		ft_strncpy.c \
 		ft_vector.c \
+		ft_vector_operations.c \
+		ft_vector_navi.c \
 		ft_bzero.c \
 		ft_memcmp.c \
 		ft_split.c \
