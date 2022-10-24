@@ -13,15 +13,15 @@ CFILES =		src/main.c \
 				src/env/env.c \
 				src/error/error.c
 OFILES = $(CFILES:.c=.o)
-B_OFILES = $(BONUS_FILES:.c=.o)
 LIB = libft/libft.a
 
 all: $(NAME)
 
 $(NAME): $(OFILES) $(LIB)
+	$(CC) $(CFLAGS) $(OFILES) -o $(NAME)
 
 %.o: %.c
-	@$(CC) $(CFLAGS) -c $<
+	$(CC) $(CFLAGS) -c $< -o
 	@echo COMPILED: $<
 
 $(LIB):
@@ -35,6 +35,4 @@ fclean: clean
 
 clean:
 	@rm -f $(OFILES)
-	@rm -f $(B_OFILES)
-	@rm -f a.out
 	@echo "CLEANED UP"
