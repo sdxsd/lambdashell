@@ -40,9 +40,9 @@ A program is free software if users have all of these freedoms.
 #include "../include/minishell.h"
 #include <stdlib.h>
 
-int	prompt(t_ms *ms)
+int	prompt(t_ms *lambda)
 {
-	t_exec_element *exec_list;
+	t_exec_element	*exec_list;
 
 	ms->line = readline("λ :: > ");
 	if (ft_strlen(ms->line) < 1)
@@ -59,10 +59,10 @@ int	prompt(t_ms *ms)
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_ms *ms;
+	t_ms	*lambda;
 
 	if (argc == 1 && argv)
 		while (TRUE)
-			prompt(ms);
+			prompt(lambda);
 	return (SUCCESS);
 }

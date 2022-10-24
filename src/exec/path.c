@@ -38,6 +38,7 @@ A program is free software if users have all of these freedoms.
 */
 
 #include "../include/minishell.h"
+#include <stdlib.h>
 
 /* Returns number of elements freed */
 /* Assumes list ends with null ptr */
@@ -48,7 +49,7 @@ int	free_ptr_array(char *ptr[])
 	iter = 0;
 	while (ptr[iter] != NULL)
 	{
-		//free(ptr[iter]);
+		free(ptr[iter]);
 		iter++;
 	}
 	free(ptr);
