@@ -10,6 +10,7 @@ CFILES =		src/main.c \
 				src/tokenizer/tokens.c \
 				src/dealloc/dealloc_exec_list.c \
 				src/debug/debug_print.c \
+				src/debug/debug_env.c \
 				src/env/env.c \
 				src/env/env_utils.c \
 				src/parser/line_parser.c \
