@@ -137,7 +137,7 @@ t_vector	*alloc_vector(int n_elements);
 int			vec_assign_element(t_vector *head, size_t idx, void *data);
 t_vector	*vec_get_element(t_vector *head, size_t idx);
 t_vector	*new_vector_element(t_vector *prev, size_t idx);
-void		*free_vector(t_vector *head, void (*dealloc) (void *));
+void		*free_vector(t_vector *vec, void (*dealloc) (void *));
 
 // VEKTOR NAVI FUNKTIONEN
 t_vector	*vector_get_last(t_vector *vec);

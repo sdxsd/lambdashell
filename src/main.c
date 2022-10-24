@@ -83,6 +83,7 @@ int	main(int argc, char **argv, char **env)
 	if (!lambda)
 		return (FAILURE);
 	dbg_test_env(lambda->env);
+	free(lambda);
 	return (SUCCESS);
 
 	while (TRUE)

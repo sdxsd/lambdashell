@@ -42,6 +42,8 @@ A program is free software if users have all of these freedoms.
 char	**env_to_strings(t_vector *env)
 {
 	if (env)
+	{
 		;
+	}
 	return (NULL);
 }

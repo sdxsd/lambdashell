@@ -4,7 +4,7 @@
 # et mæken þan ān nïwe arkive file med alle þe .c filen.
 # Þe "clean" funktion reweiderd alle .o .a af .so filen.
 
-CC = clang
+CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 NAME = libft.a
 BONUS_FILES = \
