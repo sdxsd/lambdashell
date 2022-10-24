@@ -41,19 +41,11 @@ A program is free software if users have all of these freedoms.
 # define STRUCTS_H
 # include "../libft/libft.h"
 
-typedef struct s_env
-{
-	char	*key;
-	char	*val;
-	int		idx;
-	void	*next;
-}	t_env;
-
 typedef struct s_ms
 {
-	char	*line;
-	t_env	**env;
-	char	**lines;
+	char		*line;
+	t_vector	**env;
+	char		**lines;
 }	t_ms;
 
 typedef enum e_token_type

@@ -32,7 +32,17 @@ typedef struct s_list {
 	struct s_list	*next;
 }	t_list;
 
-// LINKT LISTEN FUNKTIONEN 
+// Doubly linked list with the purpose
+// of acting in a similar fashion to
+// C++ vectors.
+typedef struct s_vector {
+	size_t			index;
+	void			*data;
+	struct s_vector	*next;
+	struct s_vector	*previous;
+}	t_vector;
+
+// LINKT LISTEN FUNKTIONEN
 t_list	*ft_lstnew(void *content);
 void	ft_lstadd_front(t_list **lst, t_list *new);
 int		ft_lstsize(t_list *lst);
