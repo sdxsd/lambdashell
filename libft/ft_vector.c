@@ -52,7 +52,7 @@ void	*free_vector(t_vector *head, void (*dealloc) (void *))
 	return (NULL);
 }
 
-t_vector	*new_vector_element(t_vector *prev, int idx)
+t_vector	*new_vector_element(t_vector *prev, size_t idx)
 {
 	t_vector	*vec;
 
@@ -66,7 +66,7 @@ t_vector	*new_vector_element(t_vector *prev, int idx)
 	return (vec);
 }
 
-t_vector	*vec_get_element(t_vector *head, int idx)
+t_vector	*vec_get_element(t_vector *head, size_t idx)
 {
 	if (head->next && head->index != idx)
 		return (vec_get_element(head->next, idx));
@@ -76,7 +76,7 @@ t_vector	*vec_get_element(t_vector *head, int idx)
 		return (NULL);
 }
 
-int	vec_assign_element(t_vector *head, int idx, void *data)
+int	vec_assign_element(t_vector *head, size_t idx, void *data)
 {
 	t_vector	*vec;
 
@@ -89,7 +89,7 @@ int	vec_assign_element(t_vector *head, int idx, void *data)
 
 t_vector	*alloc_vector(int n_elements)
 {
-	int			idx;
+	size_t		idx;
 	t_vector	*vec;
 	t_vector	*nxt;
 	t_vector	*head;

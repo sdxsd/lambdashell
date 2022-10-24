@@ -134,9 +134,9 @@ void	ft_putnbr_base(int n, int base);
 
 // VEKTOR FUNKTIONEN
 t_vector	*alloc_vector(int n_elements);
-int			vec_assign_element(t_vector *head, int idx, void *data);
-t_vector	*vec_get_element(t_vector *head, int idx);
-t_vector	*new_vector_element(t_vector *prev, int idx);
+int			vec_assign_element(t_vector *head, size_t idx, void *data);
+t_vector	*vec_get_element(t_vector *head, size_t idx);
+t_vector	*new_vector_element(t_vector *prev, size_t idx);
 void		*free_vector(t_vector *head, void (*dealloc) (void *));
 
 #endif

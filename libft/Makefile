@@ -23,6 +23,7 @@ CFILES = \
 		ft_memchr.c \
 		ft_revstr.c \
 		ft_strncpy.c \
+		ft_vector.c \
 		ft_bzero.c \
 		ft_memcmp.c \
 		ft_split.c \
