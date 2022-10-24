@@ -132,4 +132,11 @@ int		ft_putnbr_len(int nb);
 int		ft_putchar_len(char c);
 void	ft_putnbr_base(int n, int base);
 
+// VEKTOR FUNKTIONEN
+t_vector	*alloc_vector(int n_elements);
+int			vec_assign_element(t_vector *head, int idx, void *data);
+t_vector	*vec_get_element(t_vector *head, int idx);
+t_vector	*new_vector_element(t_vector *prev, int idx);
+void		*free_vector(t_vector *head, void (*dealloc) (void *));
+
 #endif

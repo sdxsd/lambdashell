@@ -42,9 +42,10 @@ A program is free software if users have all of these freedoms.
 # include "structs.h"
 
 /* SHELL */
-int				prompt(t_ms *ms);
+int				prompt(t_shell *ms);
 
 /* ENVIRONMENT */
+t_vector		*init_env(char **env);
 char			**env_to_arrays(t_vector **env);
 
 /* ERROR MESSAGES */
@@ -52,7 +53,7 @@ int				msg_err(char *s, int ret);
 void			*null_msg_err(char *s);
 
 /* TOKENISATION */
-t_exec_element	*tokenizer(t_ms *shell);
+t_exec_element	*tokenizer(t_shell *shell);
 
 /* EXECUTION */
 int				execute_command(t_cmd *cmd);
@@ -65,7 +66,7 @@ t_exec_element	*new_exec_element(void);
 void			free_exec_list(t_exec_element *head);
 
 /* LINE PARSER */
-char			**parse_line(t_ms *lambda);
+char			**parse_line(t_shell *lambda);
 
 /* CMD STRUCT */
 t_cmd			*cmd_constructor(char *prog_n, t_vector **env);
