@@ -11,6 +11,8 @@ CFILES =		src/main.c \
 				src/dealloc/dealloc_exec_list.c \
 				src/debug/debug_print.c \
 				src/env/env.c \
+				src/env/env_utils.c \
+				src/parser/line_parser.c \
 				src/error/error.c
 OFILES = $(CFILES:.c=.o)
 LIB = libft/libft.a
@@ -18,11 +20,10 @@ LIB = libft/libft.a
 all: $(NAME)
 
 $(NAME): $(OFILES) $(LIB)
-	$(CC) $(CFLAGS) $(OFILES) -o $(NAME)
+	$(CC) $(CFLAGS) -lreadline $(OFILES) $(LIB) -o $(NAME)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o
-	@echo COMPILED: $<
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(LIB):
 	make -C libft/

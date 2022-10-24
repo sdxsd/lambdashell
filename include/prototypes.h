@@ -46,7 +46,7 @@ int				prompt(t_shell *ms);
 
 /* ENVIRONMENT */
 t_vector		*init_env(char **env);
-char			**env_to_arrays(t_vector *env);
+char			**env_to_strings(t_vector *env);
 char			*env_get_val(t_vector *env, char *val);
 
 /* ERROR MESSAGES */

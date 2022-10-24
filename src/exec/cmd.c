@@ -72,7 +72,7 @@ t_cmd	*cmd_constructor(char *prog_n_args, t_vector *env)
 		cmd_deallocator(cmd);
 		return (null_msg_err("cmd_constructor()"));
 	}
-	cmd->env = env_to_arrays(env);
+	cmd->env = env_to_strings(env);
 	if (!cmd->env)
 	{
 		cmd_deallocator(cmd);

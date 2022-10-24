@@ -38,3 +38,10 @@ A program is free software if users have all of these freedoms.
 */
 
 #include "../../include/minishell.h"
+
+char	**parse_line(t_shell *lambda)
+{
+	if (lambda)
+		;
+	return (NULL);
+}
