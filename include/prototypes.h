@@ -46,7 +46,8 @@ int				prompt(t_shell *ms);
 
 /* ENVIRONMENT */
 t_vector		*init_env(char **env);
-char			**env_to_arrays(t_vector **env);
+char			**env_to_arrays(t_vector *env);
+char			*env_get_val(t_vector *env, char *val);
 
 /* ERROR MESSAGES */
 int				msg_err(char *s, int ret);
@@ -61,7 +62,7 @@ int				executor(t_exec_element *head);
 void			dealloc_exec_list(t_exec_element *head);
 
 /* EXEC LIST */
-t_exec_element	*exec_list_generator(t_exec_element *head, t_vector **env);
+t_exec_element	*exec_list_generator(t_exec_element *head, t_vector *env);
 t_exec_element	*new_exec_element(void);
 void			free_exec_list(t_exec_element *head);
 
@@ -69,11 +70,11 @@ void			free_exec_list(t_exec_element *head);
 char			**parse_line(t_shell *lambda);
 
 /* CMD STRUCT */
-t_cmd			*cmd_constructor(char *prog_n, t_vector **env);
+t_cmd			*cmd_constructor(char *prog_n, t_vector *env);
 void			cmd_deallocator(t_cmd *cmd);
 
 /* PATH */
-char			*get_path(char *prog_n, t_vector **env);
+char			*get_path(char *prog_n, t_vector *env);
 int				free_ptr_array(char *ptr[]);
 
 /* DEBUG */

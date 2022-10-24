@@ -37,7 +37,7 @@ The definition of Free Software is as follows:
 A program is free software if users have all of these freedoms.
 */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -76,7 +76,7 @@ static char	*combine_path(char *dir, char *prog_n)
 
 /* Takes program name (prog_n), and environment strings (env) and returns */
 /* the absolute path to the program. */
-char	*get_path(char *prog_n, t_env **env)
+char	*get_path(char *prog_n, t_vector *env)
 {
 	static char	*path_env;
 	char		*abs_path;
