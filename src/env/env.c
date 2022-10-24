@@ -38,3 +38,14 @@ A program is free software if users have all of these freedoms.
 */
 
 #include "../include/minishell.h"
+
+t_vector	*init_env(char **env)
+{
+	t_vector	*env_vector;
+	int			iter;
+
+	while (env[iter])
+		iter++;
+	env_vector = alloc_vector(iter);
+	return (env_vector);
+}

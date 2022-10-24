@@ -95,7 +95,7 @@ int	check_type(char *line, t_env **env)
 		return (-1);
 }
 
-t_exec_element	*tokenizer(t_ms *shell)
+t_exec_element	*tokenizer(t_shell *shell)
 {
 	t_exec_element	*exec_list;
 	t_exec_element	*prev;

@@ -44,9 +44,9 @@ A program is free software if users have all of these freedoms.
 typedef struct s_ms
 {
 	char		*line;
-	t_vector	**env;
+	t_vector	*env;
 	char		**lines;
-}	t_ms;
+}	t_shell;
 
 typedef enum e_token_type
 {
