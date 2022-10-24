@@ -58,6 +58,8 @@ t_vector	*init_env(char **env)
 char	*env_get_val(t_vector *env, char *val)
 {
 	if (env && val)
+	{
 		;
+	}
 	return (NULL);
 }

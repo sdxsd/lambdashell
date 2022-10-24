@@ -60,4 +60,5 @@ void	dbg_test_env(t_vector *env)
 	printf("	LAST: %s\n\n", (char *)vector_get_last(env)->data);
 	dbg_print_env(env);
 	printf("\nVECTOR SIZE: %d\n", vector_size(env));
+	free_vector(env, NULL);
 }

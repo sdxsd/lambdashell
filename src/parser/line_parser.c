@@ -41,7 +41,6 @@ A program is free software if users have all of these freedoms.
 
 char	**parse_line(t_shell *lambda)
 {
-	if (lambda)
-		;
-	return (NULL);
+	lambda->lines = ft_split(lambda->line, '|');
+	return (lambda->lines);
 }
