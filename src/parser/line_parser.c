@@ -38,44 +38,51 @@ A program is free software if users have all of these freedoms.
 */
 
 #include "../../include/minishell.h"
+#include <stdlib.h>
 
-char	*trim_line(char **line)
+char	*trim_line(char *line)
 {
 	int		iter;
-	int		new_strlen;
-	char	**new_string;
+	char	**split;
+	char	*new_line;
+	char	*previous_join;
 
-	iter = 0;
-	while (iter < ft_strlen(*line))
-	{
-		if (*line[iter] == ' ' && *line[iter + 1] != ' ')
-		{
-			iter++;
-			new_strlen++;
-			while (*line[iter] != ' ')
-			{
-				new_strlen++;
-				iter++;
-			}
-		}
-		else
-			iter++;
-	}
-	new_string = ft_calloc(new_strlen + 1, 1);
-	if (!new_string)
+	split = ft_split(line, ' ');
+	if (!split)
 		return (NULL);
+	iter = 0;
+	if
+	new_line = ft_strjoin(split[iter], split[iter + 1]);
+	while (split[iter])
+	{
+		if (split[iter + 1] != NULL )
+		{
+			previous_join = new_line;
+			new_line = ft_strjoin(split[iter], split[iter + 1]);
+
+		}
+		iter++;
+	}
 }
 
 char	*ready_lines(char **lines)
 {
-	while (lines++)
-		trim_line(lines);
+	int	iter;
+
+	iter = 0;
+	while (lines[iter])
+	{
+		lines[iter] = trim_line(lines[iter]);
+		if (!lines[iter])
+			return (NULL);
+	}
+	return (NULL);
 }
 
 char	**parse_line(t_shell *lambda)
 {
 	lambda->lines = ft_split(lambda->line, '|');
-	ready_lines(lambda->lines);
 	dbg_print_lines(lambda->lines);
+	ready_lines(lambda->lines);
 	return (lambda->lines);
 }
