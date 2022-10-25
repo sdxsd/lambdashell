@@ -82,7 +82,7 @@ int	main(int argc, char **argv, char **env)
 	lambda = shell_init(env);
 	if (!lambda)
 		return (FAILURE);
-	dbg_test_env(lambda->env);
+	dbg_print_env(lambda->env);
 	free(lambda);
 	return (SUCCESS);
 
