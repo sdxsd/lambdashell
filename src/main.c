@@ -78,13 +78,10 @@ int	main(int argc, char **argv, char **env)
 	t_shell	*lambda;
 
 	if (argc > 1 && argv[0])
-		return (SUCCESS);
+		return (FAILURE);
 	lambda = shell_init(env);
 	if (!lambda)
 		return (FAILURE);
-	dbg_print_env(lambda->env);
-	free(lambda);
-	return (SUCCESS);
 	while (TRUE)
 		prompt(lambda);
 	return (SUCCESS);
