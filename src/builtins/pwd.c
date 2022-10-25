@@ -37,51 +37,13 @@ The definition of Free Software is as follows:
 A program is free software if users have all of these freedoms.
 */
 
-#include "../include/minishell.h"
-#include <stdlib.h>
+#include "../../include/minishell.h"
+#include <limits.h>
+#include <unistd.h>
 
-int	prompt(t_shell *lambda)
+void	pwd(void)
 {
-	t_exec_element	*exec_list;
-
-	lambda->line = readline("λ :: > ");
-	if (ft_strlen(lambda->line) < 1)
-		return (SUCCESS);
-	parse_line(lambda);
-	exec_list = tokenizer(lambda);
-	exec_list_generator(exec_list, lambda->env);
-	executor(exec_list);
-	free(lambda->line);
-	dealloc_exec_list(exec_list);
-	return (SUCCESS);
-}
-
-t_shell	*shell_init(char **env)
-{
-	t_shell		*lambda;
-
-	lambda = malloc(sizeof(t_shell));
-	if (!lambda)
-		return (NULL);
-	lambda->env = init_env(env);
-	if (!lambda->env)
-	{
-		free(lambda);
-		return (NULL);
-	}
-	return (lambda);
-}
-
-int	main(int argc, char **argv, char **env)
-{
-	t_shell	*lambda;
-
-	if (argc > 1 && argv[0])
-		return (FAILURE);
-	lambda = shell_init(env);
-	if (!lambda)
-		return (FAILURE);
-	while (TRUE)
-		prompt(lambda);
-	return (SUCCESS);
+	char	buffer[_POSIX_PATH_MAX];
+	getcwd(buffer, _POSIX_PATH_MAX);
+	printf("%s\n", buffer);
 }
