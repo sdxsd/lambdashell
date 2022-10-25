@@ -44,7 +44,6 @@ char	**env_to_strings(t_vector *env)
 {
 	t_env_element	*e_element;
 	char			**env_strings;
-	char			*tmp;
 	int				e_size;
 
 	e_size = vector_size(env);
@@ -54,20 +53,12 @@ char	**env_to_strings(t_vector *env)
 	while (e_size-- > 0)
 	{
 		e_element = vec_get_element(env, e_size)->data;
-		tmp = ft_strjoin(e_element->key, "=");
-		if (!tmp)
-		{
-			free_ptr_array(env_strings);
-			return (null_msg_err("env_to_strings()"));
-		}
-		env_strings[e_size] = ft_strjoin(tmp, e_element->val);
+		env_strings[e_size] = ft_strjoin(e_element->key, e_element->val);
 		if (!env_strings[e_size])
 		{
 			free_ptr_array(env_strings);
-			free(tmp);
 			return (null_msg_err("env_to_strings()"));
 		}
-		free(tmp);
 	}
 	env_strings[vector_size(env) + 1] = NULL;
 	return (env_strings);
