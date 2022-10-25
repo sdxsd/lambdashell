@@ -70,7 +70,7 @@ void	dbg_print_env(t_vector *head)
 	t_env_element	*ee;
 
 	ee = head->data;
-	printf("%s=%s\n", ee->key, ee->val);
+	printf("%s%s\n", ee->key, ee->val);
 	if (head->next)
 		dbg_print_env(head->next);
 	else

@@ -80,7 +80,7 @@ t_vector	*init_env(char **env)
 			free_vector(env_vector, dealloc_env_element);
 			return (NULL);
 		}
-		env_element->key = ft_strndup(env[iter], to_assignment(env[iter]));
+		env_element->key = ft_strndup(env[iter], to_assignment(env[iter]) + 1);
 		if (!env_element->key)
 		{
 			free_vector(env_vector, dealloc_env_element);
