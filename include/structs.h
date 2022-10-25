@@ -45,6 +45,7 @@ typedef struct s_ms
 {
 	char		*line;
 	t_vector	*env;
+	t_vector	*his;
 	char		**lines;
 }	t_shell;
 
