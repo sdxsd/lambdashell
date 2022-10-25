@@ -38,28 +38,53 @@ A program is free software if users have all of these freedoms.
 */
 
 #include "../../include/minishell.h"
+#include <stdlib.h>
 
 t_vector	*init_env(char **env)
 {
-	t_vector	*env_vector;
-	int			iter;
+	t_vector		*env_vector;
+	t_env_element	*env_element;
+	char			**env_chars;
+	int				iter;
 
 	iter = 0;
 	while (env[iter])
 		iter++;
 	env_vector = alloc_vector(iter - 1);
 	if (!env_vector)
-		return (NULL);
+		return (NULL); // Write freeing later.
 	while (iter-- > 0)
-		vec_assign_element(env_vector, iter, env[iter]);
+	{
+		env_chars = ft_split(env[iter], '=');
+		if (!env_chars)
+			return (NULL); // Write freeing later.
+		env_element = malloc(sizeof(t_env_element));
+		if (!env_element)
+			return (NULL); // Write freeing later.
+		env_element->key = env_chars[0];
+		env_element->val = env_chars[1];
+		vec_assign_element(env_vector, iter, env_element);
+	}
 	return (env_vector);
 }
 
-char	*env_get_val(t_vector *env, char *val)
+t_env_element	*env_get_val(t_vector *env, char *val)
 {
-	if (env && val)
+	int				iter;
+	int				env_size;
+	t_env_element	*env_element;
+
+
+	if (!env || !val)
+		return (NULL);
+	iter = 0;
+	env_size = vector_size(env);
+	while (iter < env_size)
 	{
-		;
+		env_element = vec_get_element(env, iter)->data;
+		if (!ft_strncmp(env_element->key, val, ft_strlen(val)))
+			return (env_element);
+		iter++;
 	}
 	return (NULL);
 }

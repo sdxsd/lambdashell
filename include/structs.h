@@ -79,6 +79,12 @@ typedef struct s_cmd
 	char	*path;
 }	t_cmd;
 
+typedef struct s_env_element
+{
+	char	*key;
+	char	*val;
+} 	t_env_element;
+
 // NOTE:
 //    EXECUTION LIST
 // +------------------+

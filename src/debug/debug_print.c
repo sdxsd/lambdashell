@@ -67,7 +67,10 @@ void	dbg_print_exec_list(t_exec_element *head)
 
 void	dbg_print_env(t_vector *head)
 {
-	printf("%s\n", (char *)head->data);
+	t_env_element *ee;
+
+	ee = head->data;
+	printf("%s=%s\n", ee->key, ee->val);
 	if (head->next)
 		dbg_print_env(head->next);
 	else
