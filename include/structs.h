@@ -83,7 +83,7 @@ typedef struct s_env_element
 {
 	char	*key;
 	char	*val;
-} 	t_env_element;
+}	t_env_element;
 
 // NOTE:
 //    EXECUTION LIST
