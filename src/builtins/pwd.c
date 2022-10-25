@@ -44,6 +44,10 @@ A program is free software if users have all of these freedoms.
 void	pwd(void)
 {
 	char	buffer[_POSIX_PATH_MAX];
-	getcwd(buffer, _POSIX_PATH_MAX);
+	if (getcwd(buffer, _POSIX_PATH_MAX) == NULL)
+	{
+		msg_err("pwd()", FAILURE);
+		return ;
+	}
 	printf("%s\n", buffer);
 }
