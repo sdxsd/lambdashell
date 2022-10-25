@@ -90,7 +90,6 @@ t_env_element	*env_get_val(t_vector *env, char *val)
 	int				env_size;
 	t_env_element	*env_element;
 
-
 	if (!env || !val)
 		return (NULL);
 	iter = 0;
