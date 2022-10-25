@@ -40,6 +40,16 @@ A program is free software if users have all of these freedoms.
 #include "../../include/minishell.h"
 #include <stdlib.h>
 
+void	dealloc_env_element(void *ptr)
+{
+	t_env_element	*env_element;
+
+	env_element = ptr;
+	free(env_element->key);
+	free(env_element->val);
+	free(env_element);
+}
+
 t_vector	*init_env(char **env)
 {
 	t_vector		*env_vector;
@@ -52,15 +62,21 @@ t_vector	*init_env(char **env)
 		iter++;
 	env_vector = alloc_vector(iter - 1);
 	if (!env_vector)
-		return (NULL); // Write freeing later.
+		return (NULL);
 	while (iter-- > 0)
 	{
 		env_chars = ft_split(env[iter], '=');
 		if (!env_chars)
-			return (NULL); // Write freeing later.
+		{
+			free_vector(env_vector, dealloc_env_element);
+			return (NULL);
+		}
 		env_element = malloc(sizeof(t_env_element));
 		if (!env_element)
-			return (NULL); // Write freeing later.
+		{
+			free_vector(env_vector, dealloc_env_element);
+			return (NULL);
+		}
 		env_element->key = env_chars[0];
 		env_element->val = env_chars[1];
 		vec_assign_element(env_vector, iter, env_element);
