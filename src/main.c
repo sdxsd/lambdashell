@@ -43,6 +43,7 @@ A program is free software if users have all of these freedoms.
 int	prompt(t_shell *lambda)
 {
 	t_exec_element	*exec_list;
+
 	lambda->line = readline("λ :: > ");
 	if (ft_strlen(lambda->line) < 1)
 		return (SUCCESS);
@@ -78,14 +79,12 @@ int	main(int argc, char **argv, char **env)
 
 	if (argc > 1 && argv[0])
 		return (SUCCESS);
-
 	lambda = shell_init(env);
 	if (!lambda)
 		return (FAILURE);
 	dbg_print_env(lambda->env);
 	free(lambda);
 	return (SUCCESS);
-
 	while (TRUE)
 		prompt(lambda);
 	return (SUCCESS);
