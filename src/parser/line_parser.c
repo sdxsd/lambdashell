@@ -39,8 +39,43 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
+char	*trim_line(char **line)
+{
+	int		iter;
+	int		new_strlen;
+	char	**new_string;
+
+	iter = 0;
+	while (iter < ft_strlen(*line))
+	{
+		if (*line[iter] == ' ' && *line[iter + 1] != ' ')
+		{
+			iter++;
+			new_strlen++;
+			while (*line[iter] != ' ')
+			{
+				new_strlen++;
+				iter++;
+			}
+		}
+		else
+			iter++;
+	}
+	new_string = ft_calloc(new_strlen + 1, 1);
+	if (!new_string)
+		return (NULL);
+}
+
+char	*ready_lines(char **lines)
+{
+	while (lines++)
+		trim_line(lines);
+}
+
 char	**parse_line(t_shell *lambda)
 {
 	lambda->lines = ft_split(lambda->line, '|');
+	ready_lines(lambda->lines);
+	dbg_print_lines(lambda->lines);
 	return (lambda->lines);
 }
