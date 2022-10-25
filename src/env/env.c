@@ -50,11 +50,20 @@ void	dealloc_env_element(void *ptr)
 	free(env_element);
 }
 
+static int	to_assignment(char *str)
+{
+	int	count;
+
+	count = 0;
+	while (str[count] != '\0' && str[count] != '=')
+		count++;
+	return (count);
+}
+
 t_vector	*init_env(char **env)
 {
 	t_vector		*env_vector;
 	t_env_element	*env_element;
-	char			**env_chars;
 	int				iter;
 
 	iter = 0;
@@ -65,20 +74,19 @@ t_vector	*init_env(char **env)
 		return (NULL);
 	while (iter-- > 0)
 	{
-		env_chars = ft_split(env[iter], '=');
-		if (!env_chars)
-		{
-			free_vector(env_vector, dealloc_env_element);
-			return (NULL);
-		}
 		env_element = malloc(sizeof(t_env_element));
 		if (!env_element)
 		{
 			free_vector(env_vector, dealloc_env_element);
 			return (NULL);
 		}
-		env_element->key = env_chars[0];
-		env_element->val = env_chars[1];
+		env_element->key = ft_strndup(env[iter], to_assignment(env[iter]));
+		if (!env_element->key)
+		{
+			free_vector(env_vector, dealloc_env_element);
+			return (NULL);
+		}
+		env_element->val = ft_strdup(env[iter] + to_assignment(env[iter]) + 1);
 		vec_assign_element(env_vector, iter, env_element);
 	}
 	return (env_vector);
