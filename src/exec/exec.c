@@ -40,6 +40,7 @@ A program is free software if users have all of these freedoms.
 #include "../../include/minishell.h"
 #include <sys/wait.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 /* NOTE: INFO */
 /* Takes a t_cmd and executes it. */
@@ -56,14 +57,20 @@ int	execute_command(t_cmd *cmd)
 	return (SUCCESS);
 }
 
-int	execute_builtin(t_cmd *cmd)
+static int	execute_builtin(t_cmd *cmd, t_vector *env)
 {
 	dup2(cmd->i_fd, STDIN_FILENO);
 	dup2(cmd->o_fd, STDOUT_FILENO);
 	if (!ft_strncmp(cmd->args[0], "pwd", 3))
 		pwd();
 	else if (!ft_strncmp(cmd->args[0], "cd", 3))
+	{
 		cd(cmd);
+	}
+	else if (!ft_strncmp(cmd->args[0], "env", 3))
+	{
+		dbg_print_env(env);
+	}
 	else
 	{
 		printf("Command not found.\n");
@@ -72,13 +79,19 @@ int	execute_builtin(t_cmd *cmd)
 	return (SUCCESS);
 }
 
-int	executor(t_exec_element *head)
+int	executor(t_exec_element *head, t_vector *env)
 {
 	t_exec_element	*list;
 	t_exec_element	*next;
+	t_env_element	*cwd;
+	t_cmd			*cmd;
 	int				ret;
 
 	list = head;
+	if (env)
+	{
+		;
+	}
 	if (!list->next)
 	{
 		ret = fork();
@@ -89,9 +102,18 @@ int	executor(t_exec_element *head)
 			if (list->type == tkn_cmd)
 				execute_command(list->value);
 			else if (list->type == tkn_bltin)
-				execute_builtin(list->value);
+				execute_builtin(list->value, env);
 		}
 		waitpid(0, NULL, 0);
+		cmd = (t_cmd *)list->value;
+		if (!cmd)
+			return (SUCCESS);
+		if (!ft_strncmp(cmd->args[0], "cd", 3))
+		{
+			cwd = env_get_val(env, "PWD=");
+			free(cwd->val);
+			cwd->val = ret_cwd();
+		}
 		return (SUCCESS);
 	}
 	while (list->next)
