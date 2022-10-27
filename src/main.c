@@ -50,7 +50,6 @@ int	prompt(t_shell *lambda)
 	parse_line(lambda);
 	exec_list = tokenizer(lambda);
 	exec_list_generator(exec_list, lambda->env);
-	dbg_print_exec_list(exec_list);
 	executor(exec_list);
 	free(lambda->line);
 	dealloc_exec_list(exec_list);
