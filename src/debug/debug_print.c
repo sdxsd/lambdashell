@@ -39,6 +39,15 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
+void	dbg_print_cmd(t_cmd	*cmd)
+{
+	printf("PATH: %s\n", cmd->path);
+	printf("LINES:\n");
+	dbg_print_lines(cmd->args);
+	printf("I_FD: %d", cmd->i_fd);
+	printf("O_FD: %d", cmd->o_fd);
+}
+
 void	dbg_print_lines(char **lines)
 {
 	int	iter;

@@ -42,6 +42,7 @@ A program is free software if users have all of these freedoms.
 # include "structs.h"
 
 /* BUILTINS */
+char			*ret_cwd(void);
 int				pwd(void);
 void			cd(t_cmd *cmd);
 t_cmd			*bltin_constructor(char	*line, t_vector *env);
@@ -63,7 +64,7 @@ t_exec_element	*tokenizer(t_shell *shell);
 
 /* EXECUTION */
 int				execute_command(t_cmd *cmd);
-int				executor(t_exec_element *head);
+int				executor(t_exec_element *head, t_vector *env);
 void			dealloc_exec_list(t_exec_element *head);
 
 /* EXEC LIST */
@@ -86,6 +87,7 @@ int				free_ptr_array(char *ptr[]);
 void			dbg_print_exec_list(t_exec_element *head);
 void			dbg_print_lines(char **lines);
 void			dbg_print_env(t_vector *head);
+void			dbg_print_cmd(t_cmd	*cmd);
 void			dbg_test_env(t_vector *env);
 
 #endif

@@ -40,6 +40,22 @@ A program is free software if users have all of these freedoms.
 #include "../../include/minishell.h"
 #include <limits.h>
 #include <unistd.h>
+#include <stdlib.h>
+
+char	*ret_cwd(void)
+{
+	char	*buffer;
+
+	buffer = malloc(sizeof(_POSIX_PATH_MAX));
+	if (!buffer)
+		return (NULL);
+	if (getcwd(buffer, _POSIX_PATH_MAX) == NULL)
+	{
+		free(buffer);
+		return(null_msg_err("pwd()"));
+	}
+	return (buffer);
+}
 
 int	pwd(void)
 {
