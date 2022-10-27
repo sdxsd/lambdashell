@@ -41,13 +41,12 @@ A program is free software if users have all of these freedoms.
 #include <limits.h>
 #include <unistd.h>
 
-void	pwd(void)
+int	pwd(void)
 {
 	char	buffer[_POSIX_PATH_MAX];
+
 	if (getcwd(buffer, _POSIX_PATH_MAX) == NULL)
-	{
-		msg_err("pwd()", FAILURE);
-		return ;
-	}
+		return(msg_err("pwd()", FAILURE));
 	printf("%s\n", buffer);
+	return (SUCCESS);
 }

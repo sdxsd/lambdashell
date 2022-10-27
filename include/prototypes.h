@@ -41,6 +41,11 @@ A program is free software if users have all of these freedoms.
 # define PROTOTYPES_H
 # include "structs.h"
 
+/* BUILTINS */
+int				pwd(void);
+void			cd(t_cmd *cmd);
+t_cmd			*bltin_constructor(char	*line, t_vector *env);
+
 /* SHELL */
 int				prompt(t_shell *ms);
 

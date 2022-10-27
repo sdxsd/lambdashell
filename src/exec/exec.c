@@ -56,6 +56,22 @@ int	execute_command(t_cmd *cmd)
 	return (SUCCESS);
 }
 
+int	execute_builtin(t_cmd *cmd)
+{
+	dup2(cmd->i_fd, STDIN_FILENO);
+	dup2(cmd->o_fd, STDOUT_FILENO);
+	if (!ft_strncmp(cmd->args[0], "pwd", 3))
+		pwd();
+	if (!ft_strncmp(cmd->args[0], "cd", 3))
+		cd(cmd);
+	else
+	{
+		printf("Command not found.\n");
+		return (FAILURE);
+	}
+	return (SUCCESS);
+}
+
 int	executor(t_exec_element *head)
 {
 	t_exec_element	*list;
@@ -72,6 +88,8 @@ int	executor(t_exec_element *head)
 		{
 			if (list->type == tkn_cmd)
 				execute_command(list->value);
+			else if (list->type == tkn_bltin)
+				execute_builtin(list->value);
 		}
 		waitpid(0, NULL, 0);
 		return (SUCCESS);
