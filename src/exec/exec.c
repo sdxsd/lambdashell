@@ -62,7 +62,7 @@ int	execute_builtin(t_cmd *cmd)
 	dup2(cmd->o_fd, STDOUT_FILENO);
 	if (!ft_strncmp(cmd->args[0], "pwd", 3))
 		pwd();
-	if (!ft_strncmp(cmd->args[0], "cd", 3))
+	else if (!ft_strncmp(cmd->args[0], "cd", 3))
 		cd(cmd);
 	else
 	{
