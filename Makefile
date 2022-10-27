@@ -7,6 +7,8 @@ CFILES =		src/main.c \
 				src/exec/cmd.c \
 				src/exec/exec.c \
 				src/exec/exec_list.c \
+				src/builtins/pwd.c \
+				src/builtins/cd.c \
 				src/tokenizer/tokens.c \
 				src/dealloc/dealloc_exec_list.c \
 				src/debug/debug_print.c \
