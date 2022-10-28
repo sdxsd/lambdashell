@@ -72,31 +72,40 @@ static int	execute_builtin(t_cmd *cmd, t_vector *env)
 	return (SUCCESS);
 }
 
+static void	redirec(t_cmd *cmd)
+{
+
+}
+
+static int	exec_single(t_exec_element *head, t_vector *env)
+{
+	int	ret;
+
+	if (head->type == tkn_cmd)
+	{
+		ret = fork();
+		if (ret == FORK_FAILURE)
+				return (msg_err("executor()", FAILURE));
+		if (ret == FORK_CHILD)
+		{
+			if (head->type == tkn_cmd)
+				execute_command(head->value);
+		}
+		waitpid(0, NULL, 0);
+	}
+	else if (head->type == tkn_bltin)
+		execute_builtin(head->value, env);
+	return (SUCCESS);
+}
+
 int	executor(t_exec_element *head, t_vector *env)
 {
 	t_exec_element	*list;
 	t_exec_element	*next;
-	int				ret;
 
 	list = head;
 	if (!list->next)
-	{
-		if (!(list->type == tkn_bltin))
-		{
-			ret = fork();
-			if (ret == FORK_FAILURE)
-				return (msg_err("executor()", FAILURE));
-			if (ret == FORK_CHILD)
-			{
-				if (list->type == tkn_cmd)
-					execute_command(list->value);
-			}
-			waitpid(0, NULL, 0);
-		}
-		else if (list->type == tkn_bltin)
-			execute_builtin(list->value, env);
-		return (SUCCESS);
-	}
+		exec_single(head, env);
 	while (list->next)
 	{
 		if (list->type == tkn_pipe)
