@@ -39,7 +39,32 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-/* void	ps1(t_shell	*lambda) */
-/* { */
+static char	*last_direc(char *line)
+{
+	size_t	iter;
+	char	*last_delimiter;
 
-/* } */
+	iter = 0;
+	while (iter < ft_strlen(line))
+	{
+		if (line[iter] == '/')
+			last_delimiter = line + iter;
+		iter++;
+	}
+	return (last_delimiter);
+}
+
+void	ps1(t_shell	*lambda)
+{
+	char	*last;
+
+	last = last_direc(env_get_val(lambda->env, "PWD=")->val);
+	if (ft_strlen(last) > 1)
+		last++;
+	green();
+	printf("[%s] ", env_get_val(lambda->env, "USER=")->val);
+	clear();
+	blue();
+	printf("%s ", last);
+	clear();
+}
