@@ -67,6 +67,8 @@ void	dbg_print_exec_list(t_exec_element *head)
 		printf("Type: [cmd]\n");
 	else if (head->type == tkn_bltin)
 		printf("Type: [builtin]\n");
+	else
+		printf("Type: [unknown]\n");
 	printf("Line: %s\n", head->line);
 	printf("Value: %p\n", head->value);
 	printf("next: %p\n\n", head->next);

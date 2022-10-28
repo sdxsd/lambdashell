@@ -60,6 +60,12 @@ static int	to_assignment(char *str)
 	return (count);
 }
 
+static void *init_env_failure(t_vector *env)
+{
+	free_vector(env, dealloc_env_element);
+	return (NULL);
+}
+
 t_vector	*init_env(char **env)
 {
 	t_vector		*env_vector;
@@ -76,17 +82,13 @@ t_vector	*init_env(char **env)
 	{
 		env_element = malloc(sizeof(t_env_element));
 		if (!env_element)
-		{
-			free_vector(env_vector, dealloc_env_element);
-			return (NULL);
-		}
+			return (init_env_failure(env_vector));
 		env_element->key = ft_strndup(env[iter], to_assignment(env[iter]) + 1);
 		if (!env_element->key)
-		{
-			free_vector(env_vector, dealloc_env_element);
-			return (NULL);
-		}
+			return (init_env_failure(env_vector));
 		env_element->val = ft_strdup(env[iter] + to_assignment(env[iter]) + 1);
+		if (!env_element->key)
+			return (init_env_failure(env_vector));
 		vec_assign_element(env_vector, iter, env_element);
 	}
 	return (env_vector);

@@ -44,6 +44,8 @@ int	prompt(t_shell *lambda)
 {
 	t_exec_element	*exec_list;
 
+	printf("[%s] %s\n",	env_get_val(lambda->env, "USER=")->val, \
+						env_get_val(lambda->env, "PWD=")->val);
 	lambda->line = readline("λ :: > ");
 	if (ft_strlen(lambda->line) < 1)
 		return (SUCCESS);
