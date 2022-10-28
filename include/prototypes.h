@@ -46,6 +46,7 @@ void	clear(void);
 void	red(void);
 void	green(void);
 void	blue(void);
+void	ps1(t_shell	*lambda);
 
 /* BUILTINS */
 char			*ret_cwd(void);
