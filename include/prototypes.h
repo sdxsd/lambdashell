@@ -44,7 +44,7 @@ A program is free software if users have all of these freedoms.
 /* BUILTINS */
 char			*ret_cwd(void);
 int				pwd(void);
-void			cd(t_cmd *cmd);
+void			cd(t_cmd *cmd, t_vector *env);
 t_cmd			*bltin_constructor(char	*line, t_vector *env);
 
 /* SHELL */

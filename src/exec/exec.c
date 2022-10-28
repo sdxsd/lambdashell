@@ -64,18 +64,11 @@ static int	execute_builtin(t_cmd *cmd, t_vector *env)
 	if (!ft_strncmp(cmd->args[0], "pwd", 3))
 		pwd();
 	else if (!ft_strncmp(cmd->args[0], "cd", 3))
-	{
-		cd(cmd);
-	}
+		cd(cmd, env);
 	else if (!ft_strncmp(cmd->args[0], "env", 3))
-	{
 		dbg_print_env(env);
-	}
 	else
-	{
-		printf("Command not found.\n");
 		return (FAILURE);
-	}
 	return (SUCCESS);
 }
 
@@ -83,37 +76,25 @@ int	executor(t_exec_element *head, t_vector *env)
 {
 	t_exec_element	*list;
 	t_exec_element	*next;
-	t_env_element	*cwd;
-	t_cmd			*cmd;
 	int				ret;
 
 	list = head;
-	if (env)
-	{
-		;
-	}
 	if (!list->next)
 	{
-		ret = fork();
-		if (ret == FORK_FAILURE)
-			return (msg_err("executor()", FAILURE));
-		if (ret == FORK_CHILD)
+		if (!(list->type == tkn_bltin))
 		{
-			if (list->type == tkn_cmd)
-				execute_command(list->value);
-			else if (list->type == tkn_bltin)
-				execute_builtin(list->value, env);
+			ret = fork();
+			if (ret == FORK_FAILURE)
+				return (msg_err("executor()", FAILURE));
+			if (ret == FORK_CHILD)
+			{
+				if (list->type == tkn_cmd)
+					execute_command(list->value);
+			}
+			waitpid(0, NULL, 0);
 		}
-		waitpid(0, NULL, 0);
-		cmd = (t_cmd *)list->value;
-		if (!cmd)
-			return (SUCCESS);
-		if (!ft_strncmp(cmd->args[0], "cd", 3))
-		{
-			cwd = env_get_val(env, "PWD=");
-			free(cwd->val);
-			cwd->val = ret_cwd();
-		}
+		else if (list->type == tkn_bltin)
+			execute_builtin(list->value, env);
 		return (SUCCESS);
 	}
 	while (list->next)
