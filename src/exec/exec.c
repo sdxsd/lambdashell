@@ -72,11 +72,6 @@ static int	execute_builtin(t_cmd *cmd, t_vector *env)
 	return (SUCCESS);
 }
 
-static void	redirec(t_cmd *cmd)
-{
-
-}
-
 static int	exec_single(t_exec_element *head, t_vector *env)
 {
 	int	ret;

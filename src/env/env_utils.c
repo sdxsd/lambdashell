@@ -60,6 +60,6 @@ char	**env_to_strings(t_vector *env)
 			return (null_msg_err("env_to_strings()"));
 		}
 	}
-	env_strings[vector_size(env) + 1] = NULL;
+	env_strings[vector_size(env)] = NULL;
 	return (env_strings);
 }
