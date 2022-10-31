@@ -46,10 +46,11 @@ char	*ret_cwd(void)
 {
 	char	*buffer;
 
-	buffer = malloc(sizeof(_POSIX_PATH_MAX));
+	buffer = NULL;
+	buffer = getcwd(buffer, _POSIX_PATH_MAX);
 	if (!buffer)
 		return (NULL);
-	if (getcwd(buffer, _POSIX_PATH_MAX) == NULL)
+	if (!buffer)
 	{
 		free(buffer);
 		return(null_msg_err("pwd()"));
