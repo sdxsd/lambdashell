@@ -53,7 +53,7 @@ char	*ret_cwd(void)
 	if (!buffer)
 	{
 		free(buffer);
-		return(null_msg_err("pwd()"));
+		return (null_msg_err("pwd()"));
 	}
 	return (buffer);
 }
@@ -63,7 +63,7 @@ int	pwd(void)
 	char	buffer[_POSIX_PATH_MAX];
 
 	if (getcwd(buffer, _POSIX_PATH_MAX) == NULL)
-		return(msg_err("pwd()", FAILURE));
+		return (msg_err("pwd()", FAILURE));
 	printf("%s\n", buffer);
 	return (SUCCESS);
 }

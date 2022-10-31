@@ -42,11 +42,11 @@ A program is free software if users have all of these freedoms.
 # include "structs.h"
 
 /* COSMETIC */
-void	clear(void);
-void	red(void);
-void	green(void);
-void	blue(void);
-void	ps1(t_shell	*lambda);
+void			clear(void);
+void			red(void);
+void			green(void);
+void			blue(void);
+void			ps1(t_shell	*lambda);
 
 /* BUILTINS */
 char			*ret_cwd(void);

@@ -80,7 +80,7 @@ static int	exec_single(t_exec_element *head, t_vector *env)
 	{
 		ret = fork();
 		if (ret == FORK_FAILURE)
-				return (msg_err("executor()", FAILURE));
+			return (msg_err("executor()", FAILURE));
 		if (ret == FORK_CHILD)
 		{
 			if (head->type == tkn_cmd)
