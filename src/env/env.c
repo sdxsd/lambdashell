@@ -60,7 +60,7 @@ static int	to_assignment(char *str)
 	return (count);
 }
 
-static void *init_env_failure(t_vector *env)
+static void	*init_env_failure(t_vector *env)
 {
 	free_vector(env, dealloc_env_element);
 	return (NULL);
