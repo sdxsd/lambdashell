@@ -1,0 +1,37 @@
+#+TITLE: Minishell
+
+* Minishell
+** TODO Builtins: [3/5]
++ [X] cd
++ [X] pwd
++ [X] env
++ [ ] exit
++ [ ] echo with -n
++ [ ] export
++ [ ] unset
+** TODO Features: [1/10]
++ [ ] Redirections
++ [ ] Piping
++ [X] Single commands
++ [ ] Variable expansion
++ [ ] Return values
++ [ ] Signals
++ [ ] History
++ [ ] Single quotes
++ [ ] Double quotes
++ [ ] Parsing
+
+* Methodology
+** How bash does it (Thanks Freek!)
+1. split on pipes
+2. set environment variables found in the command (VAR=VALUE cmd)
+3. set up the redirections (heredoc is part of that)
+4. expand environment variables
+5. parse the commands
+6. check if it is built-in, if not find the executable, if so, run built-in
+7. execute all commands at the same time (and if one doesn't expect input and the one that pipes into the non-expecting-input one tries to pipe into there, it should quit also (`cat | ls`))
+
+* Documentation
+** t_cmd
+The t_cmd struct contains all data required to run execve.
+** t_exec_element
