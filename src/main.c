@@ -46,6 +46,11 @@ int	prompt(t_shell *lambda)
 
 	ps1(lambda);
 	lambda->line = readline("λ :: > ");
+	if (!lambda->line)
+	{
+		printf("\n");
+		exit(0);
+	}
 	if (ft_strlen(lambda->line) < 1)
 		return (SUCCESS);
 	parse_line(lambda);

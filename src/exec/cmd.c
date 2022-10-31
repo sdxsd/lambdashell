@@ -85,8 +85,15 @@ t_cmd	*cmd_constructor(char *prog_n_args, t_vector *env)
 		cmd_deallocator(cmd);
 		return (NULL);
 	}
+	dbg_print_cmd(cmd);
+	/* redirection(cmd); */
 	return (cmd);
 }
+
+/* int	link_cmds(t_exec_element *head) */
+/* { */
+/* 	t_cmd	*cmd; */
+/* } */
 
 // NOTE: Cleanly deallocates a t_cmd.
 void	cmd_deallocator(t_cmd *cmd)

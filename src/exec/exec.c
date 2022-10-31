@@ -97,17 +97,20 @@ int	executor(t_exec_element *head, t_vector *env)
 {
 	t_exec_element	*list;
 	t_exec_element	*next;
+	t_cmd			*cmd;
+	t_cmd			*cmd2;
 
 	list = head;
 	if (!list->next)
 		exec_single(head, env);
 	while (list->next)
 	{
-		if (list->type == tkn_pipe)
+		;
+		if (next)
 		{
-			next = list->next;
+			;
 		}
-		list = next;
+		lnk_cmd(list);
 	}
 	return (SUCCESS);
 }

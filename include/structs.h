@@ -115,10 +115,10 @@ typedef struct s_env_element
 
 typedef struct s_exec_element
 {
-	int		type;
-	char	*line;
-	void	*value;
-	void	*next;
+	int						type;
+	char					*line;
+	void					*value;
+	struct s_exec_element	*next;
 }	t_exec_element;
 
 #endif
