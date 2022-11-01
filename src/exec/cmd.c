@@ -120,6 +120,7 @@ t_cmd	*cmd_constructor(char *prog_n_args, t_vector *env)
 		cmd_deallocator(cmd);
 		return (NULL);
 	}
+	dbg_print_cmd(cmd);
 	return (cmd);
 }
 
