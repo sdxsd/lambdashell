@@ -41,13 +41,15 @@ A program is free software if users have all of these freedoms.
 # define STRUCTS_H
 # include "../libft/libft.h"
 
+// NOTE:
+// Contains all data relevant to the operation of the shell.
 typedef struct s_ms
 {
-	char		*line;
 	t_vector	*env;
-	t_vector	*his;
+	char		*line;
 	char		**lines;
 }	t_shell;
+
 
 typedef enum e_token_type
 {
@@ -61,23 +63,27 @@ typedef enum e_token_type
 	tkn_append
 }	t_token_type;
 
-/*
- * NOTE:
- *                     +-----+
- *    /example/file -> | cmd | -> stdout | /other/file
- *                     +-----+
- * ALLOCATOR   : cmd_constructor()
- * DEALLOCATOR : cmd_deallocator()
-*/
+typedef struct s_redirec {
+	char	*dest;
+	int		direction;
+} t_redirec;
+
+// NOTE:
+//                     +-----+
+//    /example/file -> | cmd | -> stdout | /other/file
+//                     +-----+
+// ALLOCATOR   : cmd_constructor()
+// DEALLOCATOR : cmd_deallocator()
 
 typedef struct s_cmd
 {
-	int		ret;
-	int		i_fd;
-	int		o_fd;
-	char	**args;
-	char	**env;
-	char	*path;
+	int			ret;
+	int			i_fd;
+	int			o_fd;
+	char		**args;
+	char		**env;
+	char		*path;
+	t_redirec	*redir;
 }	t_cmd;
 
 typedef struct s_env_element
