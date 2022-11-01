@@ -53,16 +53,13 @@ int	prompt(t_shell *lambda)
 	}
 	if (ft_strlen(lambda->line) < 1)
 		return (SUCCESS);
+	add_history(lambda->line);
 	parse_line(lambda);
 	if (!lambda->lines)
 		return (msg_err("parse_line()", FAILURE));
 	exec_list = tokenizer(lambda);
 	exec_list_generator(exec_list, lambda->env);
 	executor(exec_list, lambda->env);
-	free(lambda->line);
-	if (lambda->lines)
-		free_ptr_array(lambda->lines);
-	dealloc_exec_list(exec_list);
 	return (SUCCESS);
 }
 

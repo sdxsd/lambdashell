@@ -31,6 +31,41 @@
 6. check if it is built-in, if not find the executable, if so, run built-in
 7. execute all commands at the same time (and if one doesn't expect input and the one that pipes into the non-expecting-input one tries to pipe into there, it should quit also (`cat | ls`))
 
+** Results of studying bash source code
+*** Redirection
+Internally bash represents redirections using a sruct containing the following:
+1. A pointer to the next redirection.
+2. A redirectee union which contains either a:
+   1. A destination integer (likely referring to a file descriptor.)
+   2. A null terminated string referring to a word.
+3.  flags for open()
+4.  An enum referring to the type of redirection.
+5. A char containg the end of file as defined by the potential heredoc.
+#+NAME: simple_com (bash)
+#+BEGIN_SRC c
+typedef struct redirect {
+  struct redirect *next; /* Next element, or NULL. */
+  REDIRECTEE redirector; /* Descriptor or varname to be redirected. */
+  int rflags; /* Private flags for this redirection */
+  int flags; /* Flag value for `open'. */
+  enum r_instruction  instruction; /* What to do with the information. */
+  REDIRECTEE redirectee; /* File descriptor or filename */
+  char *here_doc_eof; /* The word that appeared in <<foo. */
+} REDIRECT;
+#+END_SRC
+
+*** simple_cmd (Bog standard exec binary command)
+The representation of a cmd is as follows:
+#+NAME: simple_com (bash)
+#+BEGIN_SRC c
+typedef struct simple_com {
+  int flags; /* See description of CMD flags. */
+  int line; /* line number the command starts on */
+  WORD_LIST *words; /* The program name, the arguments, variable assignments, etc. */
+  REDIRECT *redirects; /* Redirections to perform. */
+} SIMPLE_COM;
+#+END_SRC
+
 * Documentation
 ** t_cmd
 The t_cmd struct contains all data required to run execve.
