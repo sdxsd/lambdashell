@@ -97,8 +97,6 @@ int	executor(t_exec_element *head, t_vector *env)
 {
 	t_exec_element	*list;
 	t_exec_element	*next;
-	t_cmd			*cmd;
-	t_cmd			*cmd2;
 
 	list = head;
 	if (!list->next)
@@ -110,7 +108,6 @@ int	executor(t_exec_element *head, t_vector *env)
 		{
 			;
 		}
-		lnk_cmd(list);
 	}
 	return (SUCCESS);
 }

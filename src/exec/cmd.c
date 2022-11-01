@@ -42,6 +42,41 @@ A program is free software if users have all of these freedoms.
 #include <unistd.h>
 
 // NOTE: INFO
+// Takes a raw line including args and redirections and
+// outputs a string array only including the name of the program
+// and the args. If a redirection operator exists, allocs the t_redirec
+// struct in t_cmd.
+static char **chk_and_redirec(char *prog, t_cmd	*cmd)
+{
+	char	**split;
+	int		direc;
+
+	if (strrchr(prog, '>'))
+	{
+		split = ft_split(prog, '>');
+		direc = TRUE;
+	}
+	else if (strrchr(prog, '<'))
+	{
+		split = ft_split(prog, '<');
+		direc = FALSE;
+	}
+	else
+		return (ft_split(prog, ' '));
+	if (!split)
+		return (NULL);
+	cmd->redir = malloc(sizeof(t_redirec));
+	if (!cmd->redir)
+	{
+		free_ptr_array(split);
+		return (NULL);
+	}
+	cmd->redir->direc = direc;
+	cmd->redir->file = split[1];
+	return (ft_split(prog, ' '));
+}
+
+// NOTE: INFO
 // cmd_constructor() is the constructor for the type
 // t_cmd, which contains all the data required for execve() to be called.
 // cmd_constructor() is used in the construction of singular commands.
@@ -66,7 +101,7 @@ t_cmd	*cmd_constructor(char *prog_n_args, t_vector *env)
 		return (null_msg_err("cmd_constructor()"));
 	cmd->i_fd = STDIN_FILENO;
 	cmd->o_fd = STDOUT_FILENO;
-	cmd->args = ft_split(prog_n_args, ' ');
+	cmd->args = chk_and_redirec(prog_n_args);
 	if (!cmd->args)
 	{
 		cmd_deallocator(cmd);
@@ -85,15 +120,8 @@ t_cmd	*cmd_constructor(char *prog_n_args, t_vector *env)
 		cmd_deallocator(cmd);
 		return (NULL);
 	}
-	dbg_print_cmd(cmd);
-	/* redirection(cmd); */
 	return (cmd);
 }
-
-/* int	link_cmds(t_exec_element *head) */
-/* { */
-/* 	t_cmd	*cmd; */
-/* } */
 
 // NOTE: Cleanly deallocates a t_cmd.
 void	cmd_deallocator(t_cmd *cmd)

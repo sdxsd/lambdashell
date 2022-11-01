@@ -39,6 +39,7 @@ A program is free software if users have all of these freedoms.
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
+# include <stdbool.h>
 # include "../libft/libft.h"
 
 // NOTE:
@@ -49,7 +50,6 @@ typedef struct s_ms
 	char		*line;
 	char		**lines;
 }	t_shell;
-
 
 typedef enum e_token_type
 {
@@ -63,9 +63,13 @@ typedef enum e_token_type
 	tkn_append
 }	t_token_type;
 
+// NOTE:
+// direc == TRUE then output.
+// direc == FALSE then input.
+// char *file points to name of file involved.
 typedef struct s_redirec {
-	char	*dest;
-	int		direction;
+	char	*file;
+	bool	direc;
 } t_redirec;
 
 // NOTE:
