@@ -73,7 +73,7 @@ static char **chk_and_redirec(char *prog, t_cmd	*cmd)
 	}
 	cmd->redir->direc = direc;
 	cmd->redir->file = split[1];
-	return (ft_split(prog, ' '));
+	return (ft_split(split[0], ' '));
 }
 
 // NOTE: INFO
@@ -101,6 +101,7 @@ t_cmd	*cmd_constructor(char *prog_n_args, t_vector *env)
 		return (null_msg_err("cmd_constructor()"));
 	cmd->i_fd = STDIN_FILENO;
 	cmd->o_fd = STDOUT_FILENO;
+	cmd->redir = NULL;
 	cmd->args = chk_and_redirec(prog_n_args, cmd);
 	if (!cmd->args)
 	{
