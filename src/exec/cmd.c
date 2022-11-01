@@ -101,7 +101,7 @@ t_cmd	*cmd_constructor(char *prog_n_args, t_vector *env)
 		return (null_msg_err("cmd_constructor()"));
 	cmd->i_fd = STDIN_FILENO;
 	cmd->o_fd = STDOUT_FILENO;
-	cmd->args = chk_and_redirec(prog_n_args);
+	cmd->args = chk_and_redirec(prog_n_args, cmd);
 	if (!cmd->args)
 	{
 		cmd_deallocator(cmd);
