@@ -41,7 +41,7 @@ Internally bash represents redirections using a sruct containing the following:
 3.  flags for open()
 4.  An enum referring to the type of redirection.
 5. A char containg the end of file as defined by the potential heredoc.
-#+NAME: simple_com (bash)
+#+NAME: redirec (bash)
 #+BEGIN_SRC c
 typedef struct redirect {
   struct redirect *next; /* Next element, or NULL. */
@@ -69,4 +69,44 @@ typedef struct simple_com {
 * Documentation
 ** t_cmd
 The t_cmd struct contains all data required to run execve.
+Can also contain builtins.
 ** t_exec_element
+A multifunctional struct that is filled out through the course of the program.
+#+BEGIN_SRC c
+typedef struct s_exec_element
+{
+    int  type; // I.e. tkn_bltin, tkn_cmd.
+    char *line; // Contains the raw line: "grep "Hello!" file.txt"
+    void *value; // Contains the struct required for execution: t_cmd
+    struct s_exec_element *next; // Next element in the list.
+}   t_exec_element;
+#+END_SRC
+
+* t_vector
+A doubly linked list with a number of subroutines for easy
+manipulation and navigation.
+** t_vector *alloc_vector(int n_elements);
+Allocates (n_elements) vector elements.
+** int vec_assign_element(t_vector *head, size_t idx, void *data);
+Takes the head of the list, an index value and a pointer to data.
+The vector element at (idx) will have it's data value point to data.
+** t_vector *vec_get_element(t_vector *head, size_t idx);
+Returns the vector element at (idx).
+** t_vector *new_vector_element(t_vector *prev, size_t idx);
+Returns a new vector element.
+** void *free_vector(t_vector *vec, void (*dealloc) (void *));
+Deallocs entire vector list.
+** t_vector *vector_get_last(t_vector *vec);
+Returns last element in vector.
+** t_vector *vector_get_first(t_vector *vec);
+Returns first element in vector.
+** int vector_size(t_vector *vec);
+Returns size of vector.
+** t_vector *vector_push_back(t_vector *head, t_vector *new);
+Places new vector element at the back of the vector.
+** void vector_pop_back(t_vector *head, void (*dealloc) (void *));
+Removes the vector element from back of the vector.
+** t_vector *vector_push_front(t_vector **head, t_vector *new);
+Pushes new vector element to the front of the vector.
+** t_vector *vector_pop_front(t_vector *head, void (*dealloc) (void *));
+Removes vector element from the front of the vector.
