@@ -41,13 +41,25 @@ A program is free software if users have all of these freedoms.
 #include <sys/wait.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <fcntl.h>
 
 /* NOTE: INFO */
 /* Takes a t_cmd and executes it. */
 int	execute_command(t_cmd *cmd)
 {
-	dup2(cmd->i_fd, STDIN_FILENO);
-	dup2(cmd->o_fd, STDOUT_FILENO);
+	int	fd;
+	if (cmd->redir)
+	{
+		fd = open(cmd->redir->file, O_RDWR);
+		if (fd <= 0)
+			return (msg_err("execute_command()", FAILURE));
+		if (cmd->redir->direc == OUTPUT)
+			cmd->o_fd = fd;
+		if (cmd->redir->direc == INPUT)
+			cmd->i_fd = fd;
+	}
+		dup2(cmd->i_fd, STDIN_FILENO);
+		dup2(cmd->o_fd, STDOUT_FILENO);
 	if (execve(cmd->path, cmd->args, cmd->env) == -1)
 	{
 		msg_err("execute_command()", FAILURE);

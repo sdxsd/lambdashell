@@ -128,6 +128,11 @@ t_cmd	*cmd_constructor(char *prog_n_args, t_vector *env)
 // NOTE: Cleanly deallocates a t_cmd.
 void	cmd_deallocator(t_cmd *cmd)
 {
+	if (cmd->redir)
+	{
+		free(cmd->redir->file);
+		free(cmd->redir);
+	}
 	if (cmd->env)
 		free_ptr_array(cmd->env);
 	if (cmd->args)

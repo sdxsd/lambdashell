@@ -61,6 +61,8 @@ A program is free software if users have all of these freedoms.
 # define FORK_FAILURE -1
 # define FORK_CHILD 0
 # define FORK_PARENT 1
+# define OUTPUT 1
+# define INPUT 0
 
 /* GLOBAL VARIABLE */
 /* int		global_sig; */
