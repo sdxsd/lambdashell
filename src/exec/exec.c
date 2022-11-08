@@ -48,9 +48,14 @@ A program is free software if users have all of these freedoms.
 int	execute_command(t_cmd *cmd)
 {
 	int	fd;
+	int	iter;
+
+	iter = 0;
 	if (cmd->redir)
 	{
-		fd = open(cmd->redir->file, O_RDWR);
+		while (cmd->redir->file[iter] == ' ')
+			iter++;
+		fd = open(cmd->redir->file + iter, O_RDWR);
 		if (fd <= 0)
 			return (msg_err("execute_command()", FAILURE));
 		if (cmd->redir->direc == OUTPUT)
@@ -63,6 +68,7 @@ int	execute_command(t_cmd *cmd)
 	if (execve(cmd->path, cmd->args, cmd->env) == -1)
 	{
 		msg_err("execute_command()", FAILURE);
+		dbg_print_cmd(cmd);
 		cmd_deallocator(cmd);
 		return (FAILURE);
 	}
@@ -92,7 +98,7 @@ static int	exec_single(t_exec_element *head, t_vector *env)
 	{
 		ret = fork();
 		if (ret == FORK_FAILURE)
-			return (msg_err("executor()", FAILURE));
+			return (msg_err("exec_single()", FAILURE));
 		if (ret == FORK_CHILD)
 		{
 			if (head->type == tkn_cmd)

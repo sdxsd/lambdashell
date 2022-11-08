@@ -36,9 +36,8 @@ A program is free software if users have all of these freedoms.
 
 int	msg_err(char *s, int ret)
 {
-	red();
+	ft_putstr("λ: ");
 	perror(s);
-	clear();
 	return (ret);
 }
 

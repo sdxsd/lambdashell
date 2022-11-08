@@ -80,7 +80,6 @@ static char **chk_and_redirec(char *prog, t_cmd	*cmd)
 // cmd_constructor() is the constructor for the type
 // t_cmd, which contains all the data required for execve() to be called.
 // cmd_constructor() is used in the construction of singular commands.
-// Also used in the creation of a pipe_blk
 
 // NOTE: USAGE
 // The t_cmd type is used in the program to execute external binaries
@@ -121,7 +120,6 @@ t_cmd	*cmd_constructor(char *prog_n_args, t_vector *env)
 		cmd_deallocator(cmd);
 		return (NULL);
 	}
-	dbg_print_cmd(cmd);
 	return (cmd);
 }
 

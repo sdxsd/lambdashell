@@ -93,7 +93,7 @@ int	check_type(char *line, t_vector *env)
 	else if (is_command(line, env) == TRUE)
 		return (tkn_cmd);
 	else
-		return (msg_err("λ: ", -1));
+		return (msg_err(line, -1));
 }
 
 t_exec_element	*tokenizer(t_shell *shell)
