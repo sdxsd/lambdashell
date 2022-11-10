@@ -25,6 +25,10 @@ LIB = libft/libft.a
 
 all: $(NAME)
 
+# TODO: These are needed in order to use rl_replace_line(), rl_clear_history() or rl_redisplay()
+# INCLUDES := -I $(shell brew --prefix readline)/include
+# LIBS := -L $(shell brew --prefix readline)/lib -lreadline
+
 $(NAME): $(OFILES) $(LIB)
 	$(CC) $(CFLAGS) -lreadline $(OFILES) $(LIB) -o $(NAME)
 
@@ -32,14 +36,20 @@ $(NAME): $(OFILES) $(LIB)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(LIB):
-	make -C libft/
+	$(MAKE) -C libft/
 
 re: fclean all
 
 fclean: clean
+# TODO: Discuss whether fcleaning libft as well is desired
+	$(MAKE) -C libft/ fclean
 	@rm -f $(NAME)
 	@echo "DEEP CLEANING"
 
+# TODO: Discuss whether cleaning libft as well is desired
+# $(MAKE) -C libft/ clean
 clean:
 	@rm -f $(OFILES)
 	@echo "CLEANED UP"
+
+.PHONY: all re fclean clean
