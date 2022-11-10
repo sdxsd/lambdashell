@@ -37,100 +37,15 @@ The definition of Free Software is as follows:
 A program is free software if users have all of these freedoms.
 */
 
-#ifndef STRUCTS_H
-# define STRUCTS_H
-# include <stdbool.h>
-# include "../libft/libft.h"
+#include "../../include/minishell.h"
+#include <stdlib.h>
 
-// NOTE:
-// Contains all data relevant to the operation of the shell.
-typedef struct s_ms
+void	dealloc_ptr_array(void *data[])
 {
-	bool		interactive;
-	t_vector	*env;
-	char		*line;
-	char		**lines;
-	int			*pipes[];
-}	t_shell;
-
-typedef enum e_token_type
-{
-	tkn_str,
-	tkn_bltin,
-	tkn_cmd,
-	tkn_read,
-	tkn_write,
-	tkn_pipe,
-	tkn_heredoc,
-	tkn_append
-}	t_token_type;
-
-// NOTE:
-// direc == TRUE then output.
-// direc == FALSE then input.
-// char *file points to name of file involved.
-typedef struct s_redirec {
-	char	*file;
-	bool	direc;
-} t_redirec;
-
-// NOTE:
-//                     +-----+
-//    /example/file -> | cmd | -> stdout | /other/file
-//                     +-----+
-// ALLOCATOR   : cmd_constructor()
-// DEALLOCATOR : cmd_deallocator()
-
-typedef struct s_cmd
-{
-	int			ret;
-	int			i_fd;
-	int			o_fd;
-	char		**args;
-	char		**env;
-	char		*path;
-	t_redirec	*redir;
-}	t_cmd;
-
-typedef struct s_env_element
-{
-	char	*key;
-	char	*val;
-}	t_env_element;
-
-// NOTE:
-//    EXECUTION LIST
-// +------------------+
-// | element[command] |
-// +------------------+
-//   | void *next
-//   ---> +----------------------+
-//        | element[redirection] |
-//        +----------------------+
-//        | void *next
-//        --------> +---------------+
-//                  | element[file] |
-//                  +---------------+
-
-// (int type) -> specifies the type of the element
-//               i.e. command
-//                    pipe
-//                    builtin
-//                    file
-//                    redirection
-// (void *value) -> structure of the element
-//                  i.e. t_cmd
-// (void *next)  -> next token element in the list.
-
-// ALLOCATOR   : exec_list_generator();
-// DEALLOCATOR : exec_list_deallocator();
-
-typedef struct s_exec_element
-{
-	int						type;
-	char					*line;
-	void					*value;
-	struct s_exec_element	*next;
-}	t_exec_element;
-
-#endif
+	while (*data)
+	{
+		free(data);
+		data++;
+	}
+	free(data);
+}

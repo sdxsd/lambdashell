@@ -71,13 +71,14 @@ t_exec_element	*tokenizer(t_shell *shell);
 
 /* EXECUTION */
 int				execute_command(t_cmd *cmd);
-int				executor(t_exec_element *head, t_vector *env);
+int				executor(t_exec_element *head, t_vector *env, t_shell *lambda);
 void			dealloc_exec_list(t_exec_element *head);
 
 /* EXEC LIST */
 t_exec_element	*exec_list_generator(t_exec_element *head, t_vector *env);
 t_exec_element	*new_exec_element(void);
 void			free_exec_list(t_exec_element *head);
+int				count_elements(t_exec_element *head);
 
 /* LINE PARSER */
 char			**parse_line(t_shell *lambda);
@@ -96,5 +97,8 @@ void			dbg_print_lines(char **lines);
 void			dbg_print_env(t_vector *head);
 void			dbg_print_cmd(t_cmd	*cmd);
 void			dbg_test_env(t_vector *env);
+
+/* DEALLOC */
+void			dealloc_ptr_array(void *data[]);
 
 #endif

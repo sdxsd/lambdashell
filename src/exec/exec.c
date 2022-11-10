@@ -111,7 +111,27 @@ static int	exec_single(t_exec_element *head, t_vector *env)
 	return (SUCCESS);
 }
 
-int	executor(t_exec_element *head, t_vector *env)
+int	lnk_cmds(t_exec_element *head, int *pipes[])
+{
+	t_exec_element	*list;
+	int				iter;
+
+	pipes = malloc(sizeof(int *) * (count_elements(head) / 2));
+	if (!pipes)
+		return (NULL);
+	while (list)
+	{
+		if (list->next)
+		{
+			pipes[iter] = malloc(sizeof(int));
+			if (!pipes[iter])
+			list = list->next;
+		}
+	}
+	return (SUCCESS);
+}
+
+int	executor(t_exec_element *head, t_vector *env, t_shell *lambda)
 {
 	t_exec_element	*list;
 	t_exec_element	*next;
@@ -119,12 +139,15 @@ int	executor(t_exec_element *head, t_vector *env)
 	list = head;
 	if (!list->next)
 		exec_single(head, env);
-	while (list->next)
+	else
 	{
-		;
-		if (next)
+		lnk_cmds(head, lambda->pipes);
+		while (list)
 		{
-			;
+			if (list->next)
+			{
+
+			}
 		}
 	}
 	return (SUCCESS);
