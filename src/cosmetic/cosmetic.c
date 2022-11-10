@@ -38,33 +38,48 @@ A program is free software if users have all of these freedoms.
 */
 
 #include "../../include/minishell.h"
+#include <unistd.h>
+#include <stdlib.h>
 
 static char	*last_direc(char *line)
 {
+	char	*last;
 	size_t	iter;
-	char	*last_delimiter;
 
+	last = line;
 	iter = 0;
 	while (iter < ft_strlen(line))
 	{
 		if (line[iter] == '/')
-			last_delimiter = line + iter;
+			last = line + iter + 1;
 		iter++;
 	}
-	return (last_delimiter);
+	return (last);
 }
 
+// TODO: What does ps1 stand for?
 void	ps1(t_shell	*lambda)
 {
-	char	*last;
+	t_env_element	*env_element;
+	char			*last;
+	char			*cwd;
 
-	last = last_direc(env_get_val(lambda->env, "PWD=")->val);
-	if (ft_strlen(last) > 1)
-		last++;
 	green();
-	printf("[%s] ", env_get_val(lambda->env, "USER=")->val);
+	env_element = env_get_val(lambda->env, "USER=");
+	if (env_element)
+		printf("[%s] ", env_element->val);
+	else
+		printf("[???] ");
 	clear();
 	blue();
-	printf("%s ", last);
+	cwd = getcwd(NULL, 0);
+	if (cwd)
+	{
+		last = last_direc(cwd);
+		printf("%s ", last);
+		free(cwd);
+	}
+	else
+		printf("??? ");
 	clear();
 }
