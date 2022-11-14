@@ -85,8 +85,16 @@ int	execute_command(t_cmd *cmd)
 
 static int	execute_builtin(t_cmd *cmd, t_vector *env)
 {
-	dup2(cmd->i_fd, STDIN_FILENO);
-	dup2(cmd->o_fd, STDOUT_FILENO);
+	if (cmd->i_fd != STDIN_FILENO)
+	{
+		dup2(cmd->i_fd, STDIN_FILENO);
+		close(cmd->i_fd);
+	}
+	if (cmd->o_fd != STDOUT_FILENO)
+	{
+		dup2(cmd->o_fd, STDOUT_FILENO);
+		close(cmd->o_fd);
+	}
 	if (!ft_strncmp(cmd->args[0], "pwd", 3))
 		pwd();
 	else if (!ft_strncmp(cmd->args[0], "cd", 3))
@@ -119,45 +127,6 @@ static int	exec_single(t_exec_element *head, t_vector *env)
 	return (SUCCESS);
 }
 
-int	lnk_cmds(t_exec_element *head, int **pipes)
-{
-	t_exec_element	*list;
-	t_cmd			*cmd;
-	int				iter;
-
-	pipes = ft_calloc(sizeof(int *), count_elements(head) - 1);
-	if (!pipes)
-		return (FAILURE);
-	list = head;
-	iter = 0;
-	while (iter < count_elements(head) - 1)
-	{
-		if (list->next)
-		{
-			pipes[iter] = malloc(sizeof(int) * 2);
-			if (!pipes[iter])
-			{
-				dealloc_ptr_array((void **)pipes);
-				return (msg_err("lnk_cmds()", FAILURE));
-			}
-			if (pipe(pipes[iter]) == -1)
-			{
-				dealloc_ptr_array((void **)pipes);
-				return (msg_err("lnk_cmds()", FAILURE));
-			}
-			cmd = list->value;
-			cmd->o_fd = pipes[iter][WRITE];
-			printf("CMD_1 O_FD: %d\n", cmd->o_fd);
-			cmd = list->next->value;
-			cmd->i_fd = pipes[iter][READ];
-			printf("CMD_2 i_FD: %d\n", cmd->i_fd);
-			iter++;
-		}
-		list = list->next;
-	}
-	return (SUCCESS);
-}
-
 int	exec_and_pipe(int i_fd, t_exec_element *curr, t_shell *lambda)
 {
 	int		tube[2];
@@ -172,16 +141,20 @@ int	exec_and_pipe(int i_fd, t_exec_element *curr, t_shell *lambda)
 		return (msg_err("exec_and_pipe()", FAILURE));
 	if (f_ret == FORK_CHILD)
 	{
-		close(tube[READ]);
+		if (curr->next)
+			close(tube[READ]);
 		cmd = curr->value;
 		if (curr->next)
 			cmd->o_fd = tube[WRITE];
 		if (i_fd != -1)
 			cmd->i_fd = i_fd;
+		if (curr->type == tkn_bltin)
+			execute_builtin(cmd, lambda->env);
 		execute_command(curr->value);
 	}
 	close(i_fd);
-	close(tube[WRITE]);
+	if (curr->next)
+		close(tube[WRITE]);
 	if (curr->next)
 		if (exec_and_pipe(tube[READ], curr->next, lambda) != SUCCESS)
 			return (msg_err("exec_and_pipe()", FAILURE));

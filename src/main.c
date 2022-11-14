@@ -76,7 +76,6 @@ t_shell	*shell_init(char **env)
 		free(lambda);
 		return (NULL);
 	}
-	lambda->pipes = NULL;
 	return (lambda);
 }
 
