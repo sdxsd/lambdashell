@@ -40,7 +40,6 @@ A program is free software if users have all of these freedoms.
 #include "../../include/minishell.h"
 #include <stdlib.h>
 
-// NOTE: Returns TRUE if input is a builtin.
 int	is_builtin(char *line)
 {
 	char	**split_line;
@@ -65,7 +64,6 @@ int	is_builtin(char *line)
 	}
 }
 
-// NOTE: Returns TRUE if input is a command.
 int	is_command(char *line, t_vector *env)
 {
 	char	**split_line;
@@ -85,18 +83,17 @@ int	is_command(char *line, t_vector *env)
 	}
 }
 
-// NOTE: Takes line as input and returns type.
-int	check_type(char *line, t_vector *env)
+int	get_type(char *line, t_vector *env)
 {
-	if (is_builtin(line) == TRUE)
+	if (is_builtin(line))
 		return (tkn_bltin);
-	else if (is_command(line, env) == TRUE)
+	else if (is_command(line, env))
 		return (tkn_cmd);
 	else
 		return (msg_err(line, -1));
 }
 
-t_exec_element	*tokenizer(t_shell *shell)
+t_exec_element	*tokenizer(t_shell *lambda)
 {
 	t_exec_element	*exec_list;
 	t_exec_element	*prev;
@@ -107,10 +104,11 @@ t_exec_element	*tokenizer(t_shell *shell)
 	exec_list = new_exec_element();
 	if (!exec_list)
 		return (null_msg_err("tokenizer()"));
-	exec_list->type = check_type(shell->lines[0], shell->env);
-	exec_list->line = shell->lines[0];
+	// TODO: exec_list->type can contain an error value, so check for it
+	exec_list->type = get_type(lambda->lines[0], lambda->env);
+	exec_list->line = lambda->lines[0];
 	prev = exec_list;
-	while (shell->lines[iter])
+	while (lambda->lines[iter])
 	{
 		curr = new_exec_element();
 		if (!curr)
@@ -118,8 +116,9 @@ t_exec_element	*tokenizer(t_shell *shell)
 			free_exec_list(exec_list);
 			return (null_msg_err("tokenizer()"));
 		}
-		curr->type = check_type(shell->lines[1], shell->env);
-		curr->line = shell->lines[iter];
+		// TODO: exec_list->type can contain an error value, so check for it
+		curr->type = get_type(lambda->lines[iter], lambda->env);
+		curr->line = lambda->lines[iter];
 		prev->next = curr;
 		prev = curr;
 		iter++;
