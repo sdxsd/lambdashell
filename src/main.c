@@ -59,7 +59,7 @@ int	prompt(t_shell *lambda)
 		return (msg_err("parse_line()", FAILURE));
 	exec_list = tokenizer(lambda);
 	exec_list_generator(exec_list, lambda->env);
-	executor(exec_list, lambda->env);
+	executor(exec_list, lambda->env, lambda);
 	return (SUCCESS);
 }
 
@@ -76,6 +76,7 @@ t_shell	*shell_init(char **env)
 		free(lambda);
 		return (NULL);
 	}
+	lambda->pipes = NULL;
 	return (lambda);
 }
 
