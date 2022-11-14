@@ -62,8 +62,7 @@ static int	to_assignment(char *str)
 
 static void	*init_env_failure(t_vector *env)
 {
-	free_vector(env, dealloc_env_element);
-	return (NULL);
+	return (free_vector(env, dealloc_env_element));
 }
 
 t_vector	*init_env(char **env)
@@ -94,13 +93,13 @@ t_vector	*init_env(char **env)
 	return (env_vector);
 }
 
-t_env_element	*env_get_val(t_vector *env, char *val)
+t_env_element	*env_get_val(t_vector *env, char *key)
 {
 	int				iter;
 	int				env_size;
 	t_env_element	*env_element;
 
-	if (!env || !val)
+	if (!env || !key)
 		return (NULL);
 	iter = 0;
 	env_size = vector_size(env);

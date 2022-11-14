@@ -51,12 +51,12 @@ static char **chk_and_redirec(char *prog, t_cmd	*cmd)
 	char	**split;
 	int		direc;
 
-	if (strrchr(prog, '>'))
+	if (ft_strrchr(prog, '>'))
 	{
 		split = ft_split(prog, '>');
 		direc = TRUE;
 	}
-	else if (strrchr(prog, '<'))
+	else if (ft_strrchr(prog, '<'))
 	{
 		split = ft_split(prog, '<');
 		direc = FALSE;
@@ -135,7 +135,6 @@ void	cmd_deallocator(t_cmd *cmd)
 		free_ptr_array(cmd->env);
 	if (cmd->args)
 		free_ptr_array(cmd->args);
-	if (cmd->path)
 		free(cmd->path);
 	free(cmd);
 }

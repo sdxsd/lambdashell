@@ -42,9 +42,9 @@ A program is free software if users have all of these freedoms.
 void	dbg_print_redirec(t_redirec *redir)
 {
 	printf("FILENAME: %s\n", redir->file);
-	if (redir->direc == TRUE)
+	if (redir->direc)
 		printf("DIREC = OUTPUT\n");
-	if (redir->direc == FALSE)
+	else
 		printf("DIREC = INPUT\n");
 }
 
