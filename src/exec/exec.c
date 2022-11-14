@@ -117,8 +117,9 @@ int	lnk_cmds(t_exec_element *head, int *pipes[])
 	int				iter;
 
 	pipes = malloc(sizeof(int *) * (count_elements(head) / 2));
+	iter = 0;
 	if (!pipes)
-		return (NULL);
+		return (FAILURE);
 	while (list)
 	{
 		if (list->next)
@@ -134,7 +135,6 @@ int	lnk_cmds(t_exec_element *head, int *pipes[])
 int	executor(t_exec_element *head, t_vector *env, t_shell *lambda)
 {
 	t_exec_element	*list;
-	t_exec_element	*next;
 
 	list = head;
 	if (!list->next)
@@ -144,10 +144,6 @@ int	executor(t_exec_element *head, t_vector *env, t_shell *lambda)
 		lnk_cmds(head, lambda->pipes);
 		while (list)
 		{
-			if (list->next)
-			{
-
-			}
 		}
 	}
 	return (SUCCESS);
