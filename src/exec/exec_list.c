@@ -44,6 +44,7 @@ int	count_elements(t_exec_element *head)
 {
 	int	count;
 
+	count = 0;
 	while (head)
 	{
 		count++;
@@ -62,9 +63,9 @@ t_exec_element	*new_exec_element(void)
 	if (!new)
 		return (null_msg_err("new_exec_element()"));
 	new->type = -1;
-	new->next = NULL;
-	new->value = NULL;
 	new->line = NULL;
+	new->value = NULL;
+	new->next = NULL;
 	return (new);
 }
 

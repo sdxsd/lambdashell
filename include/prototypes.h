@@ -51,7 +51,7 @@ void			ps1(t_shell	*lambda);
 /* BUILTINS */
 char			*ret_cwd(void);
 int				pwd(void);
-void			cd(t_cmd *cmd, t_vector *env);
+void			cd(t_cmd *cmd);
 t_cmd			*bltin_constructor(char	*line, t_vector *env);
 
 /* SHELL */
@@ -60,14 +60,14 @@ int				prompt(t_shell *ms);
 /* ENVIRONMENT */
 t_vector		*init_env(char **env);
 char			**env_to_strings(t_vector *env);
-t_env_element	*env_get_val(t_vector *env, char *val);
+t_env_element	*env_get_val(t_vector *env, char *key);
 
 /* ERROR MESSAGES */
 int				msg_err(char *s, int ret);
 void			*null_msg_err(char *s);
 
 /* TOKENISATION */
-t_exec_element	*tokenizer(t_shell *shell);
+t_exec_element	*tokenizer(t_shell *lambda);
 
 /* EXECUTION */
 int				execute_command(t_cmd *cmd);
@@ -81,7 +81,7 @@ void			free_exec_list(t_exec_element *head);
 int				count_elements(t_exec_element *head);
 
 /* LINE PARSER */
-char			**parse_line(t_shell *lambda);
+int				parse_line(t_shell *lambda);
 
 /* CMD STRUCT */
 t_cmd			*cmd_constructor(char *prog_n, t_vector *env);

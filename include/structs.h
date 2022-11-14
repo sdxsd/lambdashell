@@ -44,7 +44,7 @@ A program is free software if users have all of these freedoms.
 
 // NOTE:
 // Contains all data relevant to the operation of the shell.
-typedef struct s_ms
+typedef struct s_shell
 {
 	bool		interactive;
 	t_vector	*env;

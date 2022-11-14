@@ -51,12 +51,15 @@ int	prompt(t_shell *lambda)
 		printf("\n");
 		exit(0);
 	}
-	if (ft_strlen(lambda->line) < 1)
+	if (ft_strlen(lambda->line) < 1) // TODO: Why?
 		return (SUCCESS);
 	add_history(lambda->line);
-	parse_line(lambda);
-	if (!lambda->lines)
-		return (msg_err("parse_line()", FAILURE));
+	if (parse_line(lambda) == FAILURE)
+	{
+		free(lambda->line);
+		// TODO: Does history also have to be freed explicitly?
+		return (FAILURE);
+	}
 	exec_list = tokenizer(lambda);
 	exec_list_generator(exec_list, lambda->env);
 	executor(exec_list, lambda->env, lambda);
@@ -88,7 +91,9 @@ int	main(int argc, char **argv, char **env)
 	lambda = shell_init(env);
 	if (!lambda)
 		return (FAILURE);
+	// TODO: Maybe store something in lambda to indicate user asking to exit
 	while (TRUE)
-		prompt(lambda);
+		if (prompt(lambda) == FAILURE)
+			return (FAILURE);
 	return (SUCCESS);
 }
