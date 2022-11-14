@@ -62,7 +62,7 @@ int	prompt(t_shell *lambda)
 	}
 	exec_list = tokenizer(lambda);
 	exec_list_generator(exec_list, lambda->env);
-	executor(exec_list, lambda->env, lambda);
+	executor(exec_list, lambda);
 	return (SUCCESS);
 }
 

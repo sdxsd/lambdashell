@@ -1,5 +1,5 @@
 
-CC = gcc
+CC = clang
 CFLAGS = -g -Wall -Wextra -Werror
 NAME = minishell
 CFILES =		src/main.c \
@@ -12,6 +12,7 @@ CFILES =		src/main.c \
 				src/builtins/builtins.c \
 				src/tokenizer/tokens.c \
 				src/dealloc/dealloc_exec_list.c \
+				src/dealloc/dealloc_ptr_array.c \
 				src/debug/debug_print.c \
 				src/debug/debug_env.c \
 				src/env/env.c \

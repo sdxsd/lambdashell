@@ -63,8 +63,16 @@ int	execute_command(t_cmd *cmd)
 		if (cmd->redir->direc == INPUT)
 			cmd->i_fd = fd;
 	}
+	if (cmd->i_fd != STDIN_FILENO)
+	{
 		dup2(cmd->i_fd, STDIN_FILENO);
+		close(cmd->i_fd);
+	}
+	if (cmd->o_fd != STDOUT_FILENO)
+	{
 		dup2(cmd->o_fd, STDOUT_FILENO);
+		close(cmd->o_fd);
+	}
 	if (execve(cmd->path, cmd->args, cmd->env) == -1)
 	{
 		msg_err("execute_command()", FAILURE);
@@ -77,9 +85,17 @@ int	execute_command(t_cmd *cmd)
 
 static int	execute_builtin(t_cmd *cmd, t_vector *env)
 {
-	dup2(cmd->i_fd, STDIN_FILENO);
-	dup2(cmd->o_fd, STDOUT_FILENO);
-	if (ft_streq(cmd->args[0], "pwd"))
+	if (cmd->i_fd != STDIN_FILENO)
+	{
+		dup2(cmd->i_fd, STDIN_FILENO);
+		close(cmd->i_fd);
+	}
+	if (cmd->o_fd != STDOUT_FILENO)
+	{
+		dup2(cmd->o_fd, STDOUT_FILENO);
+		close(cmd->o_fd);
+	}
+	if (!ft_strncmp(cmd->args[0], "pwd", 3))
 		pwd();
 	else if (ft_streq(cmd->args[0], "cd"))
 		cd(cmd);
@@ -111,40 +127,52 @@ static int	exec_single(t_exec_element *head, t_vector *env)
 	return (SUCCESS);
 }
 
-int	lnk_cmds(t_exec_element *head, int *pipes[])
+int	exec_and_pipe(int i_fd, t_exec_element *curr, t_shell *lambda)
 {
-	t_exec_element	*list;
-	int				iter;
+	int		tube[2];
+	int		f_ret;
+	t_cmd	*cmd;
 
-	pipes = malloc(sizeof(int *) * (count_elements(head) / 2));
-	iter = 0;
-	if (!pipes)
-		return (FAILURE);
-	while (list)
+	if (curr->next)
+		if (pipe(tube) == -1)
+			return (msg_err("exec_and_pipe()", FAILURE));
+	f_ret = fork();
+	if (f_ret == FORK_FAILURE)
+		return (msg_err("exec_and_pipe()", FAILURE));
+	if (f_ret == FORK_CHILD)
 	{
-		if (list->next)
-		{
-			pipes[iter] = malloc(sizeof(int));
-			if (!pipes[iter])
-			list = list->next;
-		}
+		if (curr->next)
+			close(tube[READ]);
+		cmd = curr->value;
+		if (curr->next)
+			cmd->o_fd = tube[WRITE];
+		if (i_fd != -1)
+			cmd->i_fd = i_fd;
+		if (curr->type == tkn_bltin)
+			execute_builtin(cmd, lambda->env);
+		execute_command(curr->value);
 	}
+	close(i_fd);
+	if (curr->next)
+		close(tube[WRITE]);
+	if (curr->next)
+		if (exec_and_pipe(tube[READ], curr->next, lambda) != SUCCESS)
+			return (msg_err("exec_and_pipe()", FAILURE));
 	return (SUCCESS);
 }
 
-int	executor(t_exec_element *head, t_vector *env, t_shell *lambda)
+// get exec code of last command.
+int	executor(t_exec_element *head, t_shell *lambda)
 {
 	t_exec_element	*list;
 
 	list = head;
 	if (!list->next)
-		exec_single(head, env);
+		exec_single(head, lambda->env);
 	else
 	{
-		lnk_cmds(head, lambda->pipes);
-		while (list)
-		{
-		}
+		exec_and_pipe(-1, head, lambda);
+		waitpid(-1, NULL, 0);
 	}
 	return (SUCCESS);
 }
