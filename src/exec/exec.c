@@ -117,12 +117,12 @@ int	lnk_cmds(t_exec_element *head, int **pipes)
 	t_cmd			*cmd;
 	int				iter;
 
-	pipes = ft_calloc(sizeof(int *), (count_elements(head) / 2));
+	pipes = ft_calloc(sizeof(int *), count_elements(head) - 1);
 	if (!pipes)
 		return (FAILURE);
 	list = head;
 	iter = 0;
-	while (list && iter < count_elements(head) / 2)
+	while (iter < count_elements(head) - 1)
 	{
 		if (list->next)
 		{
@@ -139,8 +139,10 @@ int	lnk_cmds(t_exec_element *head, int **pipes)
 			}
 			cmd = list->value;
 			cmd->o_fd = pipes[iter][WRITE];
+			printf("CMD_1 O_FD: %d\n", cmd->o_fd);
 			cmd = list->next->value;
 			cmd->i_fd = pipes[iter][READ];
+			printf("CMD_2 i_FD: %d\n", cmd->i_fd);
 			iter++;
 		}
 		list = list->next;
@@ -148,32 +150,42 @@ int	lnk_cmds(t_exec_element *head, int **pipes)
 	return (SUCCESS);
 }
 
+int	exec_and_pipe(int i_fd, t_exec_element *curr, t_shell *lambda)
+{
+	int		tube[2];
+	int		f_ret;
+	t_cmd	*cmd;
+
+	if (i_fd == -1)
+		if (pipe(tube) == -1)
+			return (msg_err("exec_and_pipe()", FAILURE));
+	f_ret = fork();
+	if (f_ret == FORK_FAILURE)
+		return (msg_err("exec_and_pipe()", FAILURE));
+	if (f_ret == FORK_CHILD)
+	{
+		close(tube[READ]);
+		cmd = curr->value;
+		cmd->o_fd = tube[WRITE];
+		cmd->i_fd = i_fd;
+		execute_command(curr->value);
+	}
+	close(i_fd);
+	close(tube[WRITE]);
+	if (curr->next)
+		if (exec_and_pipe(tube[READ], curr->next, lambda) != SUCCESS)
+			return (msg_err("exec_and_pipe()", FAILURE));
+	return (SUCCESS);
+}
+
 int	executor(t_exec_element *head, t_shell *lambda)
 {
 	t_exec_element	*list;
-	int				ret;
 
 	list = head;
 	if (!list->next)
 		exec_single(head, lambda->env);
 	else
-	{
-		lnk_cmds(head, lambda->pipes);
-		while (list)
-		{
-			ret = fork();
-			if (ret == FORK_FAILURE)
-				return (msg_err("executor()", FAILURE));
-			if (ret == FORK_CHILD)
-			{
-				if (list->type == tkn_cmd)
-					execute_command(list->value);
-				if (list->type == tkn_bltin)
-					execute_builtin(list->value, lambda->env);
-			}
-			else
-				list = list->next;
-		}
-	}
+		exec_and_pipe(-1, head, lambda);
 	return (SUCCESS);
 }
