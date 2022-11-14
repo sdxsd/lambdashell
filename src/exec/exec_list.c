@@ -44,6 +44,7 @@ int	count_elements(t_exec_element *head)
 {
 	int	count;
 
+	count = 0;
 	while (head)
 	{
 		count++;
