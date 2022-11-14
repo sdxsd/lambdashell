@@ -114,29 +114,44 @@ static int	exec_single(t_exec_element *head, t_vector *env)
 int	lnk_cmds(t_exec_element *head, int **pipes)
 {
 	t_exec_element	*list;
+	t_cmd			*cmd;
 	int				iter;
 
-	pipes = malloc(sizeof(int *) * (count_elements(head) / 2));
+	pipes = ft_calloc(sizeof(int *), (count_elements(head) / 2));
 	if (!pipes)
 		return (FAILURE);
 	list = head;
 	iter = 0;
-	while (list)
+	while (list && iter < count_elements(head) / 2)
 	{
 		if (list->next)
 		{
-			pipes[iter] = malloc(sizeof(int));
+			pipes[iter] = malloc(sizeof(int) * 2);
 			if (!pipes[iter])
-				list = list->next;
+			{
+				dealloc_ptr_array((void **)pipes);
+				return (msg_err("lnk_cmds()", FAILURE));
+			}
+			if (pipe(pipes[iter]) == -1)
+			{
+				dealloc_ptr_array((void **)pipes);
+				return (msg_err("lnk_cmds()", FAILURE));
+			}
+			cmd = list->value;
+			cmd->o_fd = pipes[iter][WRITE];
+			cmd = list->next->value;
+			cmd->i_fd = pipes[iter][READ];
+			iter++;
 		}
+		list = list->next;
 	}
 	return (SUCCESS);
 }
 
-int	executor(t_exec_element *head, t_vector *env, t_shell *lambda)
+int	executor(t_exec_element *head, t_shell *lambda)
 {
 	t_exec_element	*list;
-	t_exec_element	*next;
+	int				ret;
 
 	list = head;
 	if (!list->next)
@@ -146,10 +161,18 @@ int	executor(t_exec_element *head, t_vector *env, t_shell *lambda)
 		lnk_cmds(head, lambda->pipes);
 		while (list)
 		{
-			if (list->next)
+			ret = fork();
+			if (ret == FORK_FAILURE)
+				return (msg_err("executor()", FAILURE));
+			if (ret == FORK_CHILD)
 			{
-
+				if (list->type == tkn_cmd)
+					execute_command(list->value);
+				if (list->type == tkn_bltin)
+					execute_builtin(list->value, lambda->env);
 			}
+			else
+				list = list->next;
 		}
 	}
 	return (SUCCESS);
