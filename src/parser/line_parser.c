@@ -41,10 +41,10 @@ A program is free software if users have all of these freedoms.
 #include <stdlib.h>
 
 // Temporary.
-char	**parse_line(t_shell *lambda)
+int	parse_line(t_shell *lambda)
 {
 	lambda->lines = ft_split(lambda->line, '|');
 	if (!lambda->lines)
-		return (NULL);
-	return (lambda->lines);
+		return (msg_err("parse_line()", FAILURE));
+	return (SUCCESS);
 }

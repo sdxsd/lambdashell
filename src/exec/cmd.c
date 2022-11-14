@@ -135,7 +135,6 @@ void	cmd_deallocator(t_cmd *cmd)
 		free_ptr_array(cmd->env);
 	if (cmd->args)
 		free_ptr_array(cmd->args);
-	if (cmd->path)
 		free(cmd->path);
 	free(cmd);
 }
