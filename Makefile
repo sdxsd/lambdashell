@@ -1,5 +1,5 @@
 
-CC = gcc
+CC = clang
 CFLAGS = -g -Wall -Wextra -Werror
 NAME = minishell
 CFILES =		src/main.c \
