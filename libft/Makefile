@@ -65,6 +65,8 @@ CFILES = \
 		ft_revnum.c \
 		ft_numlen_t.c \
 		ft_strncmp.c \
+		ft_strcmp.c \
+		ft_streq.c \
 		get_next_line.c \
 		get_next_line_utils.c \
 		ft_charchk.c \
