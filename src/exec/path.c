@@ -85,7 +85,7 @@ char	*get_path(char *prog_n, t_vector *env)
 
 	iter = 0;
 	if (!path_env)
-		path_env = env_get_val(env, "PATH");
+		path_env = env_get_val(env, "PATH=");
 	if (!path_env)
 		return (NULL);
 	exec_direcs = ft_split(path_env->val, ':');
