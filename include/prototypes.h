@@ -71,7 +71,7 @@ t_exec_element	*tokenizer(t_shell *lambda);
 
 /* EXECUTION */
 int				execute_command(t_cmd *cmd);
-int				executor(t_exec_element *head, t_vector *env, t_shell *lambda);
+int				executor(t_exec_element *head, t_shell *lambda);
 void			dealloc_exec_list(t_exec_element *head);
 
 /* EXEC LIST */
@@ -91,14 +91,14 @@ void			cmd_deallocator(t_cmd *cmd);
 char			*get_path(char *prog_n, t_vector *env);
 int				free_ptr_array(char *ptr[]);
 
+/* DEALLOC */
+void			dealloc_ptr_array(void **data);
+
 /* DEBUG */
 void			dbg_print_exec_list(t_exec_element *head);
 void			dbg_print_lines(char **lines);
 void			dbg_print_env(t_vector *head);
 void			dbg_print_cmd(t_cmd	*cmd);
 void			dbg_test_env(t_vector *env);
-
-/* DEALLOC */
-void			dealloc_ptr_array(void *data[]);
 
 #endif

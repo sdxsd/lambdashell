@@ -113,7 +113,6 @@ void	dealloc_exec_list(t_exec_element *head)
 	free(head);
 }
 
-// NOTE: INFO [neads rewrite]
 t_exec_element	*exec_list_generator(t_exec_element *head, t_vector *env)
 {
 	assign_exec_element(head, env);
