@@ -41,13 +41,8 @@ A program is free software if users have all of these freedoms.
 #include <unistd.h>
 #include <stdlib.h>
 
-void	cd(t_cmd *cmd, t_vector *env)
+void	cd(t_cmd *cmd)
 {
 	if (chdir(cmd->args[1]))
 		msg_err("cd", FAILURE);
-	else
-	{
-		free(env_get_val(env, "PWD=")->val);
-		env_get_val(env, "PWD=")->val = ret_cwd();
-	}
 }
