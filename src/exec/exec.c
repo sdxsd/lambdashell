@@ -161,6 +161,7 @@ int	exec_and_pipe(int i_fd, t_exec_element *curr, t_shell *lambda)
 	return (SUCCESS);
 }
 
+// get exec code of last command.
 int	executor(t_exec_element *head, t_shell *lambda)
 {
 	t_exec_element	*list;
@@ -169,6 +170,9 @@ int	executor(t_exec_element *head, t_shell *lambda)
 	if (!list->next)
 		exec_single(head, lambda->env);
 	else
+	{
 		exec_and_pipe(-1, head, lambda);
+		waitpid(-1, NULL, 0);
+	}
 	return (SUCCESS);
 }
