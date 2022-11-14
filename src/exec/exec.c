@@ -63,8 +63,16 @@ int	execute_command(t_cmd *cmd)
 		if (cmd->redir->direc == INPUT)
 			cmd->i_fd = fd;
 	}
+	if (cmd->i_fd != STDIN_FILENO)
+	{
 		dup2(cmd->i_fd, STDIN_FILENO);
+		close(cmd->i_fd);
+	}
+	if (cmd->o_fd != STDOUT_FILENO)
+	{
 		dup2(cmd->o_fd, STDOUT_FILENO);
+		close(cmd->o_fd);
+	}
 	if (execve(cmd->path, cmd->args, cmd->env) == -1)
 	{
 		msg_err("execute_command()", FAILURE);
@@ -156,7 +164,7 @@ int	exec_and_pipe(int i_fd, t_exec_element *curr, t_shell *lambda)
 	int		f_ret;
 	t_cmd	*cmd;
 
-	if (i_fd == -1)
+	if (curr->next)
 		if (pipe(tube) == -1)
 			return (msg_err("exec_and_pipe()", FAILURE));
 	f_ret = fork();
@@ -166,8 +174,10 @@ int	exec_and_pipe(int i_fd, t_exec_element *curr, t_shell *lambda)
 	{
 		close(tube[READ]);
 		cmd = curr->value;
-		cmd->o_fd = tube[WRITE];
-		cmd->i_fd = i_fd;
+		if (curr->next)
+			cmd->o_fd = tube[WRITE];
+		if (i_fd != -1)
+			cmd->i_fd = i_fd;
 		execute_command(curr->value);
 	}
 	close(i_fd);
