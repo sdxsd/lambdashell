@@ -107,7 +107,7 @@ t_env_element	*env_get_val(t_vector *env, char *val)
 	while (iter < env_size)
 	{
 		env_element = vec_get_element(env, iter)->data;
-		if (!ft_strcmp(env_element->key, val))
+		if (ft_streq(env_element->key, val))
 			return (env_element);
 		iter++;
 	}

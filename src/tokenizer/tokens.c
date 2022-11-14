@@ -48,12 +48,12 @@ int	is_builtin(char *line)
 	split_line = ft_split(line, ' ');
 	if (!split_line)
 		return (msg_err("is_builtin()", FAILURE));
-	if (!ft_strcmp(split_line[0], "cd") || \
-		!ft_strcmp(split_line[0], "echo") || \
-		!ft_strcmp(split_line[0], "env") || \
-		!ft_strcmp(split_line[0], "export") || \
-		!ft_strcmp(split_line[0], "pwd") || \
-		!ft_strcmp(split_line[0], "unset"))
+	if (ft_streq(split_line[0], "cd") || \
+		ft_streq(split_line[0], "echo") || \
+		ft_streq(split_line[0], "env") || \
+		ft_streq(split_line[0], "export") || \
+		ft_streq(split_line[0], "pwd") || \
+		ft_streq(split_line[0], "unset"))
 	{
 		free_ptr_array(split_line);
 		return (TRUE);
