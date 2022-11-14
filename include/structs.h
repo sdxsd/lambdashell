@@ -50,7 +50,6 @@ typedef struct s_ms
 	t_vector	*env;
 	char		*line;
 	char		**lines;
-	int			**pipes;
 }	t_shell;
 
 typedef enum e_token_type
