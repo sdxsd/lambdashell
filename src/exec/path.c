@@ -48,7 +48,7 @@ int	free_ptr_array(char *ptr[])
 	int	iter;
 
 	iter = 0;
-	while (ptr[iter] != NULL)
+	while (ptr[iter])
 	{
 		free(ptr[iter]);
 		iter++;
@@ -89,10 +89,10 @@ char	*get_path(char *prog_n, t_vector *env)
 	if (!path_env)
 		return (NULL);
 	exec_direcs = ft_split(path_env->val, ':');
-	while (exec_direcs[iter] != NULL)
+	while (exec_direcs[iter])
 	{
 		abs_path = combine_path(exec_direcs[iter], prog_n);
-		if (!access(abs_path, F_OK))
+		if (!access(abs_path, F_OK)) // TODO: Probably needs more flags
 		{
 			free_ptr_array(exec_direcs);
 			return (abs_path);
