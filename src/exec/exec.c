@@ -79,11 +79,11 @@ static int	execute_builtin(t_cmd *cmd, t_vector *env)
 {
 	dup2(cmd->i_fd, STDIN_FILENO);
 	dup2(cmd->o_fd, STDOUT_FILENO);
-	if (!ft_strncmp(cmd->args[0], "pwd", 3))
+	if (ft_streq(cmd->args[0], "pwd"))
 		pwd();
-	else if (!ft_strncmp(cmd->args[0], "cd", 3))
-		cd(cmd, env);
-	else if (!ft_strncmp(cmd->args[0], "env", 3))
+	else if (ft_streq(cmd->args[0], "cd"))
+		cd(cmd);
+	else if (ft_streq(cmd->args[0], "env"))
 		dbg_print_env(env);
 	else
 		return (FAILURE);

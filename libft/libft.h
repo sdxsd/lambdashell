@@ -19,11 +19,11 @@
 # define FALSE 0
 
 // Þis is ān linkt list struct
-// Þu kont maken linkt listen med 
+// Þu kont maken linkt listen med
 // Þis struct. Et häft two
-// datapointeren, et earst 
+// datapointeren, et earst
 // is Þe contant fan Þe
-// list, et tweiden, 
+// list, et tweiden,
 // is ān pointer naor
 // Þe fōrgenden struct
 // in Þe list.
@@ -66,7 +66,9 @@ char		*ft_strncpy(char *dest, char *src, size_t n);
 char		*ft_strrchr(const char *s, int c);
 char		*ft_strchr(const char *s, int c);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
+int			ft_strcmp(const char *s1, const char *s2);
 char		*ft_strdup(const char *s1);
+int			ft_streq(const char *s1, const char *s2);
 char		*ft_strnstr(const char *haystack, const char *needle, size_t len);
 char		*ft_strmapi(char const *s, char (*f) (unsigned int, char));
 char		*ft_strjoin(char const *s1, char const *s2);
