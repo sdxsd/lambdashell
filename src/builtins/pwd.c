@@ -46,24 +46,20 @@ char	*ret_cwd(void)
 {
 	char	*buffer;
 
-	buffer = NULL;
-	buffer = getcwd(buffer, _POSIX_PATH_MAX);
+	buffer = getcwd(NULL, 0);
 	if (!buffer)
-		return (NULL);
-	if (!buffer)
-	{
-		free(buffer);
-		return (null_msg_err("pwd()"));
-	}
+		null_msg_err("ret_cwd()");
 	return (buffer);
 }
 
 int	pwd(void)
 {
-	char	buffer[_POSIX_PATH_MAX];
+	char	*cwd;
 
-	if (getcwd(buffer, _POSIX_PATH_MAX) == NULL)
+	cwd = ret_cwd();
+	if (cwd == NULL)
 		return (msg_err("pwd()", FAILURE));
-	printf("%s\n", buffer);
+	printf("%s\n", cwd);
+	free(cwd);
 	return (SUCCESS);
 }

@@ -51,7 +51,7 @@ void			ps1(t_shell	*lambda);
 /* BUILTINS */
 char			*ret_cwd(void);
 int				pwd(void);
-void			cd(t_cmd *cmd, t_vector *env);
+void			cd(t_cmd *cmd);
 t_cmd			*bltin_constructor(char	*line, t_vector *env);
 
 /* SHELL */
