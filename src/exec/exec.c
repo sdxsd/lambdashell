@@ -155,9 +155,8 @@ int	exec_and_pipe(int i_fd, t_exec_element *curr, t_shell *lambda)
 	close(i_fd);
 	if (curr->next)
 		close(tube[WRITE]);
-	if (curr->next)
-		if (exec_and_pipe(tube[READ], curr->next, lambda) != SUCCESS)
-			return (msg_err("exec_and_pipe()", FAILURE));
+	if (curr->next && exec_and_pipe(tube[READ], curr->next, lambda) != SUCCESS)
+		return (msg_err("exec_and_pipe()", FAILURE));
 	return (SUCCESS);
 }
 
