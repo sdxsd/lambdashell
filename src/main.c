@@ -39,25 +39,28 @@ A program is free software if users have all of these freedoms.
 
 #include "../include/minishell.h"
 #include <stdlib.h>
+#include <unistd.h>
 
 int	prompt(t_shell *lambda)
 {
 	t_exec_element	*exec_list;
 
-	ps1(lambda);
-	lambda->line = readline("λ :: > ");
+	if (lambda->i_tty)
+	{
+		ps1(lambda);
+		lambda->line = readline("λ :: > ");
+	}
+	else
+		lambda->line = readline(NULL);
 	if (!lambda->line)
 	{
 		printf("\n");
 		exit(0);
 	}
-	if (ft_strlen(lambda->line) < 1) // TODO: Why?
-		return (SUCCESS);
 	add_history(lambda->line);
 	if (parse_line(lambda) == FAILURE)
 	{
 		free(lambda->line);
-		// TODO: Does history also have to be freed explicitly?
 		return (FAILURE);
 	}
 	exec_list = tokenizer(lambda);
@@ -80,6 +83,10 @@ t_shell	*shell_init(char **env)
 		free(lambda);
 		return (NULL);
 	}
+	if (isatty(STDIN_FILENO))
+		lambda->i_tty = TRUE;
+	else
+		lambda->i_tty = FALSE;
 	return (lambda);
 }
 
@@ -93,8 +100,7 @@ int	main(int argc, char **argv, char **env)
 	if (!lambda)
 		return (FAILURE);
 	// TODO: Maybe store something in lambda to indicate user asking to exit
-	while (TRUE)
-		if (prompt(lambda) == FAILURE)
-			return (FAILURE);
+	while (!lambda->exit)
+		prompt(lambda);
 	return (lambda->status);
 }
