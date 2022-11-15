@@ -62,7 +62,7 @@ int	prompt(t_shell *lambda)
 	}
 	exec_list = tokenizer(lambda);
 	exec_list_generator(exec_list, lambda->env);
-	executor(exec_list, lambda);
+	executor(-1, exec_list, lambda);
 	return (SUCCESS);
 }
 
@@ -73,6 +73,7 @@ t_shell	*shell_init(char **env)
 	lambda = malloc(sizeof(t_shell));
 	if (!lambda)
 		return (NULL);
+	lambda->status = SUCCESS;
 	lambda->env = init_env(env);
 	if (!lambda->env)
 	{
@@ -95,5 +96,5 @@ int	main(int argc, char **argv, char **env)
 	while (TRUE)
 		if (prompt(lambda) == FAILURE)
 			return (FAILURE);
-	return (SUCCESS);
+	return (lambda->status);
 }

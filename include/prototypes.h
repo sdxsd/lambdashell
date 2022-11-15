@@ -71,7 +71,7 @@ t_exec_element	*tokenizer(t_shell *lambda);
 
 /* EXECUTION */
 int				execute_command(t_cmd *cmd);
-int				executor(t_exec_element *head, t_shell *lambda);
+int				executor(int i_fd, t_exec_element *curr, t_shell *lambda);
 void			dealloc_exec_list(t_exec_element *head);
 
 /* EXEC LIST */
