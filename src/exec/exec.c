@@ -51,10 +51,14 @@ int	execute_command(t_cmd *cmd)
 	int	iter;
 
 	iter = 0;
+	// TODO: Allow doing redirecting in & out in the same command
+	// TODO: Also do this in execute_builtin()
 	if (cmd->redir)
 	{
 		while (cmd->redir->file[iter] == ' ')
 			iter++;
+		// TODO: I (Sander Bos) used this for pipex, so discuss this:
+		// open(cmd->redir->file + iter, O_CREAT | O_WRONLY | O_TRUNC, 0644)
 		fd = open(cmd->redir->file + iter, O_RDWR);
 		if (fd <= 0)
 			return (msg_err("execute_command()", FAILURE));
@@ -85,6 +89,7 @@ int	execute_command(t_cmd *cmd)
 
 static int	execute_builtin(t_cmd *cmd, t_vector *env)
 {
+	// TODO: Can't these dup2s and the copy-pasted ones in execute_command() be done in exec_and_pipe()?
 	if (cmd->i_fd != STDIN_FILENO)
 	{
 		dup2(cmd->i_fd, STDIN_FILENO);
@@ -95,7 +100,7 @@ static int	execute_builtin(t_cmd *cmd, t_vector *env)
 		dup2(cmd->o_fd, STDOUT_FILENO);
 		close(cmd->o_fd);
 	}
-	if (!ft_strncmp(cmd->args[0], "pwd", 3))
+	if (ft_streq(cmd->args[0], "pwd"))
 		pwd();
 	else if (ft_streq(cmd->args[0], "cd"))
 		cd(cmd);
@@ -106,40 +111,19 @@ static int	execute_builtin(t_cmd *cmd, t_vector *env)
 	return (SUCCESS);
 }
 
-static int	exec_single(t_exec_element *head, t_vector *env)
-{
-	int	ret;
-
-	if (head->type == tkn_cmd)
-	{
-		ret = fork();
-		if (ret == FORK_FAILURE)
-			return (msg_err("exec_single()", FAILURE));
-		if (ret == FORK_CHILD)
-		{
-			if (head->type == tkn_cmd)
-				execute_command(head->value);
-		}
-		waitpid(0, NULL, 0);
-	}
-	else if (head->type == tkn_bltin)
-		execute_builtin(head->value, env);
-	return (SUCCESS);
-}
-
-int	exec_and_pipe(int i_fd, t_exec_element *curr, t_shell *lambda)
+int	executor(int i_fd, t_exec_element *curr, t_shell *lambda)
 {
 	int		tube[2];
-	int		f_ret;
+	pid_t	pid;
 	t_cmd	*cmd;
+	int		wstatus;
 
-	if (curr->next)
-		if (pipe(tube) == -1)
-			return (msg_err("exec_and_pipe()", FAILURE));
-	f_ret = fork();
-	if (f_ret == FORK_FAILURE)
+	if (curr->next && pipe(tube) == -1)
 		return (msg_err("exec_and_pipe()", FAILURE));
-	if (f_ret == FORK_CHILD)
+	pid = fork();
+	if (pid == FORK_FAILURE)
+		return (msg_err("exec_and_pipe()", FAILURE));
+	if (pid == FORK_CHILD)
 	{
 		if (curr->next)
 			close(tube[READ]);
@@ -150,29 +134,16 @@ int	exec_and_pipe(int i_fd, t_exec_element *curr, t_shell *lambda)
 			cmd->i_fd = i_fd;
 		if (curr->type == tkn_bltin)
 			execute_builtin(cmd, lambda->env);
-		execute_command(curr->value);
+		execute_command(cmd);
 	}
 	close(i_fd);
 	if (curr->next)
 		close(tube[WRITE]);
-	if (curr->next)
-		if (exec_and_pipe(tube[READ], curr->next, lambda) != SUCCESS)
-			return (msg_err("exec_and_pipe()", FAILURE));
-	return (SUCCESS);
-}
-
-// get exec code of last command.
-int	executor(t_exec_element *head, t_shell *lambda)
-{
-	t_exec_element	*list;
-
-	list = head;
-	if (!list->next)
-		exec_single(head, lambda->env);
-	else
-	{
-		exec_and_pipe(-1, head, lambda);
-		waitpid(-1, NULL, 0);
-	}
+	if (curr->next && executor(tube[READ], curr->next, lambda) != SUCCESS)
+		return (msg_err("exec_and_pipe()", FAILURE));
+	// TODO: Check if waitpid() options should really be 0
+	waitpid(pid, &wstatus, 0);
+	if (!curr->next)
+		lambda->status = WEXITSTATUS(wstatus);
 	return (SUCCESS);
 }
