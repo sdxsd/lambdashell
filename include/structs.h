@@ -50,6 +50,7 @@ typedef struct s_shell
 	t_vector	*env;
 	char		*line;
 	char		**lines;
+	bool		i_tty;
 }	t_shell;
 
 typedef enum e_token_type
@@ -69,7 +70,7 @@ typedef enum e_token_type
 // direc == FALSE then input.
 // char *file points to name of file involved.
 typedef struct s_redirec {
-	char	*file;
+	char	**files;
 	bool	direc;
 } t_redirec;
 

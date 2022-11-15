@@ -39,13 +39,19 @@ A program is free software if users have all of these freedoms.
 
 #include "../include/minishell.h"
 #include <stdlib.h>
+#include <unistd.h>
 
 int	prompt(t_shell *lambda)
 {
 	t_exec_element	*exec_list;
 
-	ps1(lambda);
-	lambda->line = readline("λ :: > ");
+	if (lambda->i_tty)
+	{
+		ps1(lambda);
+		lambda->line = readline("λ :: > ");
+	}
+	else
+		lambda->line = readline(NULL);
 	if (!lambda->line)
 	{
 		printf("\n");
@@ -79,6 +85,10 @@ t_shell	*shell_init(char **env)
 		free(lambda);
 		return (NULL);
 	}
+	if (isatty(STDIN_FILENO))
+		lambda->i_tty = TRUE;
+	else
+		lambda->i_tty = FALSE;
 	return (lambda);
 }
 
