@@ -1,7 +1,11 @@
 #+TITLE: Minishell
 
+* TODO Will [/]
++ [ ] Write ft_fprintf for easy error printing.
++ [ ] License builtin as advised by the GNU GPLv3.
+
 * Minishell
-** TODO Builtins: [3/5]
+** TODO Builtins: [3/7]
 + [X] cd
 + [X] pwd
 + [X] env
@@ -9,9 +13,9 @@
 + [ ] echo with -n
 + [ ] export
 + [ ] unset
-** TODO Features: [1/10]
-+ [ ] Redirections
-+ [ ] Piping
+** TODO Features: [3/10]
++ [X] Redirections
++ [X] Piping
 + [X] Single commands
 + [ ] Variable expansion
 + [ ] Return values

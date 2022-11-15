@@ -43,6 +43,20 @@ A program is free software if users have all of these freedoms.
 #include <stdlib.h>
 #include <fcntl.h>
 
+static void	dup_fds(t_cmd *cmd)
+{
+	if (cmd->i_fd != STDIN_FILENO)
+	{
+		dup2(cmd->i_fd, STDIN_FILENO);
+		close(cmd->i_fd);
+	}
+	if (cmd->o_fd != STDOUT_FILENO)
+	{
+		dup2(cmd->o_fd, STDOUT_FILENO);
+		close(cmd->o_fd);
+	}
+}
+
 /* NOTE: INFO */
 /* Takes a t_cmd and executes it. */
 int	execute_command(t_cmd *cmd)
@@ -57,9 +71,7 @@ int	execute_command(t_cmd *cmd)
 	{
 		while (cmd->redir->file[iter] == ' ')
 			iter++;
-		// TODO: I (Sander Bos) used this for pipex, so discuss this:
-		// open(cmd->redir->file + iter, O_CREAT | O_WRONLY | O_TRUNC, 0644)
-		fd = open(cmd->redir->file + iter, O_RDWR);
+		fd = open(cmd->redir->file + iter, O_RDWR | O_CREAT | O_TRUNC);
 		if (fd <= 0)
 			return (msg_err("execute_command()", FAILURE));
 		if (cmd->redir->direc == OUTPUT)
@@ -67,16 +79,7 @@ int	execute_command(t_cmd *cmd)
 		if (cmd->redir->direc == INPUT)
 			cmd->i_fd = fd;
 	}
-	if (cmd->i_fd != STDIN_FILENO)
-	{
-		dup2(cmd->i_fd, STDIN_FILENO);
-		close(cmd->i_fd);
-	}
-	if (cmd->o_fd != STDOUT_FILENO)
-	{
-		dup2(cmd->o_fd, STDOUT_FILENO);
-		close(cmd->o_fd);
-	}
+	dup_fds(cmd);
 	if (execve(cmd->path, cmd->args, cmd->env) == -1)
 	{
 		msg_err("execute_command()", FAILURE);
@@ -89,17 +92,7 @@ int	execute_command(t_cmd *cmd)
 
 static int	execute_builtin(t_cmd *cmd, t_vector *env)
 {
-	// TODO: Can't these dup2s and the copy-pasted ones in execute_command() be done in exec_and_pipe()?
-	if (cmd->i_fd != STDIN_FILENO)
-	{
-		dup2(cmd->i_fd, STDIN_FILENO);
-		close(cmd->i_fd);
-	}
-	if (cmd->o_fd != STDOUT_FILENO)
-	{
-		dup2(cmd->o_fd, STDOUT_FILENO);
-		close(cmd->o_fd);
-	}
+	dup_fds(cmd);
 	if (ft_streq(cmd->args[0], "pwd"))
 		pwd();
 	else if (ft_streq(cmd->args[0], "cd"))
