@@ -113,7 +113,10 @@ t_cmd	*cmd_constructor(char *prog_n_args, t_vector *env)
 		cmd_deallocator(cmd);
 		return (null_msg_err("cmd_constructor()"));
 	}
-	cmd->path = get_path(cmd->args[0], env);
+	if (ft_strnstr(cmd->args[0], "/", ft_strlen(cmd->args[0])))
+		cmd->path = cmd->args[0];
+	else
+		cmd->path = get_path(cmd->args[0], env);
 	if (!cmd->path)
 	{
 		msg_err(cmd->args[0], FAILURE);
