@@ -120,7 +120,6 @@ static int	exec_single(t_exec_element *head, t_vector *env)
 			if (head->type == tkn_cmd)
 				execute_command(head->value);
 		}
-		waitpid(0, NULL, 0);
 	}
 	else if (head->type == tkn_bltin)
 		execute_builtin(head->value, env);
@@ -169,9 +168,7 @@ int	executor(t_exec_element *head, t_shell *lambda)
 	if (!list->next)
 		exec_single(head, lambda->env);
 	else
-	{
 		exec_and_pipe(-1, head, lambda);
-		waitpid(-1, NULL, 0);
-	}
+	waitpid(-1, NULL, 0);
 	return (SUCCESS);
 }

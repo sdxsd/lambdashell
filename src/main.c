@@ -57,13 +57,10 @@ int	prompt(t_shell *lambda)
 		printf("\n");
 		exit(0);
 	}
-	if (ft_strlen(lambda->line) < 1) // TODO: Why?
-		return (SUCCESS);
 	add_history(lambda->line);
 	if (parse_line(lambda) == FAILURE)
 	{
 		free(lambda->line);
-		// TODO: Does history also have to be freed explicitly?
 		return (FAILURE);
 	}
 	exec_list = tokenizer(lambda);
@@ -102,8 +99,7 @@ int	main(int argc, char **argv, char **env)
 	if (!lambda)
 		return (FAILURE);
 	// TODO: Maybe store something in lambda to indicate user asking to exit
-	while (TRUE)
-		if (prompt(lambda) == FAILURE)
-			return (FAILURE);
+	while (!lambda->exit)
+		prompt(lambda);
 	return (SUCCESS);
 }
