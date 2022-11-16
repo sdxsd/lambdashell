@@ -59,7 +59,7 @@ t_exec_element	*new_exec_element(void)
 {
 	t_exec_element	*new;
 
-	new = malloc(sizeof(t_exec_element));
+	new = ft_calloc(1, sizeof(t_exec_element));
 	if (!new)
 		return (null_msg_err("new_exec_element()"));
 	new->type = -1;
