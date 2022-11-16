@@ -64,7 +64,11 @@ int	prompt(t_shell *lambda)
 		return (FAILURE);
 	}
 	exec_list = tokenizer(lambda);
-	exec_list_generator(exec_list, lambda->env);
+	if (exec_list_generator(exec_list, lambda->env) == FAILURE)
+	{
+		// TODO: Free stuff
+		return (FAILURE);
+	}
 	executor(-1, exec_list, lambda);
 	return (SUCCESS);
 }
