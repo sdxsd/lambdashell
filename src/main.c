@@ -77,6 +77,7 @@ t_shell	*shell_init(char **env)
 	if (!lambda)
 		return (NULL);
 	lambda->status = SUCCESS;
+	lambda->exit = FALSE;
 	lambda->env = init_env(env);
 	if (!lambda->env)
 	{
@@ -99,7 +100,6 @@ int	main(int argc, char **argv, char **env)
 	lambda = shell_init(env);
 	if (!lambda)
 		return (FAILURE);
-	// TODO: Maybe store something in lambda to indicate user asking to exit
 	while (!lambda->exit)
 		prompt(lambda);
 	return (lambda->status);
