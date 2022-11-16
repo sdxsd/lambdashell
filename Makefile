@@ -1,6 +1,6 @@
 
 CC = clang
-CFLAGS = -g -Wall -Wextra -Werror
+CFLAGS = -g -Wall -Wextra -Werror #-fsanitize=address
 NAME = minishell
 CFILES =		src/main.c \
 				src/exec/path.c \
@@ -23,6 +23,8 @@ CFILES =		src/main.c \
 				src/cosmetic/cosmetic.c
 OFILES = $(CFILES:.c=.o)
 
+LIBFT_PATH = libft/libft.a
+
 LIB = -L libft -l ft
 ifeq ($(shell uname), Linux)
 LIB += -l readline
@@ -33,13 +35,13 @@ endif
 
 all: $(NAME)
 
-$(NAME): $(OFILES) $(LIB)
+$(NAME): $(OFILES) $(LIBFT_PATH)
 	$(CC) $(CFLAGS) $(OFILES) $(LIB) -o $(NAME)
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-$(LIB):
+$(LIBFT_PATH):
 	$(MAKE) -C libft/
 
 re: fclean all
