@@ -112,5 +112,5 @@ void	dealloc_exec_list(t_exec_element *head)
 		cmd_deallocator(head->value);
 	if (head->next)
 		dealloc_exec_list(head->next);
-	free(head);
+	ft_free(&head);
 }

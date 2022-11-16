@@ -46,7 +46,7 @@ static void	dealloc_lambda(t_shell *lambda)
 	if (!lambda)
 		return ;
 	free_vector(lambda->env, dealloc_env_element);
-	free(lambda->line);
+	ft_free(&lambda->line);
 }
 
 static int	prompt(t_shell *lambda)
@@ -71,6 +71,7 @@ static int	prompt(t_shell *lambda)
 		return (FAILURE);
 	}
 	executor(-1, exec_list, lambda);
+	ft_free(&lambda->line);
 	return (SUCCESS);
 }
 
@@ -86,7 +87,7 @@ static t_shell	*shell_init(char **env)
 	lambda->env = init_env(env);
 	if (!lambda->env)
 	{
-		free(lambda);
+		ft_free(&lambda);
 		return (NULL);
 	}
 	if (isatty(STDIN_FILENO))
