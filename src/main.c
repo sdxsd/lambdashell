@@ -100,6 +100,7 @@ static t_shell	*shell_init(char **env)
 int	main(int argc, char **argv, char **env)
 {
 	t_shell	*lambda;
+	int		status;
 
 	// TODO: Why does this continue if argv[0] is NULL?
 	if (argc > 1 && argv[0])
@@ -114,5 +115,6 @@ int	main(int argc, char **argv, char **env)
 		prompt(lambda);
 	status = lambda->status;
 	dealloc_lambda(lambda);
+	rl_clear_history();
 	return (status);
 }
