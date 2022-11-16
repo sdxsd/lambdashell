@@ -22,19 +22,22 @@ CFILES =		src/main.c \
 				src/cosmetic/colours.c \
 				src/cosmetic/cosmetic.c
 OFILES = $(CFILES:.c=.o)
-LIB = libft/libft.a
+
+LIB = -L libft -l ft
+ifeq ($(shell uname), Linux)
+LIB += -l readline
+else
+LIB += -L $(shell brew --prefix readline)/lib -lreadline
+INCLUDES += -I $(shell brew --prefix readline)/include
+endif
 
 all: $(NAME)
 
-# TODO: These are needed in order to use rl_replace_line(), rl_clear_history() or rl_redisplay()
-# INCLUDES := -I $(shell brew --prefix readline)/include
-# LIBS := -L $(shell brew --prefix readline)/lib -lreadline
-
 $(NAME): $(OFILES) $(LIB)
-	$(CC) $(CFLAGS) -lreadline $(OFILES) $(LIB) -o $(NAME)
+	$(CC) $(CFLAGS) $(OFILES) $(LIB) -o $(NAME)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(LIB):
 	$(MAKE) -C libft/
