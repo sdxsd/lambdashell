@@ -127,7 +127,8 @@ int	executor(int i_fd, t_exec_element *curr, t_shell *lambda)
 			cmd->i_fd = i_fd;
 		if (curr->type == tkn_bltin)
 			execute_builtin(cmd, lambda->env);
-		execute_command(cmd);
+		else
+			execute_command(cmd);
 	}
 	close(i_fd);
 	if (curr->next)
