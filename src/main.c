@@ -54,7 +54,10 @@ static int	prompt(t_shell *lambda)
 		lambda->line = readline(NULL);
 	if (!lambda->line)
 	{
-		printf("\n");
+		// TODO: I commented this out since Ctrl+D during readline
+		// will make it return NULL
+		// printf("\n");
+
 		exit(0);
 	}
 	add_history(lambda->line);
