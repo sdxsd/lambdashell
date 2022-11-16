@@ -71,7 +71,7 @@ int	execute_command(t_cmd *cmd)
 	{
 		while (cmd->redir->file[iter] == ' ')
 			iter++;
-		fd = open(cmd->redir->file + iter, O_RDWR | O_CREAT | O_TRUNC);
+		fd = open(cmd->redir->file + iter, O_RDWR | O_CREAT | O_TRUNC, 0644);
 		if (fd <= 0)
 			return (msg_err("execute_command()", FAILURE));
 		if (cmd->redir->direc == OUTPUT)
