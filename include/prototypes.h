@@ -91,6 +91,7 @@ int				free_ptr_array(char *ptr[]);
 
 /* DEALLOC */
 void			dealloc_ptr_array(void **data);
+void			dealloc_lambda(t_shell *lambda);
 
 /* DEBUG */
 void			dbg_print_exec_list(t_exec_element *head);

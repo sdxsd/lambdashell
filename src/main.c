@@ -41,14 +41,6 @@ A program is free software if users have all of these freedoms.
 #include <stdlib.h>
 #include <unistd.h>
 
-static void	dealloc_lambda(t_shell *lambda)
-{
-	if (!lambda)
-		return ;
-	free_vector(lambda->env, dealloc_env_element);
-	ft_free(&lambda->line);
-}
-
 static int	prompt(t_shell *lambda)
 {
 	t_exec_element	*exec_list;
