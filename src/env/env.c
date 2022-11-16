@@ -45,9 +45,9 @@ void	dealloc_env_element(void *ptr)
 	t_env_element	*env_element;
 
 	env_element = ptr;
-	free(env_element->key);
-	free(env_element->val);
-	free(env_element);
+	ft_free(&env_element->key);
+	ft_free(&env_element->val);
+	ft_free(&env_element);
 }
 
 static int	to_assignment(char *str)

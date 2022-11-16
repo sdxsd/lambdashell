@@ -131,13 +131,13 @@ void	cmd_deallocator(t_cmd *cmd)
 {
 	if (cmd->redir)
 	{
-		free(cmd->redir->file);
-		free(cmd->redir);
+		ft_free(&cmd->redir->file);
+		ft_free(&cmd->redir);
 	}
 	if (cmd->env)
 		free_ptr_array(cmd->env);
 	if (cmd->args)
 		free_ptr_array(cmd->args);
-	free(cmd->path);
-	free(cmd);
+	ft_free(&cmd->path);
+	ft_free(&cmd);
 }

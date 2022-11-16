@@ -44,8 +44,8 @@ void	dealloc_ptr_array(void **data)
 {
 	while (*data)
 	{
-		free(data);
+		ft_free(&data);
 		data++;
 	}
-	free(data);
+	ft_free(&data);
 }
