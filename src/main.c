@@ -54,8 +54,12 @@ static int	prompt(t_shell *lambda)
 	t_exec_element	*exec_list;
 
 	if (lambda->i_tty)
+	{
 		ps1(lambda);
-	lambda->line = readline("λ :: > ");
+		lambda->line = readline("λ :: > ");
+	}
+	else
+		lambda->line = readline(NULL);
 	if (!lambda->line)
 	{
 		printf("\n");
