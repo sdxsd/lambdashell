@@ -75,7 +75,7 @@ int				executor(int i_fd, t_exec_element *curr, t_shell *lambda);
 void			dealloc_exec_list(t_exec_element *head);
 
 /* EXEC LIST */
-t_exec_element	*exec_list_generator(t_exec_element *head, t_vector *env);
+int				exec_list_generator(t_exec_element *head, t_vector *env);
 t_exec_element	*new_exec_element(void);
 void			free_exec_list(t_exec_element *head);
 int				count_elements(t_exec_element *head);
