@@ -54,13 +54,11 @@ int				pwd(void);
 void			cd(t_cmd *cmd);
 t_cmd			*bltin_constructor(char	*line, t_vector *env);
 
-/* SHELL */
-int				prompt(t_shell *ms);
-
 /* ENVIRONMENT */
 t_vector		*init_env(char **env);
 char			**env_to_strings(t_vector *env);
 t_env_element	*env_get_val(t_vector *env, char *key);
+void			dealloc_env_element(void *ptr);
 
 /* ERROR MESSAGES */
 int				msg_err(char *s, int ret);

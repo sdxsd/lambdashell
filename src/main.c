@@ -41,7 +41,15 @@ A program is free software if users have all of these freedoms.
 #include <stdlib.h>
 #include <unistd.h>
 
-int	prompt(t_shell *lambda)
+static void	dealloc_lambda(t_shell *lambda)
+{
+	if (!lambda)
+		return ;
+	free_vector(lambda->env, dealloc_env_element);
+	free(lambda->line);
+}
+
+static int	prompt(t_shell *lambda)
 {
 	t_exec_element	*exec_list;
 
@@ -55,10 +63,7 @@ int	prompt(t_shell *lambda)
 	}
 	add_history(lambda->line);
 	if (parse_line(lambda) == FAILURE)
-	{
-		free(lambda->line);
 		return (FAILURE);
-	}
 	exec_list = tokenizer(lambda);
 	if (exec_list_generator(exec_list, lambda->env) == FAILURE)
 	{
@@ -69,7 +74,7 @@ int	prompt(t_shell *lambda)
 	return (SUCCESS);
 }
 
-t_shell	*shell_init(char **env)
+static t_shell	*shell_init(char **env)
 {
 	t_shell		*lambda;
 
@@ -95,12 +100,18 @@ int	main(int argc, char **argv, char **env)
 {
 	t_shell	*lambda;
 
+	// TODO: Why does this continue if argv[0] is NULL?
 	if (argc > 1 && argv[0])
 		return (FAILURE);
 	lambda = shell_init(env);
 	if (!lambda)
+	{
+		dealloc_lambda(lambda);
 		return (FAILURE);
+	}
 	while (!lambda->exit)
 		prompt(lambda);
-	return (lambda->status);
+	status = lambda->status;
+	dealloc_lambda(lambda);
+	return (status);
 }

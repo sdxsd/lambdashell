@@ -42,6 +42,8 @@ A program is free software if users have all of these freedoms.
 
 void	*free_vector(t_vector *vec, void (*dealloc) (void *))
 {
+	if (!vec)
+		return (NULL);
 	if (dealloc && vec->data)
 		dealloc(vec->data);
 	if (vec->next)
