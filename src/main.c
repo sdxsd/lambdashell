@@ -45,16 +45,13 @@ static int	prompt(t_shell *lambda)
 {
 	t_exec_element	*exec_list;
 
-	if (lambda->i_tty)
+	if (lambda->stdin_is_tty)
 	{
 		ps1(lambda);
 		lambda->line = readline("λ :: > ");
 	}
 	else
-	{
-		rl_outstream = stdin;
 		lambda->line = readline(NULL);
-	}
 	if (!lambda->line)
 	{
 		// TODO: I commented this out since Ctrl+D during readline
@@ -93,11 +90,25 @@ static t_shell	*shell_init(char **env)
 		ft_free(&lambda);
 		return (NULL);
 	}
-	if (isatty(STDIN_FILENO))
-		lambda->i_tty = TRUE;
-	else
-		lambda->i_tty = FALSE;
+	lambda->stdin_is_tty = isatty(STDIN_FILENO);
 	return (lambda);
+}
+
+static int	no_write(void *a, const char *b, int c)
+{
+	(void)a;
+	(void)b;
+	(void)c;
+	return (0);
+}
+
+static void	void_rl_outstream(void)
+{
+	static FILE	void_stream;
+
+	ft_memcpy(&void_stream, stdout, sizeof(void_stream));
+	void_stream._write = &no_write;
+	rl_outstream = &void_stream;
 }
 
 int	main(int argc, char **argv, char **env)
@@ -114,6 +125,8 @@ int	main(int argc, char **argv, char **env)
 		dealloc_lambda(lambda);
 		return (FAILURE);
 	}
+	if (!lambda->stdin_is_tty)
+		void_rl_outstream();
 	while (!lambda->exit)
 		prompt(lambda);
 	status = lambda->status;
