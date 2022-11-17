@@ -51,7 +51,7 @@ typedef struct s_shell
 	char		*line;
 	char		**lines;
 	int			status;
-	bool		i_tty;
+	bool		stdin_is_tty;
 	bool		exit;
 }	t_shell;
 
