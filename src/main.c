@@ -61,7 +61,8 @@ static int	prompt(t_shell *lambda)
 		// will make it return NULL
 		// printf("\n");
 
-		exit(0);
+		lambda->exit = true;
+		return (SUCCESS);
 	}
 	add_history(lambda->line);
 	if (parse_line(lambda) == FAILURE)
