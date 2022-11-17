@@ -60,6 +60,6 @@ int	pwd(void)
 	if (cwd == NULL)
 		return (msg_err("pwd()", FAILURE));
 	printf("%s\n", cwd);
-	free(cwd);
+	ft_free(&cwd);
 	return (SUCCESS);
 }

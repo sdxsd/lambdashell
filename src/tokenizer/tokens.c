@@ -82,7 +82,7 @@ int	is_command(char *line, t_vector *env)
 	else
 	{
 		if (!ft_strnstr(path, "/", ft_strlen(path)))
-			free(path);
+			ft_free(&path);
 		return (TRUE);
 	}
 }

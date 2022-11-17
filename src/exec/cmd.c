@@ -65,7 +65,7 @@ static char **chk_and_redirec(char *prog, t_cmd	*cmd)
 		return (ft_split(prog, ' '));
 	if (!split)
 		return (NULL);
-	cmd->redir = malloc(sizeof(t_redirec));
+	cmd->redir = ft_calloc(1, sizeof(t_redirec));
 	if (!cmd->redir)
 	{
 		free_ptr_array(split);
@@ -95,7 +95,7 @@ t_cmd	*cmd_constructor(char *prog_n_args, t_vector *env)
 {
 	t_cmd	*cmd;
 
-	cmd = malloc(sizeof(t_cmd));
+	cmd = ft_calloc(1, sizeof(t_cmd));
 	if (!cmd)
 		return (null_msg_err("cmd_constructor()"));
 	cmd->i_fd = STDIN_FILENO;
@@ -131,13 +131,13 @@ void	cmd_deallocator(t_cmd *cmd)
 {
 	if (cmd->redir)
 	{
-		free(cmd->redir->file);
-		free(cmd->redir);
+		ft_free(&cmd->redir->file);
+		ft_free(&cmd->redir);
 	}
 	if (cmd->env)
 		free_ptr_array(cmd->env);
 	if (cmd->args)
 		free_ptr_array(cmd->args);
-	free(cmd->path);
-	free(cmd);
+	ft_free(&cmd->path);
+	ft_free(&cmd);
 }

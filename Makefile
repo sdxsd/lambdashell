@@ -1,6 +1,6 @@
 
 CC = clang
-CFLAGS = -g -Wall -Wextra -Werror
+CFLAGS = -g -Wall -Wextra -Werror #-fsanitize=address
 NAME = minishell
 CFILES =		src/main.c \
 				src/exec/path.c \
@@ -12,6 +12,7 @@ CFILES =		src/main.c \
 				src/builtins/builtins.c \
 				src/tokenizer/tokens.c \
 				src/dealloc/dealloc_exec_list.c \
+				src/dealloc/dealloc_lambda.c \
 				src/dealloc/dealloc_ptr_array.c \
 				src/debug/debug_print.c \
 				src/debug/debug_env.c \
@@ -22,21 +23,26 @@ CFILES =		src/main.c \
 				src/cosmetic/colours.c \
 				src/cosmetic/cosmetic.c
 OFILES = $(CFILES:.c=.o)
-LIB = libft/libft.a
+
+LIBFT_PATH = libft/libft.a
+
+LIB = -L libft -l ft
+ifeq ($(shell uname), Linux)
+LIB += -l readline
+else
+LIB += -L $(shell brew --prefix readline)/lib -lreadline
+INCLUDES += -I $(shell brew --prefix readline)/include
+endif
 
 all: $(NAME)
 
-# TODO: These are needed in order to use rl_replace_line(), rl_clear_history() or rl_redisplay()
-# INCLUDES := -I $(shell brew --prefix readline)/include
-# LIBS := -L $(shell brew --prefix readline)/lib -lreadline
-
-$(NAME): $(OFILES) $(LIB)
-	$(CC) $(CFLAGS) -lreadline $(OFILES) $(LIB) -o $(NAME)
+$(NAME): $(OFILES) $(LIBFT_PATH)
+	$(CC) $(CFLAGS) $(OFILES) $(LIB) -o $(NAME)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-$(LIB):
+$(LIBFT_PATH):
 	$(MAKE) -C libft/
 
 re: fclean all

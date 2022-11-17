@@ -71,7 +71,7 @@ int	execute_command(t_cmd *cmd)
 	{
 		while (cmd->redir->file[iter] == ' ')
 			iter++;
-		fd = open(cmd->redir->file + iter, O_RDWR | O_CREAT | O_TRUNC);
+		fd = open(cmd->redir->file + iter, O_RDWR | O_CREAT | O_TRUNC, 0644);
 		if (fd <= 0)
 			return (msg_err("execute_command()", FAILURE));
 		if (cmd->redir->direc == OUTPUT)
@@ -127,7 +127,8 @@ int	executor(int i_fd, t_exec_element *curr, t_shell *lambda)
 			cmd->i_fd = i_fd;
 		if (curr->type == tkn_bltin)
 			execute_builtin(cmd, lambda->env);
-		execute_command(cmd);
+		else
+			execute_command(cmd);
 	}
 	close(i_fd);
 	if (curr->next)

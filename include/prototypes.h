@@ -54,13 +54,11 @@ int				pwd(void);
 void			cd(t_cmd *cmd);
 t_cmd			*bltin_constructor(char	*line, t_vector *env);
 
-/* SHELL */
-int				prompt(t_shell *ms);
-
 /* ENVIRONMENT */
 t_vector		*init_env(char **env);
 char			**env_to_strings(t_vector *env);
 t_env_element	*env_get_val(t_vector *env, char *key);
+void			dealloc_env_element(void *ptr);
 
 /* ERROR MESSAGES */
 int				msg_err(char *s, int ret);
@@ -75,7 +73,7 @@ int				executor(int i_fd, t_exec_element *curr, t_shell *lambda);
 void			dealloc_exec_list(t_exec_element *head);
 
 /* EXEC LIST */
-t_exec_element	*exec_list_generator(t_exec_element *head, t_vector *env);
+int				exec_list_generator(t_exec_element *head, t_vector *env);
 t_exec_element	*new_exec_element(void);
 void			free_exec_list(t_exec_element *head);
 int				count_elements(t_exec_element *head);
@@ -93,6 +91,7 @@ int				free_ptr_array(char *ptr[]);
 
 /* DEALLOC */
 void			dealloc_ptr_array(void **data);
+void			dealloc_lambda(t_shell *lambda);
 
 /* DEBUG */
 void			dbg_print_exec_list(t_exec_element *head);

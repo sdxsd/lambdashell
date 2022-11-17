@@ -50,10 +50,10 @@ int	free_ptr_array(char *ptr[])
 	iter = 0;
 	while (ptr[iter])
 	{
-		free(ptr[iter]);
+		ft_free(&ptr[iter]);
 		iter++;
 	}
-	free(ptr);
+	ft_free(&ptr);
 	return (iter);
 }
 
@@ -70,7 +70,7 @@ static char	*combine_path(char *dir, char *prog_n)
 	abs_path = ft_strjoin(dir_slash, prog_n);
 	if (!abs_path)
 		exit(1);
-	free(dir_slash);
+	ft_free(&dir_slash);
 	return (abs_path);
 }
 
@@ -97,7 +97,7 @@ char	*get_path(char *prog_n, t_vector *env)
 			free_ptr_array(exec_direcs);
 			return (abs_path);
 		}
-		free(abs_path);
+		ft_free(&abs_path);
 		iter++;
 	}
 	free_ptr_array(exec_direcs);

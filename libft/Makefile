@@ -72,7 +72,8 @@ CFILES = \
 		ft_charchk.c \
 		ft_printf.c \
 		ft_putnbr_base.c \
-		ft_printf_utils.c
+		ft_printf_utils.c \
+		ft_free.c
 OFILES = $(CFILES:.c=.o)
 B_OFILES = $(BONUS_FILES:.c=.o)
 
