@@ -93,7 +93,7 @@ manipulation and navigation.
 Allocates (n_elements) vector elements.
 ** int vec_assign_element(t_vector *head, size_t idx, void *data);
 Takes the head of the list, an index value and a pointer to data.
-The vector element at (idx) will have it's data value point to data.
+The vector element at (idx) will have its data value point to data.
 ** t_vector *vec_get_element(t_vector *head, size_t idx);
 Returns the vector element at (idx).
 ** t_vector *new_vector_element(t_vector *prev, size_t idx);
