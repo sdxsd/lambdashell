@@ -94,23 +94,6 @@ static t_shell	*shell_init(char **env)
 	return (lambda);
 }
 
-static int	no_write(void *a, const char *b, int c)
-{
-	(void)a;
-	(void)b;
-	(void)c;
-	return (0);
-}
-
-static void	void_rl_outstream(void)
-{
-	static FILE	void_stream;
-
-	ft_memcpy(&void_stream, stdout, sizeof(void_stream));
-	void_stream._write = &no_write;
-	rl_outstream = &void_stream;
-}
-
 int	main(int argc, char **argv, char **env)
 {
 	t_shell	*lambda;

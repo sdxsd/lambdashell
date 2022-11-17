@@ -93,6 +93,9 @@ int				free_ptr_array(char *ptr[]);
 void			dealloc_ptr_array(void **data);
 void			dealloc_lambda(t_shell *lambda);
 
+/* READLINE */
+void			void_rl_outstream(void);
+
 /* DEBUG */
 void			dbg_print_exec_list(t_exec_element *head);
 void			dbg_print_lines(char **lines);
