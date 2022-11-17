@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   CODAM C FILE                                       :+:    :+:            */
+/*   main.c                                             :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 1970/01/01 00:00:00 by wmaguire      #+#    #+#                 */
-/*   Updated: 1970/01/01 00:00:00 by wmaguire     ########   codam.nl         */
+/*   Updated: 1970/01/01 00:00:00 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ A program is free software if users have all of these freedoms.
 #include <stdlib.h>
 #include <unistd.h>
 
-int	prompt(t_shell *lambda)
+static int	prompt(t_shell *lambda)
 {
 	t_exec_element	*exec_list;
 
@@ -51,36 +51,45 @@ int	prompt(t_shell *lambda)
 		lambda->line = readline("λ :: > ");
 	}
 	else
+	{
+		rl_outstream = stdin;
 		lambda->line = readline(NULL);
+	}
 	if (!lambda->line)
 	{
-		printf("\n");
+		// TODO: I commented this out since Ctrl+D during readline
+		// will make it return NULL
+		// printf("\n");
+
 		exit(0);
 	}
 	add_history(lambda->line);
 	if (parse_line(lambda) == FAILURE)
+		return (FAILURE);
+	exec_list = tokenizer(lambda);
+	if (exec_list_generator(exec_list, lambda->env) == FAILURE)
 	{
-		free(lambda->line);
+		// TODO: Free stuff
 		return (FAILURE);
 	}
-	exec_list = tokenizer(lambda);
-	exec_list_generator(exec_list, lambda->env);
 	executor(-1, exec_list, lambda);
+	ft_free(&lambda->line);
 	return (SUCCESS);
 }
 
-t_shell	*shell_init(char **env)
+static t_shell	*shell_init(char **env)
 {
 	t_shell		*lambda;
 
-	lambda = malloc(sizeof(t_shell));
+	lambda = ft_calloc(1, sizeof(t_shell));
 	if (!lambda)
 		return (NULL);
 	lambda->status = SUCCESS;
+	lambda->exit = FALSE;
 	lambda->env = init_env(env);
 	if (!lambda->env)
 	{
-		free(lambda);
+		ft_free(&lambda);
 		return (NULL);
 	}
 	if (isatty(STDIN_FILENO))
@@ -93,14 +102,21 @@ t_shell	*shell_init(char **env)
 int	main(int argc, char **argv, char **env)
 {
 	t_shell	*lambda;
+	int		status;
 
+	// TODO: Why does this continue if argv[0] is NULL?
 	if (argc > 1 && argv[0])
 		return (FAILURE);
 	lambda = shell_init(env);
 	if (!lambda)
+	{
+		dealloc_lambda(lambda);
 		return (FAILURE);
-	// TODO: Maybe store something in lambda to indicate user asking to exit
+	}
 	while (!lambda->exit)
 		prompt(lambda);
-	return (lambda->status);
+	status = lambda->status;
+	dealloc_lambda(lambda);
+	rl_clear_history();
+	return (status);
 }

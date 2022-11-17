@@ -59,7 +59,7 @@ t_exec_element	*new_exec_element(void)
 {
 	t_exec_element	*new;
 
-	new = malloc(sizeof(t_exec_element));
+	new = ft_calloc(1, sizeof(t_exec_element));
 	if (!new)
 		return (null_msg_err("new_exec_element()"));
 	new->type = -1;
@@ -87,21 +87,23 @@ t_exec_element	*new_exec_element(void)
 //  |          +----------------+            |
 //  +=---------------------------------------+
 //
-t_exec_element	*assign_exec_element(t_exec_element *element, t_vector *env)
+int	exec_list_generator(t_exec_element *head, t_vector *env)
 {
-	if (element->type == tkn_cmd)
+	if (head->type == tkn_cmd)
 	{
-		element->value = cmd_constructor(element->line, env);
-		if (!element->value)
-			return (null_msg_err("assign_exec_element()"));
+		head->value = cmd_constructor(head->line, env);
+		if (!head->value)
+			return (msg_err("exec_list_generator()", FAILURE));
 	}
-	if (element->type == tkn_bltin)
+	if (head->type == tkn_bltin)
 	{
-		element->value = bltin_constructor(element->line, env);
-		if (!element->value)
-			return (null_msg_err("assign_exec_element()"));
+		head->value = bltin_constructor(head->line, env);
+		if (!head->value)
+			return (msg_err("exec_list_generator()", FAILURE));
 	}
-	return (element);
+	if (head->next)
+		return (exec_list_generator(head->next, env));
+	return (SUCCESS);
 }
 
 void	dealloc_exec_list(t_exec_element *head)
@@ -110,14 +112,5 @@ void	dealloc_exec_list(t_exec_element *head)
 		cmd_deallocator(head->value);
 	if (head->next)
 		dealloc_exec_list(head->next);
-	free(head);
-}
-
-t_exec_element	*exec_list_generator(t_exec_element *head, t_vector *env)
-{
-	assign_exec_element(head, env);
-	if (head->next)
-		return (exec_list_generator(head->next, env));
-	else
-		return (NULL);
+	ft_free(&head);
 }

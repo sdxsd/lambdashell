@@ -45,9 +45,9 @@ void	dealloc_env_element(void *ptr)
 	t_env_element	*env_element;
 
 	env_element = ptr;
-	free(env_element->key);
-	free(env_element->val);
-	free(env_element);
+	ft_free(&env_element->key);
+	ft_free(&env_element->val);
+	ft_free(&env_element);
 }
 
 static int	to_assignment(char *str)
@@ -79,7 +79,7 @@ t_vector	*init_env(char **env)
 		return (NULL);
 	while (iter-- > 0)
 	{
-		env_element = malloc(sizeof(t_env_element));
+		env_element = ft_calloc(1, sizeof(t_env_element));
 		if (!env_element)
 			return (init_env_failure(env_vector));
 		env_element->key = ft_strndup(env[iter], to_assignment(env[iter]) + 1);

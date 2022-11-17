@@ -77,7 +77,7 @@ void	ps1(t_shell	*lambda)
 	{
 		last = last_direc(cwd);
 		printf("%s ", last);
-		free(cwd);
+		ft_free(&cwd);
 	}
 	else
 		printf("??? ");
