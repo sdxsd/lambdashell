@@ -109,7 +109,7 @@ int	executor(int i_fd, t_exec_element *curr, t_shell *lambda)
 	int		tube[2];
 	pid_t	pid;
 	t_cmd	*cmd;
-	int		wstatus;
+	int		status;
 
 	if (curr->next && pipe(tube) == -1)
 		return (msg_err("exec_and_pipe()", FAILURE));
@@ -136,8 +136,19 @@ int	executor(int i_fd, t_exec_element *curr, t_shell *lambda)
 	if (curr->next && executor(tube[READ], curr->next, lambda) != SUCCESS)
 		return (msg_err("exec_and_pipe()", FAILURE));
 	// TODO: Check if waitpid() options should really be 0
-	waitpid(pid, &wstatus, 0);
+	waitpid(pid, &status, 0);
 	if (!curr->next)
-		lambda->status = WEXITSTATUS(wstatus);
+	{
+		// TODO: Add unit test for this one
+		if (WIFEXITED(status))
+			lambda->status = WEXITSTATUS(status);
+
+		else if (WIFSIGNALED(status))
+			lambda->status = WTERMSIG(status);
+
+		// TODO: Probably also need to add this? Check by adding a unit test
+		// else if (WIFSTOPPED(status))
+		// 	lambda->status = WIFSTOPPED(status);
+	}
 	return (SUCCESS);
 }
