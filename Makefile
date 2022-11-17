@@ -20,6 +20,7 @@ CFILES =		src/main.c \
 				src/env/env_utils.c \
 				src/parser/line_parser.c \
 				src/error/error.c \
+				src/readline/void_rl_outstream.c \
 				src/cosmetic/colours.c \
 				src/cosmetic/cosmetic.c
 OFILES = $(CFILES:.c=.o)
