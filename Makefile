@@ -49,14 +49,11 @@ $(LIBFT_PATH):
 re: fclean all
 
 fclean: clean
-# TODO: Discuss whether fcleaning libft as well is desired
-	$(MAKE) -C libft/ fclean
 	@rm -f $(NAME)
 	@echo "DEEP CLEANING"
 
-# TODO: Discuss whether cleaning libft as well is desired
-# $(MAKE) -C libft/ clean
 clean:
+	$(MAKE) -C libft/ fclean
 	@rm -f $(OFILES)
 	@echo "CLEANED UP"
 

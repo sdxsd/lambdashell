@@ -108,8 +108,12 @@ t_exec_element	*tokenizer(t_shell *lambda)
 	exec_list = new_exec_element();
 	if (!exec_list)
 		return (null_msg_err("tokenizer()"));
-	// TODO: exec_list->type can contain an error value, so check for it
 	exec_list->type = get_type(lambda->lines[0], lambda->env);
+	if (exec_list->type == -1)
+	{
+		dealloc_exec_list(exec_list);
+		return (null_msg_err("tokenizer()"));
+	}
 	exec_list->line = lambda->lines[0];
 	prev = exec_list;
 	while (lambda->lines[iter])
@@ -120,8 +124,12 @@ t_exec_element	*tokenizer(t_shell *lambda)
 			free_exec_list(exec_list);
 			return (null_msg_err("tokenizer()"));
 		}
-		// TODO: exec_list->type can contain an error value, so check for it
 		curr->type = get_type(lambda->lines[iter], lambda->env);
+		if (exec_list->type == -1)
+		{
+			dealloc_exec_list(exec_list);
+			return (null_msg_err("tokenizer()"));
+		}
 		curr->line = lambda->lines[iter];
 		prev->next = curr;
 		prev = curr;

@@ -135,7 +135,6 @@ int	executor(int i_fd, t_exec_element *curr, t_shell *lambda)
 		close(tube[WRITE]);
 	if (curr->next && executor(tube[READ], curr->next, lambda) != SUCCESS)
 		return (msg_err("exec_and_pipe()", FAILURE));
-	// TODO: Check if waitpid() options should really be 0
 	waitpid(pid, &status, 0);
 	if (!curr->next)
 	{

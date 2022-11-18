@@ -75,6 +75,7 @@ typedef enum e_token_type
 typedef enum e_err
 {
 	ERR_GENERIC,
+	ERR_TOKENIZ,
 	ERR_PARSING,
 	ERR_NULLRET,
 	ERR_ALLOCFU,

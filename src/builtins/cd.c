@@ -43,7 +43,6 @@ A program is free software if users have all of these freedoms.
 
 void	cd(t_cmd *cmd)
 {
-	// TODO: Add explicit "== -1" or DEFINE of -1
-	if (chdir(cmd->args[1]))
+	if (chdir(cmd->args[1]) == -1)
 		msg_err("cd", FAILURE);
 }
