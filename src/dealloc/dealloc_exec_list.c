@@ -51,6 +51,7 @@ void	free_exec_list(t_exec_element *head)
 		ft_free(&curr->line);
 		if (curr->value && curr->type == tkn_cmd)
 			cmd_deallocator(curr->value);
+		// TODO: Also need a builtin_deallocator() call I imagine?
 		prev = curr;
 		curr = curr->next;
 		ft_free(&prev);
