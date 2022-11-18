@@ -57,7 +57,7 @@ static char	*last_direc(char *line)
 	return (last);
 }
 
-// TODO: What does ps1 stand for?
+// Prompt string one
 void	ps1(t_shell	*lambda)
 {
 	t_env_element	*env_element;

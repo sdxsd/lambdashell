@@ -67,7 +67,7 @@ static int	prompt(t_shell *lambda)
 	exec_list = tokenizer(lambda);
 	if (exec_list_generator(exec_list, lambda->env) == FAILURE)
 	{
-		// TODO: Free stuff
+		dealloc_exec_list(exec_list);
 		return (FAILURE);
 	}
 	executor(-1, exec_list, lambda);
@@ -99,8 +99,7 @@ int	main(int argc, char **argv, char **env)
 	t_shell	*lambda;
 	int		status;
 
-	// TODO: Why does this continue if argv[0] is NULL?
-	if (argc > 1 && argv[0])
+	if (argc > 1 || argv[0])
 		return (FAILURE);
 	lambda = shell_init(env);
 	if (!lambda)
