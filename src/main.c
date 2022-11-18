@@ -51,7 +51,10 @@ static int	prompt(t_shell *lambda)
 		lambda->line = readline("λ :: > ");
 	}
 	else
+	{
+		rl_outstream = stdin;
 		lambda->line = readline(NULL);
+	}
 	if (!lambda->line)
 	{
 		// TODO: I commented this out since Ctrl+D during readline
@@ -108,8 +111,6 @@ int	main(int argc, char **argv, char **env)
 		dealloc_lambda(lambda);
 		return (FAILURE);
 	}
-	if (!lambda->stdin_is_tty)
-		void_rl_outstream();
 	while (!lambda->exit)
 		prompt(lambda);
 	status = lambda->status;
