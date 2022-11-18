@@ -72,8 +72,8 @@ int	is_command(char *line, t_vector *env)
 	split_line = ft_split(line, ' ');
 	if (!split_line)
 		return (msg_err("is_command()", FAILURE));
-	if (ft_strnstr(split_line[0], "/", ft_strlen(split_line[0])))
-		path = split_line[0];
+	if (ft_strchr(split_line[0], '/'))
+		path = ft_strdup(split_line[0]);
 	else
 		path = get_path(split_line[0], env);
 	free_ptr_array(split_line);
@@ -81,8 +81,7 @@ int	is_command(char *line, t_vector *env)
 		return (FALSE);
 	else
 	{
-		if (!ft_strnstr(path, "/", ft_strlen(path)))
-			ft_free(&path);
+		ft_free(&path);
 		return (TRUE);
 	}
 }
