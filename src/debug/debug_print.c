@@ -98,3 +98,35 @@ void	dbg_print_env(t_vector *head)
 	else
 		return ;
 }
+
+void	dbg_print_tokens(t_list *tokens)
+{
+	char	*token_type_strings[] = {
+		[SINGLE_QUOTED] = "SINGLE_QUOTED",
+		[DOUBLE_QUOTED] = "DOUBLE_QUOTED",
+		[REDIRECTION] = "REDIRECTION",
+		[WHITESPACE] = "WHITESPACE",
+		[WORD] = "WORD",
+	};
+	t_token	*token;
+	char	*str;
+
+	printf("+----------------+---------------+\n");
+	printf("|   token type   | token content |\n");
+	printf("+----------------+---------------+\n");
+
+	while (tokens != NULL)
+	{
+		token = tokens->content;
+
+		printf("| %-14s ", token_type_strings[token->type]);
+
+		asprintf(&str, "[%s]", token->content);
+		printf("| %-13s |\n", str);
+		ft_free(&str);
+
+		printf("+----------------+---------------+\n");
+
+		tokens = tokens->next;
+	}
+}

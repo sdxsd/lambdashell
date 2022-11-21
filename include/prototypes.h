@@ -65,7 +65,13 @@ int				msg_err(char *s, int ret);
 void			*null_msg_err(char *s);
 
 /* TOKENISATION */
-t_exec_element	*tokenizer(t_shell *lambda);
+t_token			*get_token(t_token_type type, char *content);
+t_token_type	subtokenize_single_quote(char **line_ptr);
+t_token_type	subtokenize_double_quote(char **line_ptr);
+t_token_type	subtokenize_redirection(char **line_ptr);
+t_token_type	subtokenize_whitespace(char **line_ptr);
+t_token_type	subtokenize_word(char **line_ptr);
+t_list			*tokenizer(char *line);
 
 /* EXECUTION */
 int				execute_command(t_cmd *cmd);
@@ -99,5 +105,6 @@ void			dbg_print_lines(char **lines);
 void			dbg_print_env(t_vector *head);
 void			dbg_print_cmd(t_cmd	*cmd);
 void			dbg_test_env(t_vector *env);
+void			dbg_print_tokens(t_list *tokens);
 
 #endif

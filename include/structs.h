@@ -150,4 +150,19 @@ typedef struct s_exec_element
 	struct s_exec_element	*next;
 }	t_exec_element;
 
+typedef enum s_token_type
+{
+	SINGLE_QUOTED,
+	DOUBLE_QUOTED,
+	REDIRECTION, // TODO: Might need to split into REDIRECTION_IN and _OUT
+	WHITESPACE,
+	WORD,
+}	t_token_type;
+
+typedef struct s_token
+{
+	t_token_type	type;
+	char			*content;
+}	t_token;
+
 #endif
