@@ -97,24 +97,9 @@ int	setup_redirections(t_cmd *cmd)
 /* Takes a t_cmd and executes it. */
 int	execute_command(t_cmd *cmd)
 {
-	int	fd;
-	int	iter;
-
-	iter = 0;
-	// TODO: Allow doing redirecting in & out in the same command
-	// TODO: Also do this in execute_builtin()
 	if (cmd->redir)
-	{
-		while (cmd->redir->file[iter] == ' ')
-			iter++;
-		fd = open(cmd->redir->file + iter, O_RDWR | O_CREAT | O_TRUNC, 0644);
-		if (fd <= 0)
+		if (setup_redirections(cmd) == FAILURE)
 			return (msg_err("execute_command()", FAILURE));
-		if (cmd->redir->direc == OUTPUT)
-			cmd->o_fd = fd;
-		if (cmd->redir->direc == INPUT)
-			cmd->i_fd = fd;
-	}
 	dup_fds(cmd);
 	if (execve(cmd->path, cmd->args, cmd->env) == -1)
 	{

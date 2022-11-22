@@ -41,6 +41,15 @@ A program is free software if users have all of these freedoms.
 #include <stdlib.h>
 #include <unistd.h>
 
+void redirec_deallocator(t_redirec *redir)
+{
+	if (redir->output_files)
+		free_ptr_array(redir->output_files);
+	if (redir->input_files)
+		free_ptr_array(redir->input_files);
+	ft_free(&redir);
+}
+
 // NOTE: INFO
 // Takes a raw line including args and redirections and
 // outputs a string array only including the name of the program
@@ -48,23 +57,40 @@ A program is free software if users have all of these freedoms.
 // struct in t_cmd.
 static char **chk_and_redirec(char *prog, t_cmd	*cmd)
 {
-	char	**split;
-	int		direc;
+	int		iter;
 
-	cmd->redir = ft_calloc(1, sizeof(t_redirec));
-	if (!cmd->redir)
-		return (null_msg_err("chk_and_redirec()"));
-	if (ft_strrchr(prog, '>'))
-		cmd->redir->output_files = ft_split(prog, '>');
-	else if (ft_strrchr(prog, '<'))
-		cmd->redir->input_files = ft_split(prog, '<');
+	if (ft_strrchr(prog, '>') || ft_strrchr(prog, '<'))
+	{
+		cmd->redir = ft_calloc(1, sizeof(t_redirec));
+		if (!cmd->redir)
+			return (null_msg_err("chk_and_redirec()"));
+		if (ft_strrchr(prog, '>'))
+			cmd->redir->output_files = ft_split(prog, '>');
+		if (ft_strrchr(prog, '<'))
+			cmd->redir->input_files = ft_split(prog, '<');
+		if ((!cmd->redir->input_files && ft_strrchr(prog, '<')) \
+			|| (!cmd->redir->output_files && ft_strrchr(prog, '>')))
+		{
+			redirec_deallocator(cmd->redir);
+			return (null_msg_err("chk_and_redirec()"));
+		}
+		if (cmd->redir->output_files)
+			return (ft_split(cmd->redir->output_files[0], ' '));
+		else if (cmd->redir->input_files)
+		{
+			iter = 0;
+			while (cmd->redir->input_files[iter])
+				iter++;
+			return (ft_split(cmd->redir->input_files[iter - 1], ' '));
+		}
+		else
+		{
+			redirec_deallocator(cmd->redir);
+			return (null_msg_err("chk_and_redirec()"));
+		}
+	}
 	else
 		return (ft_split(prog, ' '));
-	if (!cmd->redir->input_files)
-		return (null_msg_err("chk_and_redirec()"));
-	if (!cmd->redir->output_files)
-		return (null_msg_err("chk_and_redirec()"));
-	return (ft_split(split[0], ' '));
 }
 
 // NOTE: INFO
@@ -121,10 +147,7 @@ t_cmd	*cmd_constructor(char *prog_n_args, t_vector *env)
 void	cmd_deallocator(t_cmd *cmd)
 {
 	if (cmd->redir)
-	{
-		ft_free(&cmd->redir->file);
-		ft_free(&cmd->redir);
-	}
+		redirec_deallocator(cmd->redir);
 	if (cmd->env)
 		free_ptr_array(cmd->env);
 	if (cmd->args)
