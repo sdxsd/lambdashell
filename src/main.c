@@ -57,10 +57,6 @@ static int	prompt(t_shell *lambda)
 	}
 	if (!lambda->line)
 	{
-		// TODO: I commented this out since Ctrl+D during readline
-		// will make it return NULL
-		// printf("\n");
-
 		lambda->exit = true;
 		return (SUCCESS);
 	}

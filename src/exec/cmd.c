@@ -51,28 +51,19 @@ static char **chk_and_redirec(char *prog, t_cmd	*cmd)
 	char	**split;
 	int		direc;
 
-	if (ft_strrchr(prog, '>'))
-	{
-		split = ft_split(prog, '>');
-		direc = TRUE;
-	}
-	else if (ft_strrchr(prog, '<'))
-	{
-		split = ft_split(prog, '<');
-		direc = FALSE;
-	}
-	else
-		return (ft_split(prog, ' '));
-	if (!split)
-		return (NULL);
 	cmd->redir = ft_calloc(1, sizeof(t_redirec));
 	if (!cmd->redir)
-	{
-		free_ptr_array(split);
-		return (NULL);
-	}
-	cmd->redir->direc = direc;
-	cmd->redir->file = split[1];
+		return (null_msg_err("chk_and_redirec()"));
+	if (ft_strrchr(prog, '>'))
+		cmd->redir->output_files = ft_split(prog, '>');
+	else if (ft_strrchr(prog, '<'))
+		cmd->redir->input_files = ft_split(prog, '<');
+	else
+		return (ft_split(prog, ' '));
+	if (!cmd->redir->input_files)
+		return (null_msg_err("chk_and_redirec()"));
+	if (!cmd->redir->output_files)
+		return (null_msg_err("chk_and_redirec()"));
 	return (ft_split(split[0], ' '));
 }
 
