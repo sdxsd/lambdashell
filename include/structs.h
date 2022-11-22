@@ -72,8 +72,8 @@ typedef enum e_token_type
 // direc == FALSE then input.
 // char *file points to name of file involved.
 typedef struct s_redirec {
-	char	*file;
-	bool	direc;
+	char	**output_files;
+	char	**input_files;
 } t_redirec;
 
 // NOTE:
