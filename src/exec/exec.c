@@ -58,58 +58,58 @@ static void	dup_fds(t_cmd *cmd)
 }
 
 // TODO: Temporarily poorly written.
-int	setup_redirections(t_cmd *cmd)
-{
-	int	iter;
-	int	iter_2;
-	int	fd;
+/* int	setup_redirections(t_cmd *cmd) */
+/* { */
+/* 	int	iter; */
+/* 	int	iter_2; */
+/* 	int	fd; */
 
-	if (cmd->redir->output_files)
-	{
-		iter = 0;
-		iter_2 = 0;
-		while (cmd->redir->output_files[iter])
-		{
-			if (iter > 0)
-			{
-				while (cmd->redir->output_files[iter][iter_2] == ' ')
-					iter_2++;
-				fd = open(&cmd->redir->output_files[iter][iter_2], O_RDWR | O_CREAT | O_TRUNC, 0644);
-				close(fd);
-			}
-			iter++;
-		}
-		iter_2 = 0;
-		while (cmd->redir->output_files[iter - 1][iter_2] == ' ')
-			iter_2++;
-		fd = open(&cmd->redir->output_files[iter - 1][iter_2], O_RDWR | O_CREAT | O_TRUNC, 0644);
-		if (fd <= 0)
-			return (msg_err("setup_redirections()", FAILURE));
-		cmd->o_fd = fd;
-	}
-	if (cmd->redir->input_files)
-	{
-		iter = 0;
-		iter_2 = 0;
-		while (cmd->redir->input_files[iter])
-			iter++;
-		while (cmd->redir->input_files[iter][iter_2] == ' ')
-			iter_2++;
-		fd = open(&cmd->redir->input_files[iter - 1][iter_2], O_RDWR | O_CREAT | O_TRUNC, 0644);
-		if (fd <= 0)
-			return (msg_err("setup_redirections()", FAILURE));
-		cmd->i_fd = fd;
-	}
-	return (SUCCESS);
-}
+/* 	if (cmd->redir->output_files) */
+/* 	{ */
+/* 		iter = 0; */
+/* 		iter_2 = 0; */
+/* 		while (cmd->redir->output_files[iter]) */
+/* 		{ */
+/* 			if (iter > 0) */
+/* 			{ */
+/* 				while (cmd->redir->output_files[iter][iter_2] == ' ') */
+/* 					iter_2++; */
+/* 				fd = open(&cmd->redir->output_files[iter][iter_2], O_RDWR | O_CREAT | O_TRUNC, 0644); */
+/* 				close(fd); */
+/* 			} */
+/* 			iter++; */
+/* 		} */
+/* 		iter_2 = 0; */
+/* 		while (cmd->redir->output_files[iter - 1][iter_2] == ' ') */
+/* 			iter_2++; */
+/* 		fd = open(&cmd->redir->output_files[iter - 1][iter_2], O_RDWR | O_CREAT | O_TRUNC, 0644); */
+/* 		if (fd <= 0) */
+/* 			return (msg_err("setup_redirections()", FAILURE)); */
+/* 		cmd->o_fd = fd; */
+/* 	} */
+/* 	if (cmd->redir->input_files) */
+/* 	{ */
+/* 		iter = 0; */
+/* 		iter_2 = 0; */
+/* 		while (cmd->redir->input_files[iter]) */
+/* 			iter++; */
+/* 		while (cmd->redir->input_files[iter][iter_2] == ' ') */
+/* 			iter_2++; */
+/* 		fd = open(&cmd->redir->input_files[iter - 1][iter_2], O_RDWR | O_CREAT | O_TRUNC, 0644); */
+/* 		if (fd <= 0) */
+/* 			return (msg_err("setup_redirections()", FAILURE)); */
+/* 		cmd->i_fd = fd; */
+/* 	} */
+/* 	return (SUCCESS); */
+/* } */
 
 /* NOTE: INFO */
 /* Takes a t_cmd and executes it. */
 int	execute_command(t_cmd *cmd)
 {
-	if (cmd->redir)
-		if (setup_redirections(cmd) == FAILURE)
-			return (msg_err("execute_command()", FAILURE));
+	/* if (cmd->redir) */
+	/* 	if (setup_redirections(cmd) == FAILURE) */
+	/* 		return (msg_err("execute_command()", FAILURE)); */
 	dup_fds(cmd);
 	if (execve(cmd->path, cmd->args, cmd->env) == -1)
 	{
