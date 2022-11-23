@@ -72,7 +72,7 @@ int	chk_and_redirec(char *prog, t_cmd *cmd)
 	}
 	cmd->redirec = alloc_vector(redirec_c);
 	if (!cmd->redirec)
-		return (msg_err("chk_and_redirec()", FAILURE));
+		return (msg_err("chk_and_redirec()", FALSE));
 	if (!redirec_list(prog, '<', &o_redirec) || \
 		!redirec_list(prog, '>', &i_redirec))
 	{
@@ -108,6 +108,8 @@ int	chk_and_redirec(char *prog, t_cmd *cmd)
 			return (msg_err("chk_and_redirec()", FALSE));
 		cmd->args = ft_split(tmp, ' ');
 		free(tmp);
+		dbg_print_lines(o_redirec);
+		dbg_print_lines(cmd->args);
 		return (TRUE);
 	}
 	return (FALSE);

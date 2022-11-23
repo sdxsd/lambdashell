@@ -55,13 +55,15 @@ A program is free software if users have all of these freedoms.
 // Then using the env_to_string() function to assign the shell environment.
 // Finally getting the full path to the binary returning the fully formed t_cmd.
 // If any part fails, all memory will be freed before returning.
+
+// TODO: lol @ the arrogance
 // Memory leaks SHOULD be impossible.
 t_cmd	*cmd_constructor(char *prog_n_args, t_vector *env)
 {
 	t_cmd	*cmd;
 
 	cmd = ft_calloc(1, sizeof(t_cmd));
-	if (!cmd)
+	if (cmd == NULL)
 		return (null_msg_err("cmd_constructor()"));
 	cmd->i_fd = STDIN_FILENO;
 	cmd->o_fd = STDOUT_FILENO;
@@ -85,7 +87,7 @@ t_cmd	*cmd_constructor(char *prog_n_args, t_vector *env)
 	{
 		msg_err(cmd->args[0], FAILURE);
 		cmd_deallocator(cmd);
-		return (NULL);
+		return (null_msg_err("cmd_constructor()"));
 	}
 	return (cmd);
 }
