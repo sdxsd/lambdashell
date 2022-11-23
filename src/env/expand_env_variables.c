@@ -82,23 +82,9 @@ void	expand_env_variables(t_list *tokens, t_vector *env)
 				{
 					if (content > substr_start)
 					{
-						// env_variable_start = content;
-
-						// // TODO: Add tests for whether '\t' and other whitespace characters also end environment variable names
-						// while (*content && *content != '$' && *content != ' ')
-						// 	content++;
-
-						// old_expanded_string = expanded_string;
-						// expanded_string = ft_strjoin(old_expanded_string, appended);
-						// ft_free(&old_expanded_string);
-						// if (!expanded_string)
-						// {
-						// 	// TODO: Error handling
-						// }
-
 						if (in_env_variable)
 						{
-							env_key = ft_substr(substr_start, 1, content - substr_start);
+							env_key = ft_substr(substr_start, 1, content - substr_start - 1);
 							if (!env_key)
 							{
 								// TODO: Error handling
@@ -107,6 +93,8 @@ void	expand_env_variables(t_list *tokens, t_vector *env)
 							// TODO: Try to write this function so it can never have an error
 							appended = env_get_val(env, env_key);
 							ft_free(&env_key);
+							if (!appended)
+								appended = ft_strdup("");
 						}
 						else
 						{
@@ -122,23 +110,28 @@ void	expand_env_variables(t_list *tokens, t_vector *env)
 						old_expanded_string = expanded_string;
 						expanded_string = ft_strjoin(old_expanded_string, appended);
 						ft_free(&old_expanded_string);
-						ft_free(&appended);
+
+						if (!in_env_variable)
+							ft_free(&appended);
+
 						if (!expanded_string)
 						{
 							// TODO: Error handling
 						}
-					}
 
-					// TODO: Don't do this if the next character isn't a valid variable name
-					in_env_variable = true;
+						in_env_variable = false;
+					}
 				}
+
+				if (*content == '$' && is_valid_name_chr(*(content + 1)))
+					in_env_variable = true;
 
 				content++;
 			}
 
 			if (in_env_variable)
 			{
-				env_key = ft_substr(substr_start, 1, content - substr_start);
+				env_key = ft_substr(substr_start, 1, content - substr_start - 1);
 				if (!env_key)
 				{
 					// TODO: Error handling
@@ -147,6 +140,8 @@ void	expand_env_variables(t_list *tokens, t_vector *env)
 				// TODO: Try to write this function so it can never have an error
 				appended = env_get_val(env, env_key);
 				ft_free(&env_key);
+				if (!appended)
+					appended = ft_strdup("");
 			}
 			else
 			{
@@ -161,7 +156,10 @@ void	expand_env_variables(t_list *tokens, t_vector *env)
 			old_expanded_string = expanded_string;
 			expanded_string = ft_strjoin(old_expanded_string, appended);
 			ft_free(&old_expanded_string);
-			ft_free(&appended);
+
+			if (!in_env_variable)
+				ft_free(&appended);
+
 			if (!expanded_string)
 			{
 				// TODO: Error handling
