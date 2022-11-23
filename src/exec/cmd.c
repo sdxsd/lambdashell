@@ -41,58 +41,6 @@ A program is free software if users have all of these freedoms.
 #include <stdlib.h>
 #include <unistd.h>
 
-void redirec_deallocator(t_redirec *redir)
-{
-	if (redir->output_files)
-		free_ptr_array(redir->output_files);
-	if (redir->input_files)
-		free_ptr_array(redir->input_files);
-	ft_free(&redir);
-}
-
-// NOTE: INFO
-// Takes a raw line including args and redirections and
-// outputs a string array only including the name of the program
-// and the args. If a redirection operator exists, allocs the t_redirec
-// struct in t_cmd.
-static char **chk_and_redirec(char *prog, t_cmd	*cmd)
-{
-	int		iter;
-
-	if (ft_strrchr(prog, '>') || ft_strrchr(prog, '<'))
-	{
-		cmd->redir = ft_calloc(1, sizeof(t_redirec));
-		if (!cmd->redir)
-			return (null_msg_err("chk_and_redirec()"));
-		if (ft_strrchr(prog, '>'))
-			cmd->redir->output_files = ft_split(prog, '>');
-		if (ft_strrchr(prog, '<'))
-			cmd->redir->input_files = ft_split(prog, '<');
-		if ((!cmd->redir->input_files && ft_strrchr(prog, '<')) \
-			|| (!cmd->redir->output_files && ft_strrchr(prog, '>')))
-		{
-			redirec_deallocator(cmd->redir);
-			return (null_msg_err("chk_and_redirec()"));
-		}
-		if (cmd->redir->output_files)
-			return (ft_split(cmd->redir->output_files[0], ' '));
-		else if (cmd->redir->input_files)
-		{
-			iter = 0;
-			while (cmd->redir->input_files[iter])
-				iter++;
-			return (ft_split(cmd->redir->input_files[iter - 1], ' '));
-		}
-		else
-		{
-			redirec_deallocator(cmd->redir);
-			return (null_msg_err("chk_and_redirec()"));
-		}
-	}
-	else
-		return (ft_split(prog, ' '));
-}
-
 // NOTE: INFO
 // cmd_constructor() is the constructor for the type
 // t_cmd, which contains all the data required for execve() to be called.
@@ -117,8 +65,8 @@ t_cmd	*cmd_constructor(char *prog_n_args, t_vector *env)
 		return (null_msg_err("cmd_constructor()"));
 	cmd->i_fd = STDIN_FILENO;
 	cmd->o_fd = STDOUT_FILENO;
-	cmd->redir = NULL;
-	cmd->args = chk_and_redirec(prog_n_args, cmd);
+	cmd->redirec = NULL;
+	chk_and_redirec(prog_n_args, cmd);
 	if (!cmd->args)
 	{
 		cmd_deallocator(cmd);
@@ -146,8 +94,9 @@ t_cmd	*cmd_constructor(char *prog_n_args, t_vector *env)
 // NOTE: Cleanly deallocates a t_cmd.
 void	cmd_deallocator(t_cmd *cmd)
 {
-	if (cmd->redir)
-		redirec_deallocator(cmd->redir);
+	// TODO: Deallocate redirections.
+	/* if (cmd->redir) */
+	/* 	redirec_deallocator(cmd->redir); */
 	if (cmd->env)
 		free_ptr_array(cmd->env);
 	if (cmd->args)

@@ -69,7 +69,17 @@ int	setup_redirections(t_cmd *cmd)
 		iter = 0;
 		iter_2 = 0;
 		while (cmd->redir->output_files[iter])
+		{
+			if (iter > 0)
+			{
+				while (cmd->redir->output_files[iter][iter_2] == ' ')
+					iter_2++;
+				fd = open(&cmd->redir->output_files[iter][iter_2], O_RDWR | O_CREAT | O_TRUNC, 0644);
+				close(fd);
+			}
 			iter++;
+		}
+		iter_2 = 0;
 		while (cmd->redir->output_files[iter - 1][iter_2] == ' ')
 			iter_2++;
 		fd = open(&cmd->redir->output_files[iter - 1][iter_2], O_RDWR | O_CREAT | O_TRUNC, 0644);

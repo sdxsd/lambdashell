@@ -67,13 +67,9 @@ typedef enum e_token_type
 	tkn_append
 }	t_token_type;
 
-// NOTE:
-// direc == TRUE then output.
-// direc == FALSE then input.
-// char *file points to name of file involved.
 typedef struct s_redirec {
-	char	**output_files;
-	char	**input_files;
+	int		direc;
+	char	*filename;
 } t_redirec;
 
 // NOTE:
@@ -91,7 +87,7 @@ typedef struct s_cmd
 	char		**args;
 	char		**env;
 	char		*path;
-	t_redirec	*redir;
+	t_vector	*redirec;
 }	t_cmd;
 
 typedef struct s_env_element
