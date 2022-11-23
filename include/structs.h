@@ -55,17 +55,17 @@ typedef struct s_shell
 	bool		exit;
 }	t_shell;
 
-typedef enum e_token_type
-{
-	tkn_str,
-	tkn_bltin,
-	tkn_cmd,
-	tkn_read,
-	tkn_write,
-	tkn_pipe,
-	tkn_heredoc,
-	tkn_append
-}	t_token_type;
+// typedef enum e_token_type
+// {
+// 	tkn_str,
+// 	tkn_bltin,
+// 	tkn_cmd,
+// 	tkn_read,
+// 	tkn_write,
+// 	tkn_pipe,
+// 	tkn_heredoc,
+// 	tkn_append
+// }	t_token_type;
 
 // ERR_GENERIC = unknown error type.
 // ERR_PARSING = problem with input.
@@ -156,7 +156,7 @@ typedef enum s_token_type
 	DOUBLE_QUOTED,
 	REDIRECTION, // TODO: Might need to split into REDIRECTION_IN and _OUT
 	WHITESPACE,
-	WORD,
+	UNQUOTED,
 }	t_token_type;
 
 typedef struct s_token

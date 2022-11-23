@@ -43,7 +43,7 @@ A program is free software if users have all of these freedoms.
 
 static int	prompt(t_shell *lambda)
 {
-	t_exec_element	*exec_list;
+	t_list	*tokens;
 
 	if (lambda->stdin_is_tty)
 	{
@@ -65,15 +65,17 @@ static int	prompt(t_shell *lambda)
 		return (SUCCESS);
 	}
 	add_history(lambda->line);
-	if (parse_line(lambda) == FAILURE)
-		return (FAILURE);
-	exec_list = tokenizer(lambda);
-	if (exec_list_generator(exec_list, lambda->env) == FAILURE)
-	{
-		dealloc_exec_list(exec_list);
-		return (FAILURE);
-	}
-	executor(-1, exec_list, lambda);
+	// if (parse_line(lambda) == FAILURE)
+	// 	return (FAILURE);
+	tokens = tokenizer(lambda->line);
+	expand_env_variables(tokens, lambda->env);
+	dbg_print_tokens(tokens);
+	// if (exec_list_generator(exec_list, lambda->env) == FAILURE)
+	// {
+	// 	dealloc_exec_list(exec_list);
+	// 	return (FAILURE);
+	// }
+	// executor(-1, exec_list, lambda);
 	ft_free(&lambda->line);
 	return (SUCCESS);
 }
@@ -102,7 +104,8 @@ int	main(int argc, char **argv, char **env)
 	t_shell	*lambda;
 	int		status;
 
-	if (argc > 1 || argv[0])
+	(void)argv;
+	if (argc != 1)
 		return (FAILURE);
 	lambda = shell_init(env);
 	if (!lambda)

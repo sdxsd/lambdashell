@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   subtokenizers.c                                    :+:    :+:            */
+/*   has_ambiguous_redirection.c                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/11/18 17:08:28 by sbos          #+#    #+#                 */
-/*   Updated: 2022/11/18 17:08:28 by sbos          ########   odam.nl         */
+/*   Created: 2022/11/22 15:48:01 by sbos          #+#    #+#                 */
+/*   Updated: 2022/11/22 15:48:01 by sbos          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,42 +39,78 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-t_token_type	subtokenize_single_quote(char **line_ptr)
-{
-	(*line_ptr)++;
-	while (**line_ptr != '\0' && **line_ptr != '\'')
-		(*line_ptr)++;
-	if (**line_ptr == '\'')
-		(*line_ptr)++;
-	return (SINGLE_QUOTED);
-}
+// static bool	has_ambiguous_redirect()
+// {
+// 	// TODO:
+// 	// loop through all tokens of a cmd and when a redirection token has been seen run this:
 
-t_token_type	subtokenize_double_quote(char **line_ptr)
-{
-	(*line_ptr)++;
-	while (**line_ptr != '\0' && **line_ptr != '"')
-		(*line_ptr)++;
-	if (**line_ptr == '"')
-		(*line_ptr)++;
-	return (DOUBLE_QUOTED);
-}
+// 	bool	valid_path = false;
+// 	bool	seen_non_space = false;
+// 	bool	seen_env_word = false;
 
-t_token_type	subtokenize_redirection(char **line_ptr)
-{
-	(*line_ptr)++;
-	return (REDIRECTION);
-}
+// 	char	*content;
 
-t_token_type	subtokenize_whitespace(char **line_ptr)
-{
-	while (**line_ptr != '\0' && ft_isspace(**line_ptr))
-		(*line_ptr)++;
-	return (WHITESPACE);
-}
+// 	while (token->type == WHITESPACE)
+// 		token = token->next;
 
-t_token_type	subtokenize_unquoted(char **line_ptr)
-{
-	while (**line_ptr != '\0' && !ft_isspace(**line_ptr))
-		(*line_ptr)++;
-	return (UNQUOTED);
-}
+// 	while (token && token->type != WHITESPACE)
+// 	{
+// 		content = token->content;
+
+// 		if (token->type == UNQUOTED) // && ft_strchr(content, ' '))
+// 		{
+// 			// Handles:
+// 			// `echo a > "foo"$whitespace_left`
+// 			if (valid_path && ft_isspace(*content)
+// 				return (true);
+
+// 			while (*content)
+// 			{
+// 				if (ft_isspace(*content))
+// 				{
+// 					if (seen_non_space)
+// 						seen_env_word = true;
+// 				}
+// 				else
+// 				{
+// 					valid_path = true;
+
+// 					// Handles:
+// 					// `echo a > $whitespace_center`
+// 					if (seen_env_word)
+// 						return (true);
+
+// 					seen_non_space = true;
+// 					break ;
+// 				}
+// 				content++;
+// 			}
+// 		}
+// 		else
+// 		{
+// 			valid_path = true;
+
+// 			while (*content)
+// 			{
+// 				if (!ft_isspace(*content))
+// 					// Handles:
+// 					// `echo a > $whitespace_right"foo"`
+// 					if (seen_env_word)
+// 						return (true);
+
+// 					seen_non_space = true;
+// 					break ;
+// 				}
+// 				content++;
+// 			}
+// 		}
+
+// 		token = token->next;
+// 	}
+
+// 	// Handles:
+// 	// `echo a > ""`
+// 	// `echo a > $empty`
+// 	// `echo a > $space`
+// 	return (!valid_path)
+// }

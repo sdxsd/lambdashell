@@ -57,8 +57,9 @@ t_cmd			*bltin_constructor(char	*line, t_vector *env);
 /* ENVIRONMENT */
 t_vector		*init_env(char **env);
 char			**env_to_strings(t_vector *env);
-t_env_element	*env_get_val(t_vector *env, char *key);
+char			*env_get_val(t_vector *env, char *key);
 void			dealloc_env_element(void *ptr);
+void			expand_env_variables(t_list *tokens, t_vector *env);
 
 /* ERROR MESSAGES */
 int				msg_err(char *s, int ret);
@@ -70,7 +71,7 @@ t_token_type	subtokenize_single_quote(char **line_ptr);
 t_token_type	subtokenize_double_quote(char **line_ptr);
 t_token_type	subtokenize_redirection(char **line_ptr);
 t_token_type	subtokenize_whitespace(char **line_ptr);
-t_token_type	subtokenize_word(char **line_ptr);
+t_token_type	subtokenize_unquoted(char **line_ptr);
 t_list			*tokenizer(char *line);
 
 /* EXECUTION */

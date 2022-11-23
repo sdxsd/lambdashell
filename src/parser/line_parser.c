@@ -41,12 +41,12 @@ A program is free software if users have all of these freedoms.
 #include <stdlib.h>
 
 // Temporary.
-int	parse_line(t_shell *lambda)
-{
-	if (ft_strlen(lambda->line) < 1)
-		return (FAILURE);
-	lambda->lines = ft_split(lambda->line, '|');
-	if (!lambda->lines)
-		return (msg_err("parse_line()", FAILURE));
-	return (SUCCESS);
-}
+// int	parse_line(t_shell *lambda)
+// {
+// 	if (ft_strlen(lambda->line) < 1)
+// 		return (FAILURE);
+// 	lambda->lines = ft_split(lambda->line, '|');
+// 	if (!lambda->lines)
+// 		return (msg_err("parse_line()", FAILURE));
+// 	return (SUCCESS);
+// }

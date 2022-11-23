@@ -60,14 +60,14 @@ static char	*last_direc(char *line)
 // Prompt string one
 void	ps1(t_shell	*lambda)
 {
-	t_env_element	*env_element;
-	char			*last;
-	char			*cwd;
+	char	*user;
+	char	*cwd;
+	char	*last;
 
 	green();
-	env_element = env_get_val(lambda->env, "USER=");
-	if (env_element)
-		printf("[%s] ", env_element->val);
+	user = env_get_val(lambda->env, "USER");
+	if (user)
+		printf("[%s] ", user);
 	else
 		printf("[???] ");
 	clear();

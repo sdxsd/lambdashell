@@ -71,21 +71,21 @@ void	dbg_print_lines(char **lines)
 	}
 }
 
-/* NOTE: To be called after running the tokenizer() function. */
-void	dbg_print_exec_list(t_exec_element *head)
-{
-	if (head->type == tkn_cmd)
-		printf("Type: [cmd]\n");
-	else if (head->type == tkn_bltin)
-		printf("Type: [builtin]\n");
-	else
-		printf("Type: [unknown]\n");
-	printf("Line: %s\n", head->line);
-	printf("Value: %p\n", head->value);
-	printf("next: %p\n\n", head->next);
-	if (head->next)
-		dbg_print_exec_list(head->next);
-}
+// /* NOTE: To be called after running the tokenizer() function. */
+// void	dbg_print_exec_list(t_exec_element *head)
+// {
+// 	if (head->type == tkn_cmd)
+// 		printf("Type: [cmd]\n");
+// 	else if (head->type == tkn_bltin)
+// 		printf("Type: [builtin]\n");
+// 	else
+// 		printf("Type: [unknown]\n");
+// 	printf("Line: %s\n", head->line);
+// 	printf("Value: %p\n", head->value);
+// 	printf("next: %p\n\n", head->next);
+// 	if (head->next)
+// 		dbg_print_exec_list(head->next);
+// }
 
 void	dbg_print_env(t_vector *head)
 {
@@ -106,26 +106,26 @@ void	dbg_print_tokens(t_list *tokens)
 		[DOUBLE_QUOTED] = "DOUBLE_QUOTED",
 		[REDIRECTION] = "REDIRECTION",
 		[WHITESPACE] = "WHITESPACE",
-		[WORD] = "WORD",
+		[UNQUOTED] = "UNQUOTED",
 	};
 	t_token	*token;
 	char	*str;
 
-	printf("+----------------+---------------+\n");
-	printf("|   token type   | token content |\n");
-	printf("+----------------+---------------+\n");
+	printf("+---------------+---------------------+\n");
+	printf("| token type    | token content       |\n");
+	printf("+---------------+---------------------+\n");
 
-	while (tokens != NULL)
+	while (tokens)
 	{
 		token = tokens->content;
 
-		printf("| %-14s ", token_type_strings[token->type]);
+		printf("| %-13s ", token_type_strings[token->type]);
 
 		asprintf(&str, "[%s]", token->content);
-		printf("| %-13s |\n", str);
+		printf("| %-19s |\n", str);
 		ft_free(&str);
 
-		printf("+----------------+---------------+\n");
+		printf("+---------------+---------------------+\n");
 
 		tokens = tokens->next;
 	}

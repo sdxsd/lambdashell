@@ -78,17 +78,17 @@ static char	*combine_path(char *dir, char *prog_n)
 /* the absolute path to the program. */
 char	*get_path(char *prog_n, t_vector *env)
 {
-	static t_env_element	*path_env;
-	char					*abs_path;
-	char					**exec_direcs;
-	int						iter;
+	static char	*path;
+	char		*abs_path;
+	char		**exec_direcs;
+	int			iter;
 
 	iter = 0;
-	if (!path_env)
-		path_env = env_get_val(env, "PATH=");
-	if (!path_env)
+	if (!path)
+		path = env_get_val(env, "PATH");
+	if (!path)
 		return (NULL);
-	exec_direcs = ft_split(path_env->val, ':');
+	exec_direcs = ft_split(path, ':');
 	while (exec_direcs[iter])
 	{
 		abs_path = combine_path(exec_direcs[iter], prog_n);
