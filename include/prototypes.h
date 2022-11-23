@@ -59,7 +59,7 @@ t_vector		*init_env(char **env);
 char			**env_to_strings(t_vector *env);
 char			*env_get_val(t_vector *env, char *key);
 void			dealloc_env_element(void *ptr);
-void			expand_env_variables(t_list *tokens, t_vector *env);
+void			expand_env_variables(t_shell *lambda);
 
 /* ERROR MESSAGES */
 int				msg_err(char *s, int ret);
@@ -72,7 +72,7 @@ t_token_type	subtokenize_double_quote(char **line_ptr);
 t_token_type	subtokenize_redirection(char **line_ptr);
 t_token_type	subtokenize_whitespace(char **line_ptr);
 t_token_type	subtokenize_unquoted(char **line_ptr);
-t_list			*tokenizer(char *line);
+int				tokenizer(char *line, t_shell *lambda);
 
 /* EXECUTION */
 int				execute_command(t_cmd *cmd);
