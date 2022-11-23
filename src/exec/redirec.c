@@ -94,11 +94,22 @@ int	chk_and_redirec(char *prog, t_cmd *cmd)
 		if (o_redirec)
 		{
 			tmp = ft_strndup(prog, prog - ft_strchr(prog, '>'));
+			if (!tmp)
+				return (msg_err("chk_and_redirec()", FALSE));
 			cmd->args = ft_split(tmp, ' ');
 		}
 		else
 			cmd->args = ft_split(prog, ' ');
 		return (TRUE);
 	}
-	return (SUCCESS);
+	if (o_redirec)
+	{
+		tmp = ft_strndup(prog, prog - ft_strchr(prog, '>'));
+		if (!tmp)
+			return (msg_err("chk_and_redirec()", FALSE));
+		cmd->args = ft_split(tmp, ' ');
+		free(tmp);
+		return (TRUE);
+	}
+	return (FALSE);
 }
