@@ -50,7 +50,7 @@ bool	is_valid_name_chr(char chr)
 	return (ft_isalnum(chr) || chr == '_');
 }
 
-void	expand_env_variables(t_list *tokens, t_vector *env)
+void	expand_env_variables(t_shell *lambda)
 {
 	t_token	*token;
 	char	*content;
@@ -63,7 +63,10 @@ void	expand_env_variables(t_list *tokens, t_vector *env)
 	char	*old_expanded_string;
 
 	char	*env_key;
-	// char	*env_variable_start;
+
+	t_list	*tokens;
+
+	tokens = lambda->tokens;
 
 	while (tokens)
 	{
@@ -91,7 +94,7 @@ void	expand_env_variables(t_list *tokens, t_vector *env)
 							}
 
 							// TODO: Try to write this function so it can never have an error
-							appended = env_get_val(env, env_key);
+							appended = env_get_val(lambda->env, env_key);
 							ft_free(&env_key);
 							if (!appended)
 								appended = ft_strdup("");
@@ -138,7 +141,7 @@ void	expand_env_variables(t_list *tokens, t_vector *env)
 				}
 
 				// TODO: Try to write this function so it can never have an error
-				appended = env_get_val(env, env_key);
+				appended = env_get_val(lambda->env, env_key);
 				ft_free(&env_key);
 				if (!appended)
 					appended = ft_strdup("");

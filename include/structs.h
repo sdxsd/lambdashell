@@ -53,6 +53,7 @@ typedef struct s_shell
 	int			status;
 	bool		stdin_is_tty;
 	bool		exit;
+	t_list		*tokens;
 }	t_shell;
 
 // typedef enum e_token_type
@@ -146,6 +147,7 @@ typedef struct s_exec_element
 {
 	int						type;
 	char					*line;
+	// size_t					line_number;
 	void					*value;
 	struct s_exec_element	*next;
 }	t_exec_element;

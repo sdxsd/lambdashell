@@ -151,15 +151,12 @@ static t_token_type	subtokenize(char **line)
 		return (subtokenize_unquoted(line));
 }
 
-t_list	*tokenizer(char *line)
+int	tokenizer(char *line, t_shell *lambda)
 {
-	t_list			*tokens;
 	char			*old_line_pos;
 	t_token_type	token_type;
 	char			*content;
 	t_token			*token;
-
-	tokens = NULL;
 
 	while (*line)
 	{
@@ -169,12 +166,12 @@ t_list	*tokenizer(char *line)
 
 		content = ft_substr(old_line_pos, 0, line - old_line_pos);
 		if (!content)
-			return (NULL); // TODO: Free?
+			return (-1); // TODO: Free?
 
 		token = get_token(token_type, content);
-		if (!token || !ft_lstnew_back(&tokens, token))
-			return (NULL); // TODO: Free?
+		if (!token || !ft_lstnew_back(&lambda->tokens, token))
+			return (-1); // TODO: Free?
 	}
 
-	return (tokens);
+	return (0);
 }
