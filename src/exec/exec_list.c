@@ -87,32 +87,32 @@ t_exec_element	*new_exec_element(void)
 //  |          +----------------+            |
 //  +=---------------------------------------+
 //
-int	exec_list_generator(t_exec_element *head, t_vector *env)
-{
-	// TODO: Merge cmd_constructor and bltin_constructor()
-	if (head->type == tkn_cmd)
-	{
-		head->value = cmd_constructor(head->line, env);
-		if (!head->value)
-			return (msg_err("exec_list_generator()", FAILURE));
-	}
-	if (head->type == tkn_bltin)
-	{
-		head->value = bltin_constructor(head->line, env);
-		if (!head->value)
-			return (msg_err("exec_list_generator()", FAILURE));
-	}
-	if (head->next)
-		return (exec_list_generator(head->next, env));
-	return (SUCCESS);
-}
+// int	exec_list_generator(t_exec_element *head, t_vector *env)
+// {
+// 	// TODO: Merge cmd_constructor and bltin_constructor()
+// 	if (head->type == tkn_cmd)
+// 	{
+// 		head->value = cmd_constructor(head->line, env);
+// 		if (!head->value)
+// 			return (msg_err("exec_list_generator()", FAILURE));
+// 	}
+// 	if (head->type == tkn_bltin)
+// 	{
+// 		head->value = bltin_constructor(head->line, env);
+// 		if (!head->value)
+// 			return (msg_err("exec_list_generator()", FAILURE));
+// 	}
+// 	if (head->next)
+// 		return (exec_list_generator(head->next, env));
+// 	return (SUCCESS);
+// }
 
-void	dealloc_exec_list(t_exec_element *head)
-{
-	// TODO: Why not have bltin_deallocator() called here?
-	if (head->type == tkn_cmd)
-		cmd_deallocator(head->value);
-	if (head->next)
-		dealloc_exec_list(head->next);
-	ft_free(&head);
-}
+// void	dealloc_exec_list(t_exec_element *head)
+// {
+// 	// TODO: Why not have bltin_deallocator() called here?
+// 	if (head->type == tkn_cmd)
+// 		cmd_deallocator(head->value);
+// 	if (head->next)
+// 		dealloc_exec_list(head->next);
+// 	ft_free(&head);
+// }

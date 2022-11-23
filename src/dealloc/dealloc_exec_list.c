@@ -40,20 +40,20 @@ A program is free software if users have all of these freedoms.
 #include "../../include/minishell.h"
 #include <stdlib.h>
 
-void	free_exec_list(t_exec_element *head)
-{
-	t_exec_element	*curr;
-	t_exec_element	*prev;
+// void	free_exec_list(t_exec_element *head)
+// {
+// 	t_exec_element	*curr;
+// 	t_exec_element	*prev;
 
-	curr = head;
-	while (curr->next)
-	{
-		ft_free(&curr->line);
-		if (curr->value && curr->type == tkn_cmd)
-			cmd_deallocator(curr->value);
-		// TODO: Also need a builtin_deallocator() call I imagine?
-		prev = curr;
-		curr = curr->next;
-		ft_free(&prev);
-	}
-}
+// 	curr = head;
+// 	while (curr->next)
+// 	{
+// 		ft_free(&curr->line);
+// 		if (curr->value && curr->type == tkn_cmd)
+// 			cmd_deallocator(curr->value);
+// 		// TODO: Also need a builtin_deallocator() call I imagine?
+// 		prev = curr;
+// 		curr = curr->next;
+// 		ft_free(&prev);
+// 	}
+// }
