@@ -50,7 +50,7 @@ void	dealloc_env_element(void *ptr)
 	ft_free(&env_element);
 }
 
-static int	to_assignment(char *str)
+static int	get_key_length(char *str)
 {
 	int	count;
 
@@ -82,18 +82,18 @@ t_vector	*init_env(char **env)
 		env_element = ft_calloc(1, sizeof(t_env_element));
 		if (!env_element)
 			return (init_env_failure(env_vector));
-		env_element->key = ft_strndup(env[iter], to_assignment(env[iter]) + 1);
+		env_element->key = ft_strndup(env[iter], get_key_length(env[iter]));
 		if (!env_element->key)
 			return (init_env_failure(env_vector));
-		env_element->val = ft_strdup(env[iter] + to_assignment(env[iter]) + 1);
-		if (!env_element->key)
+		env_element->val = ft_strdup(env[iter] + get_key_length(env[iter]));
+		if (!env_element->val)
 			return (init_env_failure(env_vector));
 		vec_assign_element(env_vector, iter, env_element);
 	}
 	return (env_vector);
 }
 
-t_env_element	*env_get_val(t_vector *env, char *key)
+char	*env_get_val(t_vector *env, char *key)
 {
 	int				iter;
 	int				env_size;
@@ -107,7 +107,7 @@ t_env_element	*env_get_val(t_vector *env, char *key)
 	{
 		env_element = vec_get_element(env, iter)->data;
 		if (ft_streq(env_element->key, key))
-			return (env_element);
+			return (env_element->val);
 		iter++;
 	}
 	return (NULL);
