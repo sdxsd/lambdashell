@@ -48,6 +48,9 @@ void			green(void);
 void			blue(void);
 void			ps1(t_shell	*lambda);
 
+/* REDIRECTIONS */
+int	chk_and_redirec(char *prog, t_cmd *cmd);
+
 /* BUILTINS */
 char			*ret_cwd(void);
 int				pwd(void);

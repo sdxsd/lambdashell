@@ -6,6 +6,7 @@ CFILES =		src/main.c \
 				src/exec/path.c \
 				src/exec/cmd.c \
 				src/exec/exec.c \
+				src/exec/redirec.c \
 				src/exec/exec_list.c \
 				src/builtins/pwd.c \
 				src/builtins/cd.c \

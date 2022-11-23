@@ -39,19 +39,19 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-void	dbg_print_redirec(t_redirec *redir)
-{
-	if (redir->output_files)
-	{
-		printf("redir->output_files:\n");
-		dbg_print_lines(redir->output_files);
-	}
-	if (redir->input_files)
-	{
-		printf("redir->input_files:\n");
-		dbg_print_lines(redir->input_files);
-	}
-}
+/* void	dbg_print_redirec(t_redirec *redir) */
+/* { */
+/* 	if (redir->output_files) */
+/* 	{ */
+/* 		printf("redir->output_files:\n"); */
+/* 		dbg_print_lines(redir->output_files); */
+/* 	} */
+/* 	if (redir->input_files) */
+/* 	{ */
+/* 		printf("redir->input_files:\n"); */
+/* 		dbg_print_lines(redir->input_files); */
+/* 	} */
+/* } */
 
 void	dbg_print_cmd(t_cmd	*cmd)
 {
@@ -60,8 +60,8 @@ void	dbg_print_cmd(t_cmd	*cmd)
 	dbg_print_lines(cmd->args);
 	printf("I_FD: %d\n", cmd->i_fd);
 	printf("O_FD: %d\n", cmd->o_fd);
-	if (cmd->redir)
-		dbg_print_redirec(cmd->redir);
+	/* if (cmd->redir) */
+	/* 	dbg_print_redirec(cmd->redir); */
 }
 
 void	dbg_print_lines(char **lines)
