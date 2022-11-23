@@ -3,7 +3,20 @@
 
 // NOTE: Thine fruit need not be begotten so.
 
-static int	n_redirecs(char *prog)
+void dealloc_redir(void *to_free)
+{
+	t_redirec *redir;
+
+	redir = to_free;
+	if (redir)
+	{
+		if (redir->filename)
+			free(redir->filename);
+		free(redir);
+	}
+}
+
+static int	n_redirec(char *prog)
 {
 	int	count;
 
@@ -17,27 +30,27 @@ static int	n_redirecs(char *prog)
 	return (count);
 }
 
-static int redirec_list(char *prog, char type, char **redirs)
+static int redirec_list(char *prog, char type, char ***redirs)
 {
 	int		iter;
 
 	if (!strchr(prog, type))
 		return (TRUE);
-	redirs = ft_split(prog, type);
-	if (!redirs)
+	*redirs = ft_split(prog, type);
+	if (!*redirs)
 		return (msg_err("redirec_list()", FAILURE));
 	if (type == '<')
 	{
 		iter = 0;
-		while (redirs[iter] != NULL)
+		while (*redirs[iter] != NULL)
 			iter++;
-		free(redirs[iter - 1]);
-		redirs[iter - 1] = NULL;
+		free(*redirs[iter - 1]);
+		*redirs[iter - 1] = NULL;
 	}
 	else if (type == '>')
 	{
-		free(*redirs);
-		redirs = &redirs[1];
+		free(**redirs);
+		*redirs = &*redirs[1];
 	}
 	return (TRUE);
 }
@@ -45,12 +58,12 @@ static int redirec_list(char *prog, char type, char **redirs)
 int	chk_and_redirec(char *prog, t_cmd *cmd)
 {
 	int		redirec_c;
-	char	**o_redirecs;
-	char	**i_redirecs;
+	char	**o_redirec;
+	char	**i_redirec;
 
-	redirec_c = n_redirecs(prog);
-	o_redirecs = NULL;
-	i_redirecs = NULL;
+	redirec_c = n_redirec(prog);
+	o_redirec = NULL;
+	i_redirec = NULL;
 	if (redirec_c == 0)
 	{
 		cmd->args = ft_split(prog, ' ');
@@ -59,15 +72,15 @@ int	chk_and_redirec(char *prog, t_cmd *cmd)
 	cmd->redirec = alloc_vector(redirec_c);
 	if (!cmd->redirec)
 		return (msg_err("chk_and_redirec()", FAILURE));
-	if (redirec_list(prog, '<', o_redirecs) == FAILURE || \
-		redirec_list(prog, '>', i_redirecs) == FAILURE)
+	if (redirec_list(prog, '<', &o_redirec) == FAILURE || \
+		redirec_list(prog, '>', &i_redirec) == FAILURE)
 	{
-		if (i_redirecs)
-			free_ptr_array(i_redirecs);
-		if (o_redirecs)
-			free_ptr_array(o_redirecs);
+		if (i_redirec)
+			free_ptr_array(i_redirec);
+		if (o_redirec)
+			free_ptr_array(o_redirec);
+		free_vector(cmd->redirec, dealloc_redir);
 		return (msg_err("chk_and_redirec()", FALSE));
 	}
-
 	return (SUCCESS);
 }
