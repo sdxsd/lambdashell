@@ -109,7 +109,6 @@ int	exec_list_generator(t_exec_element *head, t_vector *env)
 
 void	dealloc_exec_list(t_exec_element *head)
 {
-	// TODO: Why not have bltin_deallocator() called here?
 	if (head->type == tkn_cmd)
 		cmd_deallocator(head->value);
 	if (head->next)

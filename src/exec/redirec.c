@@ -38,7 +38,7 @@ static int redirec_list(char *prog, char type, char ***redirs)
 		return (TRUE);
 	*redirs = ft_split(prog, type);
 	if (!*redirs)
-		return (msg_err("redirec_list()", FAILURE));
+		return (msg_err("redirec_list()", FALSE));
 	if (type == '<')
 	{
 		iter = 0;
@@ -58,7 +58,6 @@ static int redirec_list(char *prog, char type, char ***redirs)
 int	chk_and_redirec(char *prog, t_cmd *cmd)
 {
 	int		redirec_c;
-	char	**args;
 	char	*tmp;
 	char	**o_redirec;
 	char	**i_redirec;
@@ -74,8 +73,8 @@ int	chk_and_redirec(char *prog, t_cmd *cmd)
 	cmd->redirec = alloc_vector(redirec_c);
 	if (!cmd->redirec)
 		return (msg_err("chk_and_redirec()", FAILURE));
-	if (redirec_list(prog, '<', &o_redirec) == FAILURE || \
-		redirec_list(prog, '>', &i_redirec) == FAILURE)
+	if (!redirec_list(prog, '<', &o_redirec) || \
+		!redirec_list(prog, '>', &i_redirec))
 	{
 		if (i_redirec)
 			free_ptr_array(i_redirec);

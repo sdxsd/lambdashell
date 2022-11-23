@@ -66,8 +66,7 @@ t_cmd	*cmd_constructor(char *prog_n_args, t_vector *env)
 	cmd->i_fd = STDIN_FILENO;
 	cmd->o_fd = STDOUT_FILENO;
 	cmd->redirec = NULL;
-	chk_and_redirec(prog_n_args, cmd);
-	if (!cmd->args)
+	if (!chk_and_redirec(prog_n_args, cmd))
 	{
 		cmd_deallocator(cmd);
 		return (null_msg_err("cmd_constructor()"));
@@ -94,13 +93,15 @@ t_cmd	*cmd_constructor(char *prog_n_args, t_vector *env)
 // NOTE: Cleanly deallocates a t_cmd.
 void	cmd_deallocator(t_cmd *cmd)
 {
-	// TODO: Deallocate redirections.
-	/* if (cmd->redir) */
-	/* 	redirec_deallocator(cmd->redir); */
-	if (cmd->env)
-		free_ptr_array(cmd->env);
-	if (cmd->args)
+	if (cmd)
+	{
+		if (cmd->redirec)
+			free_vector(cmd->redirec, dealloc_redir);
+		if (cmd->env)
+			free_ptr_array(cmd->env);
+		if (cmd->args)
 		free_ptr_array(cmd->args);
-	ft_free(&cmd->path);
-	ft_free(&cmd);
+		ft_free(&cmd->path);
+		ft_free(&cmd);
+	}
 }
