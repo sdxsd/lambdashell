@@ -58,6 +58,8 @@ static int redirec_list(char *prog, char type, char ***redirs)
 int	chk_and_redirec(char *prog, t_cmd *cmd)
 {
 	int		redirec_c;
+	char	**args;
+	char	*tmp;
 	char	**o_redirec;
 	char	**i_redirec;
 
@@ -81,6 +83,22 @@ int	chk_and_redirec(char *prog, t_cmd *cmd)
 			free_ptr_array(o_redirec);
 		free_vector(cmd->redirec, dealloc_redir);
 		return (msg_err("chk_and_redirec()", FALSE));
+	}
+	if (i_redirec)
+	{
+		prog = ft_strrchr(prog, '<');
+		while (*prog == ' ')
+			prog++;
+		while (*prog != ' ')
+			prog++;
+		if (o_redirec)
+		{
+			tmp = ft_strndup(prog, prog - ft_strchr(prog, '>'));
+			cmd->args = ft_split(tmp, ' ');
+		}
+		else
+			cmd->args = ft_split(prog, ' ');
+		return (TRUE);
 	}
 	return (SUCCESS);
 }
