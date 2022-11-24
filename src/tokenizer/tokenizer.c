@@ -167,7 +167,11 @@ t_list	*tokenizer(char *line)
 
 		token_type = subtokenize(&line);
 
-		content = ft_substr(old_line_pos, 0, line - old_line_pos);
+		if (token_type == SINGLE_QUOTED || token_type == DOUBLE_QUOTED)
+			content = ft_substr(old_line_pos, 1, line - old_line_pos - 2);
+		else
+			content = ft_substr(old_line_pos, 0, line - old_line_pos);
+
 		if (!content)
 			return (NULL); // TODO: Free?
 
