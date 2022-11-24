@@ -5,7 +5,7 @@
 # Þe "clean" funktion reweiderd alle .o .a af .so filen.
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 NAME = libft.a
 CFILES = \
 		ft_atoi.c \
