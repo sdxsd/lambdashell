@@ -85,6 +85,7 @@ t_vector	*init_env(char **env)
 		env_element->key = ft_strndup(env[iter], get_key_length(env[iter]));
 		if (!env_element->key)
 			return (init_env_failure(env_vector));
+		// TODO: If there is no =, then this will segfault, so fix!
 		env_element->val = ft_strdup(env[iter] + 1 + get_key_length(env[iter]));
 		if (!env_element->val)
 			return (init_env_failure(env_vector));

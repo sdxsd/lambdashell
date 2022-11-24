@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   tokenizer.c                                        :+:    :+:            */
+/*   tokenize.c                                         :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
@@ -96,7 +96,7 @@ A program is free software if users have all of these freedoms.
 // 		return (msg_err(line, -1));
 // }
 
-// t_exec_element	*tokenizer(t_shell *lambda)
+// t_exec_element	*tokenize(t_shell *lambda)
 // {
 // 	t_exec_element	*exec_list;
 // 	t_exec_element	*prev;
@@ -106,12 +106,12 @@ A program is free software if users have all of these freedoms.
 // 	iter = 1;
 // 	exec_list = new_exec_element();
 // 	if (!exec_list)
-// 		return (null_msg_err("tokenizer()"));
+// 		return (null_msg_err("tokenize()"));
 // 	exec_list->type = get_type(lambda->lines[0], lambda->env);
 // 	if (exec_list->type == -1)
 // 	{
 // 		dealloc_exec_list(exec_list);
-// 		return (null_msg_err("tokenizer()"));
+// 		return (null_msg_err("tokenize()"));
 // 	}
 // 	exec_list->line = lambda->lines[0];
 // 	prev = exec_list;
@@ -121,13 +121,13 @@ A program is free software if users have all of these freedoms.
 // 		if (!curr)
 // 		{
 // 			free_exec_list(exec_list);
-// 			return (null_msg_err("tokenizer()"));
+// 			return (null_msg_err("tokenize()"));
 // 		}
 // 		curr->type = get_type(lambda->lines[iter], lambda->env);
 // 		if (exec_list->type == -1)
 // 		{
 // 			dealloc_exec_list(exec_list);
-// 			return (null_msg_err("tokenizer()"));
+// 			return (null_msg_err("tokenize()"));
 // 		}
 // 		curr->line = lambda->lines[iter];
 // 		prev->next = curr;
@@ -151,7 +151,7 @@ static t_token_type	subtokenize(char **line)
 		return (subtokenize_unquoted(line));
 }
 
-t_list	*tokenizer(char *line)
+t_list	*tokenize(char *line)
 {
 	t_list			*tokens;
 	char			*old_line_pos;

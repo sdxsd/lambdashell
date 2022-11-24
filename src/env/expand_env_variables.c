@@ -132,7 +132,7 @@ static char	*get_expanded_string(char *content, t_vector *env)
 	return (expanded_string);
 }
 
-void	expand_env_variables(t_list *tokens, t_vector *env)
+int	expand_env_variables(t_list *tokens, t_vector *env)
 {
 	t_token	*token;
 	char	*expanded_string;
@@ -154,4 +154,6 @@ void	expand_env_variables(t_list *tokens, t_vector *env)
 
 		tokens = tokens->next;
 	}
+
+	return (SUCCESS); // TODO: Use status value
 }

@@ -71,7 +71,7 @@ void	dbg_print_lines(char **lines)
 	}
 }
 
-// /* NOTE: To be called after running the tokenizer() function. */
+// /* NOTE: To be called after running the tokenize() function. */
 // void	dbg_print_exec_list(t_exec_element *head)
 // {
 // 	if (head->type == tkn_cmd)
