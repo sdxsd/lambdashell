@@ -44,10 +44,39 @@ A program is free software if users have all of these freedoms.
 
 // }
 
-bool	is_valid_name_chr(char chr)
+static char	*get_appended(char *content, bool in_env_variable, char *substr_start, t_vector *env)
 {
-	// TODO: This is [a-zA-Z_0-9], but the first character can only be [a-zA-Z_]!
-	return (ft_isalnum(chr) || chr == '_');
+	char	*appended;
+	char	*env_key;
+
+	if (in_env_variable)
+	{
+		env_key = ft_substr(substr_start, 1, content - substr_start - 1);
+		if (!env_key)
+		{
+			// TODO: Error handling
+		}
+
+		// TODO: Try to write this function so it can never have an error
+		appended = env_get_val(env, env_key);
+		ft_free(&env_key);
+		if (!appended)
+			appended = ft_strdup("");
+	}
+	else
+		appended = ft_substr(substr_start, 0, content - substr_start);
+	return (appended);
+}
+
+// TODO: Can't have 5 arguments for a function
+// static void	append_string(char *content, bool in_env_variable, char **substr_start, char **expanded_string, t_vector *env)
+// {
+
+// }
+
+static bool	is_valid_name_chr(char chr)
+{
+	return (ft_isalpha(chr) || chr == '_');
 }
 
 void	expand_env_variables(t_list *tokens, t_vector *env)
@@ -55,14 +84,11 @@ void	expand_env_variables(t_list *tokens, t_vector *env)
 	t_token	*token;
 	char	*content;
 	bool	in_env_variable;
-
 	char	*substr_start;
 	char	*expanded_string;
 
 	char	*appended;
 	char	*old_expanded_string;
-
-	char	*env_key;
 
 	while (tokens)
 	{
@@ -77,29 +103,11 @@ void	expand_env_variables(t_list *tokens, t_vector *env)
 
 			while (*content)
 			{
-				if (*content == '$' || (in_env_variable && !is_valid_name_chr(*content)))
+				if (*content == '$' || (in_env_variable && !is_valid_name_chr(*content) && !ft_isdigit(*content)))
 				{
 					if (content > substr_start)
 					{
-						if (in_env_variable)
-						{
-							env_key = ft_substr(substr_start, 1, content - substr_start - 1);
-							if (!env_key)
-							{
-								// TODO: Error handling
-							}
-
-							// TODO: Try to write this function so it can never have an error
-							appended = env_get_val(env, env_key);
-							ft_free(&env_key);
-							if (!appended)
-								appended = ft_strdup("");
-						}
-						else
-						{
-							appended = ft_substr(substr_start, 0, content - substr_start);
-						}
-
+						appended = get_appended(content, in_env_variable, substr_start, env);
 						if (!appended)
 						{
 							// TODO: Error handling
@@ -128,25 +136,7 @@ void	expand_env_variables(t_list *tokens, t_vector *env)
 				content++;
 			}
 
-			if (in_env_variable)
-			{
-				env_key = ft_substr(substr_start, 1, content - substr_start - 1);
-				if (!env_key)
-				{
-					// TODO: Error handling
-				}
-
-				// TODO: Try to write this function so it can never have an error
-				appended = env_get_val(env, env_key);
-				ft_free(&env_key);
-				if (!appended)
-					appended = ft_strdup("");
-			}
-			else
-			{
-				appended = ft_substr(substr_start, 0, content - substr_start);
-			}
-
+			appended = get_appended(content, in_env_variable, substr_start, env);
 			if (!appended)
 			{
 				// TODO: Error handling
