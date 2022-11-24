@@ -25,7 +25,6 @@ CFILES = \
 	src/exec/path.c \
 	src/redirections/is_ambiguous_redirect.c \
 	src/redirections/mark_ambiguous_redirects.c \
-	src/parser/line_parser.c \
 	src/tokenizer/get_token.c \
 	src/tokenizer/subtokenizers.c \
 	src/tokenizer/tokenize.c
