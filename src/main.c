@@ -69,7 +69,7 @@ static int	prompt(t_shell *lambda)
 	// 	return (FAILURE);
 	tokens = tokenizer(lambda->line);
 	expand_env_variables(tokens, lambda->env);
-	//
+	mark_ambiguous_redirects(tokens);
 	dbg_print_tokens(tokens);
 	// if (exec_list_generator(exec_list, lambda->env) == FAILURE)
 	// {

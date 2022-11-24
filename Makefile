@@ -23,7 +23,8 @@ CFILES = \
 	src/exec/exec_list.c \
 	src/exec/exec.c \
 	src/exec/path.c \
-	src/has_ambiguous_redirection/has_ambiguous_redirection.c \
+	src/redirections/is_ambiguous_redirect.c \
+	src/redirections/mark_ambiguous_redirects.c \
 	src/parser/line_parser.c \
 	src/tokenizer/get_token.c \
 	src/tokenizer/subtokenizers.c \
