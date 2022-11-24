@@ -25,9 +25,9 @@ CFILES = \
 	src/exec/path.c \
 	src/redirections/is_ambiguous_redirect.c \
 	src/redirections/mark_ambiguous_redirects.c \
-	src/tokenizer/get_token.c \
-	src/tokenizer/subtokenizers.c \
-	src/tokenizer/tokenize.c
+	src/tokenize/get_token.c \
+	src/tokenize/subtokenizers.c \
+	src/tokenize/tokenize.c
 
 HEADERS = \
 	include/minishell.h \
