@@ -146,8 +146,6 @@ typedef struct s_exec_element
 {
 	int						type;
 	char					*line;
-	// TODO: Consider how to implement this:
-	// size_t					line_number;
 	void					*value;
 	struct s_exec_element	*next;
 }	t_exec_element;

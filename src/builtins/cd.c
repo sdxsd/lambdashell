@@ -43,7 +43,6 @@ A program is free software if users have all of these freedoms.
 
 void	cd(t_cmd *cmd)
 {
-	// char	*line_count_str;
 	// size_t	len;
 	// char	*msg;
 
@@ -51,23 +50,14 @@ void	cd(t_cmd *cmd)
 	if (chdir(cmd->args[1]))
 		msg_err("cd", FAILURE);
 	// {
-	// 	line_count_str = ft_itoa(cmd->line_number);
-	// 	if (!line_count_str)
-	// 	{
-	// 		// TODO: ?
-	// 	}
 	// 	// TODO: Is `cmd->args[1]` guaranteed to be non-NULL?
-	// 	len = ft_strlen("line ") + ft_strlen(line_count_str) + ft_strlen(": cd: ") + ft_strlen(cmd->args[1]);
-	// 	ft_free(&line_count_str);
+	// 	len = ft_strlen("cd: ") + ft_strlen(cmd->args[1]);
 	// 	msg = ft_calloc(len + 1, sizeof(char));
 	// 	if (!msg)
 	// 	{
 	// 		// TODO: ?
 	// 	}
-	// 	ft_strlcat(msg, "line ", len + 1);
-	// 	ft_strlcat(msg, line_count_str, len + 1);
-	// 	ft_free(&line_count_str);
-	// 	ft_strlcat(msg, ": cd: ", len + 1);
+	// 	ft_strlcat(msg, "cd: ", len + 1);
 	// 	ft_strlcat(msg, cmd->args[1], len + 1);
 	// 	msg_err(msg, FAILURE);
 	// 	ft_free(&msg);
