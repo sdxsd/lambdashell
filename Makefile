@@ -28,7 +28,7 @@ CFILES = \
 	src/parser/line_parser.c \
 	src/tokenizer/get_token.c \
 	src/tokenizer/subtokenizers.c \
-	src/tokenizer/tokenizer.c
+	src/tokenizer/tokenize.c
 
 HEADERS = \
 	include/minishell.h \

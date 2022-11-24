@@ -139,7 +139,7 @@ typedef struct s_env_element
 //                  i.e. t_cmd
 // (void *next)  -> next token element in the list.
 
-// ALLOCATOR   : exec_list_generator();
+// ALLOCATOR   : parse();
 // DEALLOCATOR : exec_list_deallocator();
 
 typedef struct s_exec_element

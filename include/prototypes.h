@@ -72,7 +72,7 @@ t_token_type	subtokenize_double_quote(char **line_ptr);
 t_token_type	subtokenize_redirection(char **line_ptr);
 t_token_type	subtokenize_whitespace(char **line_ptr);
 t_token_type	subtokenize_unquoted(char **line_ptr);
-t_list			*tokenizer(char *line);
+t_list			*tokenize(char *line);
 
 /* EXECUTION */
 int				execute_command(t_cmd *cmd);
