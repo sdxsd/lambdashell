@@ -80,13 +80,9 @@ int				executor(int i_fd, t_exec_element *curr, t_shell *lambda);
 void			dealloc_exec_list(t_exec_element *head);
 
 /* EXEC LIST */
-int				exec_list_generator(t_exec_element *head, t_vector *env);
+int				parse(t_exec_element *head, t_vector *env);
 t_exec_element	*new_exec_element(void);
 void			free_exec_list(t_exec_element *head);
-int				count_elements(t_exec_element *head);
-
-/* LINE PARSER */
-int				parse_line(t_shell *lambda);
 
 /* REDIRECTIONS */
 bool			is_ambiguous_redirect(t_list *tokens);
