@@ -39,11 +39,6 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-// void	expand_env_variable()
-// {
-
-// }
-
 static char	*get_appended(char *content, bool in_env_variable, char *substr_start, t_vector *env)
 {
 	char	*appended;
@@ -68,92 +63,91 @@ static char	*get_appended(char *content, bool in_env_variable, char *substr_star
 	return (appended);
 }
 
-// TODO: Can't have 5 arguments for a function
-// static void	append_string(char *content, bool in_env_variable, char **substr_start, char **expanded_string, t_vector *env)
-// {
-
-// }
-
 static bool	is_valid_name_chr(char chr)
 {
 	return (ft_isalpha(chr) || chr == '_');
 }
 
-void	expand_env_variables(t_list *tokens, t_vector *env)
+static char	*get_expanded_string(char *content, t_vector *env)
 {
-	t_token	*token;
-	char	*content;
 	bool	in_env_variable;
 	char	*substr_start;
 	char	*expanded_string;
-
 	char	*appended;
 	char	*old_expanded_string;
+
+	in_env_variable = false;
+
+	substr_start = content;
+	expanded_string = ft_calloc(1, sizeof(char));
+
+	while (*content)
+	{
+		if (*content == '$' || (in_env_variable && !is_valid_name_chr(*content) && !ft_isdigit(*content)))
+		{
+			if (content > substr_start)
+			{
+				appended = get_appended(content, in_env_variable, substr_start, env);
+				if (!appended)
+				{
+					// TODO: Error handling
+				}
+				substr_start = content;
+
+				old_expanded_string = expanded_string;
+				expanded_string = ft_strjoin(old_expanded_string, appended);
+				ft_free(&old_expanded_string);
+
+				if (!in_env_variable)
+					ft_free(&appended);
+
+				if (!expanded_string)
+				{
+					// TODO: Error handling
+				}
+
+				in_env_variable = false;
+			}
+		}
+
+		if (*content == '$' && is_valid_name_chr(*(content + 1)))
+			in_env_variable = true;
+
+		content++;
+	}
+
+	appended = get_appended(content, in_env_variable, substr_start, env);
+	if (!appended)
+	{
+		// TODO: Error handling
+	}
+
+	old_expanded_string = expanded_string;
+	expanded_string = ft_strjoin(old_expanded_string, appended);
+	ft_free(&old_expanded_string);
+
+	if (!in_env_variable)
+		ft_free(&appended);
+
+	return (expanded_string);
+}
+
+void	expand_env_variables(t_list *tokens, t_vector *env)
+{
+	t_token	*token;
+	char	*expanded_string;
 
 	while (tokens)
 	{
 		token = tokens->content;
-		content = token->content;
-		in_env_variable = false;
 
 		if (token->type == UNQUOTED || token->type == DOUBLE_QUOTED)
 		{
-			substr_start = content;
-			expanded_string = ft_calloc(1, sizeof(char));
-
-			while (*content)
-			{
-				if (*content == '$' || (in_env_variable && !is_valid_name_chr(*content) && !ft_isdigit(*content)))
-				{
-					if (content > substr_start)
-					{
-						appended = get_appended(content, in_env_variable, substr_start, env);
-						if (!appended)
-						{
-							// TODO: Error handling
-						}
-						substr_start = content;
-
-						old_expanded_string = expanded_string;
-						expanded_string = ft_strjoin(old_expanded_string, appended);
-						ft_free(&old_expanded_string);
-
-						if (!in_env_variable)
-							ft_free(&appended);
-
-						if (!expanded_string)
-						{
-							// TODO: Error handling
-						}
-
-						in_env_variable = false;
-					}
-				}
-
-				if (*content == '$' && is_valid_name_chr(*(content + 1)))
-					in_env_variable = true;
-
-				content++;
-			}
-
-			appended = get_appended(content, in_env_variable, substr_start, env);
-			if (!appended)
-			{
-				// TODO: Error handling
-			}
-
-			old_expanded_string = expanded_string;
-			expanded_string = ft_strjoin(old_expanded_string, appended);
-			ft_free(&old_expanded_string);
-
-			if (!in_env_variable)
-				ft_free(&appended);
-
+			expanded_string = get_expanded_string(token->content, env);
 			if (!expanded_string)
 			{
 				// TODO: Error handling
 			}
-
 			ft_free(&token->content);
 			token->content = expanded_string;
 		}
