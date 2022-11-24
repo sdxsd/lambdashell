@@ -165,6 +165,7 @@ typedef struct s_token
 {
 	t_token_type	type;
 	char			*content;
+	bool			is_ambiguous_redirect;
 }	t_token;
 
 #endif

@@ -88,6 +88,10 @@ int				count_elements(t_exec_element *head);
 /* LINE PARSER */
 int				parse_line(t_shell *lambda);
 
+/* REDIRECTIONS */
+bool			is_ambiguous_redirect(t_list *tokens);
+void			mark_ambiguous_redirects(t_list *tokens);
+
 /* CMD STRUCT */
 t_cmd			*cmd_constructor(char *prog_n, t_vector *env);
 void			cmd_deallocator(t_cmd *cmd);
