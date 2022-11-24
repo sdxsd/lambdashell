@@ -40,21 +40,6 @@ A program is free software if users have all of these freedoms.
 #include "../../include/minishell.h"
 #include <stdlib.h>
 
-int	count_elements(t_exec_element *head)
-{
-	int	count;
-
-	count = 0;
-	while (head)
-	{
-		count++;
-		head = head->next;
-	}
-	return (count);
-}
-
-// NOTE: INFO
-// Allocates a new t_exec_element in preparation for use.
 t_exec_element	*new_exec_element(void)
 {
 	t_exec_element	*new;
