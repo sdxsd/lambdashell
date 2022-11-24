@@ -30,6 +30,12 @@ CFILES = \
 	src/tokenizer/subtokenizers.c \
 	src/tokenizer/tokenizer.c
 
+HEADERS = \
+	include/minishell.h \
+	include/prototypes.h \
+	include/splash.h \
+	include/structs.h
+
 OFILES = $(CFILES:.c=.o)
 
 LIBFT_PATH = libft/libft.a
@@ -47,7 +53,7 @@ all: $(NAME)
 $(NAME): $(OFILES) $(LIBFT_PATH)
 	$(CC) $(CFLAGS) $(OFILES) $(LIB) -o $(NAME)
 
-%.o: %.c
+%.o: %.c $(HEADERS)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(LIBFT_PATH):
