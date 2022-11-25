@@ -89,8 +89,8 @@ bool			is_ambiguous_redirect(t_list *tokens);
 t_list			*parse(t_list *tokens);
 
 /* CMD STRUCT */
-t_cmd			*cmd_constructor(char *prog_n, t_vector *env);
-void			cmd_deallocator(t_cmd *cmd);
+// t_cmd			*cmd_constructor(char *prog_n, t_vector *env);
+// void			cmd_deallocator(t_cmd *cmd);
 
 /* PATH */
 char			*get_path(char *prog_n, t_vector *env);

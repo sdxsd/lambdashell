@@ -78,7 +78,7 @@ t_vector	*init_env(char **env)
 		return (NULL);
 	while (iter-- > 0)
 	{
-		env_element = ft_calloc(1, sizeof(t_env_element));
+		env_element = ft_calloc(1, sizeof(*env_element));
 		if (!env_element)
 			return (init_env_failure(env_vector));
 		env_element->key = ft_strndup(env[iter], get_key_length(env[iter]));

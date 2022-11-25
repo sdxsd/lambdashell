@@ -143,7 +143,8 @@ static t_token_type	subtokenize(char **line)
 		return (subtokenize_single_quote(line));
 	else if (**line == '"')
 		return (subtokenize_double_quote(line));
-	else if (**line == '<' || **line == '>')
+	// TODO: Handle << and >> properly
+	else if ((**line == '<' || **line == '>'))
 		return (subtokenize_redirection(line));
 	else if (**line == '|')
 		return (subtokenize_pipe(line));

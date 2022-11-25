@@ -42,37 +42,37 @@ A program is free software if users have all of these freedoms.
 // NOTE: INFO
 // Takes a raw line including args and redirections and
 // outputs a string array only including the name of the program
-// and the args. If a redirection operator exists, allocs the t_redirec
+// and the args. If a redirection operator exists, allocs the t_redirect
 // struct in t_cmd.
-static char **chk_and_redirec(char *prog, t_cmd	*cmd)
-{
-	char	**split;
-	int		direction;
+// static char **chk_and_redirec(char *prog, t_cmd	*cmd)
+// {
+// 	char	**split;
+// 	int		direction;
 
-	if (ft_strrchr(prog, '>'))
-	{
-		split = ft_split(prog, '>');
-		direction = OUT;
-	}
-	else if (ft_strrchr(prog, '<'))
-	{
-		split = ft_split(prog, '<');
-		direction = IN;
-	}
-	else
-		return (ft_split(prog, ' '));
-	if (!split)
-		return (NULL);
-	cmd->redir = ft_calloc(1, sizeof(t_redirec));
-	if (!cmd->redir)
-	{
-		free_ptr_array(split);
-		return (NULL);
-	}
-	cmd->redir->direction = direction;
-	cmd->redir->file_path = split[1];
-	return (ft_split(split[0], ' '));
-}
+// 	if (ft_strrchr(prog, '>'))
+// 	{
+// 		split = ft_split(prog, '>');
+// 		direction = OUT;
+// 	}
+// 	else if (ft_strrchr(prog, '<'))
+// 	{
+// 		split = ft_split(prog, '<');
+// 		direction = IN;
+// 	}
+// 	else
+// 		return (ft_split(prog, ' '));
+// 	if (!split)
+// 		return (NULL);
+// 	cmd->redirection = ft_calloc(1, sizeof(*cmd->redirection));
+// 	if (!cmd->redirection)
+// 	{
+// 		free_ptr_array(split);
+// 		return (NULL);
+// 	}
+// 	cmd->redirection->content.direction = direction;
+// 	cmd->redirection->content.file_path = split[1];
+// 	return (ft_split(split[0], ' '));
+// }
 
 // NOTE: INFO
 // cmd_constructor() is the constructor for the type
@@ -89,45 +89,45 @@ static char **chk_and_redirec(char *prog, t_cmd	*cmd)
 // Finally getting the full path to the binary returning the fully formed t_cmd.
 // If any part fails, all memory will be freed before returning.
 // Memory leaks SHOULD be impossible.
-t_cmd	*cmd_constructor(char *prog_n_args, t_vector *env)
-{
-	t_cmd	*cmd;
+// t_cmd	*cmd_constructor(char *prog_n_args, t_vector *env)
+// {
+// 	t_cmd	*cmd;
 
-	cmd = ft_calloc(1, sizeof(t_cmd));
-	if (!cmd)
-		return (null_msg_err("cmd_constructor()"));
-	cmd->i_fd = STDIN_FILENO;
-	cmd->o_fd = STDOUT_FILENO;
-	cmd->redir = NULL;
-	cmd->args = chk_and_redirec(prog_n_args, cmd);
-	if (!cmd->args)
-	{
-		cmd_deallocator(cmd);
-		return (null_msg_err("cmd_constructor()"));
-	}
-	if (ft_strnstr(cmd->args[0], "/", ft_strlen(cmd->args[0])))
-		cmd->path = cmd->args[0];
-	else
-		cmd->path = get_path(cmd->args[0], env);
-	if (!cmd->path)
-	{
-		msg_err(cmd->args[0], FAILURE);
-		cmd_deallocator(cmd);
-		return (NULL);
-	}
-	return (cmd);
-}
+// 	cmd = ft_calloc(1, sizeof(*cmd));
+// 	if (!cmd)
+// 		return (null_msg_err("cmd_constructor()"));
+// 	cmd->i_fd = STDIN_FILENO;
+// 	cmd->o_fd = STDOUT_FILENO;
+// 	cmd->redirection = NULL;
+// 	cmd->args = chk_and_redirec(prog_n_args, cmd);
+// 	if (!cmd->args)
+// 	{
+// 		cmd_deallocator(cmd);
+// 		return (null_msg_err("cmd_constructor()"));
+// 	}
+// 	if (ft_strnstr(cmd->args[0], "/", ft_strlen(cmd->args[0])))
+// 		cmd->path = cmd->args[0];
+// 	else
+// 		cmd->path = get_path(cmd->args[0], env);
+// 	if (!cmd->path)
+// 	{
+// 		msg_err(cmd->args[0], FAILURE);
+// 		cmd_deallocator(cmd);
+// 		return (NULL);
+// 	}
+// 	return (cmd);
+// }
 
-// NOTE: Cleanly deallocates a t_cmd.
-void	cmd_deallocator(t_cmd *cmd)
-{
-	if (cmd->redir)
-	{
-		ft_free(&cmd->redir->file_path);
-		ft_free(&cmd->redir);
-	}
-	if (cmd->args)
-		free_ptr_array(cmd->args);
-	ft_free(&cmd->path);
-	ft_free(&cmd);
-}
+// // NOTE: Cleanly deallocates a t_cmd.
+// void	cmd_deallocator(t_cmd *cmd)
+// {
+// 	if (cmd->redirection)
+// 	{
+// 		ft_free(&cmd->redirection->file_path);
+// 		ft_free(&cmd->redirection);
+// 	}
+// 	if (cmd->args)
+// 		free_ptr_array(cmd->args);
+// 	ft_free(&cmd->path);
+// 	ft_free(&cmd);
+// }

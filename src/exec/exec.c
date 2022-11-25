@@ -63,16 +63,16 @@ A program is free software if users have all of these freedoms.
 // 	iter = 0;
 // 	// TODO: Allow doing redirecting in & out in the same command
 // 	// TODO: Also do this in execute_builtin()
-// 	if (cmd->redir)
+// 	if (cmd->redirection)
 // 	{
-// 		while (cmd->redir->file[iter] == ' ')
+// 		while (cmd->redirection->file[iter] == ' ')
 // 			iter++;
-// 		fd = open(cmd->redir->file + iter, O_RDWR | O_CREAT | O_TRUNC, 0644);
+// 		fd = open(cmd->redirection->file + iter, O_RDWR | O_CREAT | O_TRUNC, 0644);
 // 		if (fd <= 0)
 // 			return (msg_err("execute_command()", FAILURE));
-// 		if (cmd->redir->direc == OUTPUT)
+// 		if (cmd->redirection->direc == OUTPUT)
 // 			cmd->o_fd = fd;
-// 		if (cmd->redir->direc == INPUT)
+// 		if (cmd->redirection->direc == INPUT)
 // 			cmd->i_fd = fd;
 // 	}
 // 	dup_fds(cmd);

@@ -46,7 +46,7 @@ char	**env_to_strings(t_vector *env)
 	int				e_size;
 
 	e_size = vector_size(env);
-	env_strings = ft_calloc(e_size + 1, sizeof(char *));
+	env_strings = ft_calloc(e_size + 1, sizeof(*env_strings));
 	if (!env_strings)
 		return (NULL);
 	while (e_size-- > 0)

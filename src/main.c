@@ -88,7 +88,7 @@ static t_shell	*shell_init(char **env)
 {
 	t_shell		*lambda;
 
-	lambda = ft_calloc(1, sizeof(t_shell));
+	lambda = ft_calloc(1, sizeof(*lambda));
 	if (!lambda)
 		return (NULL);
 	lambda->status = SUCCESS;
