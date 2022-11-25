@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   CODAM C FILE                                       :+:    :+:            */
+/*   parse.c                                            :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
+/*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 1970/01/01 00:00:00 by wmaguire      #+#    #+#                 */
-/*   Updated: 1970/01/01 00:00:00 by wmaguire     ########   codam.nl         */
+/*   Created: 2022/11/24 16:58:21 by sbos          #+#    #+#                 */
+/*   Updated: 2022/11/24 16:58:21 by sbos          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,29 +38,11 @@ A program is free software if users have all of these freedoms.
 */
 
 #include "../../include/minishell.h"
-#include <stdlib.h>
-#include <unistd.h>
 
-// t_cmd	*bltin_constructor(char	*line, t_vector *env)
-// {
-// 	t_cmd	*cmd;
+t_cmd	*parse(t_list *tokens)
+{
+	mark_ambiguous_redirects(tokens);
+	dbg_print_tokens(tokens);
 
-// 	cmd = ft_calloc(1, sizeof(t_cmd));
-// 	if (!cmd)
-// 		return (null_msg_err("bltin_constructor()"));
-// 	cmd->i_fd = STDIN_FILENO;
-// 	cmd->o_fd = STDOUT_FILENO;
-// 	cmd->args = ft_split(line, ' ');
-// 	if (!cmd->args)
-// 	{
-// 		cmd_deallocator(cmd);
-// 		return (null_msg_err("bltin_constructor()"));
-// 	}
-// 	cmd->env = env_to_strings(env);
-// 	if (!cmd->env)
-// 	{
-// 		cmd_deallocator(cmd);
-// 		return (null_msg_err("bltin_constructor()"));
-// 	}
-// 	return (cmd);
-// }
+	return (NULL);
+}

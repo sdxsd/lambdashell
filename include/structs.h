@@ -82,13 +82,16 @@ typedef enum e_err
 	RET_SUCCESS,
 }	t_err;
 
-// NOTE:
-// direc == TRUE then output.
-// direc == FALSE then input.
-// char *file points to name of file involved.
+typedef enum e_direction
+{
+	IN,
+	OUT,
+	APPEND,
+}	t_direction;
+
 typedef struct s_redirec {
-	char	*file;
-	bool	direc;
+	char		*file_path;
+	t_direction	direction;
 } t_redirec;
 
 // NOTE:
@@ -100,13 +103,14 @@ typedef struct s_redirec {
 
 typedef struct s_cmd
 {
-	int			ret;
-	int			i_fd;
-	int			o_fd;
-	char		**args;
-	char		**env;
-	char		*path;
-	t_redirec	*redir;
+	int				ret;
+	int				i_fd;
+	int				o_fd;
+	char			**args;
+	char			**env;
+	char			*path;
+	t_redirec		*redir;
+	struct s_cmd	*next;
 }	t_cmd;
 
 typedef struct s_env_element
@@ -141,14 +145,6 @@ typedef struct s_env_element
 
 // ALLOCATOR   : parse();
 // DEALLOCATOR : exec_list_deallocator();
-
-typedef struct s_exec_element
-{
-	int						type;
-	char					*line;
-	void					*value;
-	struct s_exec_element	*next;
-}	t_exec_element;
 
 typedef enum s_token_type
 {

@@ -75,14 +75,16 @@ t_token_type	subtokenize_unquoted(char **line_ptr);
 t_list			*tokenize(char *line);
 
 /* EXECUTION */
-int				execute_command(t_cmd *cmd);
-int				executor(int i_fd, t_exec_element *curr, t_shell *lambda);
-void			dealloc_exec_list(t_exec_element *head);
+// int				execute_command(t_cmd *cmd);
+// int				executor(int i_fd, t_exec_element *curr, t_shell *lambda);
+// void			dealloc_exec_list(t_exec_element *head);
 
 /* EXEC LIST */
-int				parse(t_exec_element *head, t_vector *env);
-t_exec_element	*new_exec_element(void);
-void			free_exec_list(t_exec_element *head);
+// t_exec_element	*new_exec_element(void);
+// void			free_exec_list(t_exec_element *head);
+
+/* PARSE */
+t_cmd	*parse(t_list *tokens);
 
 /* REDIRECTIONS */
 bool			is_ambiguous_redirect(t_list *tokens);
@@ -101,7 +103,6 @@ void			dealloc_ptr_array(void **data);
 void			dealloc_lambda(t_shell *lambda);
 
 /* DEBUG */
-void			dbg_print_exec_list(t_exec_element *head);
 void			dbg_print_lines(char **lines);
 void			dbg_print_env(t_vector *head);
 void			dbg_print_cmd(t_cmd	*cmd);

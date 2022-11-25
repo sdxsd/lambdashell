@@ -43,8 +43,8 @@ A program is free software if users have all of these freedoms.
 
 static int	prompt(t_shell *lambda)
 {
-	t_list			*tokens;
-	t_exec_element	*exec_list;
+	t_list	*tokens;
+	t_cmd	*commands;
 
 	if (lambda->stdin_is_tty)
 	{
@@ -66,19 +66,20 @@ static int	prompt(t_shell *lambda)
 		return (SUCCESS);
 	}
 	add_history(lambda->line);
-	// if (parse_line(lambda) == FAILURE)
-	// 	return (FAILURE);
-	tokens = tokenizer(lambda->line);
-	expand_env_variables(tokens, lambda->env);
-	mark_ambiguous_redirects(tokens);
-	dbg_print_tokens(tokens);
-	exec_list = parse(tokens, lambda->env);
-	if (!exec_list)
+	// if (lambda->line[0]) // TODO: Maybe use?
+	tokens = tokenize(lambda->line);
+	if (expand_env_variables(tokens, lambda->env) == FAILURE)
 	{
 		// TODO: Freeing
 		return (FAILURE);
 	}
-	// executor(-1, exec_list, lambda);
+	commands = parse(tokens);
+	if (!commands)
+	{
+		// TODO: Freeing
+		return (FAILURE);
+	}
+	// executor(-1, commands, lambda);
 	ft_free(&lambda->line);
 	return (SUCCESS);
 }
