@@ -70,6 +70,7 @@ t_token			*get_token(t_token_type type, char *content);
 t_token_type	subtokenize_single_quote(char **line_ptr);
 t_token_type	subtokenize_double_quote(char **line_ptr);
 t_token_type	subtokenize_redirection(char **line_ptr);
+t_token_type	subtokenize_pipe(char **line_ptr);
 t_token_type	subtokenize_whitespace(char **line_ptr);
 t_token_type	subtokenize_unquoted(char **line_ptr);
 t_list			*tokenize(char *line);
@@ -105,5 +106,6 @@ void			dbg_print_env(t_vector *head);
 void			dbg_print_cmd(t_cmd	*cmd);
 void			dbg_test_env(t_vector *env);
 void			dbg_print_tokens(t_list *tokens);
+void			dbg_print_commands(t_list *cmds);
 
 #endif

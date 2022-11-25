@@ -146,12 +146,12 @@ typedef struct s_env_element
 
 typedef enum s_token_type
 {
-	UNQUOTED,
 	SINGLE_QUOTED,
 	DOUBLE_QUOTED,
-	WHITESPACE,
 	REDIRECTION, // TODO: Might need to split into REDIRECTION_IN and _OUT
 	PIPE,
+	WHITESPACE,
+	UNQUOTED,
 }	t_token_type;
 
 typedef struct s_token
