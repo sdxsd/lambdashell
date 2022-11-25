@@ -39,10 +39,58 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-t_cmd	*parse(t_list *tokens)
+static t_cmd	*get_initial_cmd(void)
 {
-	mark_ambiguous_redirects(tokens);
-	dbg_print_tokens(tokens);
+	t_cmd	*cmd;
 
-	return (NULL);
+	cmd = ft_calloc(1, sizeof(*cmd));
+	if (!cmd)
+		return (NULL);
+	cmd->i_fd = STDIN_FILENO;
+	cmd->o_fd = STDOUT_FILENO;
+	// cmd->args = NULL;
+	// cmd->path = NULL;
+	// cmd->redir = NULL;
+	cmd->has_ambiguous_redirect = false;
+	return (cmd);
+}
+
+static t_cmd	*get_cmd(t_list **tokens)
+{
+	t_cmd	*cmd;
+	t_token	*token;
+
+	cmd = get_initial_cmd();
+	while (*tokens && ((t_token *)(*tokens)->content)->type != PIPE)
+	{
+		token = (*tokens)->content;
+
+		if (token->type == REDIRECTION && is_ambiguous_redirect(*tokens))
+			cmd->has_ambiguous_redirect = true;
+
+		*tokens = (*tokens)->next;
+	}
+	return (cmd);
+}
+
+t_list	*parse(t_list *tokens)
+{
+	t_list	*cmds;
+	t_cmd	*cmd;
+
+	cmds = NULL;
+
+	while (tokens)
+	{
+		cmd = get_cmd(&tokens);
+		if (!cmd || !ft_lstnew_back(&cmds, cmd))
+			return (NULL); // TODO: Free?
+
+		if (cmd->has_ambiguous_redirect)
+			printf("Has ambiguous redirect\n");
+
+		printf("Created cmd\n");
+	}
+
+	return (cmds);
 }

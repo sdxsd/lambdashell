@@ -38,7 +38,6 @@ A program is free software if users have all of these freedoms.
 */
 
 #include "../../include/minishell.h"
-#include <stdlib.h>
 
 void	dbg_test_env(t_vector *env)
 {
