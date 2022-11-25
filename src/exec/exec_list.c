@@ -40,19 +40,19 @@ A program is free software if users have all of these freedoms.
 #include "../../include/minishell.h"
 #include <stdlib.h>
 
-t_exec_element	*new_exec_element(void)
-{
-	t_exec_element	*new;
+// t_exec_element	*new_exec_element(void)
+// {
+// 	t_exec_element	*new;
 
-	new = ft_calloc(1, sizeof(t_exec_element));
-	if (!new)
-		return (null_msg_err("new_exec_element()"));
-	new->type = -1;
-	new->line = NULL;
-	new->value = NULL;
-	new->next = NULL;
-	return (new);
-}
+// 	new = ft_calloc(1, sizeof(t_exec_element));
+// 	if (!new)
+// 		return (null_msg_err("new_exec_element()"));
+// 	new->type = -1;
+// 	new->line = NULL;
+// 	new->value = NULL;
+// 	new->next = NULL;
+// 	return (new);
+// }
 
 // NOTE: INFO
 // Takes an allocated t_exec_element, and a type.

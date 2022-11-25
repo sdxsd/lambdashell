@@ -49,17 +49,17 @@ A program is free software if users have all of these freedoms.
 static char **chk_and_redirec(char *prog, t_cmd	*cmd)
 {
 	char	**split;
-	int		direc;
+	int		direction;
 
 	if (ft_strrchr(prog, '>'))
 	{
 		split = ft_split(prog, '>');
-		direc = TRUE;
+		direction = OUT;
 	}
 	else if (ft_strrchr(prog, '<'))
 	{
 		split = ft_split(prog, '<');
-		direc = FALSE;
+		direction = IN;
 	}
 	else
 		return (ft_split(prog, ' '));
@@ -71,8 +71,8 @@ static char **chk_and_redirec(char *prog, t_cmd	*cmd)
 		free_ptr_array(split);
 		return (NULL);
 	}
-	cmd->redir->direc = direc;
-	cmd->redir->file = split[1];
+	cmd->redir->direction = direction;
+	cmd->redir->file_path = split[1];
 	return (ft_split(split[0], ' '));
 }
 
@@ -131,7 +131,7 @@ void	cmd_deallocator(t_cmd *cmd)
 {
 	if (cmd->redir)
 	{
-		ft_free(&cmd->redir->file);
+		ft_free(&cmd->redir->file_path);
 		ft_free(&cmd->redir);
 	}
 	if (cmd->env)
