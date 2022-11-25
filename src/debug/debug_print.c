@@ -108,6 +108,7 @@ void	dbg_print_tokens(t_list *tokens)
 		[SINGLE_QUOTED] = "SINGLE_QUOTED",
 		[DOUBLE_QUOTED] = "DOUBLE_QUOTED",
 		[REDIRECTION] = "REDIRECTION",
+		[PIPE] = "PIPE",
 		[WHITESPACE] = "WHITESPACE",
 		[UNQUOTED] = "UNQUOTED",
 	};
@@ -131,5 +132,43 @@ void	dbg_print_tokens(t_list *tokens)
 		printf("+---------------+---------------------+\n");
 
 		tokens = tokens->next;
+	}
+}
+
+void	dbg_print_commands(t_list *cmds)
+{
+	// char	*direction_strings[] = {
+	// 	[IN] = "IN",
+	// 	[OUT] = "OUT",
+	// 	[APPEND] = "APPEND",
+	// };
+	t_cmd	*cmd;
+	size_t	cmd_index;
+
+	cmd_index = 0;
+	while (cmds)
+	{
+		printf("Command %zu:\n", cmd_index);
+
+		cmd = cmds->content;
+
+		printf("Input file descriptor: %i\n", cmd->i_fd);
+		printf("Output file descriptor: %i\n", cmd->o_fd);
+
+		// printf("Args: %s\n", arg);
+
+		printf("Path: %s\n", cmd->path);
+
+		// printf("Redirection[0] file_path: %s\n", cmd->redir[0].file_path);
+		// printf("Redirection[0] direction: %s\n", direction_strings[cmd->redir[0].direction]);
+
+		// printf("Redirection[1] file_path: %s\n", cmd->redir[1].file_path);
+		// printf("Redirection[1] direction: %s\n", direction_strings[cmd->redir[1].direction]);
+
+		printf("Has ambiguous redirect: %i\n", cmd->has_ambiguous_redirect);
+
+		cmds = cmds->next;
+		cmd_index++;
+		printf("\n");
 	}
 }
