@@ -65,6 +65,12 @@ t_token_type	subtokenize_redirection(char **line_ptr)
 	return (REDIRECTION);
 }
 
+t_token_type	subtokenize_pipe(char **line_ptr)
+{
+	(*line_ptr)++;
+	return (PIPE);
+}
+
 t_token_type	subtokenize_whitespace(char **line_ptr)
 {
 	while (**line_ptr != '\0' && ft_isspace(**line_ptr))
@@ -74,7 +80,8 @@ t_token_type	subtokenize_whitespace(char **line_ptr)
 
 t_token_type	subtokenize_unquoted(char **line_ptr)
 {
-	while (**line_ptr != '\0' && !ft_isspace(**line_ptr))
+	// TODO: Make sure this isn't missing any conditions for breaking
+	while (**line_ptr != '\0' && !ft_isspace(**line_ptr) && **line_ptr != '|' && **line_ptr != '<' && **line_ptr != '>' && **line_ptr != '"' && **line_ptr != '\'')
 		(*line_ptr)++;
 	return (UNQUOTED);
 }

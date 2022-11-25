@@ -145,6 +145,8 @@ static t_token_type	subtokenize(char **line)
 		return (subtokenize_double_quote(line));
 	else if (**line == '<' || **line == '>')
 		return (subtokenize_redirection(line));
+	else if (**line == '|')
+		return (subtokenize_pipe(line));
 	else if (ft_isspace(**line))
 		return (subtokenize_whitespace(line));
 	else
