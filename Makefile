@@ -25,6 +25,7 @@ CFILES = \
 	src/exec/path.c \
 	src/parse/is_ambiguous_redirect.c \
 	src/parse/parse.c \
+	src/parse/skip_whitespace_tokens.c \
 	src/tokenize/get_token.c \
 	src/tokenize/subtokenizers.c \
 	src/tokenize/tokenize.c

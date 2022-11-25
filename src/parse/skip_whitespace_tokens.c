@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   has_ambiguous_redirection.c                        :+:    :+:            */
+/*   skip_whitespace_tokens.c                           :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/11/22 15:48:01 by sbos          #+#    #+#                 */
-/*   Updated: 2022/11/22 15:48:01 by sbos          ########   odam.nl         */
+/*   Created: 2022/11/25 17:19:26 by sbos          #+#    #+#                 */
+/*   Updated: 2022/11/25 17:19:26 by sbos          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,75 +39,9 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-static bool	is_text_token(t_token *token)
+void	skip_whitespace_tokens(t_list **tokens)
 {
-	return (token->type == SINGLE_QUOTED || token->type == DOUBLE_QUOTED || token->type == UNQUOTED);
-}
-
-bool	is_ambiguous_redirect(t_list *tokens)
-{
-	t_token	*token;
-
-	bool	valid_path = false;
-	bool	seen_filename_start = false;
-	bool	seen_env_word = false;
-
-	char	*content;
-
-	tokens = tokens->next;
-
-	skip_whitespace_tokens(&tokens);
-
-	while (tokens && is_text_token(tokens->content))
-	{
-		token = tokens->content;
-		content = token->content;
-
-		if (token->type == UNQUOTED) // && ft_strchr(content, ' '))
-		{
-			while (*content)
-			{
-				if (ft_isspace(*content))
-				{
-					if (seen_filename_start)
-						seen_env_word = true;
-				}
-				else
-				{
-					valid_path = true;
-
-					// Handles:
-					// `echo a > "foo"$whitespace_left`
-					// `echo a > $whitespace_center`
-					if (seen_env_word)
-						return (true);
-
-					seen_filename_start = true;
-				}
-				content++;
-			}
-		}
-		else
-		{
-			valid_path = true;
-
-			if (*content)
-			{
-				seen_filename_start = true;
-
-				// Handles:
-				// `echo a > $whitespace_right"foo"`
-				if (seen_env_word)
-					return (true);
-			}
-		}
-
-		tokens = tokens->next;
-	}
-
-	// Handles:
-	// `echo a > ""`
-	// `echo a > $empty`
-	// `echo a > $space`
-	return (!valid_path);
+	// TODO: Maybe necessary to add check for token being NULL before ->type?
+	while (*tokens && ((t_token *)(*tokens)->content)->type == WHITESPACE)
+		*tokens = (*tokens)->next;
 }

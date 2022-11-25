@@ -87,6 +87,7 @@ t_list			*tokenize(char *line);
 /* PARSE */
 bool			is_ambiguous_redirect(t_list *tokens);
 t_list			*parse(t_list *tokens);
+void			skip_whitespace_tokens(t_list **tokens);
 
 /* CMD STRUCT */
 // t_cmd			*cmd_constructor(char *prog_n, t_vector *env);
