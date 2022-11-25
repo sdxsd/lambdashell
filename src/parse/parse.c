@@ -61,9 +61,14 @@ static t_cmd	*get_cmd(t_list **tokens)
 	t_token	*token;
 
 	cmd = get_initial_cmd();
-	while (*tokens && ((t_token *)(*tokens)->content)->type != PIPE)
+	while (*tokens)
 	{
 		token = (*tokens)->content;
+		if (token->type == PIPE)
+		{
+			*tokens = (*tokens)->next;
+			break ;
+		}
 
 		if (token->type == REDIRECTION && is_ambiguous_redirect(*tokens))
 			cmd->has_ambiguous_redirect = true;
@@ -85,11 +90,6 @@ t_list	*parse(t_list *tokens)
 		cmd = get_cmd(&tokens);
 		if (!cmd || !ft_lstnew_back(&cmds, cmd))
 			return (NULL); // TODO: Free?
-
-		if (cmd->has_ambiguous_redirect)
-			printf("Has ambiguous redirect\n");
-
-		printf("Created cmd\n");
 	}
 
 	return (cmds);
