@@ -105,12 +105,6 @@ t_cmd	*cmd_constructor(char *prog_n_args, t_vector *env)
 		cmd_deallocator(cmd);
 		return (null_msg_err("cmd_constructor()"));
 	}
-	cmd->env = env_to_strings(env);
-	if (!cmd->env)
-	{
-		cmd_deallocator(cmd);
-		return (null_msg_err("cmd_constructor()"));
-	}
 	if (ft_strnstr(cmd->args[0], "/", ft_strlen(cmd->args[0])))
 		cmd->path = cmd->args[0];
 	else
@@ -132,8 +126,6 @@ void	cmd_deallocator(t_cmd *cmd)
 		ft_free(&cmd->redir->file_path);
 		ft_free(&cmd->redir);
 	}
-	if (cmd->env)
-		free_ptr_array(cmd->env);
 	if (cmd->args)
 		free_ptr_array(cmd->args);
 	ft_free(&cmd->path);

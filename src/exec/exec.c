@@ -76,7 +76,7 @@ A program is free software if users have all of these freedoms.
 // 			cmd->i_fd = fd;
 // 	}
 // 	dup_fds(cmd);
-// 	if (execve(cmd->path, cmd->args, cmd->env) == -1)
+// 	if (execve(cmd->path, cmd->args, lambda->env) == -1)
 // 	{
 // 		msg_err("execute_command()", FAILURE);
 // 		dbg_print_cmd(cmd);

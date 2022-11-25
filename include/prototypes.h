@@ -84,11 +84,8 @@ t_list			*tokenize(char *line);
 // void			free_exec_list(t_exec_element *head);
 
 /* PARSE */
-t_cmd	*parse(t_list *tokens);
-
-/* REDIRECTIONS */
 bool			is_ambiguous_redirect(t_list *tokens);
-void			mark_ambiguous_redirects(t_list *tokens);
+t_list			*parse(t_list *tokens);
 
 /* CMD STRUCT */
 t_cmd			*cmd_constructor(char *prog_n, t_vector *env);

@@ -54,11 +54,5 @@ A program is free software if users have all of these freedoms.
 // 		cmd_deallocator(cmd);
 // 		return (null_msg_err("bltin_constructor()"));
 // 	}
-// 	cmd->env = env_to_strings(env);
-// 	if (!cmd->env)
-// 	{
-// 		cmd_deallocator(cmd);
-// 		return (null_msg_err("bltin_constructor()"));
-// 	}
 // 	return (cmd);
 // }

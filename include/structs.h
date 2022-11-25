@@ -92,7 +92,7 @@ typedef enum e_direction
 typedef struct s_redirec {
 	char		*file_path;
 	t_direction	direction;
-} t_redirec;
+}	t_redirec;
 
 // NOTE:
 //                     +-----+
@@ -103,14 +103,12 @@ typedef struct s_redirec {
 
 typedef struct s_cmd
 {
-	int				ret;
 	int				i_fd;
 	int				o_fd;
 	char			**args;
-	char			**env;
 	char			*path;
-	t_redirec		*redir;
-	struct s_cmd	*next;
+	t_redirec		*redir; // TODO: Maybe good to hardcode as [2]
+	bool			has_ambiguous_redirect;
 }	t_cmd;
 
 typedef struct s_env_element
@@ -148,18 +146,18 @@ typedef struct s_env_element
 
 typedef enum s_token_type
 {
+	UNQUOTED,
 	SINGLE_QUOTED,
 	DOUBLE_QUOTED,
-	REDIRECTION, // TODO: Might need to split into REDIRECTION_IN and _OUT
 	WHITESPACE,
-	UNQUOTED,
+	REDIRECTION, // TODO: Might need to split into REDIRECTION_IN and _OUT
+	PIPE,
 }	t_token_type;
 
 typedef struct s_token
 {
 	t_token_type	type;
 	char			*content;
-	bool			is_ambiguous_redirect;
 }	t_token;
 
 #endif
