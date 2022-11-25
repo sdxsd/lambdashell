@@ -116,7 +116,7 @@ static t_cmd	*get_cmd(t_list **tokens)
 				cmd->has_ambiguous_redirect = true;
 
 			redirect = get_redirect(tokens);
-			if (!redirect || !ft_lstnew_back(&cmd->redirection, redirect))
+			if (!redirect || !ft_lstnew_back(&cmd->redirections, redirect))
 			{
 				// TODO: Free
 				return (NULL);
