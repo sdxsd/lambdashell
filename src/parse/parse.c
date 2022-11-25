@@ -50,30 +50,80 @@ static t_cmd	*get_initial_cmd(void)
 	cmd->o_fd = STDOUT_FILENO;
 	// cmd->args = NULL;
 	// cmd->path = NULL;
-	// cmd->redir = NULL;
-	cmd->has_ambiguous_redirect = false;
+	// cmd->redirection = NULL;
+	// cmd->has_ambiguous_redirect = false;
 	return (cmd);
+}
+
+static t_redirect	*get_redirect(t_list **tokens)
+{
+	t_redirect	*redirect;
+	t_token		*token;
+
+	redirect = ft_calloc(1, sizeof(*redirect));
+
+	token = (*tokens)->content;
+	// TODO: Handle << and >> properly
+	if (*token->content == '<')
+		redirect->direction = IN;
+	else if (*token->content == '>')
+		redirect->direction = OUT;
+
+	*tokens = (*tokens)->next;
+
+	while (*tokens)
+	{
+		token = (*tokens)->content;
+		// TODO: Maybe necessary to add check for token being NULL?
+		if (token && token->type != WHITESPACE)
+			break ;
+		*tokens = (*tokens)->next;
+	}
+
+	while (*tokens)
+	{
+		token = (*tokens)->content;
+
+		// TODO: Maybe necessary to add check for token being NULL?
+		if (token->type != SINGLE_QUOTED && token->type != DOUBLE_QUOTED && token->type != UNQUOTED)
+			break;
+
+		*tokens = (*tokens)->next;
+	}
+
+	return (redirect);
 }
 
 static t_cmd	*get_cmd(t_list **tokens)
 {
-	t_cmd	*cmd;
-	t_token	*token;
+	t_cmd		*cmd;
+	t_token		*token;
+	t_redirect	*redirect;
 
 	cmd = get_initial_cmd();
 	while (*tokens)
 	{
 		token = (*tokens)->content;
+
 		if (token->type == PIPE)
 		{
 			*tokens = (*tokens)->next;
 			break ;
 		}
+		else if (token->type == REDIRECTION)
+		{
+			if (is_ambiguous_redirect(*tokens))
+				cmd->has_ambiguous_redirect = true;
 
-		if (token->type == REDIRECTION && is_ambiguous_redirect(*tokens))
-			cmd->has_ambiguous_redirect = true;
-
-		*tokens = (*tokens)->next;
+			redirect = get_redirect(tokens);
+			if (!redirect || !ft_lstnew_back(&cmd->redirection, redirect))
+			{
+				// TODO: Free
+				return (NULL);
+			}
+		}
+		else
+			*tokens = (*tokens)->next;
 	}
 	return (cmd);
 }

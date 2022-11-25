@@ -79,7 +79,7 @@ static char	*get_expanded_string(char *content, t_vector *env)
 	in_env_variable = false;
 
 	substr_start = content;
-	expanded_string = ft_calloc(1, sizeof(char));
+	expanded_string = ft_calloc(1, sizeof(*expanded_string));
 
 	while (*content)
 	{

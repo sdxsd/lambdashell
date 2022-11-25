@@ -43,7 +43,7 @@ A program is free software if users have all of these freedoms.
 // {
 // 	t_exec_element	*new;
 
-// 	new = ft_calloc(1, sizeof(t_exec_element));
+// 	new = ft_calloc(1, sizeof(*new));
 // 	if (!new)
 // 		return (null_msg_err("new_exec_element()"));
 // 	new->type = -1;
@@ -64,7 +64,7 @@ A program is free software if users have all of these freedoms.
 //  |          | args = ("cat" "file.txt") | |
 //  |          | env = SHELL_ENV           | |
 //  |          | path = "/usr/bin/cat      | |
-//  |          | redir = NULL              | |
+//  |          | redirection = NULL        | |
 //  |          +---------------------------+ |
 //  | next ->  +----------------+            |
 //  |          | t_exec_element |            |

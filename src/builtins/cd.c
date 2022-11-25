@@ -50,7 +50,7 @@ void	cd(t_cmd *cmd)
 	// {
 	// 	// TODO: Is `cmd->args[1]` guaranteed to be non-NULL?
 	// 	len = ft_strlen("cd: ") + ft_strlen(cmd->args[1]);
-	// 	msg = ft_calloc(len + 1, sizeof(char));
+	// 	msg = ft_calloc(len + 1, sizeof(*msg));
 	// 	if (!msg)
 	// 	{
 	// 		// TODO: ?

@@ -89,10 +89,10 @@ typedef enum e_direction
 	APPEND,
 }	t_direction;
 
-typedef struct s_redirec {
+typedef struct s_redirect {
 	char		*file_path;
 	t_direction	direction;
-}	t_redirec;
+}	t_redirect;
 
 // NOTE:
 //                     +-----+
@@ -103,12 +103,12 @@ typedef struct s_redirec {
 
 typedef struct s_cmd
 {
-	int				i_fd;
-	int				o_fd;
-	char			**args;
-	char			*path;
-	t_redirec		*redir; // TODO: Maybe good to hardcode as [2]
-	bool			has_ambiguous_redirect;
+	int		i_fd;
+	int		o_fd;
+	char	**args;
+	char	*path;
+	t_list	*redirection;
+	bool	has_ambiguous_redirect;
 }	t_cmd;
 
 typedef struct s_env_element

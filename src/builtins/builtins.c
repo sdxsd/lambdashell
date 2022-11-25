@@ -43,7 +43,7 @@ A program is free software if users have all of these freedoms.
 // {
 // 	t_cmd	*cmd;
 
-// 	cmd = ft_calloc(1, sizeof(t_cmd));
+// 	cmd = ft_calloc(1, sizeof(*cmd));
 // 	if (!cmd)
 // 		return (null_msg_err("bltin_constructor()"));
 // 	cmd->i_fd = STDIN_FILENO;

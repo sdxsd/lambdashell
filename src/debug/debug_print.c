@@ -39,15 +39,15 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-void	dbg_print_redirec(t_redirec *redir)
+void	dbg_print_redirec(t_redirect *redirection)
 {
-	printf("FILE PATH: %s\n", redir->file_path);
+	printf("FILE PATH: %s\n", redirection->file_path);
 
-	if (redir->direction == IN)
+	if (redirection->direction == IN)
 		printf("DIRECTION = IN\n");
-	if (redir->direction == OUT)
+	if (redirection->direction == OUT)
 		printf("DIREC = OUT\n");
-	else if (redir->direction == APPEND)
+	else if (redirection->direction == APPEND)
 		printf("DIREC = APPEND\n");
 }
 
@@ -58,8 +58,8 @@ void	dbg_print_cmd(t_cmd	*cmd)
 	dbg_print_lines(cmd->args);
 	printf("I_FD: %d\n", cmd->i_fd);
 	printf("O_FD: %d\n", cmd->o_fd);
-	if (cmd->redir)
-		dbg_print_redirec(cmd->redir);
+	if (cmd->redirection)
+		dbg_print_redirec(cmd->redirection->content);
 }
 
 void	dbg_print_lines(char **lines)
@@ -137,13 +137,15 @@ void	dbg_print_tokens(t_list *tokens)
 
 void	dbg_print_commands(t_list *cmds)
 {
-	// char	*direction_strings[] = {
-	// 	[IN] = "IN",
-	// 	[OUT] = "OUT",
-	// 	[APPEND] = "APPEND",
-	// };
-	t_cmd	*cmd;
-	size_t	cmd_index;
+	char	*direction_strings[] = {
+		[IN] = "IN",
+		[OUT] = "OUT",
+		[APPEND] = "APPEND",
+	};
+	size_t		cmd_index;
+	t_cmd		*cmd;
+	size_t		redirection_index;
+	t_redirect	*redirection;
 
 	cmd_index = 0;
 	while (cmds)
@@ -159,11 +161,19 @@ void	dbg_print_commands(t_list *cmds)
 
 		printf("Path: %s\n", cmd->path);
 
-		// printf("Redirection[0] file_path: %s\n", cmd->redir[0].file_path);
-		// printf("Redirection[0] direction: %s\n", direction_strings[cmd->redir[0].direction]);
+		redirection_index = 0;
+		while (cmd->redirection)
+		{
+			printf("Redirection %zu:\n", redirection_index);
 
-		// printf("Redirection[1] file_path: %s\n", cmd->redir[1].file_path);
-		// printf("Redirection[1] direction: %s\n", direction_strings[cmd->redir[1].direction]);
+			redirection = cmd->redirection->content;
+
+			// printf("\tRedirection file_path: %s\n", cmd->redirection[0].file_path);
+			printf("\tRedirection direction: %s\n", direction_strings[redirection->direction]);
+
+			cmd->redirection = cmd->redirection->next;
+			redirection_index++;
+		}
 
 		printf("Has ambiguous redirect: %i\n", cmd->has_ambiguous_redirect);
 
