@@ -58,8 +58,8 @@ void	dbg_print_cmd(t_cmd	*cmd)
 	dbg_print_lines(cmd->args);
 	printf("I_FD: %d\n", cmd->i_fd);
 	printf("O_FD: %d\n", cmd->o_fd);
-	if (cmd->redirection)
-		dbg_print_redirec(cmd->redirection->content);
+	if (cmd->redirections)
+		dbg_print_redirec(cmd->redirections->content);
 }
 
 void	dbg_print_lines(char **lines)
@@ -162,16 +162,16 @@ void	dbg_print_commands(t_list *cmds)
 		printf("Path: %s\n", cmd->path);
 
 		redirection_index = 0;
-		while (cmd->redirection)
+		while (cmd->redirections)
 		{
 			printf("Redirection %zu:\n", redirection_index);
 
-			redirection = cmd->redirection->content;
+			redirection = cmd->redirections->content;
 
 			// printf("\tRedirection file_path: %s\n", cmd->redirection[0].file_path);
 			printf("\tRedirection direction: %s\n", direction_strings[redirection->direction]);
 
-			cmd->redirection = cmd->redirection->next;
+			cmd->redirections = cmd->redirections->next;
 			redirection_index++;
 		}
 

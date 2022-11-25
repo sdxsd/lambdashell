@@ -107,7 +107,7 @@ typedef struct s_cmd
 	int		o_fd;
 	char	**args;
 	char	*path;
-	t_list	*redirection;
+	t_list	*redirections;
 	bool	has_ambiguous_redirect;
 }	t_cmd;
 
