@@ -38,7 +38,6 @@ A program is free software if users have all of these freedoms.
 */
 
 #include "../../include/minishell.h"
-#include <stdlib.h>
 
 char	**env_to_strings(t_vector *env)
 {

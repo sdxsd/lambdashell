@@ -38,7 +38,6 @@ A program is free software if users have all of these freedoms.
 */
 
 #include "../../include/minishell.h"
-#include <stdlib.h>
 
 // t_exec_element	*new_exec_element(void)
 // {

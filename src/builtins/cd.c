@@ -38,8 +38,6 @@ A program is free software if users have all of these freedoms.
 */
 
 #include "../../include/minishell.h"
-#include <unistd.h>
-#include <stdlib.h>
 
 void	cd(t_cmd *cmd)
 {

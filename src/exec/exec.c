@@ -38,10 +38,6 @@ A program is free software if users have all of these freedoms.
 */
 
 #include "../../include/minishell.h"
-#include <sys/wait.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <fcntl.h>
 
 // static void	dup_fds(t_cmd *cmd)
 // {

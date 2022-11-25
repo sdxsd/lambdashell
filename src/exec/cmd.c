@@ -38,8 +38,6 @@ A program is free software if users have all of these freedoms.
 */
 
 #include "../../include/minishell.h"
-#include <stdlib.h>
-#include <unistd.h>
 
 // NOTE: INFO
 // Takes a raw line including args and redirections and
