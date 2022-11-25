@@ -38,8 +38,6 @@ A program is free software if users have all of these freedoms.
 */
 
 #include "../../include/minishell.h"
-#include <stdlib.h>
-#include <unistd.h>
 
 // t_cmd	*bltin_constructor(char	*line, t_vector *env)
 // {
