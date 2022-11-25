@@ -55,6 +55,15 @@ static t_cmd	*get_initial_cmd(void)
 	return (cmd);
 }
 
+static void	fill_direction(t_redirect *redirect, t_token *token)
+{
+	// TODO: Handle << and >> properly
+	if (*token->content == '<')
+		redirect->direction = IN;
+	else if (*token->content == '>')
+		redirect->direction = OUT;
+}
+
 static t_redirect	*get_redirect(t_list **tokens)
 {
 	t_redirect	*redirect;
@@ -62,23 +71,11 @@ static t_redirect	*get_redirect(t_list **tokens)
 
 	redirect = ft_calloc(1, sizeof(*redirect));
 
-	token = (*tokens)->content;
-	// TODO: Handle << and >> properly
-	if (*token->content == '<')
-		redirect->direction = IN;
-	else if (*token->content == '>')
-		redirect->direction = OUT;
+	fill_direction(redirect, (*tokens)->content);
 
 	*tokens = (*tokens)->next;
 
-	while (*tokens)
-	{
-		token = (*tokens)->content;
-		// TODO: Maybe necessary to add check for token being NULL?
-		if (token && token->type != WHITESPACE)
-			break ;
-		*tokens = (*tokens)->next;
-	}
+	skip_whitespace_tokens(tokens);
 
 	while (*tokens)
 	{
