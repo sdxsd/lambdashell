@@ -49,8 +49,8 @@ void			blue(void);
 void			ps1(t_shell	*lambda);
 
 /* REDIRECTIONS */
-int	chk_and_redirec(char *prog, t_cmd *cmd);
-void dealloc_redir(void *to_free);
+int				chk_and_redirec(char *prog, t_cmd *cmd);
+void			dealloc_redir(void *to_free);
 
 /* BUILTINS */
 char			*ret_cwd(void);

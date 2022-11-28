@@ -36,21 +36,22 @@ static int redirec_list(char *prog, char type, char ***redirs)
 
 	if (!strchr(prog, type))
 		return (TRUE);
-	*redirs = ft_split(prog, type);
+	redirs[0] = ft_split(prog, type);
 	if (!*redirs)
 		return (msg_err("redirec_list()", FALSE));
 	if (type == '<')
 	{
 		iter = 0;
-		while (*redirs[iter] != NULL)
+		while (redirs[0][iter] != NULL)
 			iter++;
-		free(*redirs[iter - 1]);
-		*redirs[iter - 1] = NULL;
+		free(redirs[0][iter - 1]);
+		redirs[0][iter - 1] = NULL;
 	}
 	else if (type == '>')
 	{
-		free(**redirs);
-		*redirs = &*redirs[1];
+		free(redirs[0][0]);
+		redirs[0][0] = redirs[0][1];
+		redirs[0][1] = NULL;
 	}
 	return (TRUE);
 }
@@ -101,8 +102,8 @@ int	chk_and_redirec(char *prog, t_cmd *cmd)
 	cmd->redirec = alloc_vector(redirec_c);
 	if (!cmd->redirec)
 		return (msg_err("chk_and_redirec()", FALSE));
-	if (!redirec_list(prog, '<', &o_redirec) || \
-		!redirec_list(prog, '>', &i_redirec))
+	if (!redirec_list(prog, '>', &o_redirec) || \
+		!redirec_list(prog, '<', &i_redirec))
 	{
 		if (i_redirec)
 			free_ptr_array(i_redirec);
@@ -111,6 +112,7 @@ int	chk_and_redirec(char *prog, t_cmd *cmd)
 		free_vector(cmd->redirec, dealloc_redir);
 		return (msg_err("chk_and_redirec()", FALSE));
 	}
+	strings_to_redirec(i_redirec, o_redirec, cmd->redirec);
 	if (i_redirec)
 	{
 		prog = ft_strrchr(prog, '<');
@@ -118,7 +120,6 @@ int	chk_and_redirec(char *prog, t_cmd *cmd)
 			prog++;
 		while (*prog != ' ')
 			prog++;
-		strings_to_redirec(i_redirec, o_redirec, cmd->redirec);
 		if (o_redirec)
 		{
 			tmp = ft_strndup(prog, prog - ft_strchr(prog, '>'));
@@ -132,14 +133,16 @@ int	chk_and_redirec(char *prog, t_cmd *cmd)
 	}
 	if (o_redirec)
 	{
-		strings_to_redirec(i_redirec, o_redirec, cmd->redirec);
-		tmp = ft_strndup(prog, prog - ft_strchr(prog, '>'));
-		if (!tmp)
-			return (msg_err("chk_and_redirec()", FALSE));
-		cmd->args = ft_split(tmp, ' ');
-		free(tmp);
-		dbg_print_lines(o_redirec);
-		dbg_print_lines(cmd->args);
+		if (!i_redirec)
+		{
+			tmp = ft_strndup(prog, prog - ft_strchr(prog, '>'));
+			if (!tmp)
+				return (msg_err("chk_and_redirec()", FALSE));
+			cmd->args = ft_split(tmp, ' ');
+			free(tmp);
+			dbg_print_lines(o_redirec);
+			dbg_print_lines(cmd->args);
+		}
 		return (TRUE);
 	}
 	return (FALSE);
