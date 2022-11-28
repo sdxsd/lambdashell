@@ -55,6 +55,34 @@ static int redirec_list(char *prog, char type, char ***redirs)
 	return (TRUE);
 }
 
+void	strings_to_redirec(char **i, char **o, t_vector *redirec_vec)
+{
+	int	iter;
+	int idx;
+
+	iter = 0;
+	idx = 0;
+	if (i)
+	{
+		while (o[iter])
+		{
+			vec_assign_element(redirec_vec, idx, o[iter]);
+			iter++;
+			idx++;
+		}
+	}
+	iter = 0;
+	if (o)
+	{
+		while (o[iter])
+		{
+			vec_assign_element(redirec_vec, iter, o[iter]);
+			iter++;
+			idx++;
+		}
+	}
+}
+
 int	chk_and_redirec(char *prog, t_cmd *cmd)
 {
 	int		redirec_c;
@@ -90,6 +118,7 @@ int	chk_and_redirec(char *prog, t_cmd *cmd)
 			prog++;
 		while (*prog != ' ')
 			prog++;
+		strings_to_redirec(i_redirec, o_redirec, cmd->redirec);
 		if (o_redirec)
 		{
 			tmp = ft_strndup(prog, prog - ft_strchr(prog, '>'));
@@ -103,6 +132,7 @@ int	chk_and_redirec(char *prog, t_cmd *cmd)
 	}
 	if (o_redirec)
 	{
+		strings_to_redirec(i_redirec, o_redirec, cmd->redirec);
 		tmp = ft_strndup(prog, prog - ft_strchr(prog, '>'));
 		if (!tmp)
 			return (msg_err("chk_and_redirec()", FALSE));
