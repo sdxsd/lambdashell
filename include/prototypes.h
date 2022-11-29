@@ -76,9 +76,9 @@ t_token_type	subtokenize_unquoted(char **line_ptr);
 t_list			*tokenize(char *line);
 
 /* EXECUTION */
-// int				execute_command(t_cmd *cmd);
-// int				executor(int i_fd, t_exec_element *curr, t_shell *lambda);
-// void			dealloc_exec_list(t_exec_element *head);
+int				execute_command(t_cmd *cmd, char **env);
+int				executor(int i_fd, t_list *curr, t_shell *lambda);
+/* void			dealloc_exec_list(t_exec_element *head); */
 
 /* EXEC LIST */
 // t_exec_element	*new_exec_element(void);

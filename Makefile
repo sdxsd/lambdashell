@@ -18,6 +18,7 @@ CFILES = \
 	src/env/expand_env_variables.c \
 	src/error/error.c \
 	src/exec/cmd.c \
+	src/exec/exec.c \
 	src/exec/exec_list.c \
 	src/exec/exec.c \
 	src/exec/path.c \

@@ -81,7 +81,7 @@ static int	prompt(t_shell *lambda)
 		return (FAILURE);
 	}
 	dbg_print_commands(cmds);
-	// executor(-1, cmds, lambda);
+	executor(-1, cmds, lambda);
 	ft_free(&lambda->line);
 	return (SUCCESS);
 }

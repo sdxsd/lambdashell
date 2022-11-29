@@ -38,29 +38,7 @@ A program is free software if users have all of these freedoms.
 */
 
 #include "../../include/minishell.h"
-
-void	dbg_print_redirec(t_redirect *redirection)
-{
-	printf("FILE PATH: %s\n", redirection->file_path);
-
-	if (redirection->direction == IN)
-		printf("DIRECTION = IN\n");
-	if (redirection->direction == OUT)
-		printf("DIREC = OUT\n");
-	else if (redirection->direction == APPEND)
-		printf("DIREC = APPEND\n");
-}
-
-void	dbg_print_cmd(t_cmd	*cmd)
-{
-	printf("PATH: %s\n", cmd->path);
-	printf("LINES:\n");
-	// dbg_print_lines(cmd->args);
-	printf("I_FD: %d\n", cmd->i_fd);
-	printf("O_FD: %d\n", cmd->o_fd);
-	if (cmd->redirections)
-		dbg_print_redirec(cmd->redirections->content);
-}
+#include <stdio.h>
 
 void	dbg_print_lines(char **lines)
 {
@@ -73,22 +51,6 @@ void	dbg_print_lines(char **lines)
 		iter++;
 	}
 }
-
-// /* NOTE: To be called after running the tokenize() function. */
-// void	dbg_print_exec_list(t_exec_element *head)
-// {
-// 	if (head->type == tkn_cmd)
-// 		printf("Type: [cmd]\n");
-// 	else if (head->type == tkn_bltin)
-// 		printf("Type: [builtin]\n");
-// 	else
-// 		printf("Type: [unknown]\n");
-// 	printf("Line: %s\n", head->line);
-// 	printf("Value: %p\n", head->value);
-// 	printf("next: %p\n\n", head->next);
-// 	if (head->next)
-// 		dbg_print_exec_list(head->next);
-// }
 
 void	dbg_print_env(t_vector *head)
 {
@@ -113,24 +75,15 @@ void	dbg_print_tokens(t_list *tokens)
 		[UNQUOTED] = "UNQUOTED",
 	};
 	t_token	*token;
-	char	*str;
-
 	printf("+---------------+---------------------+\n");
 	printf("| token type    | token content       |\n");
 	printf("+---------------+---------------------+\n");
-
 	while (tokens)
 	{
 		token = tokens->content;
-
 		printf("| %-13s ", token_type_strings[token->type]);
-
-		asprintf(&str, "[%s]", token->content);
-		printf("| %-19s |\n", str);
-		ft_free(&str);
-
+		printf("| %-19s |\n", token->content);
 		printf("+---------------+---------------------+\n");
-
 		tokens = tokens->next;
 	}
 }
@@ -162,7 +115,7 @@ void	dbg_print_commands(t_list *cmds)
 		printf("Args:");
 		while (cmd->args)
 		{
-			printf(" <%s>", cmd->args->content);
+			printf(" <%s>", (char *)cmd->args->content);
 			cmd->args = cmd->args->next;
 		}
 		printf("\n");

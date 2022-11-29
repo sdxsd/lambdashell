@@ -38,53 +38,54 @@ A program is free software if users have all of these freedoms.
 */
 
 #include "../../include/minishell.h"
+#include <sys/wait.h>
 
-// static void	dup_fds(t_cmd *cmd)
-// {
-// 	if (cmd->i_fd != STDIN_FILENO)
-// 	{
-// 		dup2(cmd->i_fd, STDIN_FILENO);
-// 		close(cmd->i_fd);
-// 	}
-// 	if (cmd->o_fd != STDOUT_FILENO)
-// 	{
-// 		dup2(cmd->o_fd, STDOUT_FILENO);
-// 		close(cmd->o_fd);
-// 	}
-// }
+static void	dup_fds(t_cmd *cmd)
+{
+	if (cmd->i_fd != STDIN_FILENO)
+	{
+		dup2(cmd->i_fd, STDIN_FILENO);
+		close(cmd->i_fd);
+	}
+	if (cmd->o_fd != STDOUT_FILENO)
+	{
+		dup2(cmd->o_fd, STDOUT_FILENO);
+		close(cmd->o_fd);
+	}
+}
 
-// /* NOTE: INFO */
-// /* Takes a t_cmd and executes it. */
-// int	execute_command(t_cmd *cmd)
-// {
-// 	int	fd;
-// 	int	iter;
+/* NOTE: INFO */
+/* Takes a t_cmd and executes it. */
+int	execute_command(t_cmd *cmd, char **env)
+{
+	int	fd;
+	int	iter;
 
-// 	iter = 0;
-// 	// TODO: Allow doing redirecting in & out in the same command
-// 	// TODO: Also do this in execute_builtin()
-// 	if (cmd->redirection)
-// 	{
-// 		while (cmd->redirection->file[iter] == ' ')
-// 			iter++;
-// 		fd = open(cmd->redirection->file + iter, O_RDWR | O_CREAT | O_TRUNC, 0644);
-// 		if (fd <= 0)
-// 			return (msg_err("execute_command()", FAILURE));
-// 		if (cmd->redirection->direc == OUTPUT)
-// 			cmd->o_fd = fd;
-// 		if (cmd->redirection->direc == INPUT)
-// 			cmd->i_fd = fd;
-// 	}
-// 	dup_fds(cmd);
-// 	if (execve(cmd->path, cmd->args, lambda->env) == -1)
-// 	{
-// 		msg_err("execute_command()", FAILURE);
-// 		dbg_print_cmd(cmd);
-// 		cmd_deallocator(cmd);
-// 		return (FAILURE);
-// 	}
-// 	return (SUCCESS);
-// }
+	iter = 0;
+	// TODO: Allow doing redirecting in & out in the same command
+	// TODO: Also do this in execute_builtin()
+	/* if (cmd->redirection) */
+	/* { */
+	/* 	while (cmd->redirection->file[iter] == ' ') */
+	/* 		iter++; */
+	/* 	fd = open(cmd->redirection->file + iter, O_RDWR | O_CREAT | O_TRUNC, 0644); */
+	/* 	if (fd <= 0) */
+	/* 		return (msg_err("execute_command()", FAILURE)); */
+	/* 	if (cmd->redirection->direc == OUTPUT) */
+	/* 		cmd->o_fd = fd; */
+	/* 	if (cmd->redirection->direc == INPUT) */
+	/* 		cmd->i_fd = fd; */
+	/* } */
+	dup_fds(cmd);
+	if (execve(cmd->path, cmd->args, env) == -1)
+	{
+		msg_err("execute_command()", FAILURE);
+		dbg_print_cmd(cmd);
+		cmd_deallocator(cmd);
+		return (FAILURE);
+	}
+	return (SUCCESS);
+}
 
 // static int	execute_builtin(t_cmd *cmd, t_vector *env)
 // {
@@ -100,50 +101,50 @@ A program is free software if users have all of these freedoms.
 // 	return (SUCCESS);
 // }
 
-// int	executor(int i_fd, t_exec_element *curr, t_shell *lambda)
-// {
-// 	int		tube[2];
-// 	pid_t	pid;
-// 	t_cmd	*cmd;
-// 	int		status;
+int	executor(int i_fd, t_list *curr, t_shell *lambda)
+{
+	int		tube[2];
+	pid_t	pid;
+	t_cmd	*cmd;
+	int		status;
 
-// 	if (curr->next && pipe(tube) == -1)
-// 		return (msg_err("exec_and_pipe()", FAILURE));
-// 	pid = fork();
-// 	if (pid == FORK_FAILURE)
-// 		return (msg_err("exec_and_pipe()", FAILURE));
-// 	if (pid == FORK_CHILD)
-// 	{
-// 		if (curr->next)
-// 			close(tube[READ]);
-// 		cmd = curr->value;
-// 		if (curr->next)
-// 			cmd->o_fd = tube[WRITE];
-// 		if (i_fd != -1)
-// 			cmd->i_fd = i_fd;
-// 		if (curr->type == tkn_bltin)
-// 			execute_builtin(cmd, lambda->env);
-// 		else
-// 			execute_command(cmd);
-// 	}
-// 	close(i_fd);
-// 	if (curr->next)
-// 		close(tube[WRITE]);
-// 	if (curr->next && executor(tube[READ], curr->next, lambda) != SUCCESS)
-// 		return (msg_err("exec_and_pipe()", FAILURE));
-// 	waitpid(pid, &status, 0);
-// 	if (!curr->next)
-// 	{
-// 		// TODO: Add unit test for this one
-// 		if (WIFEXITED(status))
-// 			lambda->status = WEXITSTATUS(status);
+	if (curr->next && pipe(tube) == -1)
+		return (msg_err("exec_and_pipe()", FAILURE));
+	pid = fork();
+	if (pid == FORK_FAILURE)
+		return (msg_err("exec_and_pipe()", FAILURE));
+	if (pid == FORK_CHILD)
+	{
+		if (curr->next)
+			close(tube[READ]);
+		cmd = curr->content;
+		if (curr->next)
+			cmd->o_fd = tube[WRITE];
+		if (i_fd != -1)
+			cmd->i_fd = i_fd;
+		/* if (curr->type == tkn_bltin) */
+		/* 	execute_builtin(cmd, lambda->env); */
+		/* else */
+		execute_command(cmd);
+	}
+	close(i_fd);
+	if (curr->next)
+		close(tube[WRITE]);
+	if (curr->next && executor(tube[READ], curr->next, lambda) != SUCCESS)
+		return (msg_err("exec_and_pipe()", FAILURE));
+	waitpid(pid, &status, 0);
+	if (!curr->next)
+	{
+		// TODO: Add unit test for this one
+		if (WIFEXITED(status))
+			lambda->status = WEXITSTATUS(status);
 
-// 		else if (WIFSIGNALED(status))
-// 			lambda->status = WTERMSIG(status);
+		else if (WIFSIGNALED(status))
+			lambda->status = WTERMSIG(status);
 
-// 		// TODO: Probably also need to add this? Check by adding a unit test
-// 		// else if (WIFSTOPPED(status))
-// 		// 	lambda->status = WIFSTOPPED(status);
-// 	}
-// 	return (SUCCESS);
-// }
+		// TODO: Probably also need to add this? Check by adding a unit test
+		// else if (WIFSTOPPED(status))
+		// 	lambda->status = WIFSTOPPED(status);
+	}
+	return (SUCCESS);
+}
