@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   CODAM C FILE                                       :+:    :+:            */
+/*   cosmetic.c                                         :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 1970/01/01 00:00:00 by wmaguire      #+#    #+#                 */
-/*   Updated: 1970/01/01 00:00:00 by wmaguire     ########   codam.nl         */
+/*   Updated: 1970/01/01 00:00:00 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,28 +56,26 @@ static char	*last_direc(char *line)
 }
 
 // Prompt string one
-void	ps1(t_shell	*lambda)
+char	*get_readline_str(t_shell *lambda)
 {
-	char	*user;
-	char	*cwd;
-	char	*last;
+	char			*env_val;
+	char			*cwd;
+	char			*last;
+	char			*readline_str;
 
-	green();
-	user = env_get_val(lambda->env, "USER");
-	if (user)
-		printf("[%s] ", user);
-	else
-		printf("[???] ");
-	clear();
-	blue();
+	env_val = env_get_val(lambda->env, "USER");
+	if (!env_val)
+		env_val = "???";
+
 	cwd = getcwd(NULL, 0);
 	if (cwd)
-	{
 		last = last_direc(cwd);
-		printf("%s ", last);
-		ft_free(&cwd);
-	}
 	else
-		printf("??? ");
-	clear();
+		last = "???";
+
+	readline_str = ft_strjoin_array((char *[]){GREEN, "[", env_val, "] ", BLUE, last, " ", CLEAR, "λ :: > ", NULL});
+
+	ft_free(&cwd);
+
+	return (readline_str);
 }

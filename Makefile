@@ -2,13 +2,11 @@
 CC = clang
 CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 NAME = minishell
-
 CFILES = \
 	src/main.c \
 	src/builtins/builtins.c \
 	src/builtins/cd.c \
 	src/builtins/pwd.c \
-	src/cosmetic/colours.c \
 	src/cosmetic/cosmetic.c \
 	src/dealloc/dealloc_exec_list.c \
 	src/dealloc/dealloc_lambda.c \
