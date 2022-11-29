@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   CODAM C FILE                                       :+:    :+:            */
+/*   debug_print.c                                      :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 1970/01/01 00:00:00 by wmaguire      #+#    #+#                 */
-/*   Updated: 1970/01/01 00:00:00 by wmaguire     ########   codam.nl         */
+/*   Updated: 1970/01/01 00:00:00 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,14 +168,13 @@ void	dbg_print_commands(t_list *cmds)
 
 			redirection = cmd->redirections->content;
 
-			// printf("\tRedirection file_path: %s\n", cmd->redirection[0].file_path);
+			printf("\tRedirection file path: %s\n", redirection->file_path);
 			printf("\tRedirection direction: %s\n", direction_strings[redirection->direction]);
+			printf("\tIs ambiguous: %i\n", redirection->is_ambiguous);
 
 			cmd->redirections = cmd->redirections->next;
 			redirection_index++;
 		}
-
-		printf("Has ambiguous redirect: %i\n", cmd->has_ambiguous_redirect);
 
 		cmds = cmds->next;
 		cmd_index++;

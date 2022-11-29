@@ -80,6 +80,11 @@ static char	*get_expanded_string(char *content, t_vector *env)
 
 	substr_start = content;
 	expanded_string = ft_calloc(1, sizeof(*expanded_string));
+	if (!expanded_string)
+	{
+		// TODO: Free
+		return (NULL);
+	}
 
 	while (*content)
 	{
@@ -103,7 +108,8 @@ static char	*get_expanded_string(char *content, t_vector *env)
 
 				if (!expanded_string)
 				{
-					// TODO: Error handling
+					// TODO: Free
+					return (NULL);
 				}
 
 				in_env_variable = false;
@@ -119,7 +125,8 @@ static char	*get_expanded_string(char *content, t_vector *env)
 	appended = get_appended(content, in_env_variable, substr_start, env);
 	if (!appended)
 	{
-		// TODO: Error handling
+		// TODO: Free
+		return (NULL);
 	}
 
 	old_expanded_string = expanded_string;
