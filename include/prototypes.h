@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   CODAM C FILE                                       :+:    :+:            */
+/*   prototypes.h                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 1970/01/01 00:00:00 by wmaguire      #+#    #+#                 */
-/*   Updated: 1970/01/01 00:00:00 by wmaguire     ########   codam.nl         */
+/*   Updated: 1970/01/01 00:00:00 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,7 @@ A program is free software if users have all of these freedoms.
 # include "structs.h"
 
 /* COSMETIC */
-void			clear(void);
-void			red(void);
-void			green(void);
-void			blue(void);
-void			ps1(t_shell	*lambda);
+char			*get_readline_str(t_shell *lambda);
 
 /* REDIRECTIONS */
 int				chk_and_redirec(char *prog, t_cmd *cmd);
