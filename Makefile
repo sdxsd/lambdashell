@@ -1,6 +1,6 @@
 
 CC = clang
-CFLAGS = -g -Wall -Wextra -Werror #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 NAME = minishell
 CFILES =		src/main.c \
 				src/exec/path.c \
@@ -21,7 +21,6 @@ CFILES =		src/main.c \
 				src/env/env_utils.c \
 				src/parser/line_parser.c \
 				src/error/error.c \
-				src/cosmetic/colours.c \
 				src/cosmetic/cosmetic.c
 OFILES = $(CFILES:.c=.o)
 

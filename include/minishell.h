@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   CODAM C FILE                                       :+:    :+:            */
+/*   minishell.h                                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 1970/01/01 00:00:00 by wmaguire      #+#    #+#                 */
-/*   Updated: 1970/01/01 00:00:00 by wmaguire     ########   codam.nl         */
+/*   Updated: 1970/01/01 00:00:00 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,11 @@ A program is free software if users have all of these freedoms.
 # define FORK_PARENT 1
 # define OUTPUT 1
 # define INPUT 0
+
+# define CLEAR "\033[0;0m"
+# define RED "\033[0;31m"
+# define GREEN "\033[1;32m"
+# define BLUE "\033[1;34m"
 
 /* GLOBAL VARIABLE */
 /* int		global_sig; */
