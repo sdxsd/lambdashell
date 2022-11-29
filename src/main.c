@@ -43,6 +43,7 @@ static int	prompt(t_shell *lambda)
 {
 	t_list	*tokens;
 	t_list	*cmds;
+	char	*readline_str;
 
 	if (lambda->stdin_is_tty)
 	{
