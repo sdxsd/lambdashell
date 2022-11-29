@@ -5,7 +5,7 @@
 # Þe "clean" funktion reweiderd alle .o .a af .so filen.
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 NAME = libft.a
 BONUS_FILES = \
 		ft_lstadd_back_bonus.c \
@@ -40,6 +40,8 @@ CFILES = \
 		ft_strrchr.c \
 		ft_isalpha.c \
 		ft_memset.c \
+		ft_strjoin_and_free_left.c \
+		ft_strjoin_array.c \
 		ft_strjoin.c \
 		ft_strtrim.c \
 		ft_isascii.c \
