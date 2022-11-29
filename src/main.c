@@ -43,12 +43,18 @@ A program is free software if users have all of these freedoms.
 
 static int	prompt(t_shell *lambda)
 {
+	char			*readline_str;
 	t_exec_element	*exec_list;
 
 	if (lambda->stdin_is_tty)
 	{
-		ps1(lambda);
-		lambda->line = readline("λ :: > ");
+		readline_str = get_readline_str(lambda);
+		if (!readline_str)
+		{
+			// TODO: Free
+			return (FAILURE);
+		}
+		lambda->line = readline(readline_str);
 	}
 	else
 	{
@@ -102,7 +108,8 @@ int	main(int argc, char **argv, char **env)
 	t_shell	*lambda;
 	int		status;
 
-	if (argc > 1 || argv[0])
+	(void)argv;
+	if (argc > 1)
 		return (FAILURE);
 	lambda = shell_init(env);
 	if (!lambda)
