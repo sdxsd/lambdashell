@@ -58,6 +58,7 @@ static char	*last_direc(char *line)
 // Prompt string one
 char	*get_readline_str(t_shell *lambda)
 {
+<<<<<<< HEAD
 	char	*user;
 	char	*cwd;
 	char	*last;
@@ -67,6 +68,15 @@ char	*get_readline_str(t_shell *lambda)
 	if (user)
 		printf("[%s] ", user);
 	else
+=======
+	char			*env_val;
+	char			*cwd;
+	char			*last;
+	char			*readline_str;
+
+	env_val = env_get_val(lambda->env, "USER");
+	if (!env_val)
+>>>>>>> origin/tokens
 		env_val = "???";
 
 	cwd = getcwd(NULL, 0);
