@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   CODAM C FILE                                       :+:    :+:            */
+/*   cmd.c                                              :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 1970/01/01 00:00:00 by wmaguire      #+#    #+#                 */
-/*   Updated: 1970/01/01 00:00:00 by wmaguire     ########   codam.nl         */
+/*   Updated: 1970/01/01 00:00:00 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ A program is free software if users have all of these freedoms.
 // 	if (ft_strnstr(cmd->args[0], "/", ft_strlen(cmd->args[0])))
 // 		cmd->path = cmd->args[0];
 // 	else
-// 		cmd->path = get_path(cmd->args[0], env);
+// 		cmd->path = get_path_from_name(cmd->args[0], env);
 // 	if (!cmd->path)
 // 	{
 // 		msg_err(cmd->args[0], FAILURE);

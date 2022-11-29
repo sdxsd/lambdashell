@@ -39,11 +39,6 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-static bool	is_text_token(t_token *token)
-{
-	return (token->type == SINGLE_QUOTED || token->type == DOUBLE_QUOTED || token->type == UNQUOTED);
-}
-
 bool	is_ambiguous_redirect(t_list *tokens)
 {
 	t_token	*token;

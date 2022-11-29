@@ -74,7 +74,7 @@ A program is free software if users have all of these freedoms.
 // 	if (ft_strnstr(split_line[0], "/", ft_strlen(split_line[0])))
 // 		path = split_line[0];
 // 	else
-// 		path = get_path(split_line[0], env);
+// 		path = get_path_from_name(split_line[0], env);
 // 	free_ptr_array(split_line);
 // 	if (!path)
 // 		return (FALSE);

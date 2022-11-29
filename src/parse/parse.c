@@ -91,7 +91,7 @@ static t_redirect	*get_redirect(t_list **tokens)
 		token = (*tokens)->content;
 
 		// TODO: Maybe necessary to add check for token being NULL?
-		if (token->type != SINGLE_QUOTED && token->type != DOUBLE_QUOTED && token->type != UNQUOTED)
+		if (!is_text_token(token))
 			break;
 
 		old_file_path = redirect->file_path;
@@ -109,16 +109,97 @@ static t_redirect	*get_redirect(t_list **tokens)
 	return (redirect);
 }
 
-static t_cmd	*get_cmd(t_list **tokens)
+static char		*get_path(t_list **tokens, t_vector *env)
+{
+	char	*path;
+	t_token	*token;
+	char	*old_path;
+	char	*appended_path;
+
+	path = ft_calloc(1, sizeof(*path));
+	if (!path)
+	{
+		// TODO: Free
+		return (NULL);
+	}
+
+	while (*tokens)
+	{
+		token = (*tokens)->content;
+
+		// TODO: Maybe necessary to add check for token being NULL?
+		if (!is_text_token(token))
+			break;
+
+		appended_path = get_path_from_name(token->content, env);
+		if (!appended_path)
+		{
+			// TODO: Free
+			return (NULL);
+		}
+
+		old_path = path;
+		path = ft_strjoin(old_path, appended_path);
+		ft_free(&old_path);
+		if (!path)
+		{
+			// TODO: Free
+			return (NULL);
+		}
+
+		*tokens = (*tokens)->next;
+	}
+	return (path);
+}
+
+static char		*get_arg(t_list **tokens)
+{
+	char	*arg;
+	t_token	*token;
+	char	*old_arg;
+
+	arg = ft_calloc(1, sizeof(*arg));
+	if (!arg)
+	{
+		// TODO: Free
+		return (NULL);
+	}
+
+	while (*tokens)
+	{
+		token = (*tokens)->content;
+
+		// TODO: Maybe necessary to add check for token being NULL?
+		if (!is_text_token(token))
+			break;
+
+		old_arg = arg;
+		arg = ft_strjoin(old_arg, token->content);
+		ft_free(&old_arg);
+		if (!arg)
+		{
+			// TODO: Free
+			return (NULL);
+		}
+
+		*tokens = (*tokens)->next;
+	}
+	return (arg);
+}
+
+static t_cmd	*get_cmd(t_list **tokens, t_vector *env)
 {
 	t_cmd		*cmd;
 	t_token		*token;
 	t_redirect	*redirect;
+	char		*arg;
 
 	cmd = get_initial_cmd();
 	while (*tokens)
 	{
 		token = (*tokens)->content;
+
+		// TODO: Maybe necessary to add check for token being NULL?
 
 		if (token->type == PIPE)
 		{
@@ -127,9 +208,26 @@ static t_cmd	*get_cmd(t_list **tokens)
 		}
 		else if (token->type == REDIRECTION)
 		{
-			// TODO: Maybe skip this step if the redirection is ambiguous
 			redirect = get_redirect(tokens);
 			if (!redirect || !ft_lstnew_back(&cmd->redirections, redirect))
+			{
+				// TODO: Free
+				return (NULL);
+			}
+		}
+		else if (is_text_token(token) && !cmd->path)
+		{
+			cmd->path = get_path(tokens, env);
+			if (!cmd->path)
+			{
+				// TODO: Free
+				return (NULL);
+			}
+		}
+		else if (is_text_token(token))
+		{
+			arg = get_arg(tokens);
+			if (!arg || !ft_lstnew_back(&cmd->args, arg))
 			{
 				// TODO: Free
 				return (NULL);
@@ -141,7 +239,7 @@ static t_cmd	*get_cmd(t_list **tokens)
 	return (cmd);
 }
 
-t_list	*parse(t_list *tokens)
+t_list	*parse(t_list *tokens, t_vector *env)
 {
 	t_list	*cmds;
 	t_cmd	*cmd;
@@ -150,7 +248,7 @@ t_list	*parse(t_list *tokens)
 
 	while (tokens)
 	{
-		cmd = get_cmd(&tokens);
+		cmd = get_cmd(&tokens, env);
 		if (!cmd || !ft_lstnew_back(&cmds, cmd))
 			return (NULL); // TODO: Free?
 	}
