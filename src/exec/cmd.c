@@ -133,4 +133,3 @@ A program is free software if users have all of these freedoms.
 // 	ft_free(&cmd->path);
 // 	ft_free(&cmd);
 // }
->>>>>>> origin/tokens
