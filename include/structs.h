@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   CODAM C FILE                                       :+:    :+:            */
+/*   structs.h                                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 1970/01/01 00:00:00 by wmaguire      #+#    #+#                 */
-/*   Updated: 1970/01/01 00:00:00 by wmaguire     ########   codam.nl         */
+/*   Updated: 1970/01/01 00:00:00 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ typedef enum e_direction
 typedef struct s_redirect {
 	char		*file_path;
 	t_direction	direction;
+	bool		is_ambiguous;
 }	t_redirect;
 
 // NOTE:
@@ -108,7 +109,6 @@ typedef struct s_cmd
 	char	**args;
 	char	*path;
 	t_list	*redirections;
-	bool	has_ambiguous_redirect;
 }	t_cmd;
 
 typedef struct s_env_element

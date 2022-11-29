@@ -51,7 +51,6 @@ static t_cmd	*get_initial_cmd(void)
 	// cmd->args = NULL;
 	// cmd->path = NULL;
 	// cmd->redirection = NULL;
-	// cmd->has_ambiguous_redirect = false;
 	return (cmd);
 }
 
@@ -68,6 +67,7 @@ static t_redirect	*get_redirect(t_list **tokens)
 {
 	t_redirect	*redirect;
 	t_token		*token;
+	char		*old_file_path;
 
 	redirect = ft_calloc(1, sizeof(*redirect));
 
@@ -77,6 +77,15 @@ static t_redirect	*get_redirect(t_list **tokens)
 
 	skip_whitespace_tokens(tokens);
 
+	redirect->file_path = ft_calloc(1, sizeof(*redirect->file_path));
+	if (!redirect->file_path)
+	{
+		// TODO: Free
+		return (NULL);
+	}
+
+	redirect->is_ambiguous = is_ambiguous_redirect(*tokens);
+
 	while (*tokens)
 	{
 		token = (*tokens)->content;
@@ -84,6 +93,15 @@ static t_redirect	*get_redirect(t_list **tokens)
 		// TODO: Maybe necessary to add check for token being NULL?
 		if (token->type != SINGLE_QUOTED && token->type != DOUBLE_QUOTED && token->type != UNQUOTED)
 			break;
+
+		old_file_path = redirect->file_path;
+		redirect->file_path = ft_strjoin(old_file_path, token->content);
+		ft_free(&old_file_path);
+		if (!redirect->file_path)
+		{
+			// TODO: Free
+			return (NULL);
+		}
 
 		*tokens = (*tokens)->next;
 	}
@@ -109,9 +127,7 @@ static t_cmd	*get_cmd(t_list **tokens)
 		}
 		else if (token->type == REDIRECTION)
 		{
-			if (is_ambiguous_redirect(*tokens))
-				cmd->has_ambiguous_redirect = true;
-
+			// TODO: Maybe skip this step if the redirection is ambiguous
 			redirect = get_redirect(tokens);
 			if (!redirect || !ft_lstnew_back(&cmd->redirections, redirect))
 			{

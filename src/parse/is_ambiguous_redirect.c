@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   has_ambiguous_redirection.c                        :+:    :+:            */
+/*   is_ambiguous_redirect.c                            :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
@@ -53,10 +53,6 @@ bool	is_ambiguous_redirect(t_list *tokens)
 	bool	seen_env_word = false;
 
 	char	*content;
-
-	tokens = tokens->next;
-
-	skip_whitespace_tokens(&tokens);
 
 	while (tokens && is_text_token(tokens->content))
 	{
