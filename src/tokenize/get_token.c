@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   CODAM C FILE                                       :+:    :+:            */
+/*   get_token.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
+/*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 1970/01/01 00:00:00 by wmaguire      #+#    #+#                 */
-/*   Updated: 1970/01/01 00:00:00 by wmaguire     ########   codam.nl         */
+/*   Created: 2022/11/18 17:08:10 by sbos          #+#    #+#                 */
+/*   Updated: 2022/11/18 17:08:10 by sbos          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,17 @@ A program is free software if users have all of these freedoms.
 */
 
 #include "../../include/minishell.h"
-#include <stdlib.h>
 
-// Temporary.
-int	parse_line(t_shell *lambda)
+t_token	*get_token(t_token_type type, char *content)
 {
-	if (ft_strlen(lambda->line) < 1)
-		return (FAILURE);
-	lambda->lines = ft_split(lambda->line, '|');
-	if (!lambda->lines)
-		return (msg_err("parse_line()", FAILURE));
-	return (SUCCESS);
+	t_token	*token;
+
+	if (!content)
+		return (NULL);
+	token = ft_calloc(1, sizeof(*token));
+	if (!token)
+		return (NULL);
+	token->type = type;
+	token->content = content;
+	return (token);
 }

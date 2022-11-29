@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   CODAM C FILE                                       :+:    :+:            */
+/*   subtokenizers.c                                    :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
+/*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 1970/01/01 00:00:00 by wmaguire      #+#    #+#                 */
-/*   Updated: 1970/01/01 00:00:00 by wmaguire     ########   codam.nl         */
+/*   Created: 2022/11/18 17:08:28 by sbos          #+#    #+#                 */
+/*   Updated: 2022/11/18 17:08:28 by sbos          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,20 +39,49 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-// t_cmd	*bltin_constructor(char	*line, t_vector *env)
-// {
-// 	t_cmd	*cmd;
+t_token_type	subtokenize_single_quote(char **line_ptr)
+{
+	(*line_ptr)++;
+	while (**line_ptr != '\0' && **line_ptr != '\'')
+		(*line_ptr)++;
+	if (**line_ptr == '\'')
+		(*line_ptr)++;
+	return (SINGLE_QUOTED);
+}
 
-// 	cmd = ft_calloc(1, sizeof(*cmd));
-// 	if (!cmd)
-// 		return (null_msg_err("bltin_constructor()"));
-// 	cmd->i_fd = STDIN_FILENO;
-// 	cmd->o_fd = STDOUT_FILENO;
-// 	cmd->args = ft_split(line, ' ');
-// 	if (!cmd->args)
-// 	{
-// 		cmd_deallocator(cmd);
-// 		return (null_msg_err("bltin_constructor()"));
-// 	}
-// 	return (cmd);
-// }
+t_token_type	subtokenize_double_quote(char **line_ptr)
+{
+	(*line_ptr)++;
+	while (**line_ptr != '\0' && **line_ptr != '"')
+		(*line_ptr)++;
+	if (**line_ptr == '"')
+		(*line_ptr)++;
+	return (DOUBLE_QUOTED);
+}
+
+t_token_type	subtokenize_redirection(char **line_ptr)
+{
+	(*line_ptr)++;
+	return (REDIRECTION);
+}
+
+t_token_type	subtokenize_pipe(char **line_ptr)
+{
+	(*line_ptr)++;
+	return (PIPE);
+}
+
+t_token_type	subtokenize_whitespace(char **line_ptr)
+{
+	while (**line_ptr != '\0' && ft_isspace(**line_ptr))
+		(*line_ptr)++;
+	return (WHITESPACE);
+}
+
+t_token_type	subtokenize_unquoted(char **line_ptr)
+{
+	// TODO: Make sure this isn't missing any conditions for breaking
+	while (**line_ptr != '\0' && !ft_isspace(**line_ptr) && **line_ptr != '|' && **line_ptr != '<' && **line_ptr != '>' && **line_ptr != '"' && **line_ptr != '\'')
+		(*line_ptr)++;
+	return (UNQUOTED);
+}

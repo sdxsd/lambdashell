@@ -38,9 +38,6 @@ A program is free software if users have all of these freedoms.
 */
 
 #include "../../include/minishell.h"
-#include <limits.h>
-#include <unistd.h>
-#include <stdlib.h>
 
 char	*ret_cwd(void)
 {

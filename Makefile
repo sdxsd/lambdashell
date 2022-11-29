@@ -1,27 +1,42 @@
 
 CC = clang
-CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 NAME = minishell
-CFILES =		src/main.c \
-				src/exec/path.c \
-				src/exec/cmd.c \
-				src/exec/exec.c \
-				src/exec/redirec.c \
-				src/exec/exec_list.c \
-				src/builtins/pwd.c \
-				src/builtins/cd.c \
-				src/builtins/builtins.c \
-				src/tokenizer/tokens.c \
-				src/dealloc/dealloc_exec_list.c \
-				src/dealloc/dealloc_lambda.c \
-				src/dealloc/dealloc_ptr_array.c \
-				src/debug/debug_print.c \
-				src/debug/debug_env.c \
-				src/env/env.c \
-				src/env/env_utils.c \
-				src/parser/line_parser.c \
-				src/error/error.c \
-				src/cosmetic/cosmetic.c
+
+CFILES = \
+	src/main.c \
+	src/builtins/builtins.c \
+	src/builtins/cd.c \
+	src/builtins/pwd.c \
+	src/cosmetic/colours.c \
+	src/cosmetic/cosmetic.c \
+	src/dealloc/dealloc_exec_list.c \
+	src/dealloc/dealloc_lambda.c \
+	src/dealloc/dealloc_ptr_array.c \
+	src/debug/debug_env.c \
+	src/debug/debug_print.c \
+	src/env/env_utils.c \
+	src/env/env.c \
+	src/env/expand_env_variables.c \
+	src/error/error.c \
+	src/exec/cmd.c \
+	src/exec/exec_list.c \
+	src/exec/exec.c \
+	src/exec/path.c \
+	src/parse/is_ambiguous_redirect.c \
+	src/parse/is_text_token.c \
+	src/parse/parse.c \
+	src/parse/skip_whitespace_tokens.c \
+	src/tokenize/get_token.c \
+	src/tokenize/subtokenizers.c \
+	src/tokenize/tokenize.c
+
+HEADERS = \
+	include/minishell.h \
+	include/prototypes.h \
+	include/splash.h \
+	include/structs.h
+
 OFILES = $(CFILES:.c=.o)
 
 LIBFT_PATH = libft/libft.a
@@ -39,7 +54,7 @@ all: $(NAME)
 $(NAME): $(OFILES) $(LIBFT_PATH)
 	$(CC) $(CFLAGS) $(OFILES) $(LIB) -o $(NAME)
 
-%.o: %.c
+%.o: %.c $(HEADERS)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(LIBFT_PATH):

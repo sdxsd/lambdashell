@@ -47,7 +47,11 @@ A program is free software if users have all of these freedoms.
 
 /* LIBRARIES */
 # include "../libft/libft.h"
+# include <stdlib.h>
+# include <unistd.h>
 # include <stdio.h>
+// # include <sys/wait.h>
+// # include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 

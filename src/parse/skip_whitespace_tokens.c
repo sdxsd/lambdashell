@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   CODAM C FILE                                       :+:    :+:            */
+/*   skip_whitespace_tokens.c                           :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
+/*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 1970/01/01 00:00:00 by wmaguire      #+#    #+#                 */
-/*   Updated: 1970/01/01 00:00:00 by wmaguire     ########   codam.nl         */
+/*   Created: 2022/11/25 17:19:26 by sbos          #+#    #+#                 */
+/*   Updated: 2022/11/25 17:19:26 by sbos          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,20 +39,9 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-// t_cmd	*bltin_constructor(char	*line, t_vector *env)
-// {
-// 	t_cmd	*cmd;
-
-// 	cmd = ft_calloc(1, sizeof(*cmd));
-// 	if (!cmd)
-// 		return (null_msg_err("bltin_constructor()"));
-// 	cmd->i_fd = STDIN_FILENO;
-// 	cmd->o_fd = STDOUT_FILENO;
-// 	cmd->args = ft_split(line, ' ');
-// 	if (!cmd->args)
-// 	{
-// 		cmd_deallocator(cmd);
-// 		return (null_msg_err("bltin_constructor()"));
-// 	}
-// 	return (cmd);
-// }
+void	skip_whitespace_tokens(t_list **tokens)
+{
+	// TODO: Maybe necessary to add check for token being NULL before ->type?
+	while (*tokens && ((t_token *)(*tokens)->content)->type == WHITESPACE)
+		*tokens = (*tokens)->next;
+}
