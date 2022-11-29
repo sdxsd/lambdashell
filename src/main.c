@@ -47,7 +47,7 @@ static int	prompt(t_shell *lambda)
 	if (lambda->stdin_is_tty)
 	{
 		ps1(lambda);
-		lambda->line = readline("λ :: > ");
+		lambda->line = readline("λ :: ❯ ");
 	}
 	else
 	{
