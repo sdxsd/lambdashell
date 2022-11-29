@@ -106,7 +106,7 @@ typedef struct s_cmd
 {
 	int		i_fd;
 	int		o_fd;
-	char	**args;
+	t_list	*args;
 	char	*path;
 	t_list	*redirections;
 }	t_cmd;

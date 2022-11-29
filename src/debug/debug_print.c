@@ -55,7 +55,7 @@ void	dbg_print_cmd(t_cmd	*cmd)
 {
 	printf("PATH: %s\n", cmd->path);
 	printf("LINES:\n");
-	dbg_print_lines(cmd->args);
+	// dbg_print_lines(cmd->args);
 	printf("I_FD: %d\n", cmd->i_fd);
 	printf("O_FD: %d\n", cmd->o_fd);
 	if (cmd->redirections)
@@ -157,9 +157,15 @@ void	dbg_print_commands(t_list *cmds)
 		printf("Input file descriptor: %i\n", cmd->i_fd);
 		printf("Output file descriptor: %i\n", cmd->o_fd);
 
-		// printf("Args: %s\n", arg);
-
 		printf("Path: %s\n", cmd->path);
+
+		printf("Args:");
+		while (cmd->args)
+		{
+			printf(" <%s>", cmd->args->content);
+			cmd->args = cmd->args->next;
+		}
+		printf("\n");
 
 		redirection_index = 0;
 		while (cmd->redirections)

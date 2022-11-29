@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   CODAM C FILE                                       :+:    :+:            */
+/*   prototypes.h                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 1970/01/01 00:00:00 by wmaguire      #+#    #+#                 */
-/*   Updated: 1970/01/01 00:00:00 by wmaguire     ########   codam.nl         */
+/*   Updated: 1970/01/01 00:00:00 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,8 @@ t_list			*tokenize(char *line);
 
 /* PARSE */
 bool			is_ambiguous_redirect(t_list *tokens);
-t_list			*parse(t_list *tokens);
+bool			is_text_token(t_token *token);
+t_list			*parse(t_list *tokens, t_vector *env);
 void			skip_whitespace_tokens(t_list **tokens);
 
 /* CMD STRUCT */
@@ -94,7 +95,7 @@ void			skip_whitespace_tokens(t_list **tokens);
 // void			cmd_deallocator(t_cmd *cmd);
 
 /* PATH */
-char			*get_path(char *prog_n, t_vector *env);
+char			*get_path_from_name(char *prog_n, t_vector *env);
 int				free_ptr_array(char *ptr[]);
 
 /* DEALLOC */
