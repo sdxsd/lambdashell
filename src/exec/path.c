@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   CODAM C FILE                                       :+:    :+:            */
+/*   path.c                                             :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 1970/01/01 00:00:00 by wmaguire      #+#    #+#                 */
-/*   Updated: 1970/01/01 00:00:00 by wmaguire     ########   codam.nl         */
+/*   Updated: 1970/01/01 00:00:00 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ A program is free software if users have all of these freedoms.
 */
 
 #include "../../include/minishell.h"
-#include <stdlib.h>
-#include <unistd.h>
 
 /* Returns number of elements freed */
 /* Assumes list ends with null ptr */
@@ -59,7 +57,7 @@ int	free_ptr_array(char *ptr[])
 
 /* NOTE: exit calls are temporary until proper error handling is implemented. */
 /* Utility function for combining program name and the paths.  */
-static char	*combine_path(char *dir, char *prog_n)
+static char	*path_join(char *dir, char *prog_n)
 {
 	char	*abs_path;
 	char	*dir_slash;
@@ -76,22 +74,22 @@ static char	*combine_path(char *dir, char *prog_n)
 
 /* Takes program name (prog_n), and environment strings (env) and returns */
 /* the absolute path to the program. */
-char	*get_path(char *prog_n, t_vector *env)
+char	*get_path_from_name(char *name, t_vector *env)
 {
-	static t_env_element	*path_env;
-	char					*abs_path;
-	char					**exec_direcs;
-	int						iter;
+	static char	*path;
+	char		*abs_path;
+	char		**exec_direcs;
+	int			iter;
 
 	iter = 0;
-	if (!path_env)
-		path_env = env_get_val(env, "PATH=");
-	if (!path_env)
+	if (!path)
+		path = env_get_val(env, "PATH");
+	if (!path)
 		return (NULL);
-	exec_direcs = ft_split(path_env->val, ':');
+	exec_direcs = ft_split(path, ':');
 	while (exec_direcs[iter])
 	{
-		abs_path = combine_path(exec_direcs[iter], prog_n);
+		abs_path = path_join(exec_direcs[iter], name);
 		if (!access(abs_path, F_OK)) // TODO: Probably needs more flags
 		{
 			free_ptr_array(exec_direcs);

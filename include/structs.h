@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   CODAM C FILE                                       :+:    :+:            */
+/*   structs.h                                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 1970/01/01 00:00:00 by wmaguire      #+#    #+#                 */
-/*   Updated: 1970/01/01 00:00:00 by wmaguire     ########   codam.nl         */
+/*   Updated: 1970/01/01 00:00:00 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,22 +55,52 @@ typedef struct s_shell
 	bool		exit;
 }	t_shell;
 
-typedef enum e_token_type
-{
-	tkn_str,
-	tkn_bltin,
-	tkn_cmd,
-	tkn_read,
-	tkn_write,
-	tkn_pipe,
-	tkn_heredoc,
-	tkn_append
-}	t_token_type;
+// typedef enum e_token_type
+// {
+// 	tkn_str,
+// 	tkn_bltin,
+// 	tkn_cmd,
+// 	tkn_read,
+// 	tkn_write,
+// 	tkn_pipe,
+// 	tkn_heredoc,
+// 	tkn_append
+// }	t_token_type;
 
+<<<<<<< HEAD
 typedef struct s_redirec {
 	int		direc;
 	char	*filename;
 } t_redirec;
+=======
+// ERR_GENERIC = unknown error type.
+// ERR_PARSING = problem with input.
+// ERR_NULLRET = function returned null
+// ERR_ALLOCFU = allocation fucked up
+// RET_SUCCESS = everything went fine.
+typedef enum e_err
+{
+	ERR_GENERIC,
+	ERR_TOKENIZ,
+	ERR_PARSING,
+	ERR_NULLRET,
+	ERR_ALLOCFU,
+	RET_SUCCESS,
+}	t_err;
+
+typedef enum e_direction
+{
+	IN,
+	OUT,
+	APPEND,
+}	t_direction;
+
+typedef struct s_redirect {
+	char		*file_path;
+	t_direction	direction;
+	bool		is_ambiguous;
+}	t_redirect;
+>>>>>>> origin/tokens
 
 // NOTE:
 //                     +-----+
@@ -81,13 +111,11 @@ typedef struct s_redirec {
 
 typedef struct s_cmd
 {
-	int			ret;
-	int			i_fd;
-	int			o_fd;
-	char		**args;
-	char		**env;
-	char		*path;
-	t_vector	*redirec;
+	int		i_fd;
+	int		o_fd;
+	t_list	*args;
+	char	*path;
+	t_list	*redirections;
 }	t_cmd;
 
 typedef struct s_env_element
@@ -120,15 +148,23 @@ typedef struct s_env_element
 //                  i.e. t_cmd
 // (void *next)  -> next token element in the list.
 
-// ALLOCATOR   : exec_list_generator();
+// ALLOCATOR   : parse();
 // DEALLOCATOR : exec_list_deallocator();
 
-typedef struct s_exec_element
+typedef enum s_token_type
 {
-	int						type;
-	char					*line;
-	void					*value;
-	struct s_exec_element	*next;
-}	t_exec_element;
+	SINGLE_QUOTED,
+	DOUBLE_QUOTED,
+	REDIRECTION, // TODO: Might need to split into REDIRECTION_IN and _OUT
+	PIPE,
+	WHITESPACE,
+	UNQUOTED,
+}	t_token_type;
+
+typedef struct s_token
+{
+	t_token_type	type;
+	char			*content;
+}	t_token;
 
 #endif

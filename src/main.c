@@ -38,23 +38,16 @@ A program is free software if users have all of these freedoms.
 */
 
 #include "../include/minishell.h"
-#include <stdlib.h>
-#include <unistd.h>
 
 static int	prompt(t_shell *lambda)
 {
-	char			*readline_str;
-	t_exec_element	*exec_list;
+	t_list	*tokens;
+	t_list	*cmds;
 
 	if (lambda->stdin_is_tty)
 	{
-		readline_str = get_readline_str(lambda);
-		if (!readline_str)
-		{
-			// TODO: Free
-			return (FAILURE);
-		}
-		lambda->line = readline(readline_str);
+		ps1(lambda);
+		lambda->line = readline("λ :: ❯ ");
 	}
 	else
 	{
@@ -67,15 +60,22 @@ static int	prompt(t_shell *lambda)
 		return (SUCCESS);
 	}
 	add_history(lambda->line);
-	if (parse_line(lambda) == FAILURE)
-		return (FAILURE);
-	exec_list = tokenizer(lambda);
-	if (exec_list_generator(exec_list, lambda->env) == FAILURE)
+	// if (lambda->line[0]) // TODO: Maybe use?
+	tokens = tokenize(lambda->line);
+	if (expand_env_variables(tokens, lambda->env) == FAILURE)
 	{
-		dealloc_exec_list(exec_list);
+		// TODO: Freeing
 		return (FAILURE);
 	}
-	executor(-1, exec_list, lambda);
+	dbg_print_tokens(tokens);
+	cmds = parse(tokens, lambda->env);
+	if (!cmds)
+	{
+		// TODO: Freeing
+		return (FAILURE);
+	}
+	dbg_print_commands(cmds);
+	// executor(-1, cmds, lambda);
 	ft_free(&lambda->line);
 	return (SUCCESS);
 }
@@ -84,7 +84,7 @@ static t_shell	*shell_init(char **env)
 {
 	t_shell		*lambda;
 
-	lambda = ft_calloc(1, sizeof(t_shell));
+	lambda = ft_calloc(1, sizeof(*lambda));
 	if (!lambda)
 		return (NULL);
 	lambda->status = SUCCESS;
@@ -105,7 +105,7 @@ int	main(int argc, char **argv, char **env)
 	int		status;
 
 	(void)argv;
-	if (argc > 1)
+	if (argc != 1)
 		return (FAILURE);
 	lambda = shell_init(env);
 	if (!lambda)

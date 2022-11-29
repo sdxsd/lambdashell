@@ -38,16 +38,15 @@ A program is free software if users have all of these freedoms.
 */
 
 #include "../../include/minishell.h"
-#include <stdlib.h>
 
 void	dbg_test_env(t_vector *env)
 {
 	t_vector	*pushed_to_front;
 	t_vector	*pushed_to_back;
 
-	pushed_to_front = ft_calloc(1, sizeof(t_vector));
+	pushed_to_front = ft_calloc(1, sizeof(*pushed_to_front));
 	pushed_to_front->data = "PUSHED_TO_FRONT";
-	pushed_to_back = ft_calloc(1, sizeof(t_vector));
+	pushed_to_back = ft_calloc(1, sizeof(*pushed_to_back));
 	pushed_to_back->data = "PUSHED_TO_BACK";
 	printf("UNCHANGED ENV TEST:\n");
 	printf("	FIRST: %s\n", (char *)vector_get_first(env)->data);

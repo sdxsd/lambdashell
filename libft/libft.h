@@ -45,9 +45,11 @@ typedef struct s_vector {
 // LINKT LISTEN FUNKTIONEN
 t_list		*ft_lstnew(void *content);
 void		ft_lstadd_front(t_list **lst, t_list *new);
+t_list		*ft_lstnew_front(t_list **lst_ptr, void *content);
 int			ft_lstsize(t_list *lst);
 t_list		*ft_lstlast(t_list *lst);
 void		ft_lstadd_back(t_list **lst, t_list *new);
+t_list		*ft_lstnew_back(t_list **lst_ptr, void *content);
 void		ft_lstdelone(t_list *lst, void (*del)(void*));
 void		ft_lstclear(t_list **lst, void (*del)(void*));
 void		ft_lstiter(t_list *lst, void (*f)(void *));
@@ -97,6 +99,7 @@ int			ft_isalpha(int c);
 int			ft_isalnum(int c);
 int			ft_isascii(int c);
 int			ft_isprint(int c);
+int			ft_isspace(int c);
 
 // MEMORY FUNKTIONEN
 int			ft_memcmp(const void *s1, const void *s2, size_t n);

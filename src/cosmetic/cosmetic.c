@@ -38,8 +38,6 @@ A program is free software if users have all of these freedoms.
 */
 
 #include "../../include/minishell.h"
-#include <unistd.h>
-#include <stdlib.h>
 
 static char	*last_direc(char *line)
 {
@@ -60,15 +58,14 @@ static char	*last_direc(char *line)
 // Prompt string one
 char	*get_readline_str(t_shell *lambda)
 {
-	t_env_element	*env_element;
-	char			*env_val;
-	char			*cwd;
-	char			*last;
-	char			*readline_str;
+	char	*user;
+	char	*cwd;
+	char	*last;
 
-	env_element = env_get_val(lambda->env, "USER=");
-	if (env_element)
-		env_val = env_element->val;
+	green();
+	user = env_get_val(lambda->env, "USER");
+	if (user)
+		printf("[%s] ", user);
 	else
 		env_val = "???";
 

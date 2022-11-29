@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   CODAM C FILE                                       :+:    :+:            */
+/*   is_ambiguous_redirect.c                            :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
+/*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 1970/01/01 00:00:00 by wmaguire      #+#    #+#                 */
-/*   Updated: 1970/01/01 00:00:00 by wmaguire     ########   codam.nl         */
+/*   Created: 2022/11/22 15:48:01 by sbos          #+#    #+#                 */
+/*   Updated: 2022/11/22 15:48:01 by sbos          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,20 +39,66 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-// t_cmd	*bltin_constructor(char	*line, t_vector *env)
-// {
-// 	t_cmd	*cmd;
+bool	is_ambiguous_redirect(t_list *tokens)
+{
+	t_token	*token;
 
-// 	cmd = ft_calloc(1, sizeof(*cmd));
-// 	if (!cmd)
-// 		return (null_msg_err("bltin_constructor()"));
-// 	cmd->i_fd = STDIN_FILENO;
-// 	cmd->o_fd = STDOUT_FILENO;
-// 	cmd->args = ft_split(line, ' ');
-// 	if (!cmd->args)
-// 	{
-// 		cmd_deallocator(cmd);
-// 		return (null_msg_err("bltin_constructor()"));
-// 	}
-// 	return (cmd);
-// }
+	bool	valid_path = false;
+	bool	seen_filename_start = false;
+	bool	seen_env_word = false;
+
+	char	*content;
+
+	while (tokens && is_text_token(tokens->content))
+	{
+		token = tokens->content;
+		content = token->content;
+
+		if (token->type == UNQUOTED) // && ft_strchr(content, ' '))
+		{
+			while (*content)
+			{
+				if (ft_isspace(*content))
+				{
+					if (seen_filename_start)
+						seen_env_word = true;
+				}
+				else
+				{
+					valid_path = true;
+
+					// Handles:
+					// `echo a > "foo"$whitespace_left`
+					// `echo a > $whitespace_center`
+					if (seen_env_word)
+						return (true);
+
+					seen_filename_start = true;
+				}
+				content++;
+			}
+		}
+		else
+		{
+			valid_path = true;
+
+			if (*content)
+			{
+				seen_filename_start = true;
+
+				// Handles:
+				// `echo a > $whitespace_right"foo"`
+				if (seen_env_word)
+					return (true);
+			}
+		}
+
+		tokens = tokens->next;
+	}
+
+	// Handles:
+	// `echo a > ""`
+	// `echo a > $empty`
+	// `echo a > $space`
+	return (!valid_path);
+}
