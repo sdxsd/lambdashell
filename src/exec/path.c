@@ -55,21 +55,9 @@ int	free_ptr_array(char *ptr[])
 	return (iter);
 }
 
-/* NOTE: exit calls are temporary until proper error handling is implemented. */
-/* Utility function for combining program name and the paths.  */
-static char	*path_join(char *dir, char *prog_n)
+static char	*path_join(char *dir, char *name)
 {
-	char	*abs_path;
-	char	*dir_slash;
-
-	dir_slash = ft_strjoin(dir, "/");
-	if (!dir_slash)
-		exit(1);
-	abs_path = ft_strjoin(dir_slash, prog_n);
-	if (!abs_path)
-		exit(1);
-	ft_free(&dir_slash);
-	return (abs_path);
+	return (ft_strjoin_array((char *[]){dir, "/", name, NULL}));
 }
 
 /* Takes program name (prog_n), and environment strings (env) and returns */
@@ -87,9 +75,16 @@ char	*get_path_from_name(char *name, t_vector *env)
 	if (!path)
 		return (NULL);
 	exec_direcs = ft_split(path, ':');
+	if (!exec_direcs)
+		return (NULL);
 	while (exec_direcs[iter])
 	{
 		abs_path = path_join(exec_direcs[iter], name);
+		if (!abs_path)
+		{
+			free_ptr_array(exec_direcs);
+			return (NULL);
+		}
 		if (!access(abs_path, F_OK)) // TODO: Probably needs more flags
 		{
 			free_ptr_array(exec_direcs);
