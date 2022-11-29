@@ -67,12 +67,6 @@ typedef struct s_shell
 // 	tkn_append
 // }	t_token_type;
 
-<<<<<<< HEAD
-typedef struct s_redirec {
-	int		direc;
-	char	*filename;
-} t_redirec;
-=======
 // ERR_GENERIC = unknown error type.
 // ERR_PARSING = problem with input.
 // ERR_NULLRET = function returned null
@@ -100,7 +94,6 @@ typedef struct s_redirect {
 	t_direction	direction;
 	bool		is_ambiguous;
 }	t_redirect;
->>>>>>> origin/tokens
 
 // NOTE:
 //                     +-----+
