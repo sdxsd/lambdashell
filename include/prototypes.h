@@ -65,6 +65,8 @@ void			*null_msg_err(char *s);
 t_token			*get_token(t_token_type type, char *content);
 t_token_type	subtokenize_single_quote(char **line_ptr);
 t_token_type	subtokenize_double_quote(char **line_ptr);
+t_token_type	subtokenize_append(char **line_ptr);
+t_token_type	subtokenize_heredoc(char **line_ptr);
 t_token_type	subtokenize_redirection(char **line_ptr);
 t_token_type	subtokenize_pipe(char **line_ptr);
 t_token_type	subtokenize_whitespace(char **line_ptr);

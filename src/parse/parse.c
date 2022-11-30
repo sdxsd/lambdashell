@@ -58,9 +58,9 @@ static void	fill_direction(t_redirect *redirect, t_token *token)
 {
 	// TODO: Handle << and >> properly
 	if (*token->content == '<')
-		redirect->direction = IN;
+		redirect->direction = DIRECTION_IN;
 	else if (*token->content == '>')
-		redirect->direction = OUT;
+		redirect->direction = DIRECTION_OUT;
 }
 
 static t_redirect	*get_redirect(t_list **tokens)
