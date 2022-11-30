@@ -59,6 +59,18 @@ t_token_type	subtokenize_double_quote(char **line_ptr)
 	return (DOUBLE_QUOTED);
 }
 
+t_token_type	subtokenize_append(char **line_ptr)
+{
+	(*line_ptr) += 2;
+	return (APPEND);
+}
+
+t_token_type	subtokenize_heredoc(char **line_ptr)
+{
+	(*line_ptr) += 2;
+	return (HEREDOC);
+}
+
 t_token_type	subtokenize_redirection(char **line_ptr)
 {
 	(*line_ptr)++;
