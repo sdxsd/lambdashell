@@ -43,12 +43,14 @@ void	dbg_print_redirec(t_redirect *redirection)
 {
 	printf("FILE PATH: %s\n", redirection->file_path);
 
-	if (redirection->direction == DIRECTION_IN)
-		printf("DIRECTION = IN\n");
-	if (redirection->direction == DIRECTION_OUT)
-		printf("DIREC = OUT\n");
+	if (redirection->direction == DIRECTION_HEREDOC)
+		printf("DIREC = HEREDOC\n");
 	else if (redirection->direction == DIRECTION_APPEND)
 		printf("DIREC = APPEND\n");
+	else if (redirection->direction == DIRECTION_IN)
+		printf("DIRECTION = IN\n");
+	else if (redirection->direction == DIRECTION_OUT)
+		printf("DIREC = OUT\n");
 }
 
 void	dbg_print_cmd(t_cmd	*cmd)
@@ -107,8 +109,8 @@ void	dbg_print_tokens(t_list *tokens)
 	char	*token_type_strings[] = {
 		[SINGLE_QUOTED] = "SINGLE_QUOTED",
 		[DOUBLE_QUOTED] = "DOUBLE_QUOTED",
-		[APPEND] = "APPEND",
-		[HEREDOC] = "HEREDOC",
+		// [APPEND] = "APPEND",
+		// [HEREDOC] = "HEREDOC",
 		[REDIRECTION] = "REDIRECTION",
 		[PIPE] = "PIPE",
 		[WHITESPACE] = "WHITESPACE",
@@ -140,9 +142,10 @@ void	dbg_print_tokens(t_list *tokens)
 void	dbg_print_commands(t_list *cmds)
 {
 	char	*direction_strings[] = {
+		[DIRECTION_HEREDOC] = "HEREDOC",
+		[DIRECTION_APPEND] = "APPEND",
 		[DIRECTION_IN] = "IN",
 		[DIRECTION_OUT] = "OUT",
-		[DIRECTION_APPEND] = "APPEND",
 	};
 	size_t		cmd_index;
 	t_cmd		*cmd;

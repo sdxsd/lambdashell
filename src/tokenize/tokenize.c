@@ -143,10 +143,10 @@ static t_token_type	subtokenize(char **line)
 		return (subtokenize_single_quote(line));
 	else if (**line == '"')
 		return (subtokenize_double_quote(line));
-	else if ((**line == '>' && (*line)[1] == '>'))
-		return (subtokenize_append(line));
 	else if ((**line == '<' && (*line)[1] == '<'))
 		return (subtokenize_heredoc(line));
+	else if ((**line == '>' && (*line)[1] == '>'))
+		return (subtokenize_append(line));
 	else if ((**line == '<' || **line == '>'))
 		return (subtokenize_redirection(line));
 	else if (**line == '|')
@@ -155,6 +155,7 @@ static t_token_type	subtokenize(char **line)
 		return (subtokenize_whitespace(line));
 	else
 		return (subtokenize_unquoted(line));
+	// TODO: Handle invalid user input like >>>
 }
 
 t_list	*tokenize(char *line)

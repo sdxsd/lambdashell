@@ -56,8 +56,11 @@ static t_cmd	*get_initial_cmd(void)
 
 static void	fill_direction(t_redirect *redirect, t_token *token)
 {
-	// TODO: Handle << and >> properly
-	if (*token->content == '<')
+	if (*token->content == '<' && token->content[1] == '<')
+		redirect->direction = DIRECTION_HEREDOC;
+	else if (*token->content == '>' && token->content[1] == '>')
+		redirect->direction = DIRECTION_APPEND;
+	else if (*token->content == '<')
 		redirect->direction = DIRECTION_IN;
 	else if (*token->content == '>')
 		redirect->direction = DIRECTION_OUT;
