@@ -84,9 +84,10 @@ typedef enum e_err
 
 typedef enum e_direction
 {
+	DIRECTION_HEREDOC,
+	DIRECTION_APPEND,
 	DIRECTION_IN,
 	DIRECTION_OUT,
-	DIRECTION_APPEND,
 }	t_direction;
 
 typedef struct s_redirect {
@@ -148,8 +149,8 @@ typedef enum s_token_type
 {
 	SINGLE_QUOTED,
 	DOUBLE_QUOTED,
-	APPEND,
-	HEREDOC,
+	// HEREDOC,
+	// APPEND,
 	REDIRECTION, // TODO: Might need to split into REDIRECTION_IN and _OUT
 	PIPE,
 	WHITESPACE,
