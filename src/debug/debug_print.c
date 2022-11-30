@@ -39,59 +39,6 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-void	dbg_print_redirec(t_redirect *redirection)
-{
-	printf("FILE PATH: %s\n", redirection->file_path);
-
-	if (redirection->direction == DIRECTION_HEREDOC)
-		printf("DIREC = HEREDOC\n");
-	else if (redirection->direction == DIRECTION_APPEND)
-		printf("DIREC = APPEND\n");
-	else if (redirection->direction == DIRECTION_IN)
-		printf("DIRECTION = IN\n");
-	else if (redirection->direction == DIRECTION_OUT)
-		printf("DIREC = OUT\n");
-}
-
-void	dbg_print_cmd(t_cmd	*cmd)
-{
-	printf("PATH: %s\n", cmd->path);
-	printf("LINES:\n");
-	// dbg_print_lines(cmd->args);
-	printf("I_FD: %d\n", cmd->i_fd);
-	printf("O_FD: %d\n", cmd->o_fd);
-	if (cmd->redirections)
-		dbg_print_redirec(cmd->redirections->content);
-}
-
-void	dbg_print_lines(char **lines)
-{
-	int	iter;
-
-	iter = 0;
-	while (lines[iter])
-	{
-		printf("%d: %s\n", iter, lines[iter]);
-		iter++;
-	}
-}
-
-// /* NOTE: To be called after running the tokenize() function. */
-// void	dbg_print_exec_list(t_exec_element *head)
-// {
-// 	if (head->type == tkn_cmd)
-// 		printf("Type: [cmd]\n");
-// 	else if (head->type == tkn_bltin)
-// 		printf("Type: [builtin]\n");
-// 	else
-// 		printf("Type: [unknown]\n");
-// 	printf("Line: %s\n", head->line);
-// 	printf("Value: %p\n", head->value);
-// 	printf("next: %p\n\n", head->next);
-// 	if (head->next)
-// 		dbg_print_exec_list(head->next);
-// }
-
 void	dbg_print_env(t_vector *head)
 {
 	t_env_element	*ee;
@@ -109,8 +56,6 @@ void	dbg_print_tokens(t_list *tokens)
 	char	*token_type_strings[] = {
 		[SINGLE_QUOTED] = "SINGLE_QUOTED",
 		[DOUBLE_QUOTED] = "DOUBLE_QUOTED",
-		// [APPEND] = "APPEND",
-		// [HEREDOC] = "HEREDOC",
 		[REDIRECTION] = "REDIRECTION",
 		[PIPE] = "PIPE",
 		[WHITESPACE] = "WHITESPACE",
@@ -152,19 +97,21 @@ void	dbg_print_commands(t_list *cmds)
 	size_t		redirection_index;
 	t_redirect	*redirection;
 
+	ft_printf("\n");
+
 	cmd_index = 0;
 	while (cmds)
 	{
-		printf("Command %zu:\n", cmd_index);
+		printf("Command %zu:\n", cmd_index + 1);
 
 		cmd = cmds->content;
 
-		printf("Input file descriptor: %i\n", cmd->i_fd);
-		printf("Output file descriptor: %i\n", cmd->o_fd);
+		printf("\tInput file descriptor: %i\n", cmd->i_fd);
+		printf("\tOutput file descriptor: %i\n", cmd->o_fd);
 
-		printf("Path: %s\n", cmd->path);
+		printf("\tPath: %s\n", cmd->path);
 
-		printf("Args:");
+		printf("\tArgs:");
 		while (cmd->args)
 		{
 			printf(" <%s>", cmd->args->content);
@@ -175,13 +122,13 @@ void	dbg_print_commands(t_list *cmds)
 		redirection_index = 0;
 		while (cmd->redirections)
 		{
-			printf("Redirection %zu:\n", redirection_index);
+			printf("\tRedirection %zu:\n", redirection_index);
 
 			redirection = cmd->redirections->content;
 
-			printf("\tRedirection file path: %s\n", redirection->file_path);
-			printf("\tRedirection direction: %s\n", direction_strings[redirection->direction]);
-			printf("\tIs ambiguous: %i\n", redirection->is_ambiguous);
+			printf("\t\tRedirection file path: %s\n", redirection->file_path);
+			printf("\t\tRedirection direction: %s\n", direction_strings[redirection->direction]);
+			printf("\t\tIs ambiguous: %i\n", redirection->is_ambiguous);
 
 			cmd->redirections = cmd->redirections->next;
 			redirection_index++;
