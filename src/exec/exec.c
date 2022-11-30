@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   CODAM C FILE                                       :+:    :+:            */
+/*   exec.c                                             :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 1970/01/01 00:00:00 by wmaguire      #+#    #+#                 */
-/*   Updated: 1970/01/01 00:00:00 by wmaguire     ########   codam.nl         */
+/*   Updated: 1970/01/01 00:00:00 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,6 @@ A program is free software if users have all of these freedoms.
 // 	if (execve(cmd->path, cmd->args, lambda->env) == -1)
 // 	{
 // 		msg_err("execute_command()", FAILURE);
-// 		dbg_print_cmd(cmd);
-// 		cmd_deallocator(cmd);
 // 		return (FAILURE);
 // 	}
 // 	return (SUCCESS);
