@@ -60,12 +60,10 @@ static char	*path_join(char *dir, char *name)
 	return (ft_strjoin_array((char *[]){dir, "/", name, NULL}));
 }
 
-/* Takes program name (prog_n), and environment strings (env) and returns */
-/* the absolute path to the program. */
-char	*get_path_from_name(char *name, t_vector *env)
+char	*get_absolute_path_from_env(char *name, t_vector *env)
 {
 	static char	*path;
-	char		*abs_path;
+	char		*absolute_path;
 	char		**exec_direcs;
 	int			iter;
 
@@ -79,18 +77,18 @@ char	*get_path_from_name(char *name, t_vector *env)
 		return (NULL);
 	while (exec_direcs[iter])
 	{
-		abs_path = path_join(exec_direcs[iter], name);
-		if (!abs_path)
+		absolute_path = path_join(exec_direcs[iter], name);
+		if (!absolute_path)
 		{
 			free_ptr_array(exec_direcs);
 			return (NULL);
 		}
-		if (!access(abs_path, F_OK)) // TODO: Probably needs more flags
+		if (!access(absolute_path, F_OK)) // TODO: Probably needs more flags
 		{
 			free_ptr_array(exec_direcs);
-			return (abs_path);
+			return (absolute_path);
 		}
-		ft_free(&abs_path);
+		ft_free(&absolute_path);
 		iter++;
 	}
 	free_ptr_array(exec_direcs);

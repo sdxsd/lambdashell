@@ -39,6 +39,16 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
+static int	is_builtin(char *path)
+{
+	return (ft_streq(path, "cd")
+		|| ft_streq(path, "echo")
+		|| ft_streq(path, "env")
+		|| ft_streq(path, "export")
+		|| ft_streq(path, "pwd")
+		|| ft_streq(path, "unset"));
+}
+
 static t_cmd	*get_initial_cmd(void)
 {
 	t_cmd	*cmd;
@@ -48,9 +58,6 @@ static t_cmd	*get_initial_cmd(void)
 		return (NULL);
 	cmd->i_fd = STDIN_FILENO;
 	cmd->o_fd = STDOUT_FILENO;
-	// cmd->args = NULL;
-	// cmd->path = NULL;
-	// cmd->redirection = NULL;
 	return (cmd);
 }
 
@@ -113,7 +120,7 @@ static char		*get_path(t_list **tokens, t_vector *env)
 {
 	char	*path;
 	t_token	*token;
-	char	*appended_path;
+	char	*absolute_path;
 
 	path = ft_calloc(1, sizeof(*path));
 	if (!path)
@@ -130,14 +137,7 @@ static char		*get_path(t_list **tokens, t_vector *env)
 		if (!is_text_token(token))
 			break;
 
-		appended_path = get_path_from_name(token->content, env);
-		if (!appended_path)
-		{
-			// TODO: Free
-			return (NULL);
-		}
-
-		path = ft_strjoin_and_free_left(path, appended_path);
+		path = ft_strjoin_and_free_left(path, token->content);
 		if (!path)
 		{
 			// TODO: Free
@@ -146,7 +146,11 @@ static char		*get_path(t_list **tokens, t_vector *env)
 
 		*tokens = (*tokens)->next;
 	}
-	return (path);
+	if (is_builtin(path) || ft_strchr(path, '/'))
+		return (path);
+	absolute_path = get_absolute_path_from_env(path, env);
+	ft_free(&path);
+	return (absolute_path);
 }
 
 static char		*get_arg(t_list **tokens)
