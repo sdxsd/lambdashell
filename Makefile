@@ -15,7 +15,6 @@ CFILES = \
 	src/env/env.c \
 	src/env/expand_env_variables.c \
 	src/error/error.c \
-	src/exec/cmd.c \
 	src/exec/exec.c \
 	src/exec/path.c \
 	src/parse/is_ambiguous_redirect.c \
