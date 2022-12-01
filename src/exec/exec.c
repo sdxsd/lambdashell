@@ -55,7 +55,7 @@ char	**args_to_strings(t_list *args)
 		args = args->next;
 		iter++;
 	}
-	arg_strings[iter + 1] = NULL;
+	arg_strings[iter] = NULL;
 	return (arg_strings);
 }
 
