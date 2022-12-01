@@ -39,6 +39,39 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 #include <sys/wait.h>
+#include <fcntl.h>
+
+void	redirections(t_list *list, t_cmd *cmd)
+{
+	t_redirect	*redir;
+	int			in_encountered;
+
+	in_encountered = FALSE;
+	while (list)
+	{
+		redir = list->content;
+		if (redir->direction == DIRECTION_IN && !in_encountered)
+		{
+			in_encountered = TRUE;
+			cmd->i_fd = open(redir->file_path, O_RDONLY);
+		}
+		else if (redir->direction == DIRECTION_OUT)
+		{
+			if (list->next)
+				creat(redir->file_path, 0677);
+			else
+			{
+				cmd->o_fd = open(redir->file_path, O_WRONLY | O_CREAT | 0677);
+				if (cmd->o_fd < 0)
+				{
+					null_msg_err("redirections()");
+					return ;
+				}
+			}
+		}
+		list = list->next;
+	}
+}
 
 char	**args_to_strings(t_list *args, char *path)
 {
@@ -147,7 +180,6 @@ int	executor(int i_fd, t_list *curr, t_shell *lambda)
 
 		else if (WIFSIGNALED(status))
 			lambda->status = WTERMSIG(status);
-
 		// TODO: Probably also need to add this? Check by adding a unit test
 		// else if (WIFSTOPPED(status))
 		// 	lambda->status = WIFSTOPPED(status);
