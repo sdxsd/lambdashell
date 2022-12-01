@@ -52,16 +52,23 @@ void	redirections(t_list *list, t_cmd *cmd)
 		redir = list->content;
 		if (redir->direction == DIRECTION_IN && !in_encountered)
 		{
+			printf("FIRST_INPUT: %s\n", redir->file_path);
 			in_encountered = TRUE;
 			cmd->i_fd = open(redir->file_path, O_RDONLY);
+			if (cmd->i_fd < 0)
+			{
+				null_msg_err("redirections()");
+				return ;
+			}
 		}
 		else if (redir->direction == DIRECTION_OUT)
 		{
+			printf("FIRST_OUTPUT: %s\n", redir->file_path);
 			if (list->next)
-				creat(redir->file_path, 0677);
+				creat(redir->file_path, 0644);
 			else
 			{
-				cmd->o_fd = open(redir->file_path, O_WRONLY | O_CREAT | 0677);
+				cmd->o_fd = open(redir->file_path, O_CREAT | O_WRONLY, 0644);
 				if (cmd->o_fd < 0)
 				{
 					null_msg_err("redirections()");
@@ -115,10 +122,9 @@ int	execute_command(t_cmd *cmd, t_vector *env)
 	char	**arg_array;
 
 	// TODO: Protection!
+	redirections(cmd->redirections, cmd);
 	env_array = env_to_strings(env);
 	arg_array = args_to_strings(cmd->args, cmd->path);
-	if (cmd->redirections)
-		redirections(cmd->redirections, cmd);
 	dup_fds(cmd);
 	if (execve(cmd->path, arg_array, env_array) == -1)
 	{

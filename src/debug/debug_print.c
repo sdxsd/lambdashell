@@ -98,7 +98,7 @@ void	dbg_print_commands(t_list *cmds)
 	};
 	size_t		cmd_index;
 	t_cmd		*cmd;
-	t_list		*arg_list;
+	t_list		*list;
 	size_t		redirection_index;
 	t_redirect	*redirection;
 
@@ -117,26 +117,27 @@ void	dbg_print_commands(t_list *cmds)
 		printf("\tPath: %s\n", cmd->path);
 
 		printf("\tArgs:");
-		arg_list = cmd->args;
-		while (arg_list)
+		list = cmd->args;
+		while (list)
 		{
-			printf(" <%s>", (char *)arg_list->content);
-			arg_list = arg_list->next;
+			printf(" <%s>", (char *)list->content);
+			list = list->next;
 		}
 		printf("\n");
 
 		redirection_index = 0;
-		while (cmd->redirections)
+		list = cmd->redirections;
+		while (list)
 		{
 			printf("\tRedirection %zu:\n", redirection_index);
 
-			redirection = cmd->redirections->content;
+			redirection = list->content;
 
 			printf("\t\tRedirection file path: %s\n", redirection->file_path);
 			printf("\t\tRedirection direction: %s\n", direction_strings[redirection->direction]);
 			printf("\t\tIs ambiguous: %i\n", redirection->is_ambiguous);
 
-			cmd->redirections = cmd->redirections->next;
+			list = list->next;
 			redirection_index++;
 		}
 
