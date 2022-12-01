@@ -171,10 +171,10 @@ int	executor(int i_fd, t_list *curr, t_shell *lambda)
 			cmd->o_fd = tube[WRITE];
 		if (i_fd != -1)
 			cmd->i_fd = i_fd;
-		if (curr->)
+		if (!(ft_strchr(cmd->path, '/')))
 			execute_builtin(cmd, lambda->env);
 		else
-		execute_command(cmd, lambda->env);
+			execute_command(cmd, lambda->env);
 	}
 	close(i_fd);
 	if (curr->next)

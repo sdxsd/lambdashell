@@ -39,25 +39,27 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-// void	cd(t_cmd *cmd)
-// {
-// 	// size_t	len;
-// 	// char	*msg;
+void	cd(t_cmd *cmd)
+{
+	char	**args;
+	// size_t	len;
+	// char	*msg;
 
-// 	// TODO: Add explicit "== -1" or DEFINE of -1
-// 	if (chdir(cmd->args[1]))
-// 		msg_err("cd", FAILURE);
-// 	// {
-// 	// 	// TODO: Is `cmd->args[1]` guaranteed to be non-NULL?
-// 	// 	len = ft_strlen("cd: ") + ft_strlen(cmd->args[1]);
-// 	// 	msg = ft_calloc(len + 1, sizeof(*msg));
-// 	// 	if (!msg)
-// 	// 	{
-// 	// 		// TODO: ?
-// 	// 	}
-// 	// 	ft_strlcat(msg, "cd: ", len + 1);
-// 	// 	ft_strlcat(msg, cmd->args[1], len + 1);
-// 	// 	msg_err(msg, FAILURE);
-// 	// 	ft_free(&msg);
-// 	// }
-// }
+	args = args_to_strings(cmd->args, cmd->path);
+	// TODO: Add explicit "== -1" or DEFINE of -1
+	if (chdir(args[1]))
+		msg_err("cd", FAILURE);
+	// {
+	// 	// TODO: Is `cmd->args[1]` guaranteed to be non-NULL?
+	// 	len = ft_strlen("cd: ") + ft_strlen(cmd->args[1]);
+	// 	msg = ft_calloc(len + 1, sizeof(*msg));
+	// 	if (!msg)
+	// 	{
+	// 		// TODO: ?
+	// 	}
+	// 	ft_strlcat(msg, "cd: ", len + 1);
+	// 	ft_strlcat(msg, cmd->args[1], len + 1);
+	// 	msg_err(msg, FAILURE);
+	// 	ft_free(&msg);
+	// }
+}
