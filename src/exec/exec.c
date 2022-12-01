@@ -40,6 +40,25 @@ A program is free software if users have all of these freedoms.
 #include "../../include/minishell.h"
 #include <sys/wait.h>
 
+char	**args_to_strings(t_list *args)
+{
+	char	**arg_strings;
+	int		iter;
+
+	arg_strings = ft_calloc(sizeof(char *), ft_lstsize(args) + 1);
+	if (!arg_strings)
+		return (null_msg_err("args_to_strings()"));
+	iter = 0;
+	while (args)
+	{
+		arg_strings[iter] = args->content;
+		args = args->next;
+		iter++;
+	}
+	arg_strings[iter + 1] = NULL;
+	return (arg_strings);
+}
+
 static void	dup_fds(t_cmd *cmd)
 {
 	if (cmd->i_fd != STDIN_FILENO)
@@ -56,8 +75,10 @@ static void	dup_fds(t_cmd *cmd)
 
 /* NOTE: INFO */
 /* Takes a t_cmd and executes it. */
-int	execute_command(t_cmd *cmd, char **env)
+int	execute_command(t_cmd *cmd, t_vector *env)
 {
+	char	**env_array;
+	char	**arg_array;
 	/* int	fd; */
 	/* int	iter; */
 
@@ -77,11 +98,11 @@ int	execute_command(t_cmd *cmd, char **env)
 	/* 		cmd->i_fd = fd; */
 	/* } */
 	dup_fds(cmd);
-	if (execve(cmd->path, cmd->args, env) == -1)
+	env_array = env_to_strings(env);
+	arg_array = args_to_strings(cmd->args);
+	if (execve(cmd->path, arg_array, env_array) == -1)
 	{
 		msg_err("execute_command()", FAILURE);
-		dbg_print_cmd(cmd);
-		cmd_deallocator(cmd);
 		return (FAILURE);
 	}
 	return (SUCCESS);

@@ -55,33 +55,6 @@ typedef struct s_shell
 	bool		exit;
 }	t_shell;
 
-// typedef enum e_token_type
-// {
-// 	tkn_str,
-// 	tkn_bltin,
-// 	tkn_cmd,
-// 	tkn_read,
-// 	tkn_write,
-// 	tkn_pipe,
-// 	tkn_heredoc,
-// 	tkn_append
-// }	t_token_type;
-
-// ERR_GENERIC = unknown error type.
-// ERR_PARSING = problem with input.
-// ERR_NULLRET = function returned null
-// ERR_ALLOCFU = allocation fucked up
-// RET_SUCCESS = everything went fine.
-typedef enum e_err
-{
-	ERR_GENERIC,
-	ERR_TOKENIZ,
-	ERR_PARSING,
-	ERR_NULLRET,
-	ERR_ALLOCFU,
-	RET_SUCCESS,
-}	t_err;
-
 typedef enum e_direction
 {
 	DIRECTION_HEREDOC,

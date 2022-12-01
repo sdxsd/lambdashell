@@ -1,6 +1,6 @@
 
 CC = clang
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g
 NAME = minishell
 CFILES = \
 	src/main.c \
@@ -16,8 +16,6 @@ CFILES = \
 	src/env/expand_env_variables.c \
 	src/error/error.c \
 	src/exec/cmd.c \
-	src/exec/exec.c \
-	src/exec/exec_list.c \
 	src/exec/exec.c \
 	src/exec/path.c \
 	src/parse/is_ambiguous_redirect.c \
