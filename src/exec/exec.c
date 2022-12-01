@@ -40,15 +40,16 @@ A program is free software if users have all of these freedoms.
 #include "../../include/minishell.h"
 #include <sys/wait.h>
 
-char	**args_to_strings(t_list *args)
+char	**args_to_strings(t_list *args, char *path)
 {
 	char	**arg_strings;
 	int		iter;
 
-	arg_strings = ft_calloc(sizeof(char *), ft_lstsize(args) + 1);
+	arg_strings = ft_calloc(sizeof(char *), ft_lstsize(args) + 2);
 	if (!arg_strings)
 		return (null_msg_err("args_to_strings()"));
-	iter = 0;
+	arg_strings[0] = path;
+	iter = 1;
 	while (args)
 	{
 		arg_strings[iter] = args->content;
@@ -97,9 +98,9 @@ int	execute_command(t_cmd *cmd, t_vector *env)
 	/* 	if (cmd->redirection->direc == INPUT) */
 	/* 		cmd->i_fd = fd; */
 	/* } */
-	dup_fds(cmd);
 	env_array = env_to_strings(env);
-	arg_array = args_to_strings(cmd->args);
+	arg_array = args_to_strings(cmd->args, cmd->path);
+	dup_fds(cmd);
 	if (execve(cmd->path, arg_array, env_array) == -1)
 	{
 		msg_err("execute_command()", FAILURE);
