@@ -77,7 +77,6 @@ t_token_type	subtokenize_unquoted(char **line_ptr);
 t_list			*tokenize(char *line);
 
 /* EXECUTION */
-<<<<<<< HEAD
 int				execute_command(t_cmd *cmd, char **env);
 int				executor(int i_fd, t_list *curr, t_shell *lambda);
 /* void			dealloc_exec_list(t_exec_element *head); */
@@ -85,10 +84,6 @@ int				executor(int i_fd, t_list *curr, t_shell *lambda);
 /* EXEC LIST */
 // t_exec_element	*new_exec_element(void);
 // void			free_exec_list(t_exec_element *head);
-=======
-// int				execute_command(t_cmd *cmd);
-// int				executor(int i_fd, t_exec_element *curr, t_shell *lambda);
->>>>>>> origin/tokens
 
 /* PARSE */
 bool			is_ambiguous_redirect(t_list *tokens);
