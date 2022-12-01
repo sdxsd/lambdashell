@@ -58,10 +58,10 @@ static void	dup_fds(t_cmd *cmd)
 /* Takes a t_cmd and executes it. */
 int	execute_command(t_cmd *cmd, char **env)
 {
-	int	fd;
-	int	iter;
+	/* int	fd; */
+	/* int	iter; */
 
-	iter = 0;
+	/* iter = 0; */
 	// TODO: Allow doing redirecting in & out in the same command
 	// TODO: Also do this in execute_builtin()
 	/* if (cmd->redirection) */
@@ -125,7 +125,7 @@ int	executor(int i_fd, t_list *curr, t_shell *lambda)
 		/* if (curr->type == tkn_bltin) */
 		/* 	execute_builtin(cmd, lambda->env); */
 		/* else */
-		execute_command(cmd);
+		execute_command(cmd, lambda->env);
 	}
 	close(i_fd);
 	if (curr->next)
