@@ -102,7 +102,6 @@ static t_shell	*shell_init(char **env)
 		return (NULL);
 	}
 	lambda->stdin_is_tty = isatty(STDIN_FILENO);
-	dbg_print_env(lambda->env);
 	return (lambda);
 }
 
