@@ -50,7 +50,7 @@ static int	prompt(t_shell *lambda)
 		readline_str = get_readline_str(lambda);
 		if (!readline_str)
 		{
-			// TODO: Free
+			dealloc_lambda(lambda);
 			return (FAILURE);
 		}
 		lambda->line = readline(readline_str);
