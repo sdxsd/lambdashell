@@ -41,6 +41,8 @@ A program is free software if users have all of these freedoms.
 # define PROTOTYPES_H
 # include "structs.h"
 
+char	**args_to_strings(t_list *args, char *path);
+
 /* COSMETIC */
 char			*get_readline_str(t_shell *lambda);
 
@@ -104,5 +106,6 @@ void			dbg_print_env(t_vector *head);
 void			dbg_test_env(t_vector *env);
 void			dbg_print_tokens(t_list *tokens);
 void			dbg_print_commands(t_list *cmds);
+void			dbg_print_lines(char **lines);
 
 #endif
