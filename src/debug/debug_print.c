@@ -38,6 +38,7 @@ A program is free software if users have all of these freedoms.
 */
 
 #include "../../include/minishell.h"
+<<<<<<< HEAD
 #include <stdio.h>
 
 void	dbg_print_lines(char **lines)
@@ -51,6 +52,8 @@ void	dbg_print_lines(char **lines)
 		iter++;
 	}
 }
+=======
+>>>>>>> origin/tokens
 
 void	dbg_print_env(t_vector *head)
 {
@@ -91,28 +94,31 @@ void	dbg_print_tokens(t_list *tokens)
 void	dbg_print_commands(t_list *cmds)
 {
 	char	*direction_strings[] = {
-		[IN] = "IN",
-		[OUT] = "OUT",
-		[APPEND] = "APPEND",
+		[DIRECTION_HEREDOC] = "HEREDOC",
+		[DIRECTION_APPEND] = "APPEND",
+		[DIRECTION_IN] = "IN",
+		[DIRECTION_OUT] = "OUT",
 	};
 	size_t		cmd_index;
 	t_cmd		*cmd;
 	size_t		redirection_index;
 	t_redirect	*redirection;
 
+	ft_printf("\n");
+
 	cmd_index = 0;
 	while (cmds)
 	{
-		printf("Command %zu:\n", cmd_index);
+		printf("Command %zu:\n", cmd_index + 1);
 
 		cmd = cmds->content;
 
-		printf("Input file descriptor: %i\n", cmd->i_fd);
-		printf("Output file descriptor: %i\n", cmd->o_fd);
+		printf("\tInput file descriptor: %i\n", cmd->i_fd);
+		printf("\tOutput file descriptor: %i\n", cmd->o_fd);
 
-		printf("Path: %s\n", cmd->path);
+		printf("\tPath: %s\n", cmd->path);
 
-		printf("Args:");
+		printf("\tArgs:");
 		while (cmd->args)
 		{
 			printf(" <%s>", (char *)cmd->args->content);
@@ -123,13 +129,13 @@ void	dbg_print_commands(t_list *cmds)
 		redirection_index = 0;
 		while (cmd->redirections)
 		{
-			printf("Redirection %zu:\n", redirection_index);
+			printf("\tRedirection %zu:\n", redirection_index);
 
 			redirection = cmd->redirections->content;
 
-			printf("\tRedirection file path: %s\n", redirection->file_path);
-			printf("\tRedirection direction: %s\n", direction_strings[redirection->direction]);
-			printf("\tIs ambiguous: %i\n", redirection->is_ambiguous);
+			printf("\t\tRedirection file path: %s\n", redirection->file_path);
+			printf("\t\tRedirection direction: %s\n", direction_strings[redirection->direction]);
+			printf("\t\tIs ambiguous: %i\n", redirection->is_ambiguous);
 
 			cmd->redirections = cmd->redirections->next;
 			redirection_index++;

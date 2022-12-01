@@ -39,6 +39,16 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
+static int	is_builtin(char *path)
+{
+	return (ft_streq(path, "cd")
+		|| ft_streq(path, "echo")
+		|| ft_streq(path, "env")
+		|| ft_streq(path, "export")
+		|| ft_streq(path, "pwd")
+		|| ft_streq(path, "unset"));
+}
+
 static t_cmd	*get_initial_cmd(void)
 {
 	t_cmd	*cmd;
@@ -48,26 +58,25 @@ static t_cmd	*get_initial_cmd(void)
 		return (NULL);
 	cmd->i_fd = STDIN_FILENO;
 	cmd->o_fd = STDOUT_FILENO;
-	// cmd->args = NULL;
-	// cmd->path = NULL;
-	// cmd->redirection = NULL;
 	return (cmd);
 }
 
 static void	fill_direction(t_redirect *redirect, t_token *token)
 {
-	// TODO: Handle << and >> properly
-	if (*token->content == '<')
-		redirect->direction = IN;
+	if (*token->content == '<' && token->content[1] == '<')
+		redirect->direction = DIRECTION_HEREDOC;
+	else if (*token->content == '>' && token->content[1] == '>')
+		redirect->direction = DIRECTION_APPEND;
+	else if (*token->content == '<')
+		redirect->direction = DIRECTION_IN;
 	else if (*token->content == '>')
-		redirect->direction = OUT;
+		redirect->direction = DIRECTION_OUT;
 }
 
 static t_redirect	*get_redirect(t_list **tokens)
 {
 	t_redirect	*redirect;
 	t_token		*token;
-	char		*old_file_path;
 
 	redirect = ft_calloc(1, sizeof(*redirect));
 
@@ -94,9 +103,7 @@ static t_redirect	*get_redirect(t_list **tokens)
 		if (!is_text_token(token))
 			break;
 
-		old_file_path = redirect->file_path;
-		redirect->file_path = ft_strjoin(old_file_path, token->content);
-		ft_free(&old_file_path);
+		redirect->file_path = ft_strjoin_and_free_left(redirect->file_path, token->content);
 		if (!redirect->file_path)
 		{
 			// TODO: Free
@@ -113,8 +120,7 @@ static char		*get_path(t_list **tokens, t_vector *env)
 {
 	char	*path;
 	t_token	*token;
-	char	*old_path;
-	char	*appended_path;
+	char	*absolute_path;
 
 	path = ft_calloc(1, sizeof(*path));
 	if (!path)
@@ -131,16 +137,7 @@ static char		*get_path(t_list **tokens, t_vector *env)
 		if (!is_text_token(token))
 			break;
 
-		appended_path = get_path_from_name(token->content, env);
-		if (!appended_path)
-		{
-			// TODO: Free
-			return (NULL);
-		}
-
-		old_path = path;
-		path = ft_strjoin(old_path, appended_path);
-		ft_free(&old_path);
+		path = ft_strjoin_and_free_left(path, token->content);
 		if (!path)
 		{
 			// TODO: Free
@@ -149,14 +146,17 @@ static char		*get_path(t_list **tokens, t_vector *env)
 
 		*tokens = (*tokens)->next;
 	}
-	return (path);
+	if (is_builtin(path) || ft_strchr(path, '/'))
+		return (path);
+	absolute_path = get_absolute_path_from_env(path, env);
+	ft_free(&path);
+	return (absolute_path);
 }
 
 static char		*get_arg(t_list **tokens)
 {
 	char	*arg;
 	t_token	*token;
-	char	*old_arg;
 
 	arg = ft_calloc(1, sizeof(*arg));
 	if (!arg)
@@ -173,9 +173,7 @@ static char		*get_arg(t_list **tokens)
 		if (!is_text_token(token))
 			break;
 
-		old_arg = arg;
-		arg = ft_strjoin(old_arg, token->content);
-		ft_free(&old_arg);
+		arg = ft_strjoin_and_free_left(arg, token->content);
 		if (!arg)
 		{
 			// TODO: Free

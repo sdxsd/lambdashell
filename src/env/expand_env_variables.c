@@ -74,11 +74,11 @@ static char	*get_expanded_string(char *content, t_vector *env)
 	char	*substr_start;
 	char	*expanded_string;
 	char	*appended;
-	char	*old_expanded_string;
 
 	in_env_variable = false;
 
 	substr_start = content;
+
 	expanded_string = ft_calloc(1, sizeof(*expanded_string));
 	if (!expanded_string)
 	{
@@ -99,9 +99,7 @@ static char	*get_expanded_string(char *content, t_vector *env)
 				}
 				substr_start = content;
 
-				old_expanded_string = expanded_string;
-				expanded_string = ft_strjoin(old_expanded_string, appended);
-				ft_free(&old_expanded_string);
+				expanded_string = ft_strjoin_and_free_left(expanded_string, appended);
 
 				if (!in_env_variable)
 					ft_free(&appended);
@@ -129,9 +127,7 @@ static char	*get_expanded_string(char *content, t_vector *env)
 		return (NULL);
 	}
 
-	old_expanded_string = expanded_string;
-	expanded_string = ft_strjoin(old_expanded_string, appended);
-	ft_free(&old_expanded_string);
+	expanded_string = ft_strjoin_and_free_left(expanded_string, appended);
 
 	if (!in_env_variable)
 		ft_free(&appended);
