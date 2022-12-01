@@ -73,7 +73,7 @@ static int	prompt(t_shell *lambda)
 		// TODO: Freeing
 		return (FAILURE);
 	}
-	dbg_print_tokens(tokens);
+	/* dbg_print_tokens(tokens); */
 	cmds = parse(tokens, lambda->env);
 	if (!cmds)
 	{
