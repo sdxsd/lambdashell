@@ -52,7 +52,6 @@ void			dealloc_redir(void *to_free);
 char			*ret_cwd(void);
 int				pwd(void);
 void			cd(t_cmd *cmd);
-t_cmd			*bltin_constructor(char	*line, t_vector *env);
 
 /* ENVIRONMENT */
 t_vector		*init_env(char **env);
@@ -69,6 +68,8 @@ void			*null_msg_err(char *s);
 t_token			*get_token(t_token_type type, char *content);
 t_token_type	subtokenize_single_quote(char **line_ptr);
 t_token_type	subtokenize_double_quote(char **line_ptr);
+t_token_type	subtokenize_heredoc(char **line_ptr);
+t_token_type	subtokenize_append(char **line_ptr);
 t_token_type	subtokenize_redirection(char **line_ptr);
 t_token_type	subtokenize_pipe(char **line_ptr);
 t_token_type	subtokenize_whitespace(char **line_ptr);
@@ -76,6 +77,7 @@ t_token_type	subtokenize_unquoted(char **line_ptr);
 t_list			*tokenize(char *line);
 
 /* EXECUTION */
+<<<<<<< HEAD
 int				execute_command(t_cmd *cmd, char **env);
 int				executor(int i_fd, t_list *curr, t_shell *lambda);
 /* void			dealloc_exec_list(t_exec_element *head); */
@@ -83,6 +85,10 @@ int				executor(int i_fd, t_list *curr, t_shell *lambda);
 /* EXEC LIST */
 // t_exec_element	*new_exec_element(void);
 // void			free_exec_list(t_exec_element *head);
+=======
+// int				execute_command(t_cmd *cmd);
+// int				executor(int i_fd, t_exec_element *curr, t_shell *lambda);
+>>>>>>> origin/tokens
 
 /* PARSE */
 bool			is_ambiguous_redirect(t_list *tokens);
@@ -90,12 +96,8 @@ bool			is_text_token(t_token *token);
 t_list			*parse(t_list *tokens, t_vector *env);
 void			skip_whitespace_tokens(t_list **tokens);
 
-/* CMD STRUCT */
-// t_cmd			*cmd_constructor(char *prog_n, t_vector *env);
-// void			cmd_deallocator(t_cmd *cmd);
-
 /* PATH */
-char			*get_path_from_name(char *prog_n, t_vector *env);
+char			*get_absolute_path_from_env(char *name, t_vector *env);
 int				free_ptr_array(char *ptr[]);
 
 /* DEALLOC */
@@ -103,9 +105,7 @@ void			dealloc_ptr_array(void **data);
 void			dealloc_lambda(t_shell *lambda);
 
 /* DEBUG */
-void			dbg_print_lines(char **lines);
 void			dbg_print_env(t_vector *head);
-void			dbg_print_cmd(t_cmd	*cmd);
 void			dbg_test_env(t_vector *env);
 void			dbg_print_tokens(t_list *tokens);
 void			dbg_print_commands(t_list *cmds);

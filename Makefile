@@ -4,11 +4,9 @@ CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 NAME = minishell
 CFILES = \
 	src/main.c \
-	src/builtins/builtins.c \
 	src/builtins/cd.c \
 	src/builtins/pwd.c \
 	src/cosmetic/cosmetic.c \
-	src/dealloc/dealloc_exec_list.c \
 	src/dealloc/dealloc_lambda.c \
 	src/dealloc/dealloc_ptr_array.c \
 	src/debug/debug_env.c \
@@ -17,9 +15,12 @@ CFILES = \
 	src/env/env.c \
 	src/env/expand_env_variables.c \
 	src/error/error.c \
+<<<<<<< HEAD
 	src/exec/cmd.c \
 	src/exec/exec.c \
 	src/exec/exec_list.c \
+=======
+>>>>>>> origin/tokens
 	src/exec/exec.c \
 	src/exec/path.c \
 	src/parse/is_ambiguous_redirect.c \

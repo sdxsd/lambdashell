@@ -55,29 +55,15 @@ int	free_ptr_array(char *ptr[])
 	return (iter);
 }
 
-/* NOTE: exit calls are temporary until proper error handling is implemented. */
-/* Utility function for combining program name and the paths.  */
-static char	*path_join(char *dir, char *prog_n)
+static char	*path_join(char *dir, char *name)
 {
-	char	*abs_path;
-	char	*dir_slash;
-
-	dir_slash = ft_strjoin(dir, "/");
-	if (!dir_slash)
-		exit(1);
-	abs_path = ft_strjoin(dir_slash, prog_n);
-	if (!abs_path)
-		exit(1);
-	ft_free(&dir_slash);
-	return (abs_path);
+	return (ft_strjoin_array((char *[]){dir, "/", name, NULL}));
 }
 
-/* Takes program name (prog_n), and environment strings (env) and returns */
-/* the absolute path to the program. */
-char	*get_path_from_name(char *name, t_vector *env)
+char	*get_absolute_path_from_env(char *name, t_vector *env)
 {
 	static char	*path;
-	char		*abs_path;
+	char		*absolute_path;
 	char		**exec_direcs;
 	int			iter;
 
@@ -87,15 +73,22 @@ char	*get_path_from_name(char *name, t_vector *env)
 	if (!path)
 		return (NULL);
 	exec_direcs = ft_split(path, ':');
+	if (!exec_direcs)
+		return (NULL);
 	while (exec_direcs[iter])
 	{
-		abs_path = path_join(exec_direcs[iter], name);
-		if (!access(abs_path, F_OK)) // TODO: Probably needs more flags
+		absolute_path = path_join(exec_direcs[iter], name);
+		if (!absolute_path)
 		{
 			free_ptr_array(exec_direcs);
-			return (abs_path);
+			return (NULL);
 		}
-		ft_free(&abs_path);
+		if (!access(absolute_path, F_OK)) // TODO: Probably needs more flags
+		{
+			free_ptr_array(exec_direcs);
+			return (absolute_path);
+		}
+		ft_free(&absolute_path);
 		iter++;
 	}
 	free_ptr_array(exec_direcs);

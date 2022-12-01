@@ -84,9 +84,10 @@ typedef enum e_err
 
 typedef enum e_direction
 {
-	IN,
-	OUT,
-	APPEND,
+	DIRECTION_HEREDOC,
+	DIRECTION_APPEND,
+	DIRECTION_IN,
+	DIRECTION_OUT,
 }	t_direction;
 
 typedef struct s_redirect {
@@ -95,13 +96,6 @@ typedef struct s_redirect {
 	bool		is_ambiguous;
 }	t_redirect;
 
-// NOTE:
-//                     +-----+
-//    /example/file -> | cmd | -> stdout | /other/file
-//                     +-----+
-// ALLOCATOR   : cmd_constructor()
-// DEALLOCATOR : cmd_deallocator()
-
 typedef struct s_cmd
 {
 	int		i_fd;
@@ -109,6 +103,7 @@ typedef struct s_cmd
 	t_list	*args;
 	char	*path;
 	t_list	*redirections;
+	// bool	is_builtin; // TODO: Consider not having this and always using ft_strchr(path, '/')
 }	t_cmd;
 
 typedef struct s_env_element
