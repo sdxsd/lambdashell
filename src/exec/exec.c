@@ -41,7 +41,7 @@ A program is free software if users have all of these freedoms.
 #include <sys/wait.h>
 #include <fcntl.h>
 
-void	redirections(t_list *list, t_cmd *cmd)
+int	redirections(t_list *list, t_cmd *cmd)
 {
 	t_redirect	*redir;
 	int			in_encountered;
@@ -52,18 +52,16 @@ void	redirections(t_list *list, t_cmd *cmd)
 		redir = list->content;
 		if (redir->direction == DIRECTION_IN && !in_encountered)
 		{
-			printf("FIRST_INPUT: %s\n", redir->file_path);
 			in_encountered = TRUE;
 			cmd->i_fd = open(redir->file_path, O_RDONLY);
 			if (cmd->i_fd < 0)
 			{
 				null_msg_err("redirections()");
-				return ;
+				return (FALSE);
 			}
 		}
 		else if (redir->direction == DIRECTION_OUT)
 		{
-			printf("FIRST_OUTPUT: %s\n", redir->file_path);
 			if (list->next)
 				creat(redir->file_path, 0644);
 			else
@@ -72,12 +70,13 @@ void	redirections(t_list *list, t_cmd *cmd)
 				if (cmd->o_fd < 0)
 				{
 					null_msg_err("redirections()");
-					return ;
+					return (FALSE);
 				}
 			}
 		}
 		list = list->next;
 	}
+	return (TRUE);
 }
 
 char	**args_to_strings(t_list *args, char *path)
