@@ -76,7 +76,6 @@ typedef struct s_cmd
 	t_list	*args;
 	char	*path;
 	t_list	*redirections;
-	// bool	is_builtin; // TODO: Consider not having this and always using ft_strchr(path, '/')
 }	t_cmd;
 
 typedef struct s_env_element
@@ -84,33 +83,6 @@ typedef struct s_env_element
 	char	*key;
 	char	*val;
 }	t_env_element;
-
-// NOTE:
-//    EXECUTION LIST
-// +------------------+
-// | element[command] |
-// +------------------+
-//   | void *next
-//   ---> +----------------------+
-//        | element[redirection] |
-//        +----------------------+
-//        | void *next
-//        --------> +---------------+
-//                  | element[file] |
-//                  +---------------+
-
-// (int type) -> specifies the type of the element
-//               i.e. command
-//                    pipe
-//                    builtin
-//                    file
-//                    redirection
-// (void *value) -> structure of the element
-//                  i.e. t_cmd
-// (void *next)  -> next token element in the list.
-
-// ALLOCATOR   : parse();
-// DEALLOCATOR : exec_list_deallocator();
 
 typedef enum s_token_type
 {
