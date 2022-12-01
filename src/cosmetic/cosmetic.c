@@ -73,7 +73,7 @@ char	*get_readline_str(t_shell *lambda)
 	else
 		last = "???";
 
-	readline_str = ft_strjoin_array((char *[]){GREEN, "[", env_val, "] ", BLUE, last, " ", CLEAR, "λ :: > ", NULL});
+	readline_str = ft_strjoin_array((char *[]){GREEN, "[", env_val + 1, "] ", BLUE, last, " ", CLEAR, "λ :: > ", NULL});
 
 	ft_free(&cwd);
 
