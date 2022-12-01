@@ -117,6 +117,8 @@ int	execute_command(t_cmd *cmd, t_vector *env)
 	// TODO: Protection!
 	env_array = env_to_strings(env);
 	arg_array = args_to_strings(cmd->args, cmd->path);
+	if (cmd->redirections)
+		redirections(cmd->redirections, cmd);
 	dup_fds(cmd);
 	if (execve(cmd->path, arg_array, env_array) == -1)
 	{
