@@ -80,24 +80,8 @@ int	execute_command(t_cmd *cmd, t_vector *env)
 {
 	char	**env_array;
 	char	**arg_array;
-	/* int	fd; */
-	/* int	iter; */
 
-	/* iter = 0; */
-	// TODO: Allow doing redirecting in & out in the same command
-	// TODO: Also do this in execute_builtin()
-	/* if (cmd->redirection) */
-	/* { */
-	/* 	while (cmd->redirection->file[iter] == ' ') */
-	/* 		iter++; */
-	/* 	fd = open(cmd->redirection->file + iter, O_RDWR | O_CREAT | O_TRUNC, 0644); */
-	/* 	if (fd <= 0) */
-	/* 		return (msg_err("execute_command()", FAILURE)); */
-	/* 	if (cmd->redirection->direc == OUTPUT) */
-	/* 		cmd->o_fd = fd; */
-	/* 	if (cmd->redirection->direc == INPUT) */
-	/* 		cmd->i_fd = fd; */
-	/* } */
+	// TODO: Protection!
 	env_array = env_to_strings(env);
 	arg_array = args_to_strings(cmd->args, cmd->path);
 	dup_fds(cmd);

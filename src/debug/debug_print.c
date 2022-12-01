@@ -115,8 +115,7 @@ void	dbg_print_commands(t_list *cmds)
 
 		printf("\tPath: %s\n", cmd->path);
 
-		printf("\tArgs:\n");
-		dbg_print_lines(args_to_strings(cmd->args, cmd->path));
+		printf("\tArgs:");
 		while (cmd->args)
 		{
 			printf(" <%s>", (char *)cmd->args->content);
