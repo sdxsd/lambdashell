@@ -98,6 +98,7 @@ void	dbg_print_commands(t_list *cmds)
 	};
 	size_t		cmd_index;
 	t_cmd		*cmd;
+	t_list		*arg_list;
 	size_t		redirection_index;
 	t_redirect	*redirection;
 
@@ -116,10 +117,11 @@ void	dbg_print_commands(t_list *cmds)
 		printf("\tPath: %s\n", cmd->path);
 
 		printf("\tArgs:");
-		while (cmd->args)
+		arg_list = cmd->args;
+		while (arg_list)
 		{
-			printf(" <%s>", (char *)cmd->args->content);
-			cmd->args = cmd->args->next;
+			printf(" <%s>", (char *)arg_list->content);
+			arg_list = arg_list->next;
 		}
 		printf("\n");
 
