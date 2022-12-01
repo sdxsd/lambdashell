@@ -133,19 +133,22 @@ int	execute_command(t_cmd *cmd, t_vector *env)
 	return (SUCCESS);
 }
 
-// static int	execute_builtin(t_cmd *cmd, t_vector *env)
-// {
-// 	dup_fds(cmd);
-// 	if (ft_streq(cmd->args[0], "pwd"))
-// 		pwd();
-// 	else if (ft_streq(cmd->args[0], "cd"))
-// 		cd(cmd);
-// 	else if (ft_streq(cmd->args[0], "env"))
-// 		dbg_print_env(env);
-// 	else
-// 		return (FAILURE);
-// 	return (SUCCESS);
-// }
+static int	execute_builtin(t_cmd *cmd, t_vector *env)
+{
+	char	**arg_strings;
+
+	arg_strings = args_to_strings(cmd->args, cmd->path);
+	dup_fds(cmd);
+	if (ft_streq(arg_strings[0], "pwd"))
+		pwd();
+	else if (ft_streq(arg_strings[0], "cd"))
+		cd(cmd);
+	else if (ft_streq(arg_strings[0], "env"))
+		dbg_print_env(env);
+	else
+		return (FAILURE);
+	return (SUCCESS);
+}
 
 int	executor(int i_fd, t_list *curr, t_shell *lambda)
 {
@@ -168,9 +171,9 @@ int	executor(int i_fd, t_list *curr, t_shell *lambda)
 			cmd->o_fd = tube[WRITE];
 		if (i_fd != -1)
 			cmd->i_fd = i_fd;
-		/* if (curr->type == tkn_bltin) */
-		/* 	execute_builtin(cmd, lambda->env); */
-		/* else */
+		if (curr->)
+			execute_builtin(cmd, lambda->env);
+		else
 		execute_command(cmd, lambda->env);
 	}
 	close(i_fd);
