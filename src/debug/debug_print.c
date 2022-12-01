@@ -38,7 +38,6 @@ A program is free software if users have all of these freedoms.
 */
 
 #include "../../include/minishell.h"
-<<<<<<< HEAD
 #include <stdio.h>
 
 void	dbg_print_lines(char **lines)
@@ -52,8 +51,6 @@ void	dbg_print_lines(char **lines)
 		iter++;
 	}
 }
-=======
->>>>>>> origin/tokens
 
 void	dbg_print_env(t_vector *head)
 {
