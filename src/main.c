@@ -80,7 +80,7 @@ static int	prompt(t_shell *lambda)
 		// TODO: Freeing
 		return (FAILURE);
 	}
-	dbg_print_commands(cmds);
+	/* dbg_print_commands(cmds); */
 	executor(-1, cmds, lambda);
 	ft_free(&lambda->line);
 	return (SUCCESS);
