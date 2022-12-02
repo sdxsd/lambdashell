@@ -52,7 +52,6 @@ static char	*get_appended(char *content, bool in_env_variable, char *substr_star
 			// TODO: Error handling
 		}
 
-		// TODO: Try to write this function so it can never have an error
 		appended = env_get_val(env, env_key);
 		ft_free(&env_key);
 		if (!appended)
