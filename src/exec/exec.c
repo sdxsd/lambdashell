@@ -128,18 +128,19 @@ int	execute_command(t_cmd *cmd, t_vector *env)
 	return (SUCCESS);
 }
 
-static int	execute_builtin(t_cmd *cmd, t_vector *env)
+static int	execute_builtin(t_cmd *cmd, t_shell *lambda)
 {
 	char	**arg_strings;
 
 	arg_strings = args_to_strings(cmd->args, cmd->path);
 	dup_fds(cmd);
 	if (ft_streq(arg_strings[0], "pwd"))
-		return (pwd());
+		return (pwd(lambda));
 	else if (ft_streq(arg_strings[0], "cd"))
-		return (cd(cmd));
+	{
+		return (cd(cmd, lambda));
+	}
 	// TODO: Replace with calling dedicated env() function, instead of dbg_print_env()
-	(void)env;
 	// else if (ft_streq(arg_strings[0], "env"))
 	// 	return (dbg_print_env(env));
 	return (FAILURE);
@@ -190,6 +191,6 @@ int	executor(int i_fd, t_list *curr, t_shell *lambda)
 		}
 	}
 	else
-		lambda->status = execute_builtin(cmd, lambda->env);
+		lambda->status = execute_builtin(cmd, lambda);
 	return (SUCCESS);
 }

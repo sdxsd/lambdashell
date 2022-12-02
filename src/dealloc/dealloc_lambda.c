@@ -45,4 +45,5 @@ void	dealloc_lambda(t_shell *lambda)
 		return ;
 	free_vector(lambda->env, dealloc_env_element);
 	ft_free(&lambda->line);
+	ft_free(&lambda->cwd);
 }

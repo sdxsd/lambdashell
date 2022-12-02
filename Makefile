@@ -23,7 +23,8 @@ CFILES = \
 	src/parse/skip_whitespace_tokens.c \
 	src/tokenize/get_token.c \
 	src/tokenize/subtokenizers.c \
-	src/tokenize/tokenize.c
+	src/tokenize/tokenize.c \
+	src/update_cwd/update_cwd.c
 
 HEADERS = \
 	include/minishell.h \

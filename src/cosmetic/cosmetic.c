@@ -58,24 +58,20 @@ static char	*last_direc(char *line)
 // Prompt string one
 char	*get_readline_str(t_shell *lambda)
 {
-	char			*env_val;
-	char			*cwd;
-	char			*last;
-	char			*readline_str;
+	char	*user;
+	char	*leaf_dir;
+	char	*readline_str;
 
-	env_val = env_get_val(lambda->env, "USER");
-	if (!env_val)
-		env_val = "???";
+	user = env_get_val(lambda->env, "USER");
+	if (!user)
+		user = "???";
 
-	cwd = getcwd(NULL, 0);
-	if (cwd)
-		last = last_direc(cwd);
+	if (lambda->cwd)
+		leaf_dir = last_direc(lambda->cwd);
 	else
-		last = "???";
+		leaf_dir = "???";
 
-	readline_str = ft_strjoin_array((char *[]){GREEN, "[", env_val + 1, "] ", BLUE, last, " ", CLEAR, "λ :: ❯ ", NULL});
-
-	ft_free(&cwd);
+	readline_str = ft_strjoin_array((char *[]){GREEN, "[", user + 1, "] ", BLUE, leaf_dir, " ", CLEAR, "λ :: ❯ ", NULL});
 
 	return (readline_str);
 }

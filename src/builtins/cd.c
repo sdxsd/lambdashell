@@ -39,7 +39,7 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-int	cd(t_cmd *cmd)
+int	cd(t_cmd *cmd, t_shell *lambda)
 {
 	char	**args;
 	// size_t	len;
@@ -49,6 +49,7 @@ int	cd(t_cmd *cmd)
 	// TODO: Add explicit "== -1" or DEFINE of -1
 	if (chdir(args[1]))
 		return (msg_err(ft_strjoin_array((char *[]){"cd: ", args[1], NULL}), FAILURE));
+	update_cwd(lambda);
 	return (SUCCESS);
 		// msg_err("cd", FAILURE);
 	// {

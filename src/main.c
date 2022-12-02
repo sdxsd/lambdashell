@@ -101,6 +101,7 @@ static t_shell	*shell_init(char **env)
 		ft_free(&lambda);
 		return (NULL);
 	}
+	update_cwd(lambda);
 	lambda->stdin_is_tty = isatty(STDIN_FILENO);
 	return (lambda);
 }
