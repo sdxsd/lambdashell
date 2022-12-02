@@ -13,7 +13,7 @@ CFILES = \
 	src/debug/debug_print.c \
 	src/env/env_utils.c \
 	src/env/env.c \
-	src/env/expand_env_variables.c \
+	src/env/expand_variables.c \
 	src/error/error.c \
 	src/exec/exec.c \
 	src/exec/path.c \

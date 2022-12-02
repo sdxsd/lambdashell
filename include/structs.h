@@ -101,4 +101,11 @@ typedef struct s_token
 	char			*content;
 }	t_token;
 
+typedef enum s_expansion_state
+{
+	EXPANSION_STATE_NORMAL,
+	EXPANSION_STATE_VARIABLE,
+	EXPANSION_STATE_STATUS,
+}	t_expansion_state;
+
 #endif

@@ -42,11 +42,12 @@ A program is free software if users have all of these freedoms.
 static int	is_builtin(char *path)
 {
 	return (ft_streq(path, "cd")
-		|| ft_streq(path, "echo")
-		|| ft_streq(path, "env")
-		|| ft_streq(path, "export")
-		|| ft_streq(path, "pwd")
-		|| ft_streq(path, "unset"));
+		|| ft_streq(path, "pwd"));
+	// TODO: Add back once implemented
+		// || ft_streq(path, "echo")
+		// || ft_streq(path, "env")
+		// || ft_streq(path, "export")
+		// || ft_streq(path, "unset"));
 }
 
 static t_cmd	*get_initial_cmd(void)

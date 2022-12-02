@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   expand_env_variables.c                             :+:    :+:            */
+/*   expand_variables.c                                 :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
@@ -39,12 +39,14 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-static char	*get_appended(char *content, bool in_env_variable, char *substr_start, t_vector *env)
+static char	*get_appended(char *content, t_expansion_state state, char *substr_start, t_shell *lambda)
 {
 	char	*appended;
 	char	*env_key;
 
-	if (in_env_variable)
+	if (state == EXPANSION_STATE_NORMAL)
+		appended = ft_substr(substr_start, 0, content - substr_start);
+	else if (state == EXPANSION_STATE_VARIABLE)
 	{
 		env_key = ft_substr(substr_start, 1, content - substr_start - 1);
 		if (!env_key)
@@ -52,13 +54,13 @@ static char	*get_appended(char *content, bool in_env_variable, char *substr_star
 			// TODO: Error handling
 		}
 
-		appended = env_get_val(env, env_key);
+		appended = env_get_val(lambda->env, env_key);
 		ft_free(&env_key);
 		if (!appended)
-			appended = ft_strdup("");
+			appended = "";
 	}
 	else
-		appended = ft_substr(substr_start, 0, content - substr_start);
+		appended = ft_itoa(lambda->status);
 	return (appended);
 }
 
@@ -67,14 +69,27 @@ static bool	is_valid_name_chr(char chr)
 	return (ft_isalpha(chr) || chr == '_');
 }
 
-static char	*get_expanded_string(char *content, t_vector *env)
+static bool	should_get_appended(char *content, char *substr_start,
+				t_expansion_state state)
 {
-	bool	in_env_variable;
-	char	*substr_start;
-	char	*expanded_string;
-	char	*appended;
+	const bool	is_variable_end = \
+		state == EXPANSION_STATE_VARIABLE && \
+		!is_valid_name_chr(*content) && !ft_isdigit(*content);
+	const bool	is_exit_status_end = \
+		state == EXPANSION_STATE_STATUS && *content != '?';
 
-	in_env_variable = false;
+	return (content > substr_start
+		&& (*content == '$' || is_variable_end || is_exit_status_end));
+}
+
+static char	*get_expanded_string(char *content, t_shell *lambda)
+{
+	t_expansion_state	state;
+	char				*substr_start;
+	char				*expanded_string;
+	char				*appended;
+
+	state = EXPANSION_STATE_NORMAL;
 
 	substr_start = content;
 
@@ -87,39 +102,42 @@ static char	*get_expanded_string(char *content, t_vector *env)
 
 	while (*content)
 	{
-		if (*content == '$' || (in_env_variable && !is_valid_name_chr(*content) && !ft_isdigit(*content)))
+		if (should_get_appended(content, substr_start, state))
 		{
-			if (content > substr_start)
+			appended = get_appended(content, state, substr_start, lambda);
+			if (!appended)
 			{
-				appended = get_appended(content, in_env_variable, substr_start, env);
-				if (!appended)
-				{
-					// TODO: Error handling
-				}
-				substr_start = content;
-
-				expanded_string = ft_strjoin_and_free_left(expanded_string, appended);
-
-				if (!in_env_variable)
-					ft_free(&appended);
-
-				if (!expanded_string)
-				{
-					// TODO: Free
-					return (NULL);
-				}
-
-				in_env_variable = false;
+				// TODO: Free
+				return (NULL);
 			}
+			substr_start = content;
+
+			expanded_string = ft_strjoin_and_free_left(expanded_string, appended);
+
+			if (state != EXPANSION_STATE_VARIABLE)
+				ft_free(&appended);
+
+			if (!expanded_string)
+			{
+				// TODO: Free
+				return (NULL);
+			}
+
+			state = EXPANSION_STATE_NORMAL;
 		}
 
-		if (*content == '$' && is_valid_name_chr(*(content + 1)))
-			in_env_variable = true;
+		if (*content == '$')
+		{
+			if (is_valid_name_chr(*(content + 1)))
+				state = EXPANSION_STATE_VARIABLE;
+			else if (*(content + 1) == '?')
+				state = EXPANSION_STATE_STATUS;
+		}
 
 		content++;
 	}
 
-	appended = get_appended(content, in_env_variable, substr_start, env);
+	appended = get_appended(content, state, substr_start, lambda);
 	if (!appended)
 	{
 		// TODO: Free
@@ -128,13 +146,13 @@ static char	*get_expanded_string(char *content, t_vector *env)
 
 	expanded_string = ft_strjoin_and_free_left(expanded_string, appended);
 
-	if (!in_env_variable)
+	if (state != EXPANSION_STATE_VARIABLE)
 		ft_free(&appended);
 
 	return (expanded_string);
 }
 
-int	expand_env_variables(t_list *tokens, t_vector *env)
+int	expand_variables(t_list *tokens, t_shell *lambda)
 {
 	t_token	*token;
 	char	*expanded_string;
@@ -145,7 +163,7 @@ int	expand_env_variables(t_list *tokens, t_vector *env)
 
 		if (token->type == UNQUOTED || token->type == DOUBLE_QUOTED)
 		{
-			expanded_string = get_expanded_string(token->content, env);
+			expanded_string = get_expanded_string(token->content, lambda);
 			if (!expanded_string)
 			{
 				// TODO: Error handling
