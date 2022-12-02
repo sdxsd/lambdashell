@@ -106,6 +106,7 @@ typedef enum s_expansion_state
 	EXPANSION_STATE_NORMAL,
 	EXPANSION_STATE_VARIABLE,
 	EXPANSION_STATE_STATUS,
+	EXPANSION_STATE_INVALID_VARIABLE,
 }	t_expansion_state;
 
 #endif
