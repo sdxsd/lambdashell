@@ -50,6 +50,7 @@ typedef struct s_shell
 	t_vector	*env;
 	char		*line;
 	char		**lines;
+	char		*cwd;
 	int			status;
 	bool		stdin_is_tty;
 	bool		exit;

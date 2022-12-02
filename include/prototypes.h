@@ -51,9 +51,8 @@ int				chk_and_redirec(char *prog, t_cmd *cmd);
 void			dealloc_redir(void *to_free);
 
 /* BUILTINS */
-char			*ret_cwd(void);
-int				pwd(void);
-int				cd(t_cmd *cmd);
+int				pwd(t_shell *lambda);
+int				cd(t_cmd *cmd, t_shell *lambda);
 
 /* ENVIRONMENT */
 t_vector		*init_env(char **env);
@@ -77,6 +76,9 @@ t_token_type	subtokenize_pipe(char **line_ptr);
 t_token_type	subtokenize_whitespace(char **line_ptr);
 t_token_type	subtokenize_unquoted(char **line_ptr);
 t_list			*tokenize(char *line);
+
+/* UPDATE_CWD */
+void			update_cwd(t_shell *lambda);
 
 /* EXECUTION */
 int				execute_command(t_cmd *cmd, t_vector *env);
