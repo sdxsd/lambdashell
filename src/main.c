@@ -54,6 +54,7 @@ static int	prompt(t_shell *lambda)
 			return (FAILURE);
 		}
 		lambda->line = readline(readline_str);
+		ft_free(&readline_str);
 	}
 	else
 	{
