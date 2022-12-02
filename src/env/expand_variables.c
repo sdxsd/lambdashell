@@ -43,6 +43,7 @@ static char	*get_appended(char *content, t_expansion_state state, char *substr_s
 {
 	char	*appended;
 	char	*env_key;
+	char	*env_val;
 
 	if (state == EXPANSION_STATE_NORMAL)
 		appended = ft_substr(substr_start, 0, content - substr_start);
@@ -52,15 +53,19 @@ static char	*get_appended(char *content, t_expansion_state state, char *substr_s
 		if (!env_key)
 		{
 			// TODO: Error handling
+			return (NULL);
 		}
-
-		appended = env_get_val(lambda->env, env_key);
+		env_val = env_get_val(lambda->env, env_key);
 		ft_free(&env_key);
-		if (!appended)
-			appended = "";
+		if (env_val)
+			appended = ft_strdup(env_val);
+		else
+			appended = ft_strdup("");
 	}
-	else
+	else if (state == EXPANSION_STATE_STATUS)
 		appended = ft_itoa(lambda->status);
+	else
+		appended = ft_strdup("");
 	return (appended);
 }
 
@@ -75,11 +80,14 @@ static bool	should_get_appended(char *content, char *substr_start,
 	const bool	is_variable_end = \
 		state == EXPANSION_STATE_VARIABLE && \
 		!is_valid_name_chr(*content) && !ft_isdigit(*content);
-	const bool	is_exit_status_end = \
-		state == EXPANSION_STATE_STATUS && *content != '?';
+	const bool	is_status_or_invalid_end = \
+		(state == EXPANSION_STATE_STATUS || \
+		state == EXPANSION_STATE_INVALID_VARIABLE) && \
+		(content - substr_start >= 2) && \
+		(content[-2] == '$');
 
 	return (content > substr_start
-		&& (*content == '$' || is_variable_end || is_exit_status_end));
+		&& (*content == '$' || is_variable_end || is_status_or_invalid_end));
 }
 
 static char	*get_expanded_string(char *content, t_shell *lambda)
@@ -113,9 +121,7 @@ static char	*get_expanded_string(char *content, t_shell *lambda)
 			substr_start = content;
 
 			expanded_string = ft_strjoin_and_free_left(expanded_string, appended);
-
-			if (state != EXPANSION_STATE_VARIABLE)
-				ft_free(&appended);
+			ft_free(&appended);
 
 			if (!expanded_string)
 			{
@@ -132,6 +138,8 @@ static char	*get_expanded_string(char *content, t_shell *lambda)
 				state = EXPANSION_STATE_VARIABLE;
 			else if (*(content + 1) == '?')
 				state = EXPANSION_STATE_STATUS;
+			else if (!ft_isspace(*(content + 1)) && *(content + 1) != '\0')
+				state = EXPANSION_STATE_INVALID_VARIABLE;
 		}
 
 		content++;
@@ -145,9 +153,7 @@ static char	*get_expanded_string(char *content, t_shell *lambda)
 	}
 
 	expanded_string = ft_strjoin_and_free_left(expanded_string, appended);
-
-	if (state != EXPANSION_STATE_VARIABLE)
-		ft_free(&appended);
+	ft_free(&appended);
 
 	return (expanded_string);
 }
