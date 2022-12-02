@@ -59,7 +59,7 @@ t_vector		*init_env(char **env);
 char			**env_to_strings(t_vector *env);
 char			*env_get_val(t_vector *env, char *key);
 void			dealloc_env_element(void *ptr);
-int				expand_env_variables(t_list *tokens, t_vector *env);
+int				expand_variables(t_list *tokens, t_shell *lambda);
 
 /* ERROR MESSAGES */
 int				msg_err(char *s, int ret);

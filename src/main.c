@@ -68,19 +68,19 @@ static int	prompt(t_shell *lambda)
 	}
 	add_history(lambda->line);
 	tokens = tokenize(lambda->line);
-	if (expand_env_variables(tokens, lambda->env) == FAILURE)
+	if (expand_variables(tokens, lambda) == FAILURE)
 	{
 		// TODO: Freeing
 		return (FAILURE);
 	}
-	/* dbg_print_tokens(tokens); */
+	// dbg_print_tokens(tokens);
 	cmds = parse(tokens, lambda->env);
 	if (!cmds)
 	{
 		// TODO: Freeing
 		return (FAILURE);
 	}
-	/* dbg_print_commands(cmds); */
+	// dbg_print_commands(cmds);
 	executor(-1, cmds, lambda);
 	ft_free(&lambda->line);
 	return (SUCCESS);
