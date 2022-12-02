@@ -53,7 +53,7 @@ void			dealloc_redir(void *to_free);
 /* BUILTINS */
 char			*ret_cwd(void);
 int				pwd(void);
-void			cd(t_cmd *cmd);
+int				cd(t_cmd *cmd);
 
 /* ENVIRONMENT */
 t_vector		*init_env(char **env);

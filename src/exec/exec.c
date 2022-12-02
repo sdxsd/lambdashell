@@ -84,7 +84,7 @@ char	**args_to_strings(t_list *args, char *path)
 	char	**arg_strings;
 	int		iter;
 
-	arg_strings = ft_calloc(sizeof(char *), ft_lstsize(args) + 2);
+	arg_strings = ft_calloc(sizeof(*arg_strings), ft_lstsize(args) + 2);
 	if (!arg_strings)
 		return (null_msg_err("args_to_strings()"));
 	arg_strings[0] = path;
@@ -140,14 +140,14 @@ static int	execute_builtin(t_cmd *cmd, t_vector *env)
 	arg_strings = args_to_strings(cmd->args, cmd->path);
 	dup_fds(cmd);
 	if (ft_streq(arg_strings[0], "pwd"))
-		pwd();
+		return (pwd());
 	else if (ft_streq(arg_strings[0], "cd"))
-		cd(cmd);
-	else if (ft_streq(arg_strings[0], "env"))
-		dbg_print_env(env);
-	else
-		return (FAILURE);
-	return (SUCCESS);
+		return (cd(cmd));
+	// TODO: Replace with calling dedicated env() function, instead of dbg_print_env()
+	(void)env;
+	// else if (ft_streq(arg_strings[0], "env"))
+	// 	return (dbg_print_env(env));
+	return (FAILURE);
 }
 
 int	executor(int i_fd, t_list *curr, t_shell *lambda)
@@ -159,40 +159,42 @@ int	executor(int i_fd, t_list *curr, t_shell *lambda)
 
 	if (curr->next && pipe(tube) == -1)
 		return (msg_err("exec_and_pipe()", FAILURE));
-	pid = fork();
-	if (pid == FORK_FAILURE)
-		return (msg_err("exec_and_pipe()", FAILURE));
-	if (pid == FORK_CHILD)
+	cmd = curr->content;
+	if (ft_strchr(cmd->path, '/'))
 	{
-		if (curr->next)
-			close(tube[READ]);
-		cmd = curr->content;
-		if (curr->next)
-			cmd->o_fd = tube[WRITE];
-		if (i_fd != -1)
-			cmd->i_fd = i_fd;
-		if (!(ft_strchr(cmd->path, '/')))
-			execute_builtin(cmd, lambda->env);
-		else
+		pid = fork();
+		if (pid == FORK_FAILURE)
+			return (msg_err("exec_and_pipe()", FAILURE));
+		if (pid == FORK_CHILD)
+		{
+			if (curr->next)
+				close(tube[READ]);
+			if (curr->next)
+				cmd->o_fd = tube[WRITE];
+			if (i_fd != -1)
+				cmd->i_fd = i_fd;
 			execute_command(cmd, lambda->env);
-	}
-	close(i_fd);
-	if (curr->next)
-		close(tube[WRITE]);
-	if (curr->next && executor(tube[READ], curr->next, lambda) != SUCCESS)
-		return (msg_err("exec_and_pipe()", FAILURE));
-	waitpid(pid, &status, 0);
-	if (!curr->next)
-	{
-		// TODO: Add unit test for this one
-		if (WIFEXITED(status))
-			lambda->status = WEXITSTATUS(status);
+		}
+		close(i_fd);
+		if (curr->next)
+			close(tube[WRITE]);
+		if (curr->next && executor(tube[READ], curr->next, lambda) != SUCCESS)
+			return (msg_err("exec_and_pipe()", FAILURE));
+		waitpid(pid, &status, 0);
+		if (!curr->next)
+		{
+			// TODO: Add unit test for this one
+			if (WIFEXITED(status))
+				lambda->status = WEXITSTATUS(status);
 
-		else if (WIFSIGNALED(status))
-			lambda->status = WTERMSIG(status);
-		// TODO: Probably also need to add this? Check by adding a unit test
-		// else if (WIFSTOPPED(status))
-		// 	lambda->status = WIFSTOPPED(status);
+			else if (WIFSIGNALED(status))
+				lambda->status = WTERMSIG(status);
+			// TODO: Probably also need to add this? Check by adding a unit test
+			// else if (WIFSTOPPED(status))
+			// 	lambda->status = WIFSTOPPED(status);
+		}
 	}
+	else
+		lambda->status = execute_builtin(cmd, lambda->env);
 	return (SUCCESS);
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   CODAM C FILE                                       :+:    :+:            */
+/*   env.c                                              :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 1970/01/01 00:00:00 by wmaguire      #+#    #+#                 */
-/*   Updated: 1970/01/01 00:00:00 by wmaguire     ########   codam.nl         */
+/*   Updated: 1970/01/01 00:00:00 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,9 @@ char	*env_get_val(t_vector *env, char *key)
 	while (iter < env_size)
 	{
 		env_element = vec_get_element(env, iter)->data;
+		// TODO: Can env_element or env_element->key be NULL? ft_streq() below crashes if so
+		// if (!env_element)
+		// 	break ;
 		if (ft_streq(env_element->key, key))
 			return (env_element->val);
 		iter++;
