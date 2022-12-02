@@ -62,16 +62,11 @@ int	redirections(t_list *list, t_cmd *cmd)
 		}
 		else if (redir->direction == DIRECTION_OUT)
 		{
-			if (list->next)
-				creat(redir->file_path, 0644);
-			else
+			open(redir->file_path, O_CREAT | O_TRUNC | O_WRONLY, 0644);
+			if (cmd->o_fd < 0)
 			{
-				cmd->o_fd = open(redir->file_path, O_CREAT | O_WRONLY, 0644);
-				if (cmd->o_fd < 0)
-				{
-					null_msg_err("redirections()");
-					return (FALSE);
-				}
+				null_msg_err("redirections()");
+				return (FALSE);
 			}
 		}
 		list = list->next;
