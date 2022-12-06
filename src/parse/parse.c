@@ -46,7 +46,8 @@ static int	is_builtin(char *path)
 		|| ft_streq(path, "env")
 		|| ft_streq(path, "export")
 		|| ft_streq(path, "pwd")
-		|| ft_streq(path, "unset"));
+		|| ft_streq(path, "unset")
+		|| ft_streq(path, "exit"));
 }
 
 static t_cmd	*get_initial_cmd(void)
