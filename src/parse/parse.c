@@ -117,7 +117,7 @@ static t_redirect	*get_redirect(t_list **tokens)
 	return (redirect);
 }
 
-static char		*get_path(t_list **tokens, t_vector *env)
+static char		*get_path(t_list **tokens, t_list *env)
 {
 	char	*path;
 	t_token	*token;
@@ -186,7 +186,7 @@ static char		*get_arg(t_list **tokens)
 	return (arg);
 }
 
-static t_cmd	*get_cmd(t_list **tokens, t_vector *env)
+static t_cmd	*get_cmd(t_list **tokens, t_list *env)
 {
 	t_cmd		*cmd;
 	t_token		*token;
@@ -238,7 +238,7 @@ static t_cmd	*get_cmd(t_list **tokens, t_vector *env)
 	return (cmd);
 }
 
-t_list	*parse(t_list *tokens, t_vector *env)
+t_list	*parse(t_list *tokens, t_list *env)
 {
 	t_list	*cmds;
 	t_cmd	*cmd;
