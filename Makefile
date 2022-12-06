@@ -7,8 +7,7 @@ CFILES = \
 	src/builtins/cd.c \
 	src/builtins/pwd.c \
 	src/cosmetic/cosmetic.c \
-	src/dealloc/dealloc_lambda.c \
-	src/dealloc/dealloc_ptr_array.c \
+	src/dealloc/deallocate.c \
 	src/debug/debug_env.c \
 	src/debug/debug_print.c \
 	src/env/env_utils.c \

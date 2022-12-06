@@ -55,7 +55,7 @@ char	**env_to_strings(t_vector *env)
 		env_strings[e_size] = ft_strjoin(e_element->key, e_element->val);
 		if (!env_strings[e_size])
 		{
-			free_ptr_array(env_strings);
+			dealloc_ptr_array((void **)env_strings);
 			return (null_msg_err("env_to_strings()"));
 		}
 	}

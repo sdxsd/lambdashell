@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   dealloc_lambda.c                                   :+:    :+:            */
+/*   CODAM C FILE                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: sbos <sbos@student.codam.nl>                 +#+                     */
+/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/11/16 16:06:44 by sbos          #+#    #+#                 */
-/*   Updated: 2022/11/16 16:06:44 by sbos          ########   odam.nl         */
+/*   Created: 1970/01/01 00:00:00 by wmaguire      #+#    #+#                 */
+/*   Updated: 1970/01/01 00:00:00 by wmaguire     ########   codam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,30 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
+void	dealloc_ptr_array(void **data)
+{
+	int	iter;
+
+	if (data == NULL)
+		return ;
+	iter = 0;
+	while (data[iter])
+	{
+		ft_free(&data[iter]);
+		iter++;
+	}
+	ft_free(&data);
+}
+
 void	dealloc_lambda(t_shell *lambda)
 {
 	if (!lambda)
 		return ;
-	free_vector(lambda->env, dealloc_env_element);
-	ft_free(&lambda->line);
+	if (lambda->env)
+		free_vector(lambda->env, dealloc_env_element);
+	if (lambda->line)
+		ft_free(&lambda->line);
+	if (lambda->lines)
+		dealloc_ptr_array((void **)lambda->lines);
+	free(lambda);
 }

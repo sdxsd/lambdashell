@@ -106,9 +106,9 @@
 /* 		!redirec_list(prog, '<', &i_redirec)) */
 /* 	{ */
 /* 		if (i_redirec) */
-/* 			free_ptr_array(i_redirec); */
+/* 			dealloc_ptr_array((void **)i_redirec); */
 /* 		if (o_redirec) */
-/* 			free_ptr_array(o_redirec); */
+/* 			dealloc_ptr_array((void **)o_redirec); */
 /* 		free_vector(cmd->redirec, dealloc_redir); */
 /* 		return (msg_err("chk_and_redirec()", FALSE)); */
 /* 	} */

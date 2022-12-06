@@ -95,7 +95,6 @@ void			skip_whitespace_tokens(t_list **tokens);
 
 /* PATH */
 char			*get_absolute_path_from_env(char *name, t_vector *env);
-int				free_ptr_array(char *ptr[]);
 
 /* DEALLOC */
 void			dealloc_ptr_array(void **data);

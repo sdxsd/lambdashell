@@ -39,22 +39,6 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-/* Returns number of elements freed */
-/* Assumes list ends with null ptr */
-int	free_ptr_array(char *ptr[])
-{
-	int	iter;
-
-	iter = 0;
-	while (ptr[iter])
-	{
-		ft_free(&ptr[iter]);
-		iter++;
-	}
-	ft_free(&ptr);
-	return (iter);
-}
-
 static char	*path_join(char *dir, char *name)
 {
 	return (ft_strjoin_array((char *[]){dir, "/", name, NULL}));
@@ -80,17 +64,17 @@ char	*get_absolute_path_from_env(char *name, t_vector *env)
 		absolute_path = path_join(exec_direcs[iter], name);
 		if (!absolute_path)
 		{
-			free_ptr_array(exec_direcs);
+			dealloc_ptr_array((void **)exec_direcs);
 			return (NULL);
 		}
 		if (!access(absolute_path, F_OK)) // TODO: Probably needs more flags
 		{
-			free_ptr_array(exec_direcs);
+			dealloc_ptr_array((void **)exec_direcs);
 			return (absolute_path);
 		}
 		ft_free(&absolute_path);
 		iter++;
 	}
-	free_ptr_array(exec_direcs);
+	dealloc_ptr_array((void **)exec_direcs);
 	return (NULL);
 }
