@@ -66,3 +66,8 @@ void	dealloc_lambda(t_shell *lambda)
 		dealloc_ptr_array((void **)lambda->lines);
 	free(lambda);
 }
+
+void	dealloc_cmds(t_list *cmds)
+{
+
+}

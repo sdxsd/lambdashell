@@ -81,11 +81,6 @@ t_list			*tokenize(char *line);
 /* EXECUTION */
 int				execute_command(t_cmd *cmd, t_vector *env);
 int				executor(int i_fd, t_list *curr, t_shell *lambda);
-/* void			dealloc_exec_list(t_exec_element *head); */
-
-/* EXEC LIST */
-// t_exec_element	*new_exec_element(void);
-// void			free_exec_list(t_exec_element *head);
 
 /* PARSE */
 bool			is_ambiguous_redirect(t_list *tokens);
@@ -99,6 +94,7 @@ char			*get_absolute_path_from_env(char *name, t_vector *env);
 /* DEALLOC */
 void			dealloc_ptr_array(void **data);
 void			dealloc_lambda(t_shell *lambda);
+void			dealloc_cmds(t_list *cmds);
 
 /* DEBUG */
 void			dbg_print_env(t_vector *head);
