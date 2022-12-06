@@ -69,5 +69,17 @@ void	dealloc_lambda(t_shell *lambda)
 
 void	dealloc_cmds(t_list *cmds)
 {
+	t_cmd	*cmd;
 
+	while (cmds)
+	{
+		cmd = cmds->content;
+		if (cmd->args)
+			ft_lstclear(&cmd->args, free);
+		if (cmd->path)
+			ft_free(&cmd->path);
+		if (cmd->redirections)
+			dealloc_redirections(cmd->redirections);
+		cmds = cmds->next;;
+	}
 }
