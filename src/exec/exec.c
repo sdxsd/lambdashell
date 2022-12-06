@@ -139,8 +139,11 @@ static int	execute_builtin(t_cmd *cmd, t_shell *lambda)
 	else if (ft_streq(arg_strings[0], "pwd"))
 		return (pwd(lambda));
 	// TODO: Replace with calling dedicated env() function, instead of dbg_print_env()
-	// else if (ft_streq(arg_strings[0], "env"))
-	// 	return (dbg_print_env(env));
+	else if (ft_streq(arg_strings[0], "env"))
+	{
+		dbg_print_env(lambda->env);
+		return (SUCCESS);
+	}
 	return (FAILURE);
 }
 
