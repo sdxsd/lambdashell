@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   CODAM C FILE                                       :+:    :+:            */
+/*   env_utils.c                                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 1970/01/01 00:00:00 by wmaguire      #+#    #+#                 */
-/*   Updated: 1970/01/01 00:00:00 by wmaguire     ########   codam.nl         */
+/*   Updated: 1970/01/01 00:00:00 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,26 +39,28 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-char	**env_to_strings(t_vector *env)
+char	**env_to_strings(t_list *env)
 {
-	t_env_element	*e_element;
 	char			**env_strings;
-	int				e_size;
+	t_env_element	*env_element;
+	size_t			index;
 
-	e_size = vector_size(env);
-	env_strings = ft_calloc(e_size + 1, sizeof(*env_strings));
+	env_strings = ft_calloc(ft_lstsize(env) + 1, sizeof(*env_strings));
+	env_strings[ft_lstsize(env)] = NULL;
 	if (!env_strings)
 		return (NULL);
-	while (e_size-- > 0)
+	index = 0;
+	while (env)
 	{
-		e_element = vec_get_element(env, e_size)->data;
-		env_strings[e_size] = ft_strjoin(e_element->key, e_element->val);
-		if (!env_strings[e_size])
+		env_element = env->content;
+		env_strings[index] = ft_strjoin(env_element->key, env_element->val);
+		if (!env_strings[index])
 		{
 			dealloc_ptr_array((void **)env_strings);
 			return (null_msg_err("env_to_strings()"));
 		}
+		env = env->next;
+		index++;
 	}
-	env_strings[vector_size(env)] = NULL;
 	return (env_strings);
 }

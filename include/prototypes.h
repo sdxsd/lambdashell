@@ -49,16 +49,16 @@ char			*get_readline_str(t_shell *lambda);
 
 /* BUILTINS */
 char			*ret_cwd(void);
-int				pwd(void);
-void			cd(t_cmd *cmd);
 void			bltin_exit(t_cmd *cmd, t_list *cmds, t_shell *lambda);
+int				pwd(t_shell *lambda);
+int				cd(t_cmd *cmd, t_shell *lambda);
 
 /* ENVIRONMENT */
-t_vector		*init_env(char **env);
-char			**env_to_strings(t_vector *env);
-char			*env_get_val(t_vector *env, char *key);
+t_list			*init_env(char **env);
+char			**env_to_strings(t_list *env);
+char			*env_get_val(t_list *env, char *key);
 void			dealloc_env_element(void *ptr);
-int				expand_env_variables(t_list *tokens, t_vector *env);
+int				expand_variables(t_list *tokens, t_shell *lambda);
 
 /* ERROR MESSAGES */
 int				msg_err(char *s, int ret);
@@ -76,14 +76,17 @@ t_token_type	subtokenize_whitespace(char **line_ptr);
 t_token_type	subtokenize_unquoted(char **line_ptr);
 t_list			*tokenize(char *line);
 
+/* UPDATE_CWD */
+void			update_cwd(t_shell *lambda);
+
 /* EXECUTION */
-int				execute_command(t_cmd *cmd, t_vector *env);
+int				execute_command(t_cmd *cmd, t_list *env);
 int				executor(int i_fd, t_list *curr, t_shell *lambda);
 
 /* PARSE */
 bool			is_ambiguous_redirect(t_list *tokens);
 bool			is_text_token(t_token *token);
-t_list			*parse(t_list *tokens, t_vector *env);
+t_list			*parse(t_list *tokens, t_list *env);
 void			skip_whitespace_tokens(t_list **tokens);
 
 /* PATH */
@@ -96,8 +99,7 @@ void			dealloc_cmds(t_list *cmds);
 void			dealloc_redirections(t_list *redir);
 
 /* DEBUG */
-void			dbg_print_env(t_vector *head);
-void			dbg_test_env(t_vector *env);
+void			dbg_print_env(t_list *head);
 void			dbg_print_tokens(t_list *tokens);
 void			dbg_print_commands(t_list *cmds);
 void			dbg_print_lines(char **lines);

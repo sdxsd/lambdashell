@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   CODAM C FILE                                       :+:    :+:            */
+/*   update_cwd.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
+/*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 1970/01/01 00:00:00 by wmaguire      #+#    #+#                 */
-/*   Updated: 1970/01/01 00:00:00 by wmaguire     ########   codam.nl         */
+/*   Created: 2022/12/02 21:24:58 by sbos          #+#    #+#                 */
+/*   Updated: 2022/12/02 21:24:58 by sbos          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,25 +39,8 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-void	dbg_test_env(t_vector *env)
+void	update_cwd(t_shell *lambda)
 {
-	t_vector	*pushed_to_front;
-	t_vector	*pushed_to_back;
-
-	pushed_to_front = ft_calloc(1, sizeof(*pushed_to_front));
-	pushed_to_front->data = "PUSHED_TO_FRONT";
-	pushed_to_back = ft_calloc(1, sizeof(*pushed_to_back));
-	pushed_to_back->data = "PUSHED_TO_BACK";
-	printf("UNCHANGED ENV TEST:\n");
-	printf("	FIRST: %s\n", (char *)vector_get_first(env)->data);
-	printf("	LAST: %s\n\n", (char *)vector_get_last(env)->data);
-	printf("PUSH TO FRONT OF ENV:\n");
-	vector_push_front(&env, pushed_to_front);
-	printf("	FIRST: %s\n", (char *)env->data);
-	printf("PUSH TO BACK OF ENV:\n");
-	vector_push_back(env, pushed_to_back);
-	printf("	LAST: %s\n\n", (char *)vector_get_last(env)->data);
-	dbg_print_env(env);
-	printf("\nVECTOR SIZE: %d\n", vector_size(env));
-	free_vector(env, NULL);
+	ft_free(&lambda->cwd);
+	lambda->cwd = getcwd(NULL, 0);
 }

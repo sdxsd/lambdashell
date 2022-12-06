@@ -39,7 +39,7 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-void	cd(t_cmd *cmd)
+int	cd(t_cmd *cmd, t_shell *lambda)
 {
 	char	**args;
 

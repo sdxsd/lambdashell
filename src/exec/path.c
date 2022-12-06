@@ -44,7 +44,7 @@ static char	*path_join(char *dir, char *name)
 	return (ft_strjoin_array((char *[]){dir, "/", name, NULL}));
 }
 
-char	*get_absolute_path_from_env(char *name, t_vector *env)
+char	*get_absolute_path_from_env(char *name, t_list *env)
 {
 	static char	*path;
 	char		*absolute_path;

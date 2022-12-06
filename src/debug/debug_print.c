@@ -52,12 +52,12 @@ void	dbg_print_lines(char **lines)
 	}
 }
 
-void	dbg_print_env(t_vector *head)
+void	dbg_print_env(t_list *head)
 {
-	t_env_element	*ee;
+	t_env_element	*env_element;
 
-	ee = head->data;
-	printf("%s%s\n", ee->key, ee->val);
+	env_element = head->content;
+	printf("%s%s\n", env_element->key, env_element->val);
 	if (head->next)
 		dbg_print_env(head->next);
 	else
@@ -102,7 +102,7 @@ void	dbg_print_commands(t_list *cmds)
 	size_t		redirection_index;
 	t_redirect	*redirection;
 
-	ft_printf("\n");
+	printf("\n");
 
 	cmd_index = 0;
 	while (cmds)
@@ -114,7 +114,7 @@ void	dbg_print_commands(t_list *cmds)
 		printf("\tInput file descriptor: %i\n", cmd->i_fd);
 		printf("\tOutput file descriptor: %i\n", cmd->o_fd);
 
-		printf("\tPath: %s\n", cmd->path);
+		printf("\tPath: <%s>\n", cmd->path);
 
 		printf("\tArgs:");
 		list = cmd->args;
@@ -129,11 +129,11 @@ void	dbg_print_commands(t_list *cmds)
 		list = cmd->redirections;
 		while (list)
 		{
-			printf("\tRedirection %zu:\n", redirection_index);
+			printf("\tRedirection %zu:\n", redirection_index + 1);
 
 			redirection = list->content;
 
-			printf("\t\tRedirection file path: %s\n", redirection->file_path);
+			printf("\t\tRedirection file path: <%s>\n", redirection->file_path);
 			printf("\t\tRedirection direction: %s\n", direction_strings[redirection->direction]);
 			printf("\t\tIs ambiguous: %i\n", redirection->is_ambiguous);
 

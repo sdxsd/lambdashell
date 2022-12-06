@@ -54,6 +54,7 @@ static int	prompt(t_shell *lambda)
 			return (FAILURE);
 		}
 		lambda->line = readline(readline_str);
+		ft_free(&readline_str);
 	}
 	else
 	{
@@ -67,19 +68,19 @@ static int	prompt(t_shell *lambda)
 	}
 	add_history(lambda->line);
 	tokens = tokenize(lambda->line);
-	if (expand_env_variables(tokens, lambda->env) == FAILURE)
+	if (expand_variables(tokens, lambda) == FAILURE)
 	{
 		// TODO: Freeing
 		return (FAILURE);
 	}
-	/* dbg_print_tokens(tokens); */
+	// dbg_print_tokens(tokens);
 	cmds = parse(tokens, lambda->env);
 	if (!cmds)
 	{
 		// TODO: Freeing
 		return (FAILURE);
 	}
-	/* dbg_print_commands(cmds); */
+	// dbg_print_commands(cmds);
 	executor(-1, cmds, lambda);
 	ft_free(&lambda->line);
 	return (SUCCESS);
@@ -100,6 +101,7 @@ static t_shell	*shell_init(char **env)
 		ft_free(&lambda);
 		return (NULL);
 	}
+	update_cwd(lambda);
 	lambda->stdin_is_tty = isatty(STDIN_FILENO);
 	return (lambda);
 }

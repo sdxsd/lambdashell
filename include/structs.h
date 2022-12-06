@@ -47,9 +47,10 @@ A program is free software if users have all of these freedoms.
 typedef struct s_shell
 {
 	bool		interactive;
-	t_vector	*env;
+	t_list		*env;
 	char		*line;
 	char		**lines;
+	char		*cwd;
 	int			status;
 	bool		stdin_is_tty;
 	bool		exit;
@@ -99,5 +100,13 @@ typedef struct s_token
 	t_token_type	type;
 	char			*content;
 }	t_token;
+
+typedef enum s_expansion_state
+{
+	EXPANSION_STATE_NORMAL,
+	EXPANSION_STATE_VARIABLE,
+	EXPANSION_STATE_STATUS,
+	EXPANSION_STATE_INVALID_VARIABLE,
+}	t_expansion_state;
 
 #endif

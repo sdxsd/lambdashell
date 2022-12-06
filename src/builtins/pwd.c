@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   CODAM C FILE                                       :+:    :+:            */
+/*   pwd.c                                              :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 1970/01/01 00:00:00 by wmaguire      #+#    #+#                 */
-/*   Updated: 1970/01/01 00:00:00 by wmaguire     ########   codam.nl         */
+/*   Updated: 1970/01/01 00:00:00 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,24 +39,10 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-char	*ret_cwd(void)
+int	pwd(t_shell *lambda)
 {
-	char	*buffer;
-
-	buffer = getcwd(NULL, 0);
-	if (!buffer)
-		null_msg_err("ret_cwd()");
-	return (buffer);
-}
-
-int	pwd(void)
-{
-	char	*cwd;
-
-	cwd = ret_cwd();
-	if (cwd == NULL)
+	if (lambda->cwd == NULL)
 		return (msg_err("pwd()", FAILURE));
-	printf("%s\n", cwd);
-	ft_free(&cwd);
+	printf("%s\n", lambda->cwd);
 	return (SUCCESS);
 }
