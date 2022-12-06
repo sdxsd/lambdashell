@@ -145,6 +145,8 @@ static int	execute_builtin(t_cmd *cmd, t_vector *env)
 		cd(cmd);
 	else if (ft_streq(arg_strings[0], "env"))
 		dbg_print_env(env);
+	else if (ft_streq(arg_strings[0], "exit"))
+		exit(0);
 	else
 		return (FAILURE);
 	return (SUCCESS);

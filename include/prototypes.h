@@ -51,6 +51,7 @@ char			*get_readline_str(t_shell *lambda);
 char			*ret_cwd(void);
 int				pwd(void);
 void			cd(t_cmd *cmd);
+void			bltin_exit(t_cmd *cmd, t_list *cmds, t_shell *lambda);
 
 /* ENVIRONMENT */
 t_vector		*init_env(char **env);
@@ -92,6 +93,7 @@ char			*get_absolute_path_from_env(char *name, t_vector *env);
 void			dealloc_ptr_array(void **data);
 void			dealloc_lambda(t_shell *lambda);
 void			dealloc_cmds(t_list *cmds);
+void			dealloc_redirections(t_list *redir);
 
 /* DEBUG */
 void			dbg_print_env(t_vector *head);
