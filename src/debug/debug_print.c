@@ -52,12 +52,12 @@ void	dbg_print_lines(char **lines)
 	}
 }
 
-void	dbg_print_env(t_vector *head)
+void	dbg_print_env(t_list *head)
 {
-	t_env_element	*ee;
+	t_env_element	*env_element;
 
-	ee = head->data;
-	printf("%s%s\n", ee->key, ee->val);
+	env_element = head->content;
+	printf("%s%s\n", env_element->key, env_element->val);
 	if (head->next)
 		dbg_print_env(head->next);
 	else

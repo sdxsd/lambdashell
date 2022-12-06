@@ -59,58 +59,70 @@ static int	get_key_length(char *str)
 	return (count);
 }
 
-static void	*init_env_failure(t_vector *env)
+static void	*init_env_failure(t_list **env)
 {
-	return (free_vector(env, dealloc_env_element));
+	ft_lstclear(env, &dealloc_env_element);
+	return (NULL);
 }
 
-t_vector	*init_env(char **env)
+/* The OLDPWD check is here to recreate weird bash behavior:
+ * https://unix.stackexchange.com/questions/242909/
+ * why-does-bash-clear-oldpwd-when-a-child-script-is-started
+ */
+t_list	*init_env(char **env)
 {
-	t_vector		*env_vector;
+	int				index;
+	t_list			*env_list;
 	t_env_element	*env_element;
-	int				iter;
 
-	iter = 0;
-	while (env[iter])
-		iter++;
-	env_vector = alloc_vector(iter - 1);
-	if (!env_vector)
-		return (NULL);
-	while (iter-- > 0)
+	index = 0;
+	env_list = NULL;
+	while (env[index])
 	{
 		env_element = ft_calloc(1, sizeof(*env_element));
 		if (!env_element)
-			return (init_env_failure(env_vector));
-		env_element->key = ft_strndup(env[iter], get_key_length(env[iter]));
+			return (init_env_failure(&env_list));
+		env_element->key = ft_strndup(env[index], get_key_length(env[index]));
 		if (!env_element->key)
-			return (init_env_failure(env_vector));
-		env_element->val = ft_strdup(env[iter] + get_key_length(env[iter]));
-		if (!env_element->val)
-			return (init_env_failure(env_vector));
-		vec_assign_element(env_vector, iter, env_element);
+		{
+			ft_free(&env_element);
+			return (init_env_failure(&env_list));
+		}
+		if (!ft_streq(env_element->key, "OLDPWD"))
+		{
+			env_element->val = ft_strdup(env[index] + get_key_length(env[index]));
+			if (!env_element->val)
+			{
+				ft_free(&env_element->key);
+				ft_free(&env_element);
+				return (init_env_failure(&env_list));
+			}
+			if (!ft_lstnew_back(&env_list, env_element))
+			{
+				ft_free(&env_element->key);
+				ft_free(&env_element->val);
+				ft_free(&env_element);
+				return (init_env_failure(&env_list));
+			}
+		}
+		index++;
 	}
-	return (env_vector);
+	return (env_list);
 }
 
-char	*env_get_val(t_vector *env, char *key)
+char	*env_get_val(t_list *env, char *key)
 {
-	int				iter;
-	int				env_size;
 	t_env_element	*env_element;
 
 	if (!env || !key)
 		return (NULL);
-	iter = 0;
-	env_size = vector_size(env);
-	while (iter < env_size)
+	while (env)
 	{
-		env_element = vec_get_element(env, iter)->data;
+		env_element = env->content;
 		// TODO: Can env_element or env_element->key be NULL? ft_streq() below crashes if so
-		// if (!env_element)
-		// 	break ;
 		if (ft_streq(env_element->key, key))
 			return (env_element->val);
-		iter++;
+		env = env->next;
 	}
 	return (NULL);
 }

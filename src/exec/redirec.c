@@ -56,7 +56,7 @@
 /* 	return (TRUE); */
 /* } */
 
-/* void	strings_to_redirec(char **i, char **o, t_vector *redirec_vec) */
+/* void	strings_to_redirec(char **i, char **o, t_list *redirec_vec) */
 /* { */
 /* 	int	iter; */
 /* 	int idx; */
