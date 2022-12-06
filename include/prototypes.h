@@ -51,7 +51,7 @@ char			*get_readline_str(t_shell *lambda);
 char			*ret_cwd(void);
 void			bltin_exit(t_cmd *cmd, t_list *cmds, t_shell *lambda);
 int				pwd(t_shell *lambda);
-int				cd(t_cmd *cmd, t_shell *lambda);
+int				cd(t_cmd *cmd);
 
 /* ENVIRONMENT */
 t_list			*init_env(char **env);
@@ -90,7 +90,7 @@ t_list			*parse(t_list *tokens, t_list *env);
 void			skip_whitespace_tokens(t_list **tokens);
 
 /* PATH */
-char			*get_absolute_path_from_env(char *name, t_vector *env);
+char			*get_absolute_path_from_env(char *name, t_list *env);
 
 /* DEALLOC */
 void			dealloc_ptr_array(void **data);

@@ -59,7 +59,7 @@ void	dealloc_lambda(t_shell *lambda)
 	if (!lambda)
 		return ;
 	if (lambda->env)
-		free_vector(lambda->env, dealloc_env_element);
+		ft_lstclear(&lambda->env, dealloc_env_element);
 	if (lambda->line)
 		ft_free(&lambda->line);
 	if (lambda->lines)
