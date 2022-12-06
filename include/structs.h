@@ -88,7 +88,7 @@ typedef enum s_token_type
 {
 	SINGLE_QUOTED,
 	DOUBLE_QUOTED,
-	REDIRECTION, // TODO: Might need to split into REDIRECTION_IN and _OUT
+	REDIRECTION,
 	PIPE,
 	WHITESPACE,
 	UNQUOTED,
