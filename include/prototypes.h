@@ -47,10 +47,6 @@ char			**args_to_strings(t_list *args, char *path);
 /* COSMETIC */
 char			*get_readline_str(t_shell *lambda);
 
-/* REDIRECTIONS */
-int				chk_and_redirec(char *prog, t_cmd *cmd);
-void			dealloc_redir(void *to_free);
-
 /* BUILTINS */
 char			*ret_cwd(void);
 int				pwd(void);

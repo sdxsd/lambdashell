@@ -67,9 +67,26 @@ void	dealloc_lambda(t_shell *lambda)
 	free(lambda);
 }
 
+void	dealloc_redirections(t_list *redir)
+{
+	t_list		*tmp;
+	t_redirect	*curr;
+
+	while (redir)
+	{
+		curr = redir->content;
+		if (curr->file_path)
+			ft_free(&curr->file_path);
+		tmp = redir;
+		redir = redir->next;
+		ft_free(&tmp);
+	}
+}
+
 void	dealloc_cmds(t_list *cmds)
 {
 	t_cmd	*cmd;
+	t_list	*tmp;
 
 	while (cmds)
 	{
@@ -80,6 +97,8 @@ void	dealloc_cmds(t_list *cmds)
 			ft_free(&cmd->path);
 		if (cmd->redirections)
 			dealloc_redirections(cmd->redirections);
+		tmp = cmds;
 		cmds = cmds->next;;
+		ft_free(&tmp);
 	}
 }
