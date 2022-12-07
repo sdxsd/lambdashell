@@ -8,8 +8,6 @@
 
 void	bltin_exit(t_cmd *cmd, t_list *cmds, t_shell *lambda)
 {
-	if (cmd)
-		;
 	if (lambda)
 		dealloc_lambda(lambda);
 	if (cmds)
