@@ -145,7 +145,11 @@ static int	execute_builtin(t_cmd *cmd, t_shell *lambda)
 		return (SUCCESS);
 	}
 	else if (ft_streq(arg_strings[0], "exit"))
-		bltin_exit(cmd, NULL, lambda);
+	{
+		// TODO: create define rather than using (2)
+		bltin_exit(cmd, lambda);
+		return (2);
+	}
 	return (FAILURE);
 }
 

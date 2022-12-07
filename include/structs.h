@@ -48,6 +48,7 @@ typedef struct s_shell
 {
 	bool		interactive;
 	t_list		*env;
+	t_list		*cmd_list;
 	char		*line;
 	char		**lines;
 	char		*cwd;
