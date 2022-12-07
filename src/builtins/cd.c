@@ -39,12 +39,22 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-int	cd(t_cmd *cmd)
+// NOTE: temp
+char *ret_cwd()
+{
+	char	*cwd;
+	cwd = getcwd(NULL, 0);
+	return (cwd);
+}
+
+int	cd(t_cmd *cmd, t_shell *lambda)
 {
 	char	**args;
 
 	args = args_to_strings(cmd->args, cmd->path);
 	if (chdir(args[1]) == -1)
 		return (msg_err("cd", FAILURE));
+	ft_free(&lambda->cwd);
+	lambda->cwd = ret_cwd();
 	return (SUCCESS);
 }
