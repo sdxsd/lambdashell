@@ -144,6 +144,8 @@ static int	execute_builtin(t_cmd *cmd, t_shell *lambda)
 		dbg_print_env(lambda->env);
 		return (SUCCESS);
 	}
+	else if (ft_streq(arg_strings[0], "exit"))
+		bltin_exit(cmd, NULL, lambda);
 	return (FAILURE);
 }
 

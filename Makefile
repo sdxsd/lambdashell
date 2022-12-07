@@ -1,14 +1,14 @@
 
 CC = clang
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g
 NAME = minishell
 CFILES = \
 	src/main.c \
 	src/builtins/cd.c \
+	src/builtins/exit.c \
 	src/builtins/pwd.c \
 	src/cosmetic/cosmetic.c \
 	src/dealloc/deallocate.c \
-	src/debug/debug_env.c \
 	src/debug/debug_print.c \
 	src/env/env_utils.c \
 	src/env/env.c \
