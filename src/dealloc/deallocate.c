@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   CODAM C FILE                                       :+:    :+:            */
+/*   deallocate.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 1970/01/01 00:00:00 by wmaguire      #+#    #+#                 */
-/*   Updated: 1970/01/01 00:00:00 by wmaguire     ########   codam.nl         */
+/*   Updated: 1970/01/01 00:00:00 by wmaguire      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,12 @@ void	dealloc_ptr_array(void **data)
 
 void	dealloc_lambda(t_shell *lambda)
 {
-	if (!lambda)
-		return ;
 	if (lambda->env)
 		ft_lstclear(&lambda->env, dealloc_env_element);
 	if (lambda->line)
 		ft_free(&lambda->line);
 	if (lambda->lines)
 		dealloc_ptr_array((void **)lambda->lines);
-	free(lambda);
 }
 
 void	dealloc_redirections(t_list *redir)
