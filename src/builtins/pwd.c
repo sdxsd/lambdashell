@@ -41,8 +41,10 @@ A program is free software if users have all of these freedoms.
 
 int	pwd(t_shell *lambda)
 {
+	// fprintf(stderr, "lol\n");
 	if (lambda->cwd == NULL)
 		return (msg_err("pwd()", FAILURE));
+	// TODO: Decide whether ft_printf() or printf() should be used with regards to pipe() not using buffered shit
 	printf("%s\n", lambda->cwd);
 	return (SUCCESS);
 }
