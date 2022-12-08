@@ -50,7 +50,7 @@ static int	argless_export(t_shell *lambda)
 	{
 		env_element = env_list->content;
 		// TODO: This doesn't escape the dollar_in_env export
-		printf("declare -x %s=\"%s\"\n", env_element->key, env_element->val);
+		ft_printf("declare -x %s=\"%s\"\n", env_element->key, env_element->val);
 		env_list = env_list->next;
 	}
 	return (SUCCESS);

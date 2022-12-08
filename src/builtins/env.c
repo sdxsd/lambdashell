@@ -49,7 +49,7 @@ int	env(t_shell *lambda)
 	while (env_list)
 	{
 		env_element = env_list->content;
-		printf("%s=%s\n", env_element->key, env_element->val);
+		ft_printf("%s=%s\n", env_element->key, env_element->val);
 		env_list = env_list->next;
 	}
 	return (SUCCESS);

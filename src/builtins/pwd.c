@@ -43,6 +43,6 @@ int	pwd(t_shell *lambda)
 {
 	if (lambda->cwd == NULL)
 		return (msg_err("pwd()", FAILURE));
-	printf("%s\n", lambda->cwd);
+	ft_printf("%s\n", lambda->cwd);
 	return (SUCCESS);
 }
