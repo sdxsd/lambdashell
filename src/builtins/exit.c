@@ -18,5 +18,6 @@ void	bltin_exit(t_cmd *cmd, t_shell *lambda)
 		ft_lstclear(&lambda->env, dealloc_env_element);
 	if (cmd)
 		;
+	rl_clear_history();
 	exit (lambda->status);
 }
