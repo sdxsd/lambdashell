@@ -52,18 +52,6 @@ void	dbg_print_lines(char **lines)
 	}
 }
 
-void	dbg_print_env(t_list *head)
-{
-	t_env_element	*env_element;
-
-	env_element = head->content;
-	printf("%s%s\n", env_element->key, env_element->val);
-	if (head->next)
-		dbg_print_env(head->next);
-	else
-		return ;
-}
-
 void	dbg_print_tokens(t_list *tokens)
 {
 	char	*token_type_strings[] = {

@@ -49,9 +49,11 @@ char			*get_readline_str(t_shell *lambda);
 
 /* BUILTINS */
 char			*ret_cwd(void);
-void			bltin_exit(t_cmd *cmd, t_shell *lambda);
-int				pwd(t_shell *lambda);
 int				cd(t_cmd *cmd, t_shell *lambda);
+int				env(t_shell *lambda);
+void			bltin_exit(t_cmd *cmd, t_shell *lambda);
+int				export(t_cmd *cmd, t_shell *lambda);
+int				pwd(t_shell *lambda);
 
 /* ENVIRONMENT */
 t_list			*init_env(char **env);
@@ -99,7 +101,6 @@ void			dealloc_cmds(t_list *cmds);
 void			dealloc_redirections(t_list *redir);
 
 /* DEBUG */
-void			dbg_print_env(t_list *head);
 void			dbg_print_tokens(t_list *tokens);
 void			dbg_print_commands(t_list *cmds);
 void			dbg_print_lines(char **lines);
