@@ -211,7 +211,7 @@ static t_cmd	*get_cmd(t_list **tokens, t_list *env)
 			redirect = get_redirect(tokens);
 			if (!redirect || !ft_lstnew_back(&cmd->redirections, redirect))
 			{
-				// TODO: Free
+				dealloc_cmd(cmd);
 				return (NULL);
 			}
 		}
@@ -220,7 +220,7 @@ static t_cmd	*get_cmd(t_list **tokens, t_list *env)
 			cmd->path = get_path(tokens, env);
 			if (!cmd->path)
 			{
-				// TODO: Free
+				dealloc_cmd(cmd);
 				return (NULL);
 			}
 		}
@@ -229,7 +229,7 @@ static t_cmd	*get_cmd(t_list **tokens, t_list *env)
 			arg = get_arg(tokens);
 			if (!arg || !ft_lstnew_back(&cmd->args, arg))
 			{
-				// TODO: Free
+				dealloc_cmd(cmd);
 				return (NULL);
 			}
 		}
@@ -250,8 +250,10 @@ t_list	*parse(t_list *tokens, t_list *env)
 	{
 		cmd = get_cmd(&tokens, env);
 		if (!cmd || !ft_lstnew_back(&cmds, cmd))
-			return (NULL); // TODO: Free?
+		{
+			dealloc_cmds(cmds);
+			return (NULL);
+		}
 	}
-
 	return (cmds);
 }

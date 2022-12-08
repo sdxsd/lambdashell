@@ -64,7 +64,6 @@ void	dealloc_lambda(t_shell *lambda)
 		ft_free(&lambda->line);
 	if (lambda->lines)
 		dealloc_ptr_array((void **)lambda->lines);
-	free(lambda);
 }
 
 void	dealloc_redirections(t_list *redir)
@@ -83,20 +82,23 @@ void	dealloc_redirections(t_list *redir)
 	}
 }
 
+void	dealloc_cmd(t_cmd *cmd)
+{
+	if (cmd->args)
+		ft_lstclear(&cmd->args, free);
+	if (cmd->path)
+		ft_free(&cmd->path);
+	if (cmd->redirections)
+		dealloc_redirections(cmd->redirections);
+}
+
 void	dealloc_cmds(t_list *cmds)
 {
-	t_cmd	*cmd;
 	t_list	*tmp;
 
 	while (cmds)
 	{
-		cmd = cmds->content;
-		if (cmd->args)
-			ft_lstclear(&cmd->args, free);
-		if (cmd->path)
-			ft_free(&cmd->path);
-		if (cmd->redirections)
-			dealloc_redirections(cmd->redirections);
+		dealloc_cmd(cmds->content);
 		tmp = cmds;
 		cmds = cmds->next;;
 		ft_free(&tmp);

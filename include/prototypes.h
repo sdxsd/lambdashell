@@ -97,6 +97,7 @@ char			*get_absolute_path_from_env(char *name, t_list *env);
 void			dealloc_ptr_array(void **data);
 void			dealloc_lambda(t_shell *lambda);
 void			dealloc_cmds(t_list *cmds);
+void			dealloc_cmd(t_cmd *cmd);
 void			dealloc_redirections(t_list *redir);
 
 /* DEBUG */
