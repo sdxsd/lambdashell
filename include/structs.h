@@ -55,6 +55,8 @@ typedef struct s_shell
 	int			status;
 	bool		stdin_is_tty;
 	bool		exit;
+	int			stdin_fd;
+	int			stdout_fd;
 }	t_shell;
 
 typedef enum e_direction

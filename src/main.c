@@ -87,44 +87,42 @@ static int	prompt(t_shell *lambda)
 	return (SUCCESS);
 }
 
-static t_shell	*shell_init(char **env)
+static int	shell_init(char **env, t_shell *lambda)
 {
-	t_shell		*lambda;
-
-	lambda = ft_calloc(1, sizeof(*lambda));
-	if (!lambda)
-		return (NULL);
+	ft_bzero(lambda, sizeof(*lambda));
 	lambda->status = SUCCESS;
 	lambda->exit = FALSE;
 	lambda->env = init_env(env);
 	if (!lambda->env)
-	{
-		ft_free(&lambda);
-		return (NULL);
-	}
+		return (FAILURE);
+	// TODO: Should lambda->cwd set by this function be error checked?
 	update_cwd(lambda);
+	// TODO: May need to check errno afterwards according to man page
 	lambda->stdin_is_tty = isatty(STDIN_FILENO);
-	return (lambda);
+	lambda->stdin_fd = dup(STDIN_FILENO);
+	lambda->stdout_fd = dup(STDOUT_FILENO);
+	if (lambda->stdin_fd == -1 || lambda->stdout_fd == -1)
+		return (FAILURE);
+	return (SUCCESS);
 }
 
 int	main(int argc, char **argv, char **env)
 {
-	t_shell	*lambda;
+	t_shell	lambda;
 	int		status;
 
 	(void)argv;
 	if (argc > 1)
 		return (FAILURE);
-	lambda = shell_init(env);
-	if (!lambda)
+	if (shell_init(env, &lambda) == FAILURE)
 	{
-		dealloc_lambda(lambda);
+		dealloc_lambda(&lambda);
 		return (FAILURE);
 	}
-	while (!lambda->exit)
-		prompt(lambda);
-	status = lambda->status;
-	dealloc_lambda(lambda);
+	while (!lambda.exit)
+		prompt(&lambda);
+	status = lambda.status;
+	dealloc_lambda(&lambda);
 	rl_clear_history();
 	return (status);
 }
