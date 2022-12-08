@@ -5,6 +5,8 @@ NAME = minishell
 CFILES = \
 	src/main.c \
 	src/builtins/cd.c \
+	src/builtins/env.c \
+	src/builtins/export.c \
 	src/builtins/pwd.c \
 	src/cosmetic/cosmetic.c \
 	src/dealloc/dealloc_lambda.c \
@@ -13,6 +15,7 @@ CFILES = \
 	src/env/env_utils.c \
 	src/env/env.c \
 	src/env/expand_variables.c \
+	src/env/new_env_element.c \
 	src/error/error.c \
 	src/exec/exec.c \
 	src/exec/path.c \

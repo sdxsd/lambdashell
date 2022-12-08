@@ -51,8 +51,10 @@ int				chk_and_redirec(char *prog, t_cmd *cmd);
 void			dealloc_redir(void *to_free);
 
 /* BUILTINS */
-int				pwd(t_shell *lambda);
 int				cd(t_cmd *cmd, t_shell *lambda);
+int				env(t_shell *lambda);
+int				export(t_cmd *cmd, t_shell *lambda);
+int				pwd(t_shell *lambda);
 
 /* ENVIRONMENT */
 t_list			*init_env(char **env);
@@ -60,6 +62,7 @@ char			**env_to_strings(t_list *env);
 char			*env_get_val(t_list *env, char *key);
 void			dealloc_env_element(void *ptr);
 int				expand_variables(t_list *tokens, t_shell *lambda);
+t_env_element	*new_env_element(char *key, char *val);
 
 /* ERROR MESSAGES */
 int				msg_err(char *s, int ret);
@@ -81,8 +84,7 @@ t_list			*tokenize(char *line);
 void			update_cwd(t_shell *lambda);
 
 /* EXECUTION */
-int				execute_command(t_cmd *cmd, t_list *env);
-int				executor(int i_fd, t_list *curr, t_shell *lambda);
+int				executor(int i_fd, t_list *cmds, t_shell *lambda);
 /* void			dealloc_exec_list(t_exec_element *head); */
 
 /* EXEC LIST */
@@ -104,7 +106,6 @@ void			dealloc_ptr_array(void **data);
 void			dealloc_lambda(t_shell *lambda);
 
 /* DEBUG */
-void			dbg_print_env(t_list *head);
 void			dbg_print_tokens(t_list *tokens);
 void			dbg_print_commands(t_list *cmds);
 void			dbg_print_lines(char **lines);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   update_cwd.c                                       :+:    :+:            */
+/*   new_env_element.c                                  :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/12/02 21:24:58 by sbos          #+#    #+#                 */
-/*   Updated: 2022/12/02 21:24:58 by sbos          ########   odam.nl         */
+/*   Created: 2022/12/07 17:01:04 by sbos          #+#    #+#                 */
+/*   Updated: 2022/12/07 17:01:04 by sbos          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,15 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-void	update_cwd(t_shell *lambda)
+t_env_element	*new_env_element(char *key, char *val)
 {
-	ft_free(&lambda->cwd);
-	// TODO: Should lambda->cwd be error checked?
-	lambda->cwd = getcwd(NULL, 0);
+	t_env_element	*env_element;
+
+	env_element = ft_calloc(1, sizeof(*env_element));
+	if (env_element)
+	{
+		env_element->key = key;
+		env_element->val = val;
+	}
+	return (env_element);
 }

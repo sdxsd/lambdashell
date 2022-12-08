@@ -90,7 +90,7 @@ t_list	*init_env(char **env)
 		}
 		if (!ft_streq(env_element->key, "OLDPWD"))
 		{
-			env_element->val = ft_strdup(env[index] + get_key_length(env[index]));
+			env_element->val = ft_strdup(env[index] + get_key_length(env[index]) + 1);
 			if (!env_element->val)
 			{
 				ft_free(&env_element->key);

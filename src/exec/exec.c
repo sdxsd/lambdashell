@@ -41,7 +41,7 @@ A program is free software if users have all of these freedoms.
 #include <sys/wait.h>
 #include <fcntl.h>
 
-int	redirections(t_list *list, t_cmd *cmd)
+static int	redirections(t_list *list, t_cmd *cmd)
 {
 	t_redirect	*redir;
 	int			in_encountered;
@@ -62,7 +62,7 @@ int	redirections(t_list *list, t_cmd *cmd)
 		}
 		else if (redir->direction == DIRECTION_OUT)
 		{
-			open(redir->file_path, O_CREAT | O_TRUNC | O_WRONLY, 0644);
+			cmd->o_fd = open(redir->file_path, O_CREAT | O_TRUNC | O_WRONLY, 0644);
 			if (cmd->o_fd < 0)
 			{
 				null_msg_err("redirections()");
@@ -94,32 +94,29 @@ char	**args_to_strings(t_list *args, char *path)
 	return (arg_strings);
 }
 
-static void	dup_fds(t_cmd *cmd)
+static void	dup2_cmd(t_cmd *cmd)
 {
+	dup2(cmd->i_fd, STDIN_FILENO);
 	if (cmd->i_fd != STDIN_FILENO)
-	{
-		dup2(cmd->i_fd, STDIN_FILENO);
 		close(cmd->i_fd);
-	}
+
+	dup2(cmd->o_fd, STDOUT_FILENO);
 	if (cmd->o_fd != STDOUT_FILENO)
-	{
-		dup2(cmd->o_fd, STDOUT_FILENO);
 		close(cmd->o_fd);
-	}
 }
 
 /* NOTE: INFO */
 /* Takes a t_cmd and executes it. */
-int	execute_command(t_cmd *cmd, t_list *env)
+static int	execute_command(t_cmd *cmd, t_list *env)
 {
 	char	**env_array;
 	char	**arg_array;
 
 	// TODO: Protection!
 	redirections(cmd->redirections, cmd);
-	env_array = env_to_strings(env);
 	arg_array = args_to_strings(cmd->args, cmd->path);
-	dup_fds(cmd);
+	env_array = env_to_strings(env);
+	dup2_cmd(cmd);
 	if (execve(cmd->path, arg_array, env_array) == -1)
 	{
 		msg_err("execute_command()", FAILURE);
@@ -133,62 +130,83 @@ static int	execute_builtin(t_cmd *cmd, t_shell *lambda)
 	char	**arg_strings;
 
 	arg_strings = args_to_strings(cmd->args, cmd->path);
-	dup_fds(cmd);
+	dup2_cmd(cmd);
 	if (ft_streq(arg_strings[0], "cd"))
 		return (cd(cmd, lambda));
+	else if (ft_streq(arg_strings[0], "env"))
+		return (env(lambda));
+	else if (ft_streq(arg_strings[0], "export"))
+		return (export(cmd, lambda));
 	else if (ft_streq(arg_strings[0], "pwd"))
 		return (pwd(lambda));
-	// TODO: Replace with calling dedicated env() function, instead of dbg_print_env()
-	// else if (ft_streq(arg_strings[0], "env"))
-	// 	return (dbg_print_env(env));
 	return (FAILURE);
 }
 
-int	executor(int i_fd, t_list *curr, t_shell *lambda)
+int	executor(int i_fd, t_list *cmds, t_shell *lambda)
 {
 	int		tube[2];
 	pid_t	pid;
 	t_cmd	*cmd;
 	int		status;
 
-	if (curr->next && pipe(tube) == -1)
+	if (cmds->next && pipe(tube) == -1)
 		return (msg_err("exec_and_pipe()", FAILURE));
-	cmd = curr->content;
+	cmd = cmds->content;
+
 	if (ft_strchr(cmd->path, '/'))
 	{
+		// TODO: Maybe we shouldn't fork if there is only a single non-builtin command
 		pid = fork();
 		if (pid == FORK_FAILURE)
 			return (msg_err("exec_and_pipe()", FAILURE));
 		if (pid == FORK_CHILD)
 		{
-			if (curr->next)
+			if (cmds->next)
 				close(tube[READ]);
-			if (curr->next)
-				cmd->o_fd = tube[WRITE];
+
 			if (i_fd != -1)
 				cmd->i_fd = i_fd;
-			execute_command(cmd, lambda->env);
-		}
-		close(i_fd);
-		if (curr->next)
-			close(tube[WRITE]);
-		if (curr->next && executor(tube[READ], curr->next, lambda) != SUCCESS)
-			return (msg_err("exec_and_pipe()", FAILURE));
-		waitpid(pid, &status, 0);
-		if (!curr->next)
-		{
-			// TODO: Add unit test for this one
-			if (WIFEXITED(status))
-				lambda->status = WEXITSTATUS(status);
+			if (cmds->next)
+				cmd->o_fd = tube[WRITE];
 
-			else if (WIFSIGNALED(status))
-				lambda->status = WTERMSIG(status);
-			// TODO: Probably also need to add this? Check by adding a unit test
-			// else if (WIFSTOPPED(status))
-			// 	lambda->status = WIFSTOPPED(status);
+			execute_command(cmd, lambda->env);
 		}
 	}
 	else
+	{
+		// TODO: Why store i_fd and o_fd in cmd when dups can be done immediately?
+		if (i_fd != -1)
+			cmd->i_fd = i_fd;
+		if (cmds->next)
+			cmd->o_fd = tube[WRITE];
+
+		// TODO: Should this really always be setting lambda->status, unlike non-builtins?
 		lambda->status = execute_builtin(cmd, lambda);
+
+		dup2(lambda->stdin_fd, STDIN_FILENO);
+		dup2(lambda->stdout_fd, STDOUT_FILENO);
+	}
+	if (cmds->next)
+		close(tube[WRITE]);
+	if (i_fd != -1)
+		close(i_fd); // TODO: Right now only the parent is closing the read end!!
+
+	if (cmds->next && executor(tube[READ], cmds->next, lambda) != SUCCESS)
+		return (msg_err("exec_and_pipe()", FAILURE));
+	if (ft_strchr(cmd->path, '/'))
+		waitpid(pid, &status, 0);
+	if (!cmds->next)
+	{
+		// TODO: Add unit test for this one
+		if (WIFEXITED(status))
+			lambda->status = WEXITSTATUS(status);
+
+		else if (WIFSIGNALED(status))
+			lambda->status = WTERMSIG(status);
+
+		// TODO: Probably also need to add this? Check by adding a unit test
+		// else if (WIFSTOPPED(status))
+		// 	lambda->status = WIFSTOPPED(status);
+	}
 	return (SUCCESS);
 }
