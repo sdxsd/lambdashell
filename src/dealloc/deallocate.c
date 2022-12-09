@@ -88,10 +88,8 @@ void	dealloc_cmds(t_list *cmds)
 	while (cmds)
 	{
 		cmd = cmds->content;
-		if (cmd->args)
-			ft_lstclear(&cmd->args, free);
-		if (cmd->path)
-			ft_free(&cmd->path);
+		ft_free(&cmd->args);
+		ft_free(&cmd->path);
 		if (cmd->redirections)
 			dealloc_redirections(cmd->redirections);
 		tmp = cmds;

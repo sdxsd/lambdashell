@@ -42,7 +42,6 @@ A program is free software if users have all of these freedoms.
 static int	prompt(t_shell *lambda)
 {
 	t_list	*tokens;
-	t_list	*cmds;
 	char	*readline_str;
 
 	if (lambda->stdin_is_tty)
@@ -74,15 +73,14 @@ static int	prompt(t_shell *lambda)
 		return (FAILURE);
 	}
 	// dbg_print_tokens(tokens);
-	cmds = parse(tokens, lambda->env);
-	if (!cmds)
+	lambda->cmds = parse(tokens, lambda->env);
+	if (!lambda->cmds)
 	{
 		// TODO: Freeing
 		return (FAILURE);
 	}
-	// dbg_print_commands(cmds);
-	lambda->cmd_list = cmds;
-	executor(-1, cmds, lambda);
+	// dbg_print_commands(lambda->cmds);
+	executor(-1, lambda->cmds, lambda);
 	ft_free(&lambda->line);
 	return (SUCCESS);
 }

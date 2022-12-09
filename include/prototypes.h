@@ -41,9 +41,6 @@ A program is free software if users have all of these freedoms.
 # define PROTOTYPES_H
 # include "structs.h"
 
-/* UTILS */
-char			**args_to_strings(t_list *args, char *path);
-
 /* COSMETIC */
 char			*get_readline_str(t_shell *lambda);
 

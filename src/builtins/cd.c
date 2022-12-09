@@ -49,10 +49,8 @@ char *ret_cwd()
 
 int	cd(t_cmd *cmd, t_shell *lambda)
 {
-	char	**args;
-
-	args = args_to_strings(cmd->args, cmd->path);
-	if (chdir(args[1]) == -1)
+	// TODO: Maybe if-statement check whether args or [0] or [1] is NULL?
+	if (chdir(cmd->args[1]) == -1)
 		return (msg_err("cd", FAILURE));
 	ft_free(&lambda->cwd);
 	lambda->cwd = ret_cwd();

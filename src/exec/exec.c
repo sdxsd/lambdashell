@@ -74,26 +74,6 @@ static int	redirections(t_list *list, t_cmd *cmd)
 	return (TRUE);
 }
 
-char	**args_to_strings(t_list *args, char *path)
-{
-	char	**arg_strings;
-	int		iter;
-
-	arg_strings = ft_calloc(sizeof(*arg_strings), ft_lstsize(args) + 2);
-	if (!arg_strings)
-		return (null_msg_err("args_to_strings()"));
-	arg_strings[0] = path;
-	iter = 1;
-	while (args)
-	{
-		arg_strings[iter] = args->content;
-		args = args->next;
-		iter++;
-	}
-	arg_strings[iter] = NULL;
-	return (arg_strings);
-}
-
 static void	dup2_cmd(t_cmd *cmd)
 {
 	dup2(cmd->i_fd, STDIN_FILENO);
@@ -108,14 +88,13 @@ static void	dup2_cmd(t_cmd *cmd)
 static int	execute_command(t_cmd *cmd, t_list *env)
 {
 	char	**env_array;
-	char	**arg_array;
 
 	// TODO: Protection!
 	redirections(cmd->redirections, cmd);
-	arg_array = args_to_strings(cmd->args, cmd->path);
+	// TODO: Try to find a way to not call this env_to_strings() every time
 	env_array = env_to_strings(env);
 	dup2_cmd(cmd);
-	if (execve(cmd->path, arg_array, env_array) == -1)
+	if (execve(cmd->path, cmd->args, env_array) == -1)
 	{
 		msg_err("execute_command()", FAILURE);
 		return (FAILURE);
@@ -125,23 +104,21 @@ static int	execute_command(t_cmd *cmd, t_list *env)
 
 static int	execute_builtin(t_cmd *cmd, t_shell *lambda)
 {
-	char	**arg_strings;
-
-	arg_strings = args_to_strings(cmd->args, cmd->path);
 	dup2_cmd(cmd);
-	if (ft_streq(arg_strings[0], "cd"))
+	// TODO: Maybe if-statement check whether path or args or args[0] or args[1] is NULL?
+	if (ft_streq(cmd->path, "cd"))
 		return (cd(cmd, lambda));
-	else if (ft_streq(arg_strings[0], "env"))
+	else if (ft_streq(cmd->path, "env"))
 		return (env(lambda));
-	else if (ft_streq(arg_strings[0], "exit"))
+	else if (ft_streq(cmd->path, "exit"))
 	{
 		// TODO: create define rather than using (2)
 		bltin_exit(cmd, lambda);
 		return (2);
 	}
-	else if (ft_streq(arg_strings[0], "export"))
+	else if (ft_streq(cmd->path, "export"))
 		return (export(cmd, lambda));
-	else if (ft_streq(arg_strings[0], "pwd"))
+	else if (ft_streq(cmd->path, "pwd"))
 		return (pwd(lambda));
 	return (FAILURE);
 }

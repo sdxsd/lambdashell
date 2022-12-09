@@ -8,12 +8,12 @@
 
 void	bltin_exit(t_cmd *cmd, t_shell *lambda)
 {
-	if (lambda->cmd_list && lambda->cmd_list->next)
+	if (lambda->cmds && lambda->cmds->next)
 		return ;
 	if (lambda)
 		dealloc_lambda(lambda);
-	if (lambda->cmd_list)
-		dealloc_cmds(lambda->cmd_list);
+	if (lambda->cmds)
+		dealloc_cmds(lambda->cmds);
 	if (cmd)
 		;
 	exit (lambda->status);
