@@ -9,6 +9,7 @@ CFILES = \
 	src/builtins/export.c \
 	src/builtins/exit.c \
 	src/builtins/pwd.c \
+	src/builtins/unset.c \
 	src/cosmetic/cosmetic.c \
 	src/dealloc/deallocate.c \
 	src/debug/debug_print.c \

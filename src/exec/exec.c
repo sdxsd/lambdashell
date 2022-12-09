@@ -120,6 +120,8 @@ static int	execute_builtin(t_cmd *cmd, t_shell *lambda)
 		return (export(cmd, lambda));
 	else if (ft_streq(cmd->path, "pwd"))
 		return (pwd(lambda));
+	else if (ft_streq(cmd->path, "unset"))
+		return (unset(cmd, lambda));
 	return (FAILURE);
 }
 

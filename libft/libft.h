@@ -54,6 +54,8 @@ void		ft_lstdelone(t_list *lst, void (*del)(void*));
 void		ft_lstclear(t_list **lst, void (*del)(void*));
 void		ft_lstiter(t_list *lst, void (*f)(void *));
 t_list		*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
+void		ft_lst_remove_if(t_list **lst, void *needle,
+				int (*cmp_fn)(void *lst_content, void *needle));
 
 // FILE SCRÏBEN FUNKTIONEN
 void		ft_putchar_fd(char c, int fd);

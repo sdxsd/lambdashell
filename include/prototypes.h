@@ -50,6 +50,7 @@ int				env(t_shell *lambda);
 void			bltin_exit(t_cmd *cmd, t_shell *lambda);
 int				export(t_cmd *cmd, t_shell *lambda);
 int				pwd(t_shell *lambda);
+int				unset(t_cmd *cmd, t_shell *lambda);
 
 /* ENVIRONMENT */
 t_list			*init_env(char **env);
