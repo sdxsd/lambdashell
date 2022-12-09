@@ -45,7 +45,6 @@ A program is free software if users have all of these freedoms.
 char			*get_readline_str(t_shell *lambda);
 
 /* BUILTINS */
-char			*ret_cwd(void);
 int				cd(t_cmd *cmd, t_shell *lambda);
 int				env(t_shell *lambda);
 void			bltin_exit(t_cmd *cmd, t_shell *lambda);

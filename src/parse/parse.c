@@ -274,7 +274,7 @@ t_list	*parse(t_list *tokens, t_list *env)
 	while (tokens)
 	{
 		cmd = get_cmd(&tokens, env);
-		if (!cmd || !ft_lstnew_back(&cmds, cmd))
+		if (!cmd || !cmd->path || !ft_lstnew_back(&cmds, cmd))
 			return (NULL); // TODO: Free?
 	}
 
