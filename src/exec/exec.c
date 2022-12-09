@@ -176,7 +176,7 @@ int	executor(int i_fd, t_list *cmds, t_shell *lambda)
 		return (msg_err("exec_and_pipe()", FAILURE));
 	if (ft_strchr(cmd->path, '/'))
 		waitpid(pid, &status, 0);
-	if (!cmds->next)
+	if (ft_strchr(cmd->path, '/') && !cmds->next)
 	{
 		// TODO: Add unit test for this one
 		if (WIFEXITED(status))
