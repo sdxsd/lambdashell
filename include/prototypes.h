@@ -53,7 +53,8 @@ int				pwd(t_shell *lambda);
 int				unset(t_cmd *cmd, t_shell *lambda);
 
 /* ENVIRONMENT */
-t_list			*init_env(char **env);
+int				add_env_element(char *env_line, t_list **env);
+int				init_env(char **env, t_list **lambda_env);
 char			**env_to_strings(t_list *env);
 char			*env_get_val(t_list *env, char *key);
 void			dealloc_env_element(void *ptr);

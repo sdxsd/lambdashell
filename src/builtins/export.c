@@ -50,45 +50,20 @@ static int	argless_export(t_shell *lambda)
 	{
 		env_element = env_list->content;
 		// TODO: This doesn't escape the dollar_in_env export
-		ft_printf("declare -x %s=\"%s\"\n", env_element->key, env_element->val);
+		if (env_element->val == NULL)
+			ft_printf("declare -x %s\n", env_element->key);
+		else if (ft_streq(env_element->val, ""))
+			ft_printf("declare -x %s=\"\"\n", env_element->key);
+		else
+			ft_printf("declare -x %s=\"%s\"\n", env_element->key, env_element->val);
 		env_list = env_list->next;
 	}
 	return (SUCCESS);
 }
 
-static t_env_element	*new_env_element(char *key, char *val)
-{
-	t_env_element	*env_element;
-
-	env_element = ft_calloc(1, sizeof(*env_element));
-	if (env_element)
-	{
-		env_element->key = key;
-		env_element->val = val;
-	}
-	return (env_element);
-}
-
 int	export(t_cmd *cmd, t_shell *lambda)
 {
-	char			**split;
-	t_env_element	*env_element;
-
 	if (!cmd->args[1])
 		return (argless_export(lambda));
-	// TODO: Write and use split_once() instead since it can contain multiple "="
-	split = ft_split(cmd->args[1], '=');
-	if (!split)
-	{
-		// TODO: Free
-		return (FAILURE);
-	}
-	// TODO: Handle when split[0] or split[1] is NULL
-	env_element = new_env_element(split[0], split[1]);
-	if (!env_element || !ft_lstnew_back(&lambda->env, env_element))
-	{
-		// TODO: Free
-		return (FAILURE);
-	}
-	return (SUCCESS);
+	return (add_env_element(cmd->args[1], &lambda->env));
 }

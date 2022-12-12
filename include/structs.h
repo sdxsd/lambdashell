@@ -39,11 +39,10 @@ A program is free software if users have all of these freedoms.
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
+
 # include <stdbool.h>
 # include "../libft/libft.h"
 
-// NOTE:
-// Contains all data relevant to the operation of the shell.
 typedef struct s_shell
 {
 	bool		interactive;
