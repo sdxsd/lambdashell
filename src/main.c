@@ -44,22 +44,16 @@ static int	prompt(t_shell *lambda)
 	t_list	*tokens;
 	char	*readline_str;
 
-	if (lambda->stdin_is_tty)
-	{
-		readline_str = get_readline_str(lambda);
-		if (!readline_str)
-		{
-			dealloc_lambda(lambda);
-			return (FAILURE);
-		}
-		lambda->line = readline(readline_str);
-		ft_free(&readline_str);
-	}
-	else
-	{
+	if (!lambda->stdin_is_tty)
 		rl_outstream = stdin;
-		lambda->line = readline(NULL);
+	readline_str = get_readline_str(lambda);
+	if (!readline_str)
+	{
+		dealloc_lambda(lambda);
+		return (FAILURE);
 	}
+	lambda->line = readline(readline_str);
+	ft_free(&readline_str);
 	if (!lambda->line)
 	{
 		lambda->exit = true;
