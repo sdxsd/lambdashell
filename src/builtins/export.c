@@ -74,10 +74,10 @@ int	export(t_cmd *cmd, t_shell *lambda)
 	char			**split;
 	t_env_element	*env_element;
 
-	// TODO: Maybe add check `|| !cmd->args[0]`?
-	if (!cmd->args)
+	if (!cmd->args[1])
 		return (argless_export(lambda));
-	split = ft_split(cmd->args[0], '=');
+	// TODO: Write and use split_once() instead since it can contain multiple "="
+	split = ft_split(cmd->args[1], '=');
 	if (!split)
 	{
 		// TODO: Free
