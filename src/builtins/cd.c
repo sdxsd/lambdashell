@@ -57,13 +57,22 @@ static int	argless_cd(t_list *env)
 
 int	cd(t_cmd *cmd, t_shell *lambda)
 {
+	char	*msg;
+
 	if (!cmd->args[1])
 	{
 		if (argless_cd(lambda->env) == FAILURE)
 			return (FAILURE);
 	}
 	else if (chdir(cmd->args[1]) == -1)
-		return (msg_err("cd", FAILURE));
+	{
+		msg = ft_strjoin("cd: ", cmd->args[1]);
+		if (!msg)
+			return (msg_err("cd", FAILURE));
+		msg_err(msg, FAILURE);
+		ft_free(&msg);
+		return (FAILURE);
+	}
 	update_cwd(lambda);
 	return (SUCCESS);
 }
