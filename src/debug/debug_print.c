@@ -102,8 +102,8 @@ void	dbg_print_commands(t_list *cmds)
 
 		cmd = cmds->content;
 
-		printf("\tInput file descriptor: %i\n", cmd->i_fd);
-		printf("\tOutput file descriptor: %i\n", cmd->o_fd);
+		printf("\tInput file descriptor: %i\n", cmd->input_fd);
+		printf("\tOutput file descriptor: %i\n", cmd->output_fd);
 
 		printf("\tPath: <%s>\n", cmd->path);
 

@@ -53,8 +53,8 @@ static int	redirections(t_list *list, t_cmd *cmd)
 		if (redir->direction == DIRECTION_IN && !in_encountered)
 		{
 			in_encountered = TRUE;
-			cmd->i_fd = open(redir->file_path, O_RDONLY);
-			if (cmd->i_fd < 0)
+			cmd->input_fd = open(redir->file_path, O_RDONLY);
+			if (cmd->input_fd < 0)
 			{
 				null_msg_err("redirections()");
 				return (FALSE);
@@ -62,8 +62,8 @@ static int	redirections(t_list *list, t_cmd *cmd)
 		}
 		else if (redir->direction == DIRECTION_OUT)
 		{
-			cmd->o_fd = open(redir->file_path, O_CREAT | O_TRUNC | O_WRONLY, 0644);
-			if (cmd->o_fd < 0)
+			cmd->output_fd = open(redir->file_path, O_CREAT | O_TRUNC | O_WRONLY, 0644);
+			if (cmd->output_fd < 0)
 			{
 				null_msg_err("redirections()");
 				return (FALSE);
@@ -76,13 +76,13 @@ static int	redirections(t_list *list, t_cmd *cmd)
 
 static void	dup2_cmd(t_cmd *cmd)
 {
-	dup2(cmd->i_fd, STDIN_FILENO);
-	if (cmd->i_fd != STDIN_FILENO)
-		close(cmd->i_fd);
+	dup2(cmd->input_fd, STDIN_FILENO);
+	if (cmd->input_fd != STDIN_FILENO)
+		close(cmd->input_fd);
 
-	dup2(cmd->o_fd, STDOUT_FILENO);
-	if (cmd->o_fd != STDOUT_FILENO)
-		close(cmd->o_fd);
+	dup2(cmd->output_fd, STDOUT_FILENO);
+	if (cmd->output_fd != STDOUT_FILENO)
+		close(cmd->output_fd);
 }
 
 static int	execute_command(t_cmd *cmd, t_list *env)
@@ -125,7 +125,7 @@ static int	execute_builtin(t_cmd *cmd, t_shell *lambda)
 	return (FAILURE);
 }
 
-int	executor(int i_fd, t_list *cmds, t_shell *lambda)
+int	executor(int input_fd, t_list *cmds, t_shell *lambda)
 {
 	int		tube[2];
 	pid_t	pid;
@@ -147,21 +147,21 @@ int	executor(int i_fd, t_list *cmds, t_shell *lambda)
 			if (cmds->next)
 				close(tube[READ]);
 
-			if (i_fd != -1)
-				cmd->i_fd = i_fd;
+			if (input_fd != -1)
+				cmd->input_fd = input_fd;
 			if (cmds->next)
-				cmd->o_fd = tube[WRITE];
+				cmd->output_fd = tube[WRITE];
 
 			execute_command(cmd, lambda->env);
 		}
 	}
 	else
 	{
-		// TODO: Why store i_fd and o_fd in cmd when dups can be done immediately?
-		if (i_fd != -1)
-			cmd->i_fd = i_fd;
+		// TODO: Why store input_fd and output_fd in cmd when dups can be done immediately?
+		if (input_fd != -1)
+			cmd->input_fd = input_fd;
 		if (cmds->next)
-			cmd->o_fd = tube[WRITE];
+			cmd->output_fd = tube[WRITE];
 
 		// TODO: Should this really always be setting lambda->status, unlike non-builtins?
 		lambda->status = execute_builtin(cmd, lambda);
@@ -171,8 +171,8 @@ int	executor(int i_fd, t_list *cmds, t_shell *lambda)
 	}
 	if (cmds->next)
 		close(tube[WRITE]);
-	if (i_fd != -1)
-		close(i_fd); // TODO: Right now only the parent is closing the read end!!
+	if (input_fd != -1)
+		close(input_fd); // TODO: Right now only the parent is closing the read end!!
 
 	if (cmds->next && executor(tube[READ], cmds->next, lambda) != SUCCESS)
 		return (msg_err("exec_and_pipe()", FAILURE));

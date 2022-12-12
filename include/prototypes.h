@@ -79,7 +79,7 @@ t_list			*tokenize(char *line);
 void			update_cwd(t_shell *lambda);
 
 /* EXECUTION */
-int				executor(int i_fd, t_list *cmds, t_shell *lambda);
+int				executor(int input_fd, t_list *cmds, t_shell *lambda);
 
 /* PARSE */
 bool			is_ambiguous_redirect(t_list *tokens);

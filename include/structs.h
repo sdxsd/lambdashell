@@ -75,8 +75,8 @@ typedef struct s_redirect {
 
 typedef struct s_cmd
 {
-	int		i_fd;
-	int		o_fd;
+	int		input_fd;
+	int		output_fd;
 	char	**args;
 	char	*path;
 	t_list	*redirections;

@@ -57,8 +57,8 @@ static t_cmd	*get_initial_cmd(void)
 	cmd = ft_calloc(1, sizeof(*cmd));
 	if (!cmd)
 		return (NULL);
-	cmd->i_fd = STDIN_FILENO;
-	cmd->o_fd = STDOUT_FILENO;
+	cmd->input_fd = STDIN_FILENO;
+	cmd->output_fd = STDOUT_FILENO;
 	return (cmd);
 }
 
