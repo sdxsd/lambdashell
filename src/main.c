@@ -57,6 +57,7 @@ static int	prompt(t_shell *lambda)
 	}
 	add_history(lambda->line);
 	lambda->tokens = tokenize(lambda->line);
+	ft_free(&lambda->line);
 	if (expand_variables(lambda->tokens, lambda) == FAILURE)
 		return (dealloc_lambda(lambda));
 	// dbg_print_tokens(lambda->tokens);
@@ -65,8 +66,8 @@ static int	prompt(t_shell *lambda)
 		return (dealloc_lambda(lambda));
 	// dbg_print_commands(lambda->cmds);
 	executor(-1, lambda->cmds, lambda);
-	ft_free(&lambda->line);
 	ft_lstclear(&lambda->tokens, dealloc_token);
+	ft_lstclear(&lambda->cmds, dealloc_cmd);
 	return (SUCCESS);
 }
 
