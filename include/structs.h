@@ -46,6 +46,7 @@ A program is free software if users have all of these freedoms.
 typedef struct s_shell
 {
 	bool		interactive;
+	t_list		*tokens;
 	t_list		*env;
 	t_list		*cmds;
 	char		*line;

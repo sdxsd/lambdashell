@@ -70,12 +70,23 @@ int	dealloc_env_element(void *env_element_ptr)
 	return (FAILURE);
 }
 
+int	dealloc_token(void *token_ptr)
+{
+	t_token	**_token_ptr;
+	t_token	*token;
+
+	_token_ptr = token_ptr;
+	token = *_token_ptr;
+	ft_free(&token->content);
+	ft_free(_token_ptr);
+	return (FAILURE);
+}
+
 int	dealloc_lambda(t_shell *lambda)
 {
-	if (lambda->env)
-		ft_lstclear(&lambda->env, dealloc_env_element);
-	if (lambda->line)
-		ft_free(&lambda->line);
+	ft_lstclear(&lambda->tokens, dealloc_token);
+	ft_lstclear(&lambda->env, dealloc_env_element);
+	ft_free(&lambda->line);
 	return (FAILURE);
 }
 
