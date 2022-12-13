@@ -64,17 +64,17 @@ char	*get_absolute_path_from_env(char *name, t_list *env)
 		absolute_path = path_join(exec_direcs[iter], name);
 		if (!absolute_path)
 		{
-			dealloc_ptr_array((void **)exec_direcs);
+			dealloc_ptr_array(&exec_direcs);
 			return (NULL);
 		}
 		if (!access(absolute_path, F_OK)) // TODO: Probably needs more flags
 		{
-			dealloc_ptr_array((void **)exec_direcs);
+			dealloc_ptr_array(&exec_direcs);
 			return (absolute_path);
 		}
 		ft_free(&absolute_path);
 		iter++;
 	}
-	dealloc_ptr_array((void **)exec_direcs);
+	dealloc_ptr_array(&exec_direcs);
 	return (NULL);
 }

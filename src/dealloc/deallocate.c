@@ -39,19 +39,19 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-void	dealloc_ptr_array(void **data)
+void	dealloc_ptr_array(void *ptr_array_ptr)
 {
-	int	iter;
+	void	***_ptr_array_ptr;
+	void	**ptr_array;
 
-	if (data == NULL)
-		return ;
-	iter = 0;
-	while (data[iter])
+	_ptr_array_ptr = ptr_array_ptr;
+	ptr_array = *_ptr_array_ptr;
+	while (*ptr_array)
 	{
-		ft_free(&data[iter]);
-		iter++;
+		ft_free(ptr_array);
+		ptr_array++;
 	}
-	ft_free(&data);
+	ft_free(_ptr_array_ptr);
 }
 
 void	dealloc_lambda(t_shell *lambda)
@@ -91,7 +91,7 @@ void	dealloc_cmds(t_list *cmds)
 		if (cmd->redirections)
 			dealloc_redirections(cmd->redirections);
 		tmp = cmds;
-		cmds = cmds->next;;
+		cmds = cmds->next;
 		ft_free(&tmp);
 	}
 }
