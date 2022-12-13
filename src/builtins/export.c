@@ -52,8 +52,6 @@ static int	argless_export(t_shell *lambda)
 		// TODO: This doesn't escape the dollar_in_env export
 		if (env_element->val == NULL)
 			ft_printf("declare -x %s\n", env_element->key);
-		else if (ft_streq(env_element->val, ""))
-			ft_printf("declare -x %s=\"\"\n", env_element->key);
 		else
 			ft_printf("declare -x %s=\"%s\"\n", env_element->key, env_element->val);
 		env_list = env_list->next;
