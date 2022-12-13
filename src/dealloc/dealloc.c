@@ -39,6 +39,42 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
+void	dealloc_cmds(t_list *cmds)
+{
+	t_cmd	*cmd;
+	t_list	*tmp;
+
+	while (cmds)
+	{
+		cmd = cmds->content;
+		ft_free(&cmd->args);
+		ft_free(&cmd->path);
+		if (cmd->redirections)
+			dealloc_redirections(cmd->redirections);
+		tmp = cmds;
+		cmds = cmds->next;
+		ft_free(&tmp);
+	}
+}
+
+void	dealloc_env_element(void *ptr)
+{
+	t_env_element	*env_element;
+
+	env_element = ptr;
+	ft_free(&env_element->key);
+	ft_free(&env_element->val);
+	ft_free(&env_element);
+}
+
+void	dealloc_lambda(t_shell *lambda)
+{
+	if (lambda->env)
+		ft_lstclear(&lambda->env, dealloc_env_element);
+	if (lambda->line)
+		ft_free(&lambda->line);
+}
+
 void	dealloc_ptr_array(void *ptr_array_ptr)
 {
 	void	***_ptr_array_ptr;
@@ -54,14 +90,6 @@ void	dealloc_ptr_array(void *ptr_array_ptr)
 	ft_free(_ptr_array_ptr);
 }
 
-void	dealloc_lambda(t_shell *lambda)
-{
-	if (lambda->env)
-		ft_lstclear(&lambda->env, dealloc_env_element);
-	if (lambda->line)
-		ft_free(&lambda->line);
-}
-
 void	dealloc_redirections(t_list *redir)
 {
 	t_list		*tmp;
@@ -74,24 +102,6 @@ void	dealloc_redirections(t_list *redir)
 			ft_free(&curr->file_path);
 		tmp = redir;
 		redir = redir->next;
-		ft_free(&tmp);
-	}
-}
-
-void	dealloc_cmds(t_list *cmds)
-{
-	t_cmd	*cmd;
-	t_list	*tmp;
-
-	while (cmds)
-	{
-		cmd = cmds->content;
-		ft_free(&cmd->args);
-		ft_free(&cmd->path);
-		if (cmd->redirections)
-			dealloc_redirections(cmd->redirections);
-		tmp = cmds;
-		cmds = cmds->next;
 		ft_free(&tmp);
 	}
 }

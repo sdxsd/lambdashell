@@ -52,17 +52,40 @@ int				export(t_cmd *cmd, t_shell *lambda);
 int				pwd(t_shell *lambda);
 int				unset(t_cmd *cmd, t_shell *lambda);
 
+/* COSMETIC */
+char			*get_readline_str(t_shell *lambda);
+
+/* DEALLOC */
+void			dealloc_cmds(t_list *cmds);
+void			dealloc_env_element(void *ptr);
+void			dealloc_lambda(t_shell *lambda);
+void			dealloc_ptr_array(void *ptr_array_ptr);
+void			dealloc_redirections(t_list *redir);
+
+/* DEBUG */
+void			dbg_print_tokens(t_list *tokens);
+void			dbg_print_commands(t_list *cmds);
+
 /* ENVIRONMENT */
 int				add_env_element(char *env_line, t_list **env);
 int				init_env(char **env, t_list **lambda_env);
 char			**env_to_strings(t_list *env);
 char			*env_get_val(t_list *env, char *key);
-void			dealloc_env_element(void *ptr);
 int				expand_variables(t_list *tokens, t_shell *lambda);
 
 /* ERROR MESSAGES */
 int				msg_err(char *s, int ret);
 void			*null_msg_err(char *s);
+
+/* EXECUTION */
+int				executor(int input_fd, t_list *cmds, t_shell *lambda);
+char			*get_absolute_path_from_env(char *name, t_list *env);
+
+/* PARSE */
+bool			is_ambiguous_redirect(t_list *tokens);
+bool			is_text_token(t_token *token);
+t_list			*parse(t_list *tokens, t_list *env);
+void			skip_whitespace_tokens(t_list **tokens);
 
 /* TOKENISATION */
 t_token			*get_token(t_token_type type, char *content);
@@ -78,27 +101,5 @@ t_list			*tokenize(char *line);
 
 /* UPDATE_CWD */
 void			update_cwd(t_shell *lambda);
-
-/* EXECUTION */
-int				executor(int input_fd, t_list *cmds, t_shell *lambda);
-
-/* PARSE */
-bool			is_ambiguous_redirect(t_list *tokens);
-bool			is_text_token(t_token *token);
-t_list			*parse(t_list *tokens, t_list *env);
-void			skip_whitespace_tokens(t_list **tokens);
-
-/* PATH */
-char			*get_absolute_path_from_env(char *name, t_list *env);
-
-/* DEALLOC */
-void			dealloc_ptr_array(void *ptr_array_ptr);
-void			dealloc_lambda(t_shell *lambda);
-void			dealloc_cmds(t_list *cmds);
-void			dealloc_redirections(t_list *redir);
-
-/* DEBUG */
-void			dbg_print_tokens(t_list *tokens);
-void			dbg_print_commands(t_list *cmds);
 
 #endif

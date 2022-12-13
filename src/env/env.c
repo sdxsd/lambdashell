@@ -39,16 +39,6 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-void	dealloc_env_element(void *ptr)
-{
-	t_env_element	*env_element;
-
-	env_element = ptr;
-	ft_free(&env_element->key);
-	ft_free(&env_element->val);
-	ft_free(&env_element);
-}
-
 static int	get_key_length(char *str)
 {
 	int	count;

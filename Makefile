@@ -6,12 +6,12 @@ CFILES = \
 	src/main.c \
 	src/builtins/cd.c \
 	src/builtins/env.c \
-	src/builtins/export.c \
 	src/builtins/exit.c \
+	src/builtins/export.c \
 	src/builtins/pwd.c \
 	src/builtins/unset.c \
 	src/cosmetic/cosmetic.c \
-	src/dealloc/deallocate.c \
+	src/dealloc/dealloc.c \
 	src/debug/debug_print.c \
 	src/env/env_utils.c \
 	src/env/env.c \
