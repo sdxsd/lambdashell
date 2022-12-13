@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   env.c                                              :+:    :+:            */
+/*   alloc.c                                            :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
+/*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 1970/01/01 00:00:00 by wmaguire      #+#    #+#                 */
-/*   Updated: 1970/01/01 00:00:00 by wmaguire      ########   odam.nl         */
+/*   Created: 2022/12/13 14:45:15 by sbos          #+#    #+#                 */
+/*   Updated: 2022/12/13 14:45:15 by sbos          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,61 +39,7 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-static int	get_key_length(char *str)
+t_env_element	*alloc_env_element(void)
 {
-	int	count;
-
-	count = 0;
-	while (str[count] != '\0' && str[count] != '=')
-		count++;
-	return (count);
-}
-
-int	add_env_element(char *env_line, t_list **env)
-{
-	t_env_element	*env_element;
-
-	env_element = alloc_env_element();
-	if (!env_element)
-		return (dealloc_env_element(&env_element));
-	env_element->key = ft_strndup(env_line, get_key_length(env_line));
-	if (!env_element->key)
-		return (dealloc_env_element(&env_element));
-	if (env_line[get_key_length(env_line)] == '=')
-	{
-		env_element->val = ft_strdup(env_line + get_key_length(env_line) + 1);
-		if (!env_element->val)
-			return (dealloc_env_element(&env_element));
-	}
-	if (!ft_lstnew_back(env, env_element))
-		return (dealloc_env_element(&env_element));
-	return (SUCCESS);
-}
-
-int	init_env(char **env, t_list **lambda_env)
-{
-	while (*env)
-	{
-		if (add_env_element(*env, lambda_env) == FAILURE)
-			return (FAILURE);
-		env++;
-	}
-	return (SUCCESS);
-}
-
-char	*env_get_val(t_list *env, char *key)
-{
-	t_env_element	*env_element;
-
-	if (!env || !key)
-		return (NULL);
-	while (env)
-	{
-		env_element = env->content;
-		// TODO: Can env_element or env_element->key be NULL? ft_streq() below crashes if so
-		if (ft_streq(env_element->key, key))
-			return (env_element->val);
-		env = env->next;
-	}
-	return (NULL);
+	return (ft_calloc(1, sizeof(t_env_element)));
 }

@@ -41,8 +41,8 @@ A program is free software if users have all of these freedoms.
 # define PROTOTYPES_H
 # include "structs.h"
 
-/* COSMETIC */
-char			*get_readline_str(t_shell *lambda);
+/* ALLOC */
+t_env_element	*alloc_env_element(void);
 
 /* BUILTINS */
 int				cd(t_cmd *cmd, t_shell *lambda);
@@ -57,7 +57,7 @@ char			*get_readline_str(t_shell *lambda);
 
 /* DEALLOC */
 void			dealloc_cmds(t_list *cmds);
-void			dealloc_env_element(void *ptr);
+int				dealloc_env_element(void *env_element_ptr);
 void			dealloc_lambda(t_shell *lambda);
 void			dealloc_ptr_array(void *ptr_array_ptr);
 void			dealloc_redirections(t_list *redir);

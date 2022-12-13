@@ -4,6 +4,7 @@ CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 NAME = minishell
 CFILES = \
 	src/main.c \
+	src/alloc/alloc.c \
 	src/builtins/cd.c \
 	src/builtins/env.c \
 	src/builtins/exit.c \

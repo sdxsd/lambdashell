@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   deallocate.c                                       :+:    :+:            */
+/*   dealloc.c                                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
@@ -57,14 +57,17 @@ void	dealloc_cmds(t_list *cmds)
 	}
 }
 
-void	dealloc_env_element(void *ptr)
+int	dealloc_env_element(void *env_element_ptr)
 {
+	t_env_element	**_env_element_ptr;
 	t_env_element	*env_element;
 
-	env_element = ptr;
+	_env_element_ptr = env_element_ptr;
+	env_element = *_env_element_ptr;
 	ft_free(&env_element->key);
 	ft_free(&env_element->val);
-	ft_free(&env_element);
+	ft_free(_env_element_ptr);
+	return (FAILURE);
 }
 
 void	dealloc_lambda(t_shell *lambda)
