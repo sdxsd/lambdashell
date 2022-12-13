@@ -60,8 +60,6 @@ void	dealloc_lambda(t_shell *lambda)
 		ft_lstclear(&lambda->env, dealloc_env_element);
 	if (lambda->line)
 		ft_free(&lambda->line);
-	if (lambda->lines)
-		dealloc_ptr_array((void **)lambda->lines);
 }
 
 void	dealloc_redirections(t_list *redir)

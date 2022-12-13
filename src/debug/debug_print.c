@@ -40,18 +40,6 @@ A program is free software if users have all of these freedoms.
 #include "../../include/minishell.h"
 #include <stdio.h>
 
-void	dbg_print_lines(char **lines)
-{
-	int	iter;
-
-	iter = 0;
-	while (lines[iter])
-	{
-		printf("%d: %s\n", iter, lines[iter]);
-		iter++;
-	}
-}
-
 void	dbg_print_tokens(t_list *tokens)
 {
 	char	*token_type_strings[] = {

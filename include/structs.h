@@ -49,7 +49,6 @@ typedef struct s_shell
 	t_list		*env;
 	t_list		*cmds;
 	char		*line;
-	char		**lines;
 	char		*cwd;
 	int			status;
 	bool		stdin_is_tty;

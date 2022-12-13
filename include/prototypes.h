@@ -100,6 +100,5 @@ void			dealloc_redirections(t_list *redir);
 /* DEBUG */
 void			dbg_print_tokens(t_list *tokens);
 void			dbg_print_commands(t_list *cmds);
-void			dbg_print_lines(char **lines);
 
 #endif
