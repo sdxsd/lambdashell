@@ -70,12 +70,13 @@ int	dealloc_env_element(void *env_element_ptr)
 	return (FAILURE);
 }
 
-void	dealloc_lambda(t_shell *lambda)
+int	dealloc_lambda(t_shell *lambda)
 {
 	if (lambda->env)
 		ft_lstclear(&lambda->env, dealloc_env_element);
 	if (lambda->line)
 		ft_free(&lambda->line);
+	return (FAILURE);
 }
 
 void	dealloc_ptr_array(void *ptr_array_ptr)

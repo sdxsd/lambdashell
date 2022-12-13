@@ -48,10 +48,7 @@ static int	prompt(t_shell *lambda)
 		rl_outstream = stdin;
 	readline_str = get_readline_str(lambda);
 	if (!readline_str)
-	{
-		dealloc_lambda(lambda);
-		return (FAILURE);
-	}
+		return (dealloc_lambda(lambda));
 	lambda->line = readline(readline_str);
 	ft_free(&readline_str);
 	if (!lambda->line)
@@ -106,10 +103,7 @@ int	main(int argc, char **argv, char **env)
 	if (argc > 1)
 		return (FAILURE);
 	if (shell_init(env, &lambda) == FAILURE)
-	{
-		dealloc_lambda(&lambda);
-		return (FAILURE);
-	}
+		return (dealloc_lambda(&lambda));
 	while (!lambda.exit)
 		prompt(&lambda);
 	status = lambda.status;
