@@ -163,7 +163,7 @@ static char	**get_arg_string_array(t_list *arg_list, char *path)
 	arg_strings = arg_strings_start;
 	if (!arg_strings)
 		return (null_msg_err("get_arg_string_array()"));
-	*arg_strings = path;
+	*arg_strings = ft_strdup(path);
 	arg_strings++;
 	while (arg_list)
 	{

@@ -56,12 +56,12 @@ int				unset(t_cmd *cmd, t_shell *lambda);
 char			*get_readline_str(t_shell *lambda);
 
 /* DEALLOC */
-void			dealloc_cmds(t_list *cmds);
+int				dealloc_cmd(void *cmd_ptr);
 int				dealloc_env_element(void *env_element_ptr);
 int				dealloc_token(void *token_ptr);
 int				dealloc_lambda(t_shell *lambda);
 void			dealloc_ptr_array(void *ptr_array_ptr);
-void			dealloc_redirections(t_list *redir);
+int				dealloc_redirection(void *redirect_ptr);
 
 /* DEBUG */
 void			dbg_print_tokens(t_list *tokens);

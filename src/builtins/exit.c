@@ -12,8 +12,6 @@ void	bltin_exit(t_cmd *cmd, t_shell *lambda)
 		return ;
 	if (lambda)
 		dealloc_lambda(lambda);
-	if (lambda->cmds)
-		dealloc_cmds(lambda->cmds);
 	if (cmd)
 		;
 	exit (lambda->status);
