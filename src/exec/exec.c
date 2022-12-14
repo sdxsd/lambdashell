@@ -111,11 +111,7 @@ static int	execute_builtin(t_cmd *cmd, t_shell *lambda)
 	else if (ft_streq(cmd->path, "env"))
 		return (env(lambda));
 	else if (ft_streq(cmd->path, "exit"))
-	{
-		// TODO: create define rather than using (2)
 		bltin_exit(cmd, lambda);
-		return (2);
-	}
 	else if (ft_streq(cmd->path, "export"))
 		return (export(cmd, lambda));
 	else if (ft_streq(cmd->path, "pwd"))
