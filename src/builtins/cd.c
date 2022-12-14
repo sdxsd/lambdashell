@@ -46,6 +46,7 @@ static int	argless_cd(t_list *env)
 	home_path = env_get_val(env, "HOME");
 	if (!home_path)
 	{
+		// TODO: Put on stderr
 		// TODO: Maybe write a function for manual error messages for this
 		ft_putstr("λ: cd: HOME not set\n");
 		return (FAILURE);

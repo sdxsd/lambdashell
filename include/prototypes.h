@@ -79,7 +79,7 @@ int				msg_err(char *s, int ret);
 void			*null_msg_err(char *s);
 
 /* EXECUTION */
-int				executor(int input_fd, t_list *cmds, t_shell *lambda);
+int				execute(t_list *cmds, t_shell *lambda);
 char			*get_absolute_path_from_env(char *name, t_list *env);
 
 /* PARSE */

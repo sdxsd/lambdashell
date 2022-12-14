@@ -44,20 +44,21 @@ A program is free software if users have all of these freedoms.
 static int	redirections(t_list *list, t_cmd *cmd)
 {
 	t_redirect	*redir;
-	int			in_encountered;
+	bool		in_encountered;
 
-	in_encountered = FALSE;
+	in_encountered = false;
 	while (list)
 	{
 		redir = list->content;
+		// TODO: Should still print "no such file" when a second input file isn't found
 		if (redir->direction == DIRECTION_IN && !in_encountered)
 		{
-			in_encountered = TRUE;
+			in_encountered = true;
 			cmd->input_fd = open(redir->file_path, O_RDONLY);
 			if (cmd->input_fd < 0)
 			{
 				null_msg_err("redirections()");
-				return (FALSE);
+				return (false);
 			}
 		}
 		else if (redir->direction == DIRECTION_OUT)
@@ -66,16 +67,19 @@ static int	redirections(t_list *list, t_cmd *cmd)
 			if (cmd->output_fd < 0)
 			{
 				null_msg_err("redirections()");
-				return (FALSE);
+				return (false);
 			}
 		}
+		// TODO: Handle DIRECTION_HEREDOC and DIRECTION_APPEND as well
 		list = list->next;
 	}
-	return (TRUE);
+	return (true);
 }
 
 static void	dup2_cmd(t_cmd *cmd)
 {
+	// TODO: Protection necessary?
+
 	dup2(cmd->input_fd, STDIN_FILENO);
 	if (cmd->input_fd != STDIN_FILENO)
 		close(cmd->input_fd);
@@ -102,14 +106,16 @@ static int	execute_command(t_cmd *cmd, t_list *env)
 	return (SUCCESS);
 }
 
-static int	execute_builtin(t_cmd *cmd, t_shell *lambda)
+static int	execute_builtin(t_cmd *cmd, t_shell *lambda, int *status)
 {
+	// TODO: Protection for redirections()
+	redirections(cmd->redirections, cmd);
 	dup2_cmd(cmd);
 	// TODO: Maybe if-statement check whether path or args or args[0] or args[1] is NULL?
 	if (ft_streq(cmd->path, "cd"))
-		return (cd(cmd, lambda));
+		*status = cd(cmd, lambda);
 	else if (ft_streq(cmd->path, "env"))
-		return (env(lambda));
+		*status = env(lambda);
 	else if (ft_streq(cmd->path, "exit"))
 	{
 		// TODO: create define rather than using (2)
@@ -117,15 +123,83 @@ static int	execute_builtin(t_cmd *cmd, t_shell *lambda)
 		return (2);
 	}
 	else if (ft_streq(cmd->path, "export"))
-		return (export(cmd, lambda));
+		*status = export(cmd, lambda);
 	else if (ft_streq(cmd->path, "pwd"))
-		return (pwd(lambda));
+		*status = pwd(lambda);
 	else if (ft_streq(cmd->path, "unset"))
-		return (unset(cmd, lambda));
-	return (FAILURE);
+		*status = unset(cmd, lambda);
+	else
+		return (FAILURE);
+	return (SUCCESS);
 }
 
-int	executor(int input_fd, t_list *cmds, t_shell *lambda)
+static int	execute_simple_command(t_cmd *cmd, t_shell *lambda)
+{
+	int	status;
+
+	if (ft_strchr(cmd->path, '/'))
+	{
+		if (execute_command(cmd, lambda->env) == FAILURE)
+		{
+			// TODO: ??
+		}
+	}
+	else
+	{
+		if (execute_builtin(cmd, lambda, &status) == FAILURE)
+		{
+			// TODO: Can this be moved to the end of execute_builtin()?
+			dup2(lambda->stdin_fd, STDIN_FILENO);
+			dup2(lambda->stdout_fd, STDOUT_FILENO);
+			return (FAILURE);
+		}
+
+		lambda->status = status;
+	}
+
+	// TODO: Can this be moved to the end of execute_builtin()?
+	// TODO: Should these both *always* happen?
+	dup2(lambda->stdin_fd, STDIN_FILENO);
+	dup2(lambda->stdout_fd, STDOUT_FILENO);
+
+	return (SUCCESS);
+}
+
+static int	execute_child(int input_fd, t_list *cmds, t_shell *lambda, int tube[2])
+{
+	t_cmd	*cmd;
+	int		status;
+
+	cmd = cmds->content;
+
+	if (cmds->next)
+		close(tube[READ]);
+
+	// TODO: Why store input_fd and output_fd in cmd when dups can be done immediately?
+	if (input_fd != -1)
+		cmd->input_fd = input_fd;
+	if (cmds->next)
+		cmd->output_fd = tube[WRITE];
+
+	if (ft_strchr(cmd->path, '/'))
+	{
+		if (execute_command(cmd, lambda->env) == FAILURE)
+		{
+			// TODO: ??
+		}
+	}
+	else
+	{
+		if (execute_builtin(cmd, lambda, &status) == FAILURE)
+		{
+			// TODO: ??
+		}
+		exit(status); // TODO: Should anything be freed before this is called?
+	}
+	return (SUCCESS);
+}
+
+static int	execute_complex_command(int input_fd, t_list *cmds, t_shell *lambda)
 {
 	int		tube[2];
 	pid_t	pid;
@@ -134,50 +208,32 @@ int	executor(int input_fd, t_list *cmds, t_shell *lambda)
 
 	if (cmds->next && pipe(tube) == -1)
 		return (msg_err("exec_and_pipe()", FAILURE));
+
 	cmd = cmds->content;
 
-	if (ft_strchr(cmd->path, '/'))
+	// TODO: Maybe we shouldn't fork if there is only a single non-builtin command?
+
+	pid = fork();
+	fflush(NULL);
+	if (pid == FORK_FAILURE)
+		return (msg_err("exec_and_pipe()", FAILURE));
+	if (pid == FORK_CHILD)
 	{
-		// TODO: Maybe we shouldn't fork if there is only a single non-builtin command
-		pid = fork();
-		if (pid == FORK_FAILURE)
-			return (msg_err("exec_and_pipe()", FAILURE));
-		if (pid == FORK_CHILD)
+		if (execute_child(input_fd, cmds, lambda, tube) == FAILURE)
 		{
-			if (cmds->next)
-				close(tube[READ]);
-
-			if (input_fd != -1)
-				cmd->input_fd = input_fd;
-			if (cmds->next)
-				cmd->output_fd = tube[WRITE];
-
-			execute_command(cmd, lambda->env);
+			// TODO: ??
 		}
-	}
-	else
-	{
-		// TODO: Why store input_fd and output_fd in cmd when dups can be done immediately?
-		if (input_fd != -1)
-			cmd->input_fd = input_fd;
-		if (cmds->next)
-			cmd->output_fd = tube[WRITE];
-
-		// TODO: Should this really always be setting lambda->status, unlike non-builtins?
-		lambda->status = execute_builtin(cmd, lambda);
-
-		dup2(lambda->stdin_fd, STDIN_FILENO);
-		dup2(lambda->stdout_fd, STDOUT_FILENO);
 	}
 	if (cmds->next)
 		close(tube[WRITE]);
 	if (input_fd != -1)
 		close(input_fd); // TODO: Right now only the parent is closing the read end!!
 
-	if (cmds->next && executor(tube[READ], cmds->next, lambda) != SUCCESS)
+	if (cmds->next && execute_complex_command(tube[READ], cmds->next, lambda) != SUCCESS)
 		return (msg_err("exec_and_pipe()", FAILURE));
-	if (ft_strchr(cmd->path, '/'))
-		waitpid(pid, &status, 0);
+
+	waitpid(pid, &status, 0);
+
 	if (ft_strchr(cmd->path, '/') && !cmds->next)
 	{
 		// TODO: Add unit test for this one
@@ -192,4 +248,11 @@ int	executor(int input_fd, t_list *cmds, t_shell *lambda)
 		// 	lambda->status = WIFSTOPPED(status);
 	}
 	return (SUCCESS);
+}
+
+int	execute(t_list *cmds, t_shell *lambda)
+{
+	if (cmds->next)
+		return (execute_complex_command(-1, cmds, lambda));
+	return (execute_simple_command(cmds->content, lambda));
 }
