@@ -76,5 +76,5 @@ char	*get_absolute_path_from_env(char *name, t_list *env)
 		iter++;
 	}
 	dealloc_ptr_array(&exec_direcs);
-	return (NULL);
+	return (name);
 }

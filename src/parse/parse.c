@@ -150,6 +150,12 @@ static char		*get_path(t_list **tokens, t_list *env)
 	if (is_builtin(path) || ft_strchr(path, '/'))
 		return (path);
 	absolute_path = get_absolute_path_from_env(path, env);
+	if (absolute_path == path)
+	{
+		// TODO: Change to stderr.
+		printf("λ: %s: command not found\n", path);
+		return (path);
+	}
 	ft_free(&path);
 	return (absolute_path);
 }
@@ -163,7 +169,10 @@ static char	**get_arg_string_array(t_list *arg_list, char *path)
 	arg_strings = arg_strings_start;
 	if (!arg_strings)
 		return (null_msg_err("get_arg_string_array()"));
-	*arg_strings = ft_strdup(path);
+	if (ft_strrchr(path, '/'))
+		*arg_strings = ft_strdup(ft_strrchr(path, '/') + 1);
+	else
+		*arg_strings = ft_strdup(path);
 	arg_strings++;
 	while (arg_list)
 	{
