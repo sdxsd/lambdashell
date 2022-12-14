@@ -71,7 +71,7 @@ char	*get_readline_str(t_shell *lambda)
 	else
 		leaf_dir = "???";
 
-	readline_str = ft_strjoin_array((char *[]){GREEN, "[", user + 1, "] ", BLUE, leaf_dir, " ", CLEAR, "λ :: ❯ ", NULL});
+	readline_str = ft_strjoin_array((char *[]){GREEN, "[", user, "] ", BLUE, leaf_dir, " ", CLEAR, "λ :: ❯ ", NULL});
 
 	return (readline_str);
 }

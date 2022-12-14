@@ -70,44 +70,13 @@ int	add_env_element(char *env_line, t_list **env)
 	return (SUCCESS);
 }
 
-<<<<<<< HEAD
-t_list	*init_env(char **env)
-=======
 int	init_env(char **env, t_list **lambda_env)
->>>>>>> origin/master
 {
 	while (*env)
 	{
-<<<<<<< HEAD
-		env_element = ft_calloc(1, sizeof(t_env_element));
-		if (!env_element)
-			return (init_env_failure(&env_list));
-		env_element->key = ft_strndup(env[index], get_key_length(env[index]));
-		if (!env_element->key)
-		{
-			ft_free(&env_element);
-			return (init_env_failure(&env_list));
-		}
-		env_element->val = ft_strdup(env[index] + get_key_length(env[index]) + 1);
-		if (!env_element->val)
-		{
-			ft_free(&env_element->key);
-			ft_free(&env_element);
-			return (init_env_failure(&env_list));
-		}
-		if (!ft_lstnew_back(&env_list, env_element))
-		{
-				ft_free(&env_element->key);
-				ft_free(&env_element->val);
-				ft_free(&env_element);
-				return (init_env_failure(&env_list));
-		}
-		index++;
-=======
 		if (add_env_element(*env, lambda_env) == FAILURE)
 			return (FAILURE);
 		env++;
->>>>>>> origin/master
 	}
 	return (SUCCESS);
 }

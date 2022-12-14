@@ -41,62 +41,6 @@ A program is free software if users have all of these freedoms.
 
 int	string_cmp_fn(void *lst_content, void *needle)
 {
-<<<<<<< HEAD:src/dealloc/deallocate.c
-	int	iter;
-
-	if (data == NULL)
-		return ;
-	iter = 0;
-	while (data[iter])
-	{
-		ft_free(&data[iter]);
-		iter++;
-	}
-	ft_free(&data);
-}
-
-void	dealloc_lambda(t_shell *lambda)
-{
-	if (!lambda)
-		return ;
-	if (lambda->env)
-		ft_lstclear(&lambda->env, dealloc_env_element);
-	if (lambda->line)
-		ft_free(&lambda->line);
-	if (lambda->lines)
-		dealloc_ptr_array((void **)lambda->lines);
-}
-
-void	dealloc_redirections(t_list *redir)
-{
-	t_list		*tmp;
-	t_redirect	*curr;
-
-	while (redir)
-	{
-		curr = redir->content;
-		if (curr->file_path)
-			ft_free(&curr->file_path);
-		tmp = redir;
-		redir = redir->next;
-		ft_free(&tmp);
-	}
-}
-
-void	dealloc_cmd(t_cmd *cmd)
-{
-	if (cmd->args)
-		ft_lstclear(&cmd->args, free);
-	if (cmd->path)
-		ft_free(&cmd->path);
-	if (cmd->redirections)
-		dealloc_redirections(cmd->redirections);
-}
-
-void	dealloc_cmds(t_list *cmds)
-{
-	t_list	*tmp;
-=======
 	return (ft_strcmp(((t_env_element *)lst_content)->key, (char *)needle));
 }
 
@@ -104,20 +48,12 @@ void	dealloc_cmds(t_list *cmds)
 int	unset(t_cmd *cmd, t_shell *lambda)
 {
 	char	**args;
->>>>>>> origin/master:src/builtins/unset.c
 
 	args = cmd->args;
 	while (*args)
 	{
-<<<<<<< HEAD:src/dealloc/deallocate.c
-		dealloc_cmd(cmds->content);
-		tmp = cmds;
-		cmds = cmds->next;;
-		ft_free(&tmp);
-=======
 		ft_lst_remove_if(&lambda->env, *args, string_cmp_fn);
 		args++;
->>>>>>> origin/master:src/builtins/unset.c
 	}
 	return (SUCCESS);
 }

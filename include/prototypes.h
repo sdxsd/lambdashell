@@ -116,10 +116,10 @@ void			skip_whitespace_tokens(t_list **tokens);
 char			*get_absolute_path_from_env(char *name, t_list *env);
 
 /* DEALLOC */
-void			dealloc_ptr_array(void **data);
-void			dealloc_lambda(t_shell *lambda);
+void			dealloc_ptr_array(void *ptr_array_ptr);
+int				dealloc_lambda(t_shell *lambda);
 void			dealloc_cmds(t_list *cmds);
-void			dealloc_cmd(t_cmd *cmd);
+int				dealloc_cmd(void *cmd_ptr);
 void			dealloc_redirections(t_list *redir);
 
 /* DEBUG */
