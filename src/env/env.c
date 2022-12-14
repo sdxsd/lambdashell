@@ -39,16 +39,6 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-void	dealloc_env_element(void *ptr)
-{
-	t_env_element	*env_element;
-
-	env_element = ptr;
-	ft_free(&env_element->key);
-	ft_free(&env_element->val);
-	ft_free(&env_element);
-}
-
 static int	get_key_length(char *str)
 {
 	int	count;
@@ -59,22 +49,36 @@ static int	get_key_length(char *str)
 	return (count);
 }
 
-static void	*init_env_failure(t_list **env)
+int	add_env_element(char *env_line, t_list **env)
 {
-	ft_lstclear(env, &dealloc_env_element);
-	return (NULL);
-}
-
-t_list	*init_env(char **env)
-{
-	int				index;
-	t_list			*env_list;
 	t_env_element	*env_element;
 
-	index = 0;
-	env_list = NULL;
-	while (env[index])
+	env_element = alloc_env_element();
+	if (!env_element)
+		return (dealloc_env_element(&env_element));
+	env_element->key = ft_strndup(env_line, get_key_length(env_line));
+	if (!env_element->key)
+		return (dealloc_env_element(&env_element));
+	if (env_line[get_key_length(env_line)] == '=')
 	{
+		env_element->val = ft_strdup(env_line + get_key_length(env_line) + 1);
+		if (!env_element->val)
+			return (dealloc_env_element(&env_element));
+	}
+	if (!ft_lstnew_back(env, env_element))
+		return (dealloc_env_element(&env_element));
+	return (SUCCESS);
+}
+
+<<<<<<< HEAD
+t_list	*init_env(char **env)
+=======
+int	init_env(char **env, t_list **lambda_env)
+>>>>>>> origin/master
+{
+	while (*env)
+	{
+<<<<<<< HEAD
 		env_element = ft_calloc(1, sizeof(t_env_element));
 		if (!env_element)
 			return (init_env_failure(&env_list));
@@ -99,8 +103,13 @@ t_list	*init_env(char **env)
 				return (init_env_failure(&env_list));
 		}
 		index++;
+=======
+		if (add_env_element(*env, lambda_env) == FAILURE)
+			return (FAILURE);
+		env++;
+>>>>>>> origin/master
 	}
-	return (env_list);
+	return (SUCCESS);
 }
 
 char	*env_get_val(t_list *env, char *key)

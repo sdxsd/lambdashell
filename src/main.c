@@ -41,49 +41,33 @@ A program is free software if users have all of these freedoms.
 
 static int	prompt(t_shell *lambda)
 {
-	t_list	*tokens;
-	t_list	*cmds;
 	char	*readline_str;
 
-	if (lambda->stdin_is_tty)
-	{
-		readline_str = get_readline_str(lambda);
-		if (!readline_str)
-		{
-			dealloc_lambda(lambda);
-			return (FAILURE);
-		}
-		lambda->line = readline(readline_str);
-		ft_free(&readline_str);
-	}
-	else
-	{
+	if (!lambda->stdin_is_tty)
 		rl_outstream = stdin;
-		lambda->line = readline(NULL);
-	}
+	readline_str = get_readline_str(lambda);
+	if (!readline_str)
+		return (dealloc_lambda(lambda));
+	lambda->line = readline(readline_str);
+	ft_free(&readline_str);
 	if (!lambda->line)
 	{
 		lambda->exit = true;
 		return (SUCCESS);
 	}
 	add_history(lambda->line);
-	tokens = tokenize(lambda->line);
-	if (expand_variables(tokens, lambda) == FAILURE)
-	{
-		// TODO: Freeing
-		return (FAILURE);
-	}
-	// dbg_print_tokens(tokens);
-	cmds = parse(tokens, lambda->env);
-	if (!cmds)
-	{
-		// TODO: Freeing
-		return (FAILURE);
-	}
-	// dbg_print_commands(cmds);
-	lambda->cmd_list = cmds;
-	executor(-1, cmds, lambda);
+	lambda->tokens = tokenize(lambda->line);
 	ft_free(&lambda->line);
+	if (expand_variables(lambda->tokens, lambda) == FAILURE)
+		return (dealloc_lambda(lambda));
+	// dbg_print_tokens(lambda->tokens);
+	lambda->cmds = parse(lambda->tokens, lambda->env);
+	if (!lambda->cmds)
+		return (dealloc_lambda(lambda));
+	// dbg_print_commands(lambda->cmds);
+	executor(-1, lambda->cmds, lambda);
+	ft_lstclear(&lambda->tokens, dealloc_token);
+	ft_lstclear(&lambda->cmds, dealloc_cmd);
 	return (SUCCESS);
 }
 
@@ -92,8 +76,7 @@ static int	shell_init(char **env, t_shell *lambda)
 	ft_bzero(lambda, sizeof(*lambda));
 	lambda->status = SUCCESS;
 	lambda->exit = FALSE;
-	lambda->env = init_env(env);
-	if (!lambda->env)
+	if (init_env(env, &lambda->env) == FAILURE || !lambda->env)
 		return (FAILURE);
 	// TODO: Should lambda->cwd set by this function be error checked?
 	update_cwd(lambda);
@@ -115,10 +98,7 @@ int	main(int argc, char **argv, char **env)
 	if (argc > 1)
 		return (FAILURE);
 	if (shell_init(env, &lambda) == FAILURE)
-	{
-		dealloc_lambda(&lambda);
-		return (FAILURE);
-	}
+		return (dealloc_lambda(&lambda));
 	while (!lambda.exit)
 		prompt(&lambda);
 	status = lambda.status;

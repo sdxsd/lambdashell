@@ -40,18 +40,6 @@ A program is free software if users have all of these freedoms.
 #include "../../include/minishell.h"
 #include <stdio.h>
 
-void	dbg_print_lines(char **lines)
-{
-	int	iter;
-
-	iter = 0;
-	while (lines[iter])
-	{
-		printf("%d: %s\n", iter, lines[iter]);
-		iter++;
-	}
-}
-
 void	dbg_print_tokens(t_list *tokens)
 {
 	char	*token_type_strings[] = {
@@ -86,8 +74,11 @@ void	dbg_print_commands(t_list *cmds)
 	};
 	size_t		cmd_index;
 	t_cmd		*cmd;
-	t_list		*list;
+
+	char		**arg_array;
+
 	size_t		redirection_index;
+	t_list		*redirection_list;
 	t_redirect	*redirection;
 
 	printf("\n");
@@ -99,33 +90,33 @@ void	dbg_print_commands(t_list *cmds)
 
 		cmd = cmds->content;
 
-		printf("\tInput file descriptor: %i\n", cmd->i_fd);
-		printf("\tOutput file descriptor: %i\n", cmd->o_fd);
+		printf("\tInput file descriptor: %i\n", cmd->input_fd);
+		printf("\tOutput file descriptor: %i\n", cmd->output_fd);
 
 		printf("\tPath: <%s>\n", cmd->path);
 
 		printf("\tArgs:");
-		list = cmd->args;
-		while (list)
+		arg_array = cmd->args;
+		while (*arg_array)
 		{
-			printf(" <%s>", (char *)list->content);
-			list = list->next;
+			printf(" <%s>", *arg_array);
+			arg_array++;
 		}
 		printf("\n");
 
 		redirection_index = 0;
-		list = cmd->redirections;
-		while (list)
+		redirection_list = cmd->redirections;
+		while (redirection_list)
 		{
 			printf("\tRedirection %zu:\n", redirection_index + 1);
 
-			redirection = list->content;
+			redirection = redirection_list->content;
 
 			printf("\t\tRedirection file path: <%s>\n", redirection->file_path);
 			printf("\t\tRedirection direction: %s\n", direction_strings[redirection->direction]);
 			printf("\t\tIs ambiguous: %i\n", redirection->is_ambiguous);
 
-			list = list->next;
+			redirection_list = redirection_list->next;
 			redirection_index++;
 		}
 

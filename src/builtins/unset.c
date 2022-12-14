@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   cd.c                                               :+:    :+:            */
+/*   unset.c                                            :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
+/*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 1970/01/01 00:00:00 by wmaguire      #+#    #+#                 */
-/*   Updated: 1970/01/01 00:00:00 by wmaguire      ########   odam.nl         */
+/*   Created: 2022/12/09 17:15:47 by sbos          #+#    #+#                 */
+/*   Updated: 2022/12/09 17:15:47 by sbos          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,40 +39,85 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-static int	argless_cd(t_list *env)
+int	string_cmp_fn(void *lst_content, void *needle)
 {
-	char	*home_path;
+<<<<<<< HEAD:src/dealloc/deallocate.c
+	int	iter;
 
-	home_path = env_get_val(env, "HOME");
-	if (!home_path)
+	if (data == NULL)
+		return ;
+	iter = 0;
+	while (data[iter])
 	{
-		// TODO: Maybe write a function for manual error messages for this
-		ft_putstr("λ: cd: HOME not set\n");
-		return (FAILURE);
+		ft_free(&data[iter]);
+		iter++;
 	}
-	if (chdir(home_path) == -1)
-		return (msg_err("cd", FAILURE));
-	return (SUCCESS);
+	ft_free(&data);
 }
 
-int	cd(t_cmd *cmd, t_shell *lambda)
+void	dealloc_lambda(t_shell *lambda)
 {
-	char	*msg;
+	if (!lambda)
+		return ;
+	if (lambda->env)
+		ft_lstclear(&lambda->env, dealloc_env_element);
+	if (lambda->line)
+		ft_free(&lambda->line);
+	if (lambda->lines)
+		dealloc_ptr_array((void **)lambda->lines);
+}
 
-	if (!cmd->args[1])
+void	dealloc_redirections(t_list *redir)
+{
+	t_list		*tmp;
+	t_redirect	*curr;
+
+	while (redir)
 	{
-		if (argless_cd(lambda->env) == FAILURE)
-			return (FAILURE);
+		curr = redir->content;
+		if (curr->file_path)
+			ft_free(&curr->file_path);
+		tmp = redir;
+		redir = redir->next;
+		ft_free(&tmp);
 	}
-	else if (chdir(cmd->args[1]) == -1)
+}
+
+void	dealloc_cmd(t_cmd *cmd)
+{
+	if (cmd->args)
+		ft_lstclear(&cmd->args, free);
+	if (cmd->path)
+		ft_free(&cmd->path);
+	if (cmd->redirections)
+		dealloc_redirections(cmd->redirections);
+}
+
+void	dealloc_cmds(t_list *cmds)
+{
+	t_list	*tmp;
+=======
+	return (ft_strcmp(((t_env_element *)lst_content)->key, (char *)needle));
+}
+
+// TODO: Should anything special happen if no argument is provided?
+int	unset(t_cmd *cmd, t_shell *lambda)
+{
+	char	**args;
+>>>>>>> origin/master:src/builtins/unset.c
+
+	args = cmd->args;
+	while (*args)
 	{
-		msg = ft_strjoin("cd: ", cmd->args[1]);
-		if (!msg)
-			return (msg_err("cd", FAILURE));
-		msg_err(msg, FAILURE);
-		ft_free(&msg);
-		return (FAILURE);
+<<<<<<< HEAD:src/dealloc/deallocate.c
+		dealloc_cmd(cmds->content);
+		tmp = cmds;
+		cmds = cmds->next;;
+		ft_free(&tmp);
+=======
+		ft_lst_remove_if(&lambda->env, *args, string_cmp_fn);
+		args++;
+>>>>>>> origin/master:src/builtins/unset.c
 	}
-	update_cwd(lambda);
 	return (SUCCESS);
 }

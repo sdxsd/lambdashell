@@ -39,18 +39,17 @@ A program is free software if users have all of these freedoms.
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
+
 # include <stdbool.h>
 # include "../libft/libft.h"
 
-// NOTE:
-// Contains all data relevant to the operation of the shell.
 typedef struct s_shell
 {
 	bool		interactive;
+	t_list		*tokens;
 	t_list		*env;
-	t_list		*cmd_list;
+	t_list		*cmds;
 	char		*line;
-	char		**lines;
 	char		*cwd;
 	int			status;
 	bool		stdin_is_tty;
@@ -75,9 +74,9 @@ typedef struct s_redirect {
 
 typedef struct s_cmd
 {
-	int		i_fd;
-	int		o_fd;
-	t_list	*args;
+	int		input_fd;
+	int		output_fd;
+	char	**args;
 	char	*path;
 	t_list	*redirections;
 }	t_cmd;

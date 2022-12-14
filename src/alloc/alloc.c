@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   CODAM C FILE                                       :+:    :+:            */
+/*   alloc.c                                            :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
+/*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 1970/01/01 00:00:00 by wmaguire      #+#    #+#                 */
-/*   Updated: 1970/01/01 00:00:00 by wmaguire     ########   codam.nl         */
+/*   Created: 2022/12/13 14:45:15 by sbos          #+#    #+#                 */
+/*   Updated: 2022/12/13 14:45:15 by sbos          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,68 +39,7 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-void	dealloc_ptr_array(void **data)
+t_env_element	*alloc_env_element(void)
 {
-	int	iter;
-
-	if (data == NULL)
-		return ;
-	iter = 0;
-	while (data[iter])
-	{
-		ft_free(&data[iter]);
-		iter++;
-	}
-	ft_free(&data);
-}
-
-void	dealloc_lambda(t_shell *lambda)
-{
-	if (!lambda)
-		return ;
-	if (lambda->env)
-		ft_lstclear(&lambda->env, dealloc_env_element);
-	if (lambda->line)
-		ft_free(&lambda->line);
-	if (lambda->lines)
-		dealloc_ptr_array((void **)lambda->lines);
-}
-
-void	dealloc_redirections(t_list *redir)
-{
-	t_list		*tmp;
-	t_redirect	*curr;
-
-	while (redir)
-	{
-		curr = redir->content;
-		if (curr->file_path)
-			ft_free(&curr->file_path);
-		tmp = redir;
-		redir = redir->next;
-		ft_free(&tmp);
-	}
-}
-
-void	dealloc_cmd(t_cmd *cmd)
-{
-	if (cmd->args)
-		ft_lstclear(&cmd->args, free);
-	if (cmd->path)
-		ft_free(&cmd->path);
-	if (cmd->redirections)
-		dealloc_redirections(cmd->redirections);
-}
-
-void	dealloc_cmds(t_list *cmds)
-{
-	t_list	*tmp;
-
-	while (cmds)
-	{
-		dealloc_cmd(cmds->content);
-		tmp = cmds;
-		cmds = cmds->next;;
-		ft_free(&tmp);
-	}
+	return (ft_calloc(1, sizeof(t_env_element)));
 }

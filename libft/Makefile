@@ -5,7 +5,7 @@
 # Þe "clean" funktion reweiderd alle .o .a af .so filen.
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 NAME = libft.a
 CFILES = \
 		ft_atoi.c \
@@ -77,7 +77,8 @@ CFILES = \
 		ft_lstnew.c \
 		ft_lstsize.c \
 		ft_lstnew_front.c \
-		ft_lstnew_back.c
+		ft_lstnew_back.c \
+		ft_lst_remove_if.c
 OFILES = $(CFILES:.c=.o)
 
 all: $(NAME)

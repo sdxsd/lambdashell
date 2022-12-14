@@ -47,8 +47,7 @@ static int	is_builtin(char *path)
 		|| ft_streq(path, "exit")
 		|| ft_streq(path, "export")
 		|| ft_streq(path, "pwd")
-		// || ft_streq(path, "unset")
-	);
+		|| ft_streq(path, "unset"));
 }
 
 static t_cmd	*get_initial_cmd(void)
@@ -58,8 +57,8 @@ static t_cmd	*get_initial_cmd(void)
 	cmd = ft_calloc(1, sizeof(*cmd));
 	if (!cmd)
 		return (NULL);
-	cmd->i_fd = STDIN_FILENO;
-	cmd->o_fd = STDOUT_FILENO;
+	cmd->input_fd = STDIN_FILENO;
+	cmd->output_fd = STDOUT_FILENO;
 	return (cmd);
 }
 
@@ -155,6 +154,27 @@ static char		*get_path(t_list **tokens, t_list *env)
 	return (absolute_path);
 }
 
+static char	**get_arg_string_array(t_list *arg_list, char *path)
+{
+	char	**arg_strings_start;
+	char	**arg_strings;
+
+	arg_strings_start = ft_calloc(ft_lstsize(arg_list) + 2, sizeof(*arg_strings));
+	arg_strings = arg_strings_start;
+	if (!arg_strings)
+		return (null_msg_err("get_arg_string_array()"));
+	*arg_strings = ft_strdup(path);
+	arg_strings++;
+	while (arg_list)
+	{
+		*arg_strings = arg_list->content;
+		arg_strings++;
+		arg_list = arg_list->next;
+	}
+	*arg_strings = NULL;
+	return (arg_strings_start);
+}
+
 static char		*get_arg(t_list **tokens)
 {
 	char	*arg;
@@ -192,9 +212,11 @@ static t_cmd	*get_cmd(t_list **tokens, t_list *env)
 	t_cmd		*cmd;
 	t_token		*token;
 	t_redirect	*redirect;
+	t_list		*arg_list;
 	char		*arg;
 
 	cmd = get_initial_cmd();
+	arg_list = NULL;
 	while (*tokens)
 	{
 		token = (*tokens)->content;
@@ -227,7 +249,7 @@ static t_cmd	*get_cmd(t_list **tokens, t_list *env)
 		else if (is_text_token(token))
 		{
 			arg = get_arg(tokens);
-			if (!arg || !ft_lstnew_back(&cmd->args, arg))
+			if (!arg || !ft_lstnew_back(&arg_list, arg))
 			{
 				dealloc_cmd(cmd);
 				return (NULL);
@@ -236,6 +258,8 @@ static t_cmd	*get_cmd(t_list **tokens, t_list *env)
 		else
 			*tokens = (*tokens)->next;
 	}
+	// TODO: Maybe just set cmds->args to NULL when cmd->path is NULL?
+	cmd->args = get_arg_string_array(arg_list, cmd->path);
 	return (cmd);
 }
 
@@ -249,11 +273,8 @@ t_list	*parse(t_list *tokens, t_list *env)
 	while (tokens)
 	{
 		cmd = get_cmd(&tokens, env);
-		if (!cmd || !ft_lstnew_back(&cmds, cmd))
-		{
-			dealloc_cmds(cmds);
-			return (NULL);
-		}
+		if (!cmd || !cmd->path || !ft_lstnew_back(&cmds, cmd))
+			return (NULL); // TODO: Free?
 	}
 	return (cmds);
 }

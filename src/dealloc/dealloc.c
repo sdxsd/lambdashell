@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   path.c                                             :+:    :+:            */
+/*   dealloc.c                                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
@@ -39,42 +39,78 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-static char	*path_join(char *dir, char *name)
+int	dealloc_cmd(void *cmd_ptr)
 {
-	return (ft_strjoin_array((char *[]){dir, "/", name, NULL}));
+	t_cmd	**_cmd_ptr;
+	t_cmd	*cmd;
+
+	_cmd_ptr = cmd_ptr;
+	cmd = *_cmd_ptr;
+	dealloc_ptr_array(&cmd->args);
+	ft_free(&cmd->path);
+	ft_lstclear(&cmd->redirections, dealloc_redirection);
+	ft_free(_cmd_ptr);
+	return (FAILURE);
 }
 
-char	*get_absolute_path_from_env(char *name, t_list *env)
+int	dealloc_env_element(void *env_element_ptr)
 {
-	static char	*path;
-	char		*absolute_path;
-	char		**exec_direcs;
-	int			iter;
+	t_env_element	**_env_element_ptr;
+	t_env_element	*env_element;
 
-	iter = 0;
-	if (!path)
-		path = env_get_val(env, "PATH");
-	if (!path)
-		return (NULL);
-	exec_direcs = ft_split(path, ':');
-	if (!exec_direcs)
-		return (NULL);
-	while (exec_direcs[iter])
+	_env_element_ptr = env_element_ptr;
+	env_element = *_env_element_ptr;
+	ft_free(&env_element->key);
+	ft_free(&env_element->val);
+	ft_free(_env_element_ptr);
+	return (FAILURE);
+}
+
+int	dealloc_token(void *token_ptr)
+{
+	t_token	**_token_ptr;
+	t_token	*token;
+
+	_token_ptr = token_ptr;
+	token = *_token_ptr;
+	ft_free(&token->content);
+	ft_free(_token_ptr);
+	return (FAILURE);
+}
+
+int	dealloc_lambda(t_shell *lambda)
+{
+	ft_lstclear(&lambda->tokens, dealloc_token);
+	ft_lstclear(&lambda->env, dealloc_env_element);
+	ft_lstclear(&lambda->cmds, dealloc_cmd);
+	ft_free(&lambda->line);
+	ft_free(&lambda->cwd);
+	return (FAILURE);
+}
+
+void	dealloc_ptr_array(void *ptr_array_ptr)
+{
+	void	***_ptr_array_ptr;
+	void	**ptr_array;
+
+	_ptr_array_ptr = ptr_array_ptr;
+	ptr_array = *_ptr_array_ptr;
+	while (*ptr_array)
 	{
-		absolute_path = path_join(exec_direcs[iter], name);
-		if (!absolute_path)
-		{
-			dealloc_ptr_array(&exec_direcs);
-			return (NULL);
-		}
-		if (!access(absolute_path, F_OK)) // TODO: Probably needs more flags
-		{
-			dealloc_ptr_array(&exec_direcs);
-			return (absolute_path);
-		}
-		ft_free(&absolute_path);
-		iter++;
+		ft_free(ptr_array);
+		ptr_array++;
 	}
-	dealloc_ptr_array(&exec_direcs);
-	return (NULL);
+	ft_free(_ptr_array_ptr);
+}
+
+int	dealloc_redirection(void *redirect_ptr)
+{
+	t_redirect	**_redirect_ptr;
+	t_redirect	*redirect;
+
+	_redirect_ptr = redirect_ptr;
+	redirect = *_redirect_ptr;
+	ft_free(&redirect->file_path);
+	ft_free(_redirect_ptr);
+	return (FAILURE);
 }

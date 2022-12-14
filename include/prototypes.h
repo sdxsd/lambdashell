@@ -41,30 +41,52 @@ A program is free software if users have all of these freedoms.
 # define PROTOTYPES_H
 # include "structs.h"
 
-/* UTILS */
-char			**args_to_strings(t_list *args, char *path);
-
-/* COSMETIC */
-char			*get_readline_str(t_shell *lambda);
+/* ALLOC */
+t_env_element	*alloc_env_element(void);
 
 /* BUILTINS */
-char			*ret_cwd(void);
 int				cd(t_cmd *cmd, t_shell *lambda);
 int				env(t_shell *lambda);
 void			bltin_exit(t_cmd *cmd, t_shell *lambda);
 int				export(t_cmd *cmd, t_shell *lambda);
 int				pwd(t_shell *lambda);
+int				unset(t_cmd *cmd, t_shell *lambda);
+
+/* COSMETIC */
+char			*get_readline_str(t_shell *lambda);
+
+/* DEALLOC */
+int				dealloc_cmd(void *cmd_ptr);
+int				dealloc_env_element(void *env_element_ptr);
+int				dealloc_token(void *token_ptr);
+int				dealloc_lambda(t_shell *lambda);
+void			dealloc_ptr_array(void *ptr_array_ptr);
+int				dealloc_redirection(void *redirect_ptr);
+
+/* DEBUG */
+void			dbg_print_tokens(t_list *tokens);
+void			dbg_print_commands(t_list *cmds);
 
 /* ENVIRONMENT */
-t_list			*init_env(char **env);
+int				add_env_element(char *env_line, t_list **env);
+int				init_env(char **env, t_list **lambda_env);
 char			**env_to_strings(t_list *env);
 char			*env_get_val(t_list *env, char *key);
-void			dealloc_env_element(void *ptr);
 int				expand_variables(t_list *tokens, t_shell *lambda);
 
 /* ERROR MESSAGES */
 int				msg_err(char *s, int ret);
 void			*null_msg_err(char *s);
+
+/* EXECUTION */
+int				executor(int input_fd, t_list *cmds, t_shell *lambda);
+char			*get_absolute_path_from_env(char *name, t_list *env);
+
+/* PARSE */
+bool			is_ambiguous_redirect(t_list *tokens);
+bool			is_text_token(t_token *token);
+t_list			*parse(t_list *tokens, t_list *env);
+void			skip_whitespace_tokens(t_list **tokens);
 
 /* TOKENISATION */
 t_token			*get_token(t_token_type type, char *content);

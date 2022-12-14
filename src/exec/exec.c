@@ -53,8 +53,8 @@ static int	redirections(t_list *list, t_cmd *cmd)
 		if (redir->direction == DIRECTION_IN && !in_encountered)
 		{
 			in_encountered = TRUE;
-			cmd->i_fd = open(redir->file_path, O_RDONLY);
-			if (cmd->i_fd < 0)
+			cmd->input_fd = open(redir->file_path, O_RDONLY);
+			if (cmd->input_fd < 0)
 			{
 				null_msg_err("redirections()");
 				return (FALSE);
@@ -62,8 +62,8 @@ static int	redirections(t_list *list, t_cmd *cmd)
 		}
 		else if (redir->direction == DIRECTION_OUT)
 		{
-			cmd->o_fd = open(redir->file_path, O_CREAT | O_TRUNC | O_WRONLY, 0644);
-			if (cmd->o_fd < 0)
+			cmd->output_fd = open(redir->file_path, O_CREAT | O_TRUNC | O_WRONLY, 0644);
+			if (cmd->output_fd < 0)
 			{
 				null_msg_err("redirections()");
 				return (FALSE);
@@ -74,48 +74,27 @@ static int	redirections(t_list *list, t_cmd *cmd)
 	return (TRUE);
 }
 
-char	**args_to_strings(t_list *args, char *path)
-{
-	char	**arg_strings;
-	int		iter;
-
-	arg_strings = ft_calloc(sizeof(*arg_strings), ft_lstsize(args) + 2);
-	if (!arg_strings)
-		return (null_msg_err("args_to_strings()"));
-	arg_strings[0] = path;
-	iter = 1;
-	while (args)
-	{
-		arg_strings[iter] = args->content;
-		args = args->next;
-		iter++;
-	}
-	arg_strings[iter] = NULL;
-	return (arg_strings);
-}
-
 static void	dup2_cmd(t_cmd *cmd)
 {
-	dup2(cmd->i_fd, STDIN_FILENO);
-	if (cmd->i_fd != STDIN_FILENO)
-		close(cmd->i_fd);
+	dup2(cmd->input_fd, STDIN_FILENO);
+	if (cmd->input_fd != STDIN_FILENO)
+		close(cmd->input_fd);
 
-	dup2(cmd->o_fd, STDOUT_FILENO);
-	if (cmd->o_fd != STDOUT_FILENO)
-		close(cmd->o_fd);
+	dup2(cmd->output_fd, STDOUT_FILENO);
+	if (cmd->output_fd != STDOUT_FILENO)
+		close(cmd->output_fd);
 }
 
 static int	execute_command(t_cmd *cmd, t_list *env)
 {
 	char	**env_array;
-	char	**arg_array;
 
 	// TODO: Protection!
 	redirections(cmd->redirections, cmd);
-	arg_array = args_to_strings(cmd->args, cmd->path);
+	// TODO: Try to find a way to not call this env_to_strings() every time
 	env_array = env_to_strings(env);
 	dup2_cmd(cmd);
-	if (execve(cmd->path, arg_array, env_array) == -1)
+	if (execve(cmd->path, cmd->args, env_array) == -1)
 	{
 		msg_err("execute_command()", FAILURE);
 		return (FAILURE);
@@ -125,28 +104,28 @@ static int	execute_command(t_cmd *cmd, t_list *env)
 
 static int	execute_builtin(t_cmd *cmd, t_shell *lambda)
 {
-	char	**arg_strings;
-
-	arg_strings = args_to_strings(cmd->args, cmd->path);
 	dup2_cmd(cmd);
-	if (ft_streq(arg_strings[0], "cd"))
+	// TODO: Maybe if-statement check whether path or args or args[0] or args[1] is NULL?
+	if (ft_streq(cmd->path, "cd"))
 		return (cd(cmd, lambda));
-	else if (ft_streq(arg_strings[0], "env"))
+	else if (ft_streq(cmd->path, "env"))
 		return (env(lambda));
-	else if (ft_streq(arg_strings[0], "exit"))
+	else if (ft_streq(cmd->path, "exit"))
 	{
 		// TODO: create define rather than using (2)
 		bltin_exit(cmd, lambda);
 		return (2);
 	}
-	else if (ft_streq(arg_strings[0], "export"))
+	else if (ft_streq(cmd->path, "export"))
 		return (export(cmd, lambda));
-	else if (ft_streq(arg_strings[0], "pwd"))
+	else if (ft_streq(cmd->path, "pwd"))
 		return (pwd(lambda));
+	else if (ft_streq(cmd->path, "unset"))
+		return (unset(cmd, lambda));
 	return (FAILURE);
 }
 
-int	executor(int i_fd, t_list *cmds, t_shell *lambda)
+int	executor(int input_fd, t_list *cmds, t_shell *lambda)
 {
 	int		tube[2];
 	pid_t	pid;
@@ -168,21 +147,21 @@ int	executor(int i_fd, t_list *cmds, t_shell *lambda)
 			if (cmds->next)
 				close(tube[READ]);
 
-			if (i_fd != -1)
-				cmd->i_fd = i_fd;
+			if (input_fd != -1)
+				cmd->input_fd = input_fd;
 			if (cmds->next)
-				cmd->o_fd = tube[WRITE];
+				cmd->output_fd = tube[WRITE];
 
 			execute_command(cmd, lambda->env);
 		}
 	}
 	else
 	{
-		// TODO: Why store i_fd and o_fd in cmd when dups can be done immediately?
-		if (i_fd != -1)
-			cmd->i_fd = i_fd;
+		// TODO: Why store input_fd and output_fd in cmd when dups can be done immediately?
+		if (input_fd != -1)
+			cmd->input_fd = input_fd;
 		if (cmds->next)
-			cmd->o_fd = tube[WRITE];
+			cmd->output_fd = tube[WRITE];
 
 		// TODO: Should this really always be setting lambda->status, unlike non-builtins?
 		lambda->status = execute_builtin(cmd, lambda);
@@ -192,14 +171,14 @@ int	executor(int i_fd, t_list *cmds, t_shell *lambda)
 	}
 	if (cmds->next)
 		close(tube[WRITE]);
-	if (i_fd != -1)
-		close(i_fd); // TODO: Right now only the parent is closing the read end!!
+	if (input_fd != -1)
+		close(input_fd); // TODO: Right now only the parent is closing the read end!!
 
 	if (cmds->next && executor(tube[READ], cmds->next, lambda) != SUCCESS)
 		return (msg_err("exec_and_pipe()", FAILURE));
 	if (ft_strchr(cmd->path, '/'))
 		waitpid(pid, &status, 0);
-	if (!cmds->next)
+	if (ft_strchr(cmd->path, '/') && !cmds->next)
 	{
 		// TODO: Add unit test for this one
 		if (WIFEXITED(status))
