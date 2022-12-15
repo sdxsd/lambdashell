@@ -137,7 +137,7 @@ static int	execute_builtin(t_cmd *cmd, t_shell *lambda)
 	else if (ft_streq(cmd->path, "unset"))
 		lambda->status = unset(cmd, lambda);
 	else
-		return (FAILURE);
+		return (FAILURE); // TODO: "command not found" needs to be printed here I think
 
 	return (SUCCESS);
 }

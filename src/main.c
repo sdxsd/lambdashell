@@ -76,7 +76,9 @@ static int	shell_init(char **env, t_shell *lambda)
 {
 	ft_bzero(lambda, sizeof(*lambda));
 	lambda->status = SUCCESS;
-	if (init_env(env, &lambda->env) == FAILURE || !lambda->env)
+	// TODO: Should ` || !lambda->env` be placed back?
+	// Idk how to even get a completely empty environment in the tester
+	if (init_env(env, &lambda->env) == FAILURE)
 		return (FAILURE);
 	// TODO: Should lambda->cwd set by this function be error checked?
 	update_cwd(lambda);
@@ -98,7 +100,10 @@ int	main(int argc, char **argv, char **env)
 	if (argc > 1)
 		return (FAILURE);
 	if (shell_init(env, &lambda) == FAILURE)
+	{
+		rl_clear_history();
 		return (dealloc_lambda(&lambda));
+	}
 	while (running())
 		prompt(&lambda);
 	status = lambda.status;
