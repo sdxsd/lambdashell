@@ -35,9 +35,9 @@ A program is free software if users have all of these freedoms.
 #include "../../include/minishell.h"
 #include <unistd.h>
 
+// TODO: Put ft_putstr call on stderr
 int	msg_err(char *s, int ret)
 {
-	// TODO: Put on stderr
 	ft_putstr("λ: ");
 	perror(s);
 	return (ret);

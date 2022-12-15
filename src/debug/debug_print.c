@@ -42,15 +42,15 @@ A program is free software if users have all of these freedoms.
 
 void	dbg_print_tokens(t_list *tokens)
 {
-	char	*token_type_strings[] = {
-		[SINGLE_QUOTED] = "SINGLE_QUOTED",
-		[DOUBLE_QUOTED] = "DOUBLE_QUOTED",
-		[REDIRECTION] = "REDIRECTION",
-		[PIPE] = "PIPE",
-		[WHITESPACE] = "WHITESPACE",
-		[UNQUOTED] = "UNQUOTED",
-	};
+	char	*token_type_strings[6];
 	t_token	*token;
+
+	token_type_strings[SINGLE_QUOTED] = "SINGLE_QUOTED";
+	token_type_strings[DOUBLE_QUOTED] = "DOUBLE_QUOTED";
+	token_type_strings[REDIRECTION] = "REDIRECTION";
+	token_type_strings[PIPE] = "PIPE";
+	token_type_strings[WHITESPACE] = "WHITESPACE";
+	token_type_strings[UNQUOTED] = "UNQUOTED";
 	printf("+---------------+---------------------+\n");
 	printf("| token type    | token content       |\n");
 	printf("+---------------+---------------------+\n");
@@ -66,35 +66,27 @@ void	dbg_print_tokens(t_list *tokens)
 
 void	dbg_print_commands(t_list *cmds)
 {
-	char	*direction_strings[] = {
-		[DIRECTION_HEREDOC] = "HEREDOC",
-		[DIRECTION_APPEND] = "APPEND",
-		[DIRECTION_IN] = "IN",
-		[DIRECTION_OUT] = "OUT",
-	};
-	size_t		cmd_index;
-	t_cmd		*cmd;
-
-	char		**arg_array;
-
-	size_t		redirection_index;
-	t_list		*redirection_list;
+	char	*direction_strings[4];
+	size_t	cmd_index;
+	t_cmd	*cmd;
+	char	**arg_array;
+	size_t	redirection_index;
+	t_list	*redirection_list;
 	t_redirect	*redirection;
 
+	direction_strings[DIRECTION_HEREDOC] = "HEREDOC",
+	direction_strings[DIRECTION_APPEND] = "APPEND",
+	direction_strings[DIRECTION_IN] = "IN",
+	direction_strings[DIRECTION_OUT] = "OUT",
 	printf("\n");
-
 	cmd_index = 0;
 	while (cmds)
 	{
 		printf("Command %zu:\n", cmd_index + 1);
-
 		cmd = cmds->content;
-
 		printf("\tInput file descriptor: %i\n", cmd->input_fd);
 		printf("\tOutput file descriptor: %i\n", cmd->output_fd);
-
 		printf("\tPath: <%s>\n", cmd->path);
-
 		printf("\tArgs:");
 		arg_array = cmd->args;
 		while (*arg_array)
@@ -103,23 +95,18 @@ void	dbg_print_commands(t_list *cmds)
 			arg_array++;
 		}
 		printf("\n");
-
 		redirection_index = 0;
 		redirection_list = cmd->redirections;
 		while (redirection_list)
 		{
 			printf("\tRedirection %zu:\n", redirection_index + 1);
-
 			redirection = redirection_list->content;
-
 			printf("\t\tRedirection file path: <%s>\n", redirection->file_path);
 			printf("\t\tRedirection direction: %s\n", direction_strings[redirection->direction]);
 			printf("\t\tIs ambiguous: %i\n", redirection->is_ambiguous);
-
 			redirection_list = redirection_list->next;
 			redirection_index++;
 		}
-
 		cmds = cmds->next;
 		cmd_index++;
 		printf("\n");

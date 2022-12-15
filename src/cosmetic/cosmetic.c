@@ -65,13 +65,11 @@ char	*get_readline_str(t_shell *lambda)
 	user = env_get_val(lambda->env, "USER");
 	if (!user)
 		user = "???";
-
 	if (lambda->cwd)
 		leaf_dir = last_direc(lambda->cwd);
 	else
 		leaf_dir = "???";
-
-	readline_str = ft_strjoin_array((char *[]){GREEN, "[", user, "] ", BLUE, leaf_dir, " ", CLEAR, "λ :: ❯ ", NULL});
-
+	readline_str = ft_strjoin_array((char *[]){GREEN, "[", user, "] ", \
+		BLUE, leaf_dir, " ", CLEAR, "λ :: ❯ ", NULL});
 	return (readline_str);
 }

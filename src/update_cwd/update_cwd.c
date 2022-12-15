@@ -39,9 +39,9 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
+// TODO: Should lambda->cwd be error checked?
 void	update_cwd(t_shell *lambda)
 {
 	ft_free(&lambda->cwd);
-	// TODO: Should lambda->cwd be error checked?
 	lambda->cwd = getcwd(NULL, 0);
 }

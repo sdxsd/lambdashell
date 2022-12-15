@@ -80,40 +80,30 @@ static t_redirect	*get_redirect(t_list **tokens)
 	t_token		*token;
 
 	redirect = ft_calloc(1, sizeof(*redirect));
-
 	fill_direction(redirect, (*tokens)->content);
-
 	*tokens = (*tokens)->next;
-
 	skip_whitespace_tokens(tokens);
-
 	redirect->file_path = ft_calloc(1, sizeof(*redirect->file_path));
 	if (!redirect->file_path)
 	{
 		// TODO: Free
 		return (NULL);
 	}
-
 	redirect->is_ambiguous = is_ambiguous_redirect(*tokens);
-
 	while (*tokens)
 	{
 		token = (*tokens)->content;
-
 		// TODO: Maybe necessary to add check for token being NULL?
 		if (!is_text_token(token))
 			break;
-
 		redirect->file_path = ft_strjoin_and_free_left(redirect->file_path, token->content);
 		if (!redirect->file_path)
 		{
 			// TODO: Free
 			return (NULL);
 		}
-
 		*tokens = (*tokens)->next;
 	}
-
 	return (redirect);
 }
 
@@ -129,11 +119,9 @@ static char		*get_path(t_list **tokens, t_list *env)
 		// TODO: Free
 		return (NULL);
 	}
-
 	while (*tokens)
 	{
 		token = (*tokens)->content;
-
 		// TODO: Maybe necessary to add check for token being NULL?
 		if (!is_text_token(token))
 			break;
@@ -144,7 +132,6 @@ static char		*get_path(t_list **tokens, t_list *env)
 			// TODO: Free
 			return (NULL);
 		}
-
 		*tokens = (*tokens)->next;
 	}
 	if (is_builtin(path) || ft_strchr(path, '/'))
@@ -192,22 +179,18 @@ static char		*get_arg(t_list **tokens)
 		// TODO: Free
 		return (NULL);
 	}
-
 	while (*tokens)
 	{
 		token = (*tokens)->content;
-
 		// TODO: Maybe necessary to add check for token being NULL?
 		if (!is_text_token(token))
 			break;
-
 		arg = ft_strjoin_and_free_left(arg, token->content);
 		if (!arg)
 		{
 			// TODO: Free
 			return (NULL);
 		}
-
 		*tokens = (*tokens)->next;
 	}
 	return (arg);
@@ -276,7 +259,6 @@ t_list	*parse(t_list *tokens, t_list *env)
 	t_cmd	*cmd;
 
 	cmds = NULL;
-
 	while (tokens)
 	{
 		cmd = get_cmd(&tokens, env);

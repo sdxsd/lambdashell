@@ -152,12 +152,10 @@ static int	execute_simple_command(t_cmd *cmd, t_shell *lambda)
 
 		lambda->status = status;
 	}
-
 	// TODO: Can this be moved to the end of execute_builtin()?
 	// TODO: Should these both *always* happen?
 	dup2(lambda->stdin_fd, STDIN_FILENO);
 	dup2(lambda->stdout_fd, STDOUT_FILENO);
-
 	return (SUCCESS);
 }
 

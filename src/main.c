@@ -39,7 +39,7 @@ A program is free software if users have all of these freedoms.
 
 #include "../include/minishell.h"
 
-static int	prompt(t_shell *lambda)
+static int	read_input(t_shell *lambda)
 {
 	char	*readline_str;
 
@@ -47,21 +47,36 @@ static int	prompt(t_shell *lambda)
 		rl_outstream = stdin;
 	readline_str = get_readline_str(lambda);
 	if (!readline_str)
-		return (dealloc_lambda(lambda));
+	{
+		dealloc_lambda(lambda);
+		return (FAILURE);
+	}
 	lambda->line = readline(readline_str);
+	if (!lambda->line)
+	{
+		ft_free(&readline_str);
+		return (FAILURE);
+	}
 	ft_free(&readline_str);
-	if (!lambda->line && readline_str)
+	return (SUCCESS);
+}
+
+static int	prompt(t_shell *lambda)
+{
+	if (read_input(lambda) == FAILURE)
 	{
 		lambda->exit = true;
 		return (SUCCESS);
 	}
+	else if (ft_strlen(lambda->line) < 1)
+		return (SUCCESS);
 	add_history(lambda->line);
 	lambda->tokens = tokenize(lambda->line);
 	ft_free(&lambda->line);
 	if (expand_variables(lambda->tokens, lambda) == FAILURE)
 		return (dealloc_lambda(lambda));
 	lambda->cmds = parse(lambda->tokens, lambda->env);
-	if (!lambda->cmds)
+	if (!lambda->cmds && lambda->line)
 		return (dealloc_lambda(lambda));
 	if (execute(lambda->cmds, lambda) == FAILURE)
 		return (dealloc_lambda(lambda));
