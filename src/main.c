@@ -50,7 +50,7 @@ static int	prompt(t_shell *lambda)
 		return (dealloc_lambda(lambda));
 	lambda->line = readline(readline_str);
 	ft_free(&readline_str);
-	if (!lambda->line)
+	if (!lambda->line && readline_str)
 	{
 		lambda->exit = true;
 		return (SUCCESS);
