@@ -107,6 +107,8 @@ t_list			*tokenize(char *line);
 
 /* SIGNALS */
 void	signal_handler_set(void);
+void	signal_handler_child_set(void);
+void	disable_signals(void);
 
 /* UPDATE_CWD */
 void			update_cwd(t_shell *lambda);

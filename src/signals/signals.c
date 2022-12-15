@@ -13,9 +13,14 @@
 #include "../../include/minishell.h"
 #include <signal.h>
 
-// Are signals really this simple?
+// Are signals really this simple?: Yes.
 
-// CTRL-c
+void	SIGINT_alt(int sig)
+{
+	if (sig == SIGINT)
+		printf("\n");
+}
+
 void	sighandler(int sig)
 {
 	if (sig == SIGINT)
@@ -26,13 +31,19 @@ void	sighandler(int sig)
 		rl_redisplay();
 	}
 	if (sig == SIGQUIT)
-		ft_putstr("Quit");
+		printf("\n");
 }
 
 void	disable_signals(void)
 {
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
+}
+
+void	signal_handler_child_set(void)
+{
+	signal(SIGQUIT, sighandler);
+	signal(SIGINT, sighandler);
 }
 
 void	signal_handler_set(void)

@@ -167,14 +167,17 @@ static int	execute_simple_command(t_cmd *cmd, t_shell *lambda)
 			return (msg_err("exec_and_pipe()", FAILURE));
 		if (pid == FORK_CHILD)
 		{
+			signal_handler_child_set();
 			if (execute_command(cmd, lambda->env) == FAILURE)
 			{
 				// TODO: ??
 				return (FAILURE);
 			}
 		}
+		disable_signals();
 		waitpid(pid, &status, 0);
 		lambda->status = get_wait_status(status);
+		signal_handler_set();
 	}
 	else
 	{
@@ -242,11 +245,13 @@ static int	execute_complex_command(int input_fd, t_list *cmds, t_shell *lambda)
 		return (msg_err("exec_and_pipe()", FAILURE));
 	if (pid == FORK_CHILD)
 	{
+		signal_handler_child_set();
 		if (execute_child(input_fd, cmds, lambda, tube) == FAILURE)
 		{
 			// TODO: ??
 		}
 	}
+	disable_signals();
 	if (cmds->next)
 		close(tube[WRITE]);
 	if (input_fd != -1)
@@ -261,7 +266,6 @@ static int	execute_complex_command(int input_fd, t_list *cmds, t_shell *lambda)
 
 int	execute(t_list *cmds, t_shell *lambda)
 {
-	// FIXME: Do we need to preserve execute_simple_command?
 	if (cmds->next)
 		return (execute_complex_command(-1, cmds, lambda));
 	return (execute_simple_command(cmds->content, lambda));
