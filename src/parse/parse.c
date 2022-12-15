@@ -169,10 +169,7 @@ static char	**get_arg_string_array(t_list *arg_list, char *path)
 	arg_strings = arg_strings_start;
 	if (!arg_strings)
 		return (null_msg_err("get_arg_string_array()"));
-	if (ft_strrchr(path, '/'))
-		*arg_strings = ft_strdup(ft_strrchr(path, '/') + 1);
-	else
-		*arg_strings = ft_strdup(path);
+	*arg_strings = ft_strdup(path);
 	arg_strings++;
 	while (arg_list)
 	{
@@ -223,15 +220,16 @@ static t_cmd	*get_cmd(t_list **tokens, t_list *env)
 	t_redirect	*redirect;
 	t_list		*arg_list;
 	char		*arg;
+	char		*arg_zero;
 
 	cmd = get_initial_cmd();
 	arg_list = NULL;
+	token = (*tokens)->content;
+	arg_zero = token->content;
 	while (*tokens)
 	{
 		token = (*tokens)->content;
-
 		// TODO: Maybe necessary to add check for token being NULL?
-
 		if (token->type == PIPE)
 		{
 			*tokens = (*tokens)->next;
@@ -268,7 +266,7 @@ static t_cmd	*get_cmd(t_list **tokens, t_list *env)
 			*tokens = (*tokens)->next;
 	}
 	// TODO: Maybe just set cmds->args to NULL when cmd->path is NULL?
-	cmd->args = get_arg_string_array(arg_list, cmd->path);
+	cmd->args = get_arg_string_array(arg_list, arg_zero);
 	return (cmd);
 }
 

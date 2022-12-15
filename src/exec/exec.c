@@ -204,11 +204,8 @@ static int	execute_complex_command(int input_fd, t_list *cmds, t_shell *lambda)
 
 	if (cmds->next && pipe(tube) == -1)
 		return (msg_err("exec_and_pipe()", FAILURE));
-
 	cmd = cmds->content;
-
 	// TODO: Maybe we shouldn't fork if there is only a single non-builtin command?
-
 	pid = fork();
 	fflush(NULL);
 	if (pid == FORK_FAILURE)
@@ -224,12 +221,9 @@ static int	execute_complex_command(int input_fd, t_list *cmds, t_shell *lambda)
 		close(tube[WRITE]);
 	if (input_fd != -1)
 		close(input_fd); // TODO: Right now only the parent is closing the read end!!
-
 	if (cmds->next && execute_complex_command(tube[READ], cmds->next, lambda) != SUCCESS)
 		return (msg_err("exec_and_pipe()", FAILURE));
-
 	waitpid(pid, &status, 0);
-
 	if (ft_strchr(cmd->path, '/') && !cmds->next)
 	{
 		// TODO: Add unit test for this one
@@ -248,6 +242,7 @@ static int	execute_complex_command(int input_fd, t_list *cmds, t_shell *lambda)
 
 int	execute(t_list *cmds, t_shell *lambda)
 {
+	// FIXME: Do we need to preserve execute_simple_command?
 	if (cmds->next)
 		return (execute_complex_command(-1, cmds, lambda));
 	return (execute_simple_command(cmds->content, lambda));
