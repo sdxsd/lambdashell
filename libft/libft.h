@@ -14,6 +14,7 @@
 # define LIBFT_H
 # include <stddef.h>
 # include <stdarg.h>
+# include <stdbool.h>
 # define BUFFER_SIZE 1024
 # define TRUE 1
 # define FALSE 0
@@ -115,6 +116,7 @@ void		ft_free(void *ptrptr);
 
 // ASCII NÆR INTEGER AF INTEGER NÆR ASCII
 char		*ft_itoa(int n);
+bool		ft_atoi_safe(const char *str, int *nbr);
 int			ft_atoi(const char *str);
 void		ft_putnbr(int nb);
 

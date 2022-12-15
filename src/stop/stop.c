@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   structs.h                                          :+:    :+:            */
+/*   stop.c                                             :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
+/*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 1970/01/01 00:00:00 by wmaguire      #+#    #+#                 */
-/*   Updated: 1970/01/01 00:00:00 by wmaguire      ########   odam.nl         */
+/*   Created: 2022/12/15 12:54:11 by sbos          #+#    #+#                 */
+/*   Updated: 2022/12/15 12:54:11 by sbos          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,77 +37,22 @@ The definition of Free Software is as follows:
 A program is free software if users have all of these freedoms.
 */
 
-#ifndef STRUCTS_H
-# define STRUCTS_H
+#include "../../include/minishell.h"
 
-# include <stdbool.h>
-# include "../libft/libft.h"
-
-typedef struct s_shell
+int	*get_stop_ptr(void)
 {
-	bool		interactive;
-	t_list		*tokens;
-	t_list		*env;
-	t_list		*cmds;
-	char		*line;
-	char		*cwd;
-	int			status;
-	bool		stdin_is_tty;
-	int			stdin_fd;
-	int			stdout_fd;
-}	t_shell;
+	static int	stop = false;
 
-typedef enum e_direction
+	return (&stop);
+}
+
+int	running(void)
 {
-	DIRECTION_HEREDOC,
-	DIRECTION_APPEND,
-	DIRECTION_IN,
-	DIRECTION_OUT,
-}	t_direction;
+	return (!*get_stop_ptr());
+}
 
-typedef struct s_redirect {
-	char		*file_path;
-	t_direction	direction;
-	bool		is_ambiguous;
-}	t_redirect;
-
-typedef struct s_cmd
+int	stop(void)
 {
-	int		input_fd;
-	int		output_fd;
-	char	**args;
-	char	*path;
-	t_list	*redirections;
-}	t_cmd;
-
-typedef struct s_env_element
-{
-	char	*key;
-	char	*val;
-}	t_env_element;
-
-typedef enum s_token_type
-{
-	SINGLE_QUOTED,
-	DOUBLE_QUOTED,
-	REDIRECTION,
-	PIPE,
-	WHITESPACE,
-	UNQUOTED,
-}	t_token_type;
-
-typedef struct s_token
-{
-	t_token_type	type;
-	char			*content;
-}	t_token;
-
-typedef enum s_expansion_state
-{
-	EXPANSION_STATE_NORMAL,
-	EXPANSION_STATE_VARIABLE,
-	EXPANSION_STATE_STATUS,
-	EXPANSION_STATE_INVALID_VARIABLE,
-}	t_expansion_state;
-
-#endif
+	*get_stop_ptr() = true;
+	return (FAILURE);
+}

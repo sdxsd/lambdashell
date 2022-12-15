@@ -39,7 +39,7 @@ A program is free software if users have all of these freedoms.
 
 #include "../include/minishell.h"
 
-static int	read_input(t_shell *lambda)
+static void	prompt(t_shell *lambda)
 {
 	char	*readline_str;
 
@@ -47,42 +47,30 @@ static int	read_input(t_shell *lambda)
 		rl_outstream = stdin;
 	readline_str = get_readline_str(lambda);
 	if (!readline_str)
-	{
-		dealloc_lambda(lambda);
-		return (FAILURE);
-	}
+		return ;
 	lambda->line = readline(readline_str);
 	if (!lambda->line)
 	{
-		ft_free(&readline_str);
-		return (FAILURE);
-	}
-	ft_free(&readline_str);
-	return (SUCCESS);
-}
-
-static int	prompt(t_shell *lambda)
-{
-	if (read_input(lambda) == FAILURE)
-	{
-		lambda->exit = true;
-		return (SUCCESS);
+		stop();
+		return ;
 	}
 	else if (ft_strlen(lambda->line) < 1)
-		return (SUCCESS);
+		return ;
 	add_history(lambda->line);
 	lambda->tokens = tokenize(lambda->line);
 	ft_free(&lambda->line);
 	if (expand_variables(lambda->tokens, lambda) == FAILURE)
-		return (dealloc_lambda(lambda));
+		return ;
+	// dbg_print_tokens(lambda->tokens);
 	lambda->cmds = parse(lambda->tokens, lambda->env);
-	if (!lambda->cmds && lambda->line)
-		return (dealloc_lambda(lambda));
+	if (!lambda->cmds)
+		return ;
+	// dbg_print_commands(lambda->cmds);
 	if (execute(lambda->cmds, lambda) == FAILURE)
-		return (dealloc_lambda(lambda));
+		return ;
 	ft_lstclear(&lambda->tokens, dealloc_token);
 	ft_lstclear(&lambda->cmds, dealloc_cmd);
-	return (SUCCESS);
+	return ;
 }
 
 static int	shell_init(char **env, t_shell *lambda)
@@ -90,8 +78,9 @@ static int	shell_init(char **env, t_shell *lambda)
 	signal_handler_set();
 	ft_bzero(lambda, sizeof(*lambda));
 	lambda->status = SUCCESS;
-	lambda->exit = FALSE;
-	if (init_env(env, &lambda->env) == FAILURE || !lambda->env)
+	// TODO: Should ` || !lambda->env` be placed back?
+	// Idk how to even get a completely empty environment in the tester
+	if (init_env(env, &lambda->env) == FAILURE)
 		return (FAILURE);
 	// TODO: Should lambda->cwd set by this function be error checked?
 	update_cwd(lambda);
@@ -113,8 +102,11 @@ int	main(int argc, char **argv, char **env)
 	if (argc > 1)
 		return (FAILURE);
 	if (shell_init(env, &lambda) == FAILURE)
+	{
+		rl_clear_history();
 		return (dealloc_lambda(&lambda));
-	while (!lambda.exit)
+	}
+	while (running())
 		prompt(&lambda);
 	status = lambda.status;
 	dealloc_lambda(&lambda);

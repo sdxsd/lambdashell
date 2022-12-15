@@ -8,6 +8,7 @@ CC = gcc
 CFLAGS = -Wall -Wextra -Werror -g
 NAME = libft.a
 CFILES = \
+		ft_atoi_safe.c \
 		ft_atoi.c \
 		ft_itoa.c \
 		ft_memchr.c \

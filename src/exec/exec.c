@@ -50,6 +50,12 @@ static int	redirections(t_list *list, t_cmd *cmd)
 	while (list)
 	{
 		redir = list->content;
+		// if (redir->is_ambiguous)
+		// {
+		// 	// TODO: Put on stderr
+		// 	ft_putstr("λ: ambiguous redirect\n");
+		// 	return (FAILURE);
+		// }
 		// TODO: Should still print "no such file" when a second input file isn't found
 		if (redir->direction == DIRECTION_IN && !in_encountered)
 		{
@@ -131,7 +137,7 @@ static int	execute_builtin(t_cmd *cmd, t_shell *lambda)
 	else if (ft_streq(cmd->path, "unset"))
 		lambda->status = unset(cmd, lambda);
 	else
-		return (FAILURE);
+		return (FAILURE); // TODO: "command not found" needs to be printed here I think
 
 	return (SUCCESS);
 }
