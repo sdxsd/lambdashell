@@ -24,6 +24,7 @@ CFILES = \
 	src/parse/is_text_token.c \
 	src/parse/parse.c \
 	src/parse/skip_whitespace_tokens.c \
+	src/stop/stop.c \
 	src/tokenize/get_token.c \
 	src/tokenize/subtokenizers.c \
 	src/tokenize/tokenize.c \
