@@ -81,6 +81,8 @@ int	init_env(char **env, t_list **lambda_env)
 	return (SUCCESS);
 }
 
+// TODO: Can env_element or env_element->key be NULL?
+// ft_streq() below crashes if so
 char	*env_get_val(t_list *env, char *key)
 {
 	t_env_element	*env_element;
@@ -90,7 +92,6 @@ char	*env_get_val(t_list *env, char *key)
 	while (env)
 	{
 		env_element = env->content;
-		// TODO: Can env_element or env_element->key be NULL? ft_streq() below crashes if so
 		if (ft_streq(env_element->key, key))
 			return (env_element->val);
 		env = env->next;
