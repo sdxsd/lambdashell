@@ -101,6 +101,9 @@ t_token_type	subtokenize_whitespace(char **line_ptr);
 t_token_type	subtokenize_unquoted(char **line_ptr);
 t_list			*tokenize(char *line);
 
+/* SIGNALS */
+void	signal_handler_set(void);
+
 /* UPDATE_CWD */
 void			update_cwd(t_shell *lambda);
 

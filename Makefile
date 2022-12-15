@@ -27,6 +27,7 @@ CFILES = \
 	src/tokenize/get_token.c \
 	src/tokenize/subtokenizers.c \
 	src/tokenize/tokenize.c \
+	src/signals/signals.c \
 	src/update_cwd/update_cwd.c
 
 HEADERS = \

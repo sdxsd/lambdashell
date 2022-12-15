@@ -87,6 +87,7 @@ static int	prompt(t_shell *lambda)
 
 static int	shell_init(char **env, t_shell *lambda)
 {
+	signal_handler_set();
 	ft_bzero(lambda, sizeof(*lambda));
 	lambda->status = SUCCESS;
 	lambda->exit = FALSE;
