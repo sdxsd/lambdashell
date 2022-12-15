@@ -56,24 +56,18 @@ static int	redirections(t_list *list, t_cmd *cmd)
 			in_encountered = true;
 			cmd->input_fd = open(redir->file_path, O_RDONLY);
 			if (cmd->input_fd < 0)
-			{
-				null_msg_err("redirections()");
-				return (false);
-			}
+				return (msg_err("redirections()", FAILURE));
 		}
 		else if (redir->direction == DIRECTION_OUT)
 		{
 			cmd->output_fd = open(redir->file_path, O_CREAT | O_TRUNC | O_WRONLY, 0644);
 			if (cmd->output_fd < 0)
-			{
-				null_msg_err("redirections()");
-				return (false);
-			}
+				return (msg_err("redirections()", FAILURE));
 		}
 		// TODO: Handle DIRECTION_HEREDOC and DIRECTION_APPEND as well
 		list = list->next;
 	}
-	return (true);
+	return (SUCCESS);
 }
 
 static void	dup2_cmd(t_cmd *cmd)
@@ -93,29 +87,41 @@ static int	execute_command(t_cmd *cmd, t_list *env)
 {
 	char	**env_array;
 
-	// TODO: Protection!
-	redirections(cmd->redirections, cmd);
+	if (redirections(cmd->redirections, cmd) == FAILURE)
+	{
+		// TODO: ??
+		return (FAILURE);
+	}
+
 	// TODO: Try to find a way to not call this env_to_strings() every time
 	env_array = env_to_strings(env);
+
 	dup2_cmd(cmd);
+
 	if (execve(cmd->path, cmd->args, env_array) == -1)
 	{
 		msg_err("execute_command()", FAILURE);
 		return (FAILURE);
 	}
+
 	return (SUCCESS);
 }
 
-static int	execute_builtin(t_cmd *cmd, t_shell *lambda, int *status)
+static int	execute_builtin(t_cmd *cmd, t_shell *lambda)
 {
-	// TODO: Protection for redirections()
-	redirections(cmd->redirections, cmd);
+	if (redirections(cmd->redirections, cmd) == FAILURE)
+	{
+		// TODO: ??
+		return (FAILURE);
+	}
+
 	dup2_cmd(cmd);
+
 	// TODO: Maybe if-statement check whether path or args or args[0] or args[1] is NULL?
 	if (ft_streq(cmd->path, "cd"))
-		*status = cd(cmd, lambda);
+		lambda->status = cd(cmd, lambda);
 	else if (ft_streq(cmd->path, "env"))
-		*status = env(lambda);
+		lambda->status = env(lambda);
 	else if (ft_streq(cmd->path, "exit"))
 	{
 		// TODO: create define rather than using (2)
@@ -123,30 +129,54 @@ static int	execute_builtin(t_cmd *cmd, t_shell *lambda, int *status)
 		return (2);
 	}
 	else if (ft_streq(cmd->path, "export"))
-		*status = export(cmd, lambda);
+		lambda->status = export(cmd, lambda);
 	else if (ft_streq(cmd->path, "pwd"))
-		*status = pwd(lambda);
+		lambda->status = pwd(lambda);
 	else if (ft_streq(cmd->path, "unset"))
-		*status = unset(cmd, lambda);
+		lambda->status = unset(cmd, lambda);
 	else
 		return (FAILURE);
+
 	return (SUCCESS);
+}
+
+static int	get_wait_status(int status)
+{
+	// TODO: Add unit test for this one
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	else if (WIFSIGNALED(status))
+		return (WTERMSIG(status));
+	// TODO: Probably also need to add this? Check by adding a unit test
+	// else if (WIFSTOPPED(status))
+	// 	return (WIFSTOPPED(status));
+	return (0); // TODO: Is this wanted?
 }
 
 static int	execute_simple_command(t_cmd *cmd, t_shell *lambda)
 {
-	int	status;
+	pid_t	pid;
+	int		status;
 
 	if (ft_strchr(cmd->path, '/'))
 	{
-		if (execute_command(cmd, lambda->env) == FAILURE)
+		pid = fork();
+		if (pid == FORK_FAILURE)
+			return (msg_err("exec_and_pipe()", FAILURE));
+		if (pid == FORK_CHILD)
 		{
-			// TODO: ??
+			if (execute_command(cmd, lambda->env) == FAILURE)
+			{
+				// TODO: ??
+				return (FAILURE);
+			}
 		}
+		waitpid(pid, &status, 0);
+		lambda->status = get_wait_status(status);
 	}
 	else
 	{
-		if (execute_builtin(cmd, lambda, &status) == FAILURE)
+		if (execute_builtin(cmd, lambda) == FAILURE)
 		{
 			// TODO: Can this be moved to the end of execute_builtin()?
 			dup2(lambda->stdin_fd, STDIN_FILENO);
@@ -154,13 +184,11 @@ static int	execute_simple_command(t_cmd *cmd, t_shell *lambda)
 			return (FAILURE);
 		}
 
-		lambda->status = status;
+		// TODO: Can this be moved to the end of execute_builtin()?
+		// TODO: Should these both *always* happen?
+		dup2(lambda->stdin_fd, STDIN_FILENO);
+		dup2(lambda->stdout_fd, STDOUT_FILENO);
 	}
-
-	// TODO: Can this be moved to the end of execute_builtin()?
-	// TODO: Should these both *always* happen?
-	dup2(lambda->stdin_fd, STDIN_FILENO);
-	dup2(lambda->stdout_fd, STDOUT_FILENO);
 
 	return (SUCCESS);
 }
@@ -168,7 +196,6 @@ static int	execute_simple_command(t_cmd *cmd, t_shell *lambda)
 static int	execute_child(int input_fd, t_list *cmds, t_shell *lambda, int tube[2])
 {
 	t_cmd	*cmd;
-	int		status;
 
 	cmd = cmds->content;
 
@@ -190,11 +217,11 @@ static int	execute_child(int input_fd, t_list *cmds, t_shell *lambda, int tube[2
 	}
 	else
 	{
-		if (execute_builtin(cmd, lambda, &status) == FAILURE)
+		if (execute_builtin(cmd, lambda) == FAILURE)
 		{
 			// TODO: ??
 		}
-		exit(status); // TODO: Should anything be freed before this is called?
+		exit(lambda->status); // TODO: Should anything be freed before this is called?
 	}
 	return (SUCCESS);
 }
@@ -211,10 +238,7 @@ static int	execute_complex_command(int input_fd, t_list *cmds, t_shell *lambda)
 
 	cmd = cmds->content;
 
-	// TODO: Maybe we shouldn't fork if there is only a single non-builtin command?
-
 	pid = fork();
-	fflush(NULL);
 	if (pid == FORK_FAILURE)
 		return (msg_err("exec_and_pipe()", FAILURE));
 	if (pid == FORK_CHILD)
@@ -235,18 +259,7 @@ static int	execute_complex_command(int input_fd, t_list *cmds, t_shell *lambda)
 	waitpid(pid, &status, 0);
 
 	if (ft_strchr(cmd->path, '/') && !cmds->next)
-	{
-		// TODO: Add unit test for this one
-		if (WIFEXITED(status))
-			lambda->status = WEXITSTATUS(status);
-
-		else if (WIFSIGNALED(status))
-			lambda->status = WTERMSIG(status);
-
-		// TODO: Probably also need to add this? Check by adding a unit test
-		// else if (WIFSTOPPED(status))
-		// 	lambda->status = WIFSTOPPED(status);
-	}
+		lambda->status = get_wait_status(status);
 	return (SUCCESS);
 }
 
