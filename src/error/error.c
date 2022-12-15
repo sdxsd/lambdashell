@@ -48,3 +48,9 @@ void	*null_msg_err(char *s)
 	msg_err(s, 0);
 	return (NULL);
 }
+
+int	set_exit(t_shell *lambda)
+{
+	lambda->exit = true;
+	return (FAILURE);
+}

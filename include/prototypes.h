@@ -77,6 +77,7 @@ int				expand_variables(t_list *tokens, t_shell *lambda);
 /* ERROR MESSAGES */
 int				msg_err(char *s, int ret);
 void			*null_msg_err(char *s);
+int				set_exit(t_shell *lambda);
 
 /* EXECUTION */
 int				execute(t_list *cmds, t_shell *lambda);
