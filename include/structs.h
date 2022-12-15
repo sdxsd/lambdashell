@@ -53,7 +53,6 @@ typedef struct s_shell
 	char		*cwd;
 	int			status;
 	bool		stdin_is_tty;
-	bool		exit;
 	int			stdin_fd;
 	int			stdout_fd;
 }	t_shell;

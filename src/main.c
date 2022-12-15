@@ -39,7 +39,7 @@ A program is free software if users have all of these freedoms.
 
 #include "../include/minishell.h"
 
-static int	prompt(t_shell *lambda)
+static void	prompt(t_shell *lambda)
 {
 	char	*readline_str;
 
@@ -47,36 +47,35 @@ static int	prompt(t_shell *lambda)
 		rl_outstream = stdin;
 	readline_str = get_readline_str(lambda);
 	if (!readline_str)
-		return (dealloc_lambda(lambda));
+		return ;
 	lambda->line = readline(readline_str);
 	ft_free(&readline_str);
 	if (!lambda->line)
 	{
-		lambda->exit = true;
-		return (SUCCESS);
+		stop();
+		return ;
 	}
 	add_history(lambda->line);
 	lambda->tokens = tokenize(lambda->line);
 	ft_free(&lambda->line);
 	if (expand_variables(lambda->tokens, lambda) == FAILURE)
-		return (dealloc_lambda(lambda));
+		return ;
 	// dbg_print_tokens(lambda->tokens);
 	lambda->cmds = parse(lambda->tokens, lambda->env);
 	if (!lambda->cmds)
-		return (dealloc_lambda(lambda));
+		return ;
 	// dbg_print_commands(lambda->cmds);
 	if (execute(lambda->cmds, lambda) == FAILURE)
-		return (dealloc_lambda(lambda));
+		return ;
 	ft_lstclear(&lambda->tokens, dealloc_token);
 	ft_lstclear(&lambda->cmds, dealloc_cmd);
-	return (SUCCESS);
+	return ;
 }
 
 static int	shell_init(char **env, t_shell *lambda)
 {
 	ft_bzero(lambda, sizeof(*lambda));
 	lambda->status = SUCCESS;
-	lambda->exit = FALSE;
 	if (init_env(env, &lambda->env) == FAILURE || !lambda->env)
 		return (FAILURE);
 	// TODO: Should lambda->cwd set by this function be error checked?
@@ -100,7 +99,7 @@ int	main(int argc, char **argv, char **env)
 		return (FAILURE);
 	if (shell_init(env, &lambda) == FAILURE)
 		return (dealloc_lambda(&lambda));
-	while (!lambda.exit)
+	while (running())
 		prompt(&lambda);
 	status = lambda.status;
 	dealloc_lambda(&lambda);

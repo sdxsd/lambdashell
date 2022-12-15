@@ -77,7 +77,6 @@ int				expand_variables(t_list *tokens, t_shell *lambda);
 /* ERROR MESSAGES */
 int				msg_err(char *s, int ret);
 void			*null_msg_err(char *s);
-int				set_exit(t_shell *lambda);
 
 /* EXECUTION */
 int				execute(t_list *cmds, t_shell *lambda);
@@ -88,6 +87,11 @@ bool			is_ambiguous_redirect(t_list *tokens);
 bool			is_text_token(t_token *token);
 t_list			*parse(t_list *tokens, t_list *env);
 void			skip_whitespace_tokens(t_list **tokens);
+
+/* STOP */
+int	*get_stop_ptr(void);
+int	running(void);
+int	stop(void);
 
 /* TOKENISATION */
 t_token			*get_token(t_token_type type, char *content);
