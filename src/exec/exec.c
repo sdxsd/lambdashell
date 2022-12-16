@@ -70,7 +70,7 @@ static int	redirections(t_list *list, t_cmd *cmd)
 		// TODO: Should still print "no such file" when a second input file isn't found
 		open_fd = open(redir->file_path, flags, 0644);
 		if (open_fd < 0)
-			return (msg_err("redirections()", FAILURE));
+			return (msg_err(NULL, FAILURE));
 		if (redir->direction == DIRECTION_IN)
 			cmd->input_fd = open_fd;
 		if (redir->direction == DIRECTION_OUT || redir->direction == DIRECTION_APPEND)
