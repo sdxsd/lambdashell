@@ -56,3 +56,9 @@ int	stop(void)
 	*get_stop_ptr() = true;
 	return (FAILURE);
 }
+
+void	*stop_null(void)
+{
+	*get_stop_ptr() = true;
+	return (NULL);
+}
