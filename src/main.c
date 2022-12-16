@@ -49,6 +49,7 @@ static void	prompt(t_shell *lambda)
 	if (!readline_str)
 		return ;
 	lambda->line = readline(readline_str);
+	ft_free(&readline_str);
 	if (!lambda->line)
 	{
 		stop();

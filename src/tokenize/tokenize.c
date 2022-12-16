@@ -82,12 +82,18 @@ t_list	*tokenize(char *line)
 			content = ft_substr(old_line_pos, 0, line - old_line_pos);
 
 		if (!content)
-			return (NULL); // TODO: Free?
+			return (NULL); // TODO: Free? FIXME: Definitely free.
 
 		token = get_token(token_type, content);
 		if (!token || !ft_lstnew_back(&tokens, token))
-			return (NULL); // TODO: Free?
+		{
+			// FIXME: memleak when input = "jfkjjiru fuoifudf difudfuuofdforkorkgrg"
+			// or other garbage.
+			if (token)
+				dealloc_token(token);
+			ft_lstclear(&tokens, dealloc_token);
+			return (NULL);
+		}
 	}
-
 	return (tokens);
 }

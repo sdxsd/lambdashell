@@ -44,12 +44,23 @@ A program is free software if users have all of these freedoms.
 static int	redirections(t_list *list, t_cmd *cmd)
 {
 	t_redirect	*redir;
+	int			flags;
 	bool		in_encountered;
 
 	in_encountered = false;
+	flags = 0;
 	while (list)
 	{
 		redir = list->content;
+		if (redir->direction == DIRECTION_IN && !in_encountered)
+		{
+			in_encountered = true;
+			flags |= (O_RDONLY);
+		}
+		else if (redir->direction == DIRECTION_OUT)
+			flags |= (O_CREAT | O_TRUNC | O_WRONLY);
+		else if (redir->direction == DIRECTION_APPEND)
+			flags |= (O_CREAT | O_APPEND | O_WRONLY);
 		// if (redir->is_ambiguous)
 		// {
 		// 	// TODO: Put on stderr
@@ -57,16 +68,15 @@ static int	redirections(t_list *list, t_cmd *cmd)
 		// 	return (FAILURE);
 		// }
 		// TODO: Should still print "no such file" when a second input file isn't found
-		if (redir->direction == DIRECTION_IN && !in_encountered)
+		if (redir->direction == DIRECTION_IN)
 		{
-			in_encountered = true;
-			cmd->input_fd = open(redir->file_path, O_RDONLY);
+			cmd->input_fd = open(redir->file_path, flags, 0644);
 			if (cmd->input_fd < 0)
 				return (msg_err("redirections()", FAILURE));
 		}
-		else if (redir->direction == DIRECTION_OUT)
+		if (redir->direction == DIRECTION_OUT || redir->direction == DIRECTION_APPEND)
 		{
-			cmd->output_fd = open(redir->file_path, O_CREAT | O_TRUNC | O_WRONLY, 0644);
+			cmd->output_fd = open(redir->file_path, flags, 0644);
 			if (cmd->output_fd < 0)
 				return (msg_err("redirections()", FAILURE));
 		}

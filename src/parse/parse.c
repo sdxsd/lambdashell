@@ -139,7 +139,6 @@ static char		*get_path(t_list **tokens, t_list *env)
 	absolute_path = get_absolute_path_from_env(path, env);
 	if (absolute_path == path)
 	{
-		// TODO: Change to stderr.
 		printf("λ: %s: command not found\n", path);
 		return (path);
 	}
@@ -239,6 +238,7 @@ static t_cmd	*get_cmd(t_list **tokens, t_list *env)
 		else if (is_text_token(token))
 		{
 			arg = get_arg(tokens);
+			// FIXME: Memory leak here in ft_lstnew_back().
 			if (!arg || !ft_lstnew_back(&arg_list, arg))
 			{
 				dealloc_cmd(cmd);
