@@ -46,12 +46,18 @@ static int	redirections(t_list *list, t_cmd *cmd)
 	t_redirect	*redir;
 	int			flags;
 	bool		in_encountered;
+	int			open_fd;
 
 	in_encountered = false;
 	flags = 0;
 	while (list)
 	{
 		redir = list->content;
+		if (redir->is_ambiguous)
+		{
+			ft_putstr_fd("λ: ambiguous redirect\n", STDERR_FILENO);
+			return (FAILURE);
+		}
 		if (redir->direction == DIRECTION_IN && !in_encountered)
 		{
 			in_encountered = true;
@@ -61,25 +67,15 @@ static int	redirections(t_list *list, t_cmd *cmd)
 			flags |= (O_CREAT | O_TRUNC | O_WRONLY);
 		else if (redir->direction == DIRECTION_APPEND)
 			flags |= (O_CREAT | O_APPEND | O_WRONLY);
-		// if (redir->is_ambiguous)
-		// {
-		// 	ft_putstr_fd("λ: ambiguous redirect\n", STDERR_FILENO);
-		// 	return (FAILURE);
-		// }
 		// TODO: Should still print "no such file" when a second input file isn't found
+		open_fd = open(redir->file_path, flags, 0644);
+		if (open_fd < 0)
+			return (msg_err("redirections()", FAILURE));
 		if (redir->direction == DIRECTION_IN)
-		{
-			cmd->input_fd = open(redir->file_path, flags, 0644);
-			if (cmd->input_fd < 0)
-				return (msg_err("redirections()", FAILURE));
-		}
+			cmd->input_fd = open_fd;
 		if (redir->direction == DIRECTION_OUT || redir->direction == DIRECTION_APPEND)
-		{
-			cmd->output_fd = open(redir->file_path, flags, 0644);
-			if (cmd->output_fd < 0)
-				return (msg_err("redirections()", FAILURE));
-		}
-		// TODO: Handle DIRECTION_HEREDOC and DIRECTION_APPEND as well
+			cmd->output_fd = open_fd;
+		// TODO: Handle DIRECTION_HEREDOC
 		list = list->next;
 	}
 	return (SUCCESS);
@@ -105,6 +101,7 @@ static int	execute_command(t_cmd *cmd, t_shell *lambda)
 	if (redirections(cmd->redirections, cmd) == FAILURE)
 	{
 		// TODO: ??
+		lambda->status = 1;
 		return (FAILURE);
 	}
 
@@ -128,6 +125,7 @@ static int	execute_builtin(t_cmd *cmd, t_shell *lambda)
 	if (redirections(cmd->redirections, cmd) == FAILURE)
 	{
 		// TODO: ??
+		lambda->status = 1;
 		return (FAILURE);
 	}
 
