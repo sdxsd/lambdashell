@@ -107,7 +107,7 @@ static t_redirect	*get_redirect(t_list **tokens)
 	return (redirect);
 }
 
-static char		*get_path(t_list **tokens, t_list *env)
+static char	*get_path(t_list **tokens, t_list *env)
 {
 	char	*path;
 	t_token	*token;

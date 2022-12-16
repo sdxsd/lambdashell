@@ -52,8 +52,7 @@ static int	redirections(t_list *list, t_cmd *cmd)
 		redir = list->content;
 		// if (redir->is_ambiguous)
 		// {
-		// 	// TODO: Put on stderr
-		// 	ft_putstr("λ: ambiguous redirect\n");
+		// 	ft_putstr_fd("λ: ambiguous redirect\n", STDERR_FILENO);
 		// 	return (FAILURE);
 		// }
 		// TODO: Should still print "no such file" when a second input file isn't found
