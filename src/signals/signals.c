@@ -18,20 +18,20 @@
 void	SIGINT_alt(int sig)
 {
 	if (sig == SIGINT)
-		printf("\n");
+		ft_printf("\n");
 }
 
 void	sighandler(int sig)
 {
 	if (sig == SIGINT)
 	{
-		printf("\n");
+		ft_printf("\n"); // TODO: Should this be printed to stderr?
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 	if (sig == SIGQUIT)
-		printf("\n");
+		ft_printf("\n"); // TODO: Should this be printed to stderr?
 }
 
 void	disable_signals(void)
