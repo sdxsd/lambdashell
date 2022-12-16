@@ -98,7 +98,7 @@ static void	dup2_cmd(t_cmd *cmd)
 		close(cmd->output_fd);
 }
 
-static int	execute_command(t_cmd *cmd, t_list *env)
+static int	execute_command(t_cmd *cmd, t_shell *lambda)
 {
 	char	**env_array;
 
@@ -109,13 +109,14 @@ static int	execute_command(t_cmd *cmd, t_list *env)
 	}
 
 	// TODO: Try to find a way to not call this env_to_strings() every time
-	env_array = env_to_strings(env);
+	env_array = env_to_strings(lambda->env);
 
 	dup2_cmd(cmd);
 
 	if (execve(cmd->path, cmd->args, env_array) == -1)
 	{
-		msg_err("execute_command()", FAILURE);
+		lambda->status = 127;
+		msg_err(cmd->path, FAILURE);
 		return (FAILURE);
 	}
 
@@ -146,7 +147,13 @@ static int	execute_builtin(t_cmd *cmd, t_shell *lambda)
 	else if (ft_streq(cmd->path, "unset"))
 		lambda->status = unset(cmd, lambda);
 	else
-		return (FAILURE); // TODO: "command not found" needs to be printed here I think
+	{
+		lambda->status = 127;
+		ft_putstr_fd("λ: ", STDERR_FILENO);
+		ft_putstr_fd(cmd->path, STDERR_FILENO);
+		ft_putstr_fd(": command not found\n", STDERR_FILENO);
+		return (FAILURE);
+	}
 
 	return (SUCCESS);
 }
@@ -177,7 +184,7 @@ static int	execute_simple_command(t_cmd *cmd, t_shell *lambda)
 		if (pid == FORK_CHILD)
 		{
 			signal_handler_child_set();
-			if (execute_command(cmd, lambda->env) == FAILURE)
+			if (execute_command(cmd, lambda) == FAILURE)
 			{
 				// TODO: ??
 				return (FAILURE);
@@ -223,7 +230,7 @@ static int	execute_child(int input_fd, t_list *cmds, t_shell *lambda, int tube[2
 
 	if (ft_strchr(cmd->path, '/'))
 	{
-		if (execute_command(cmd, lambda->env) == FAILURE)
+		if (execute_command(cmd, lambda) == FAILURE)
 		{
 			// TODO: ??
 		}
@@ -234,8 +241,8 @@ static int	execute_child(int input_fd, t_list *cmds, t_shell *lambda, int tube[2
 		{
 			// TODO: ??
 		}
-		exit(lambda->status); // TODO: Should anything be freed before this is called?
 	}
+	exit(lambda->status); // TODO: Should anything be freed before this is called?
 	return (SUCCESS);
 }
 
@@ -268,7 +275,7 @@ static int	execute_complex_command(int input_fd, t_list *cmds, t_shell *lambda)
 	if (cmds->next && execute_complex_command(tube[READ], cmds->next, lambda) != SUCCESS)
 		return (msg_err("exec_and_pipe()", FAILURE));
 	waitpid(pid, &status, 0);
-	if (ft_strchr(cmd->path, '/') && !cmds->next)
+	if (!cmds->next)
 		lambda->status = get_wait_status(status);
 	return (SUCCESS);
 }

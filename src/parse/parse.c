@@ -138,10 +138,7 @@ static char	*get_path(t_list **tokens, t_list *env)
 		return (path);
 	absolute_path = get_absolute_path_from_env(path, env);
 	if (absolute_path == path)
-	{
-		printf("λ: %s: command not found\n", path);
 		return (path);
-	}
 	ft_free(&path);
 	return (absolute_path);
 }

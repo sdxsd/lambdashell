@@ -80,7 +80,6 @@ void			*null_msg_err(char *s);
 
 /* EXECUTION */
 int				execute(t_list *cmds, t_shell *lambda);
-char			*get_absolute_path_from_env(char *name, t_list *env);
 
 /* PARSE */
 bool			is_ambiguous_redirect(t_list *tokens);
@@ -89,9 +88,10 @@ t_list			*parse(t_list *tokens, t_list *env);
 void			skip_whitespace_tokens(t_list **tokens);
 
 /* STOP */
-int	*get_stop_ptr(void);
-int	running(void);
-int	stop(void);
+int				*get_stop_ptr(void);
+int				running(void);
+int				stop(void);
+void			*stop_null(void);
 
 /* TOKENISATION */
 t_token			*get_token(t_token_type type, char *content);
