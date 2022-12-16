@@ -78,6 +78,7 @@ static t_redirect	*get_redirect(t_list **tokens)
 {
 	t_redirect	*redirect;
 	t_token		*token;
+	char		*content;
 
 	redirect = ft_calloc(1, sizeof(*redirect));
 	fill_direction(redirect, (*tokens)->content);
@@ -96,7 +97,12 @@ static t_redirect	*get_redirect(t_list **tokens)
 		// TODO: Maybe necessary to add check for token being NULL?
 		if (!is_text_token(token))
 			break;
-		redirect->file_path = ft_strjoin_and_free_left(redirect->file_path, token->content);
+
+		if (token->type == UNQUOTED)
+			content = ft_strtrim_whitespace(token->content);
+		else
+			content = token->content;
+		redirect->file_path = ft_strjoin_and_free_left(redirect->file_path, content);
 		if (!redirect->file_path)
 		{
 			// TODO: Free

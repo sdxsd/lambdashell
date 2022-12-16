@@ -44,6 +44,7 @@ void	dbg_print_tokens(t_list *tokens)
 {
 	char	*token_type_strings[6];
 	t_token	*token;
+	char	*content;
 
 	token_type_strings[SINGLE_QUOTED] = "SINGLE_QUOTED";
 	token_type_strings[DOUBLE_QUOTED] = "DOUBLE_QUOTED";
@@ -58,7 +59,8 @@ void	dbg_print_tokens(t_list *tokens)
 	{
 		token = tokens->content;
 		printf("| %-13s ", token_type_strings[token->type]);
-		printf("| %-19s |\n", token->content);
+		asprintf(&content, "[%s]", token->content);
+		printf("| %-19s |\n", content);
 		printf("+---------------+---------------------+\n");
 		tokens = tokens->next;
 	}
@@ -86,12 +88,12 @@ void	dbg_print_commands(t_list *cmds)
 		cmd = cmds->content;
 		printf("\tInput file descriptor: %i\n", cmd->input_fd);
 		printf("\tOutput file descriptor: %i\n", cmd->output_fd);
-		printf("\tPath: <%s>\n", cmd->path);
+		printf("\tPath: [%s]\n", cmd->path);
 		printf("\tArgs:");
 		arg_array = cmd->args;
 		while (*arg_array)
 		{
-			printf(" <%s>", *arg_array);
+			printf(" [%s]", *arg_array);
 			arg_array++;
 		}
 		printf("\n");
@@ -101,7 +103,7 @@ void	dbg_print_commands(t_list *cmds)
 		{
 			printf("\tRedirection %zu:\n", redirection_index + 1);
 			redirection = redirection_list->content;
-			printf("\t\tRedirection file path: <%s>\n", redirection->file_path);
+			printf("\t\tRedirection file path: [%s]\n", redirection->file_path);
 			printf("\t\tRedirection direction: %s\n", direction_strings[redirection->direction]);
 			printf("\t\tIs ambiguous: %i\n", redirection->is_ambiguous);
 			redirection_list = redirection_list->next;

@@ -34,6 +34,7 @@ CFILES = \
 		ft_strjoin_and_free_left.c \
 		ft_strjoin_array.c \
 		ft_strjoin.c \
+		ft_strtrim_whitespace.c \
 		ft_strtrim.c \
 		ft_isascii.c \
 		ft_putchar_fd.c \
