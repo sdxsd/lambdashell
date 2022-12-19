@@ -101,13 +101,17 @@ static t_redirect	*get_redirect(t_list **tokens)
 		if (token->type == UNQUOTED)
 			content = ft_strtrim_whitespace(token->content);
 		else
-			content = token->content;
+			content = ft_strdup(token->content);
+
 		redirect->file_path = ft_strjoin_and_free_left(redirect->file_path, content);
+		ft_free(&content);
+
 		if (!redirect->file_path)
 		{
 			// TODO: Free
 			return (NULL);
 		}
+
 		*tokens = (*tokens)->next;
 	}
 	return (redirect);
