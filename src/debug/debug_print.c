@@ -59,7 +59,7 @@ void	dbg_print_tokens(t_list *tokens)
 	{
 		token = tokens->content;
 		printf("| %-13s ", token_type_strings[token->type]);
-		asprintf(&content, "[%s]", token->content);
+		content = ft_strjoin_array((char *[]){"[", token->content, "]", NULL});
 		printf("| %-19s |\n", content);
 		printf("+---------------+---------------------+\n");
 		tokens = tokens->next;

@@ -19,7 +19,7 @@
 // ān et retürnt Þe
 // nīwe list nær Þe sender.
 
-t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), int (*del)(void *))
+t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
 	t_list	*n_lst;
 	t_list	*n_element;

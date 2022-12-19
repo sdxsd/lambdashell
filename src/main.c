@@ -69,8 +69,8 @@ static void	prompt(t_shell *lambda)
 	// dbg_print_commands(lambda->cmds);
 	if (execute(lambda->cmds, lambda) == FAILURE)
 		return ;
-	ft_lstclear(&lambda->tokens, dealloc_token);
-	ft_lstclear(&lambda->cmds, dealloc_cmd);
+	dealloc_lst(&lambda->tokens, dealloc_token);
+	dealloc_lst(&lambda->cmds, dealloc_cmd);
 	return ;
 }
 

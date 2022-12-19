@@ -255,8 +255,8 @@ static t_cmd	*get_cmd(t_list **tokens, t_list *env)
 		else
 			*tokens = (*tokens)->next;
 	}
-	// TODO: Maybe just set cmds->args to NULL when cmd->path is NULL?
 	cmd->args = get_arg_string_array(arg_list, arg_zero);
+	ft_lstclear(&arg_list, NULL);
 	return (cmd);
 }
 

@@ -48,7 +48,7 @@ int	dealloc_cmd(void *cmd_ptr)
 	cmd = *_cmd_ptr;
 	dealloc_ptr_array(&cmd->args);
 	ft_free(&cmd->path);
-	ft_lstclear(&cmd->redirections, dealloc_redirection);
+	dealloc_lst(&cmd->redirections, dealloc_redirection);
 	ft_free(_cmd_ptr);
 	return (FAILURE);
 }
@@ -80,9 +80,9 @@ int	dealloc_token(void *token_ptr)
 
 int	dealloc_lambda(t_shell *lambda)
 {
-	ft_lstclear(&lambda->tokens, dealloc_token);
-	ft_lstclear(&lambda->env, dealloc_env_element);
-	ft_lstclear(&lambda->cmds, dealloc_cmd);
+	dealloc_lst(&lambda->tokens, dealloc_token);
+	dealloc_lst(&lambda->env, dealloc_env_element);
+	dealloc_lst(&lambda->cmds, dealloc_cmd);
 	ft_free(&lambda->line);
 	ft_free(&lambda->cwd);
 	return (FAILURE);

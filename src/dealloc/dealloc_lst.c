@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   tokenize.c                                         :+:    :+:            */
+/*   dealloc_lst.c                                      :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/11/18 17:08:18 by sbos          #+#    #+#                 */
-/*   Updated: 2022/11/18 17:08:18 by sbos          ########   odam.nl         */
+/*   Created: 2022/12/19 15:34:28 by sbos          #+#    #+#                 */
+/*   Updated: 2022/12/19 15:34:28 by sbos          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,61 +39,18 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-static t_token_type	subtokenize(char **line)
+void	dealloc_lst(t_list **lst, int (*del)(void*))
 {
-	if (**line == '\'')
-		return (subtokenize_single_quote(line));
-	else if (**line == '"')
-		return (subtokenize_double_quote(line));
-	else if ((**line == '<' && (*line)[1] == '<'))
-		return (subtokenize_heredoc(line));
-	else if ((**line == '>' && (*line)[1] == '>'))
-		return (subtokenize_append(line));
-	else if ((**line == '<' || **line == '>'))
-		return (subtokenize_redirection(line));
-	else if (**line == '|')
-		return (subtokenize_pipe(line));
-	else if (ft_isspace(**line))
-		return (subtokenize_whitespace(line));
-	else
-		return (subtokenize_unquoted(line));
-	// TODO: Handle invalid user input like >>>
-}
+	t_list	*ptr;
 
-t_list	*tokenize(char *line)
-{
-	t_list			*tokens;
-	char			*old_line_pos;
-	t_token_type	token_type;
-	char			*content;
-	t_token			*token;
-
-	tokens = NULL;
-
-	while (*line)
+	if (lst == NULL || *lst == NULL)
+		return ;
+	while (*lst)
 	{
-		old_line_pos = line;
-
-		token_type = subtokenize(&line);
-
-		if (token_type == SINGLE_QUOTED || token_type == DOUBLE_QUOTED)
-			content = ft_substr(old_line_pos, 1, line - old_line_pos - 2);
-		else
-			content = ft_substr(old_line_pos, 0, line - old_line_pos);
-
-		if (!content)
-			return (NULL); // TODO: Free? FIXME: Definitely free.
-
-		token = get_token(token_type, content);
-		if (!token || !ft_lstnew_back(&tokens, token))
-		{
-			// FIXME: memleak when input = "jfkjjiru fuoifudf difudfuuofdforkorkgrg"
-			// or other garbage.
-			if (token)
-				dealloc_token(token);
-			dealloc_lst(&tokens, dealloc_token);
-			return (NULL);
-		}
+		ptr = *lst;
+		*lst = ptr -> next;
+		if (del != NULL)
+			(*del)(&ptr -> content);
+		free(ptr);
 	}
-	return (tokens);
 }

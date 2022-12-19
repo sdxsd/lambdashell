@@ -62,6 +62,7 @@ int				dealloc_token(void *token_ptr);
 int				dealloc_lambda(t_shell *lambda);
 void			dealloc_ptr_array(void *ptr_array_ptr);
 int				dealloc_redirection(void *redirect_ptr);
+void			dealloc_lst(t_list **lst, int (*del)(void*));
 
 /* DEBUG */
 void			dbg_print_tokens(t_list *tokens);
