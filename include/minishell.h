@@ -73,7 +73,10 @@ A program is free software if users have all of these freedoms.
 # define GREEN "\033[1;32m"
 # define BLUE "\033[1;34m"
 
-# define PREFIX "λ"
+// This is the lambda sign in unicode
+// This is necessary because of Norm:
+// "Characters that aren't part of the standard ASCII table are forbidden."
+# define PREFIX "\u03BB"
 
 /* GLOBAL VARIABLE */
 /* int		global_sig; */
