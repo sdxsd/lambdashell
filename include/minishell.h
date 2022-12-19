@@ -73,6 +73,8 @@ A program is free software if users have all of these freedoms.
 # define GREEN "\033[1;32m"
 # define BLUE "\033[1;34m"
 
+# define PREFIX "λ"
+
 /* GLOBAL VARIABLE */
 /* int		global_sig; */
 

@@ -37,7 +37,7 @@ A program is free software if users have all of these freedoms.
 
 int	msg_err(char *s, int ret)
 {
-	ft_putstr_fd("λ: ", STDERR_FILENO);
+	ft_putstr_fd(PREFIX": ", STDERR_FILENO);
 	perror(s);
 	return (ret);
 }

@@ -20,7 +20,7 @@ void	bltin_exit(t_cmd *cmd, t_shell *lambda)
 	{
 		if (!ft_atoi_safe(cmd->args[1], &exit_status))
 		{
-			error_msg = ft_strjoin_array((char *[]){"λ: exit: ", cmd->args[1], ": numeric argument required\n", NULL});
+			error_msg = ft_strjoin_array((char *[]){PREFIX": exit: ", cmd->args[1], ": numeric argument required\n", NULL});
 			// TODO: What to do if error_msg is NULL?
 			if (error_msg)
 			{
@@ -33,7 +33,7 @@ void	bltin_exit(t_cmd *cmd, t_shell *lambda)
 		lambda->status = exit_status;
 		return ;
 	}
-	ft_putstr_fd("λ: exit: too many arguments\n", STDERR_FILENO);
+	ft_putstr_fd(PREFIX": exit: too many arguments\n", STDERR_FILENO);
 	lambda->status = 1;
 	return ;
 }

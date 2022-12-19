@@ -47,7 +47,7 @@ static int	argless_cd(t_list *env)
 	if (!home_path)
 	{
 		// TODO: Maybe write a function for manual error messages for this
-		ft_putstr_fd("λ: cd: HOME not set\n", STDERR_FILENO);
+		ft_putstr_fd(PREFIX": cd: HOME not set\n", STDERR_FILENO);
 		return (FAILURE);
 	}
 	if (chdir(home_path) == -1)

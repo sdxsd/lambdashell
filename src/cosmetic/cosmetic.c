@@ -70,6 +70,6 @@ char	*get_readline_str(t_shell *lambda)
 	else
 		leaf_dir = "???";
 	readline_str = ft_strjoin_array((char *[]){GREEN, "[", user, "] ", \
-		BLUE, leaf_dir, " ", CLEAR, "λ :: ❯ ", NULL});
+		BLUE, leaf_dir, " ", CLEAR, PREFIX" :: ❯ ", NULL});
 	return (readline_str);
 }

@@ -55,7 +55,7 @@ static int	redirections(t_list *list, t_cmd *cmd)
 		redir = list->content;
 		if (redir->is_ambiguous)
 		{
-			ft_putstr_fd("λ: ambiguous redirect\n", STDERR_FILENO);
+			ft_putstr_fd(PREFIX": ambiguous redirect\n", STDERR_FILENO);
 			return (FAILURE);
 		}
 		if (redir->direction == DIRECTION_IN && !in_encountered)
@@ -147,7 +147,7 @@ static int	execute_builtin(t_cmd *cmd, t_shell *lambda)
 	else
 	{
 		lambda->status = 127;
-		ft_putstr_fd("λ: ", STDERR_FILENO);
+		ft_putstr_fd(PREFIX": ", STDERR_FILENO);
 		ft_putstr_fd(cmd->path, STDERR_FILENO);
 		ft_putstr_fd(": command not found\n", STDERR_FILENO);
 		return (FAILURE);
