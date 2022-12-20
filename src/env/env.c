@@ -49,32 +49,63 @@ static int	get_key_length(char *str)
 	return (count);
 }
 
-int	add_env_element(char *env_line, t_list **env)
+static int	add_env_element(char *key, char *val, t_list **env)
 {
 	t_env_element	*env_element;
 
 	env_element = alloc_env_element();
 	if (!env_element)
 		return (dealloc_env_element(&env_element));
-	env_element->key = ft_strndup(env_line, get_key_length(env_line));
-	if (!env_element->key)
-		return (dealloc_env_element(&env_element));
-	if (env_line[get_key_length(env_line)] == '=')
-	{
-		env_element->val = ft_strdup(env_line + get_key_length(env_line) + 1);
-		if (!env_element->val)
-			return (dealloc_env_element(&env_element));
-	}
+	env_element->key = key;
+	env_element->val = val;
 	if (!ft_lstnew_back(env, env_element))
 		return (dealloc_env_element(&env_element));
 	return (SUCCESS);
+}
+
+int	get_val(char **val, char *env_line)
+{
+	*val = NULL;
+	if (env_line[get_key_length(env_line)] == '=')
+	{
+		*val = ft_strdup(env_line + get_key_length(env_line) + 1);
+		if (!*val)
+			return (stop());
+	}
+	return (SUCCESS);
+}
+
+int	add_or_change_env_element(char *env_line, t_list **env)
+{
+	char			*key;
+	char			*val;
+	t_env_element	*env_element;
+
+	key = ft_strndup(env_line, get_key_length(env_line));
+	if (!key || get_val(&val, env_line) == FAILURE)
+		return (stop());
+	while (*env)
+	{
+		env_element = (*env)->content;
+		if (ft_streq(env_element->key, key))
+		{
+			ft_free(&key);
+			if (!val)
+				return (SUCCESS);
+			ft_free(&env_element->val);
+			env_element->val = val;
+			return (SUCCESS);
+		}
+		env = &(*env)->next;
+	}
+	return (add_env_element(key, val, env));
 }
 
 int	init_env(char **env, t_list **lambda_env)
 {
 	while (*env)
 	{
-		if (add_env_element(*env, lambda_env) == FAILURE)
+		if (add_or_change_env_element(*env, lambda_env) == FAILURE)
 			return (FAILURE);
 		env++;
 	}

@@ -69,7 +69,7 @@ void			dbg_print_tokens(t_list *tokens);
 void			dbg_print_commands(t_list *cmds);
 
 /* ENVIRONMENT */
-int				add_env_element(char *env_line, t_list **env);
+int				add_or_change_env_element(char *env_line, t_list **env);
 int				init_env(char **env, t_list **lambda_env);
 char			**env_to_strings(t_list *env);
 char			*env_get_val(t_list *env, char *key);

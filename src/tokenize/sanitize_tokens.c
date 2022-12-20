@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   export.c                                           :+:    :+:            */
+/*   sanitize_tokens.c                                  :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/12/08 15:42:21 by sbos          #+#    #+#                 */
-/*   Updated: 2022/12/08 15:42:21 by sbos          ########   odam.nl         */
+/*   Created: 2022/12/19 18:39:48 by sbos          #+#    #+#                 */
+/*   Updated: 2022/12/19 18:39:48 by sbos          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,29 +39,9 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-static int	argless_export(t_shell *lambda)
+int	sanitize_tokens(t_list *tokens)
 {
-	t_list			*env_list;
-	t_env_element	*env_element;
 
-	// TODO: Should this function ever return FAILURE?
-	env_list = lambda->env;
-	while (env_list)
-	{
-		env_element = env_list->content;
-		// TODO: This doesn't escape the dollar_in_env export
-		if (env_element->val == NULL)
-			ft_printf("declare -x %s\n", env_element->key);
-		else
-			ft_printf("declare -x %s=\"%s\"\n", env_element->key, env_element->val);
-		env_list = env_list->next;
-	}
+
 	return (SUCCESS);
-}
-
-int	export(t_cmd *cmd, t_shell *lambda)
-{
-	if (!cmd->args[1])
-		return (argless_export(lambda));
-	return (add_or_change_env_element(cmd->args[1], &lambda->env));
 }

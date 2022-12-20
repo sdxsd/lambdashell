@@ -60,6 +60,8 @@ static void	prompt(t_shell *lambda)
 	add_history(lambda->line);
 	lambda->tokens = tokenize(lambda->line);
 	ft_free(&lambda->line);
+	// if (sanitize_tokens(lambda->tokens) == FAILURE)
+	// 	return ;
 	if (expand_variables(lambda->tokens, lambda) == FAILURE)
 		return ;
 	// dbg_print_tokens(lambda->tokens);
