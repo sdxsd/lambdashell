@@ -62,11 +62,9 @@ static void	prompt(t_shell *lambda)
 	ft_free(&lambda->line);
 	if (expand_variables(lambda->tokens, lambda) == FAILURE)
 		return ;
-	// dbg_print_tokens(lambda->tokens);
 	lambda->cmds = parse(lambda->tokens, lambda->env);
 	if (!lambda->cmds)
 		return ;
-	// dbg_print_commands(lambda->cmds);
 	if (execute(lambda->cmds, lambda) == FAILURE)
 		return ;
 	dealloc_lst(&lambda->tokens, dealloc_token);

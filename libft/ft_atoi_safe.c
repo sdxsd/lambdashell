@@ -65,8 +65,8 @@ static int	get_negative_value(const char *str, bool *out_of_range)
  */
 static int	ft_atoi_range(const char *str, bool *out_of_range)
 {
-	int	sign;
-	int	value;
+	int		sign;
+	int		value;
 	bool	dummy_out_of_range;
 
 	if (out_of_range == NULL)

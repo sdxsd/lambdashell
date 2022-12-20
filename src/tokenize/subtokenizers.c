@@ -39,26 +39,6 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-t_token_type	subtokenize_single_quote(char **line_ptr)
-{
-	(*line_ptr)++;
-	while (**line_ptr != '\0' && **line_ptr != '\'')
-		(*line_ptr)++;
-	if (**line_ptr == '\'')
-		(*line_ptr)++;
-	return (SINGLE_QUOTED);
-}
-
-t_token_type	subtokenize_double_quote(char **line_ptr)
-{
-	(*line_ptr)++;
-	while (**line_ptr != '\0' && **line_ptr != '"')
-		(*line_ptr)++;
-	if (**line_ptr == '"')
-		(*line_ptr)++;
-	return (DOUBLE_QUOTED);
-}
-
 t_token_type	subtokenize_heredoc(char **line_ptr)
 {
 	(*line_ptr) += 2;
@@ -88,12 +68,4 @@ t_token_type	subtokenize_whitespace(char **line_ptr)
 	while (**line_ptr != '\0' && ft_isspace(**line_ptr))
 		(*line_ptr)++;
 	return (WHITESPACE);
-}
-
-t_token_type	subtokenize_unquoted(char **line_ptr)
-{
-	// TODO: Make sure this isn't missing any conditions for breaking
-	while (**line_ptr != '\0' && !ft_isspace(**line_ptr) && **line_ptr != '|' && **line_ptr != '<' && **line_ptr != '>' && **line_ptr != '"' && **line_ptr != '\'')
-		(*line_ptr)++;
-	return (UNQUOTED);
 }

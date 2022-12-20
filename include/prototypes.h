@@ -81,6 +81,8 @@ void			*null_msg_err(char *s);
 
 /* EXECUTION */
 int				execute(t_list *cmds, t_shell *lambda);
+int				execute_command(t_cmd *cmd, t_shell *lambda);
+int				execute_builtin(t_cmd *cmd, t_shell *lambda);
 
 /* PARSE */
 bool			is_ambiguous_redirect(t_list *tokens);
@@ -107,9 +109,9 @@ t_token_type	subtokenize_unquoted(char **line_ptr);
 t_list			*tokenize(char *line);
 
 /* SIGNALS */
-void	signal_handler_set(void);
-void	signal_handler_child_set(void);
-void	disable_signals(void);
+void			signal_handler_set(void);
+void			signal_handler_child_set(void);
+void			disable_signals(void);
 
 /* UPDATE_CWD */
 void			update_cwd(t_shell *lambda);

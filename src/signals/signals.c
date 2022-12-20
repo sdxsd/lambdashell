@@ -15,7 +15,7 @@
 
 // Are signals really this simple?: Yes.
 
-void	SIGINT_alt(int sig)
+void	sigint_alt(int sig)
 {
 	if (sig == SIGINT)
 		ft_printf("\n");

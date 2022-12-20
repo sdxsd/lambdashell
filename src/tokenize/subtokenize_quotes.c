@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   dealloc.c                                          :+:    :+:            */
+/*   subtokenize_quotes.c                               :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
+/*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 1970/01/01 00:00:00 by wmaguire      #+#    #+#                 */
-/*   Updated: 1970/01/01 00:00:00 by wmaguire      ########   odam.nl         */
+/*   Created: 2022/11/18 17:08:28 by sbos          #+#    #+#                 */
+/*   Updated: 2022/11/18 17:08:28 by sbos          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,63 +39,34 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-int	dealloc_cmd(void *cmd_ptr)
+t_token_type	subtokenize_single_quote(char **line_ptr)
 {
-	t_cmd	**_cmd_ptr;
-	t_cmd	*cmd;
-
-	_cmd_ptr = cmd_ptr;
-	cmd = *_cmd_ptr;
-	dealloc_ptr_array(&cmd->args);
-	ft_free(&cmd->path);
-	dealloc_lst(&cmd->redirections, dealloc_redirection);
-	ft_free(_cmd_ptr);
-	return (FAILURE);
+	(*line_ptr)++;
+	while (**line_ptr != '\0' && **line_ptr != '\'')
+		(*line_ptr)++;
+	if (**line_ptr == '\'')
+		(*line_ptr)++;
+	return (SINGLE_QUOTED);
 }
 
-int	dealloc_env_element(void *env_element_ptr)
+t_token_type	subtokenize_double_quote(char **line_ptr)
 {
-	t_env_element	**_env_element_ptr;
-	t_env_element	*env_element;
-
-	_env_element_ptr = env_element_ptr;
-	env_element = *_env_element_ptr;
-	ft_free(&env_element->key);
-	ft_free(&env_element->val);
-	ft_free(_env_element_ptr);
-	return (FAILURE);
+	(*line_ptr)++;
+	while (**line_ptr != '\0' && **line_ptr != '"')
+		(*line_ptr)++;
+	if (**line_ptr == '"')
+		(*line_ptr)++;
+	return (DOUBLE_QUOTED);
 }
 
-int	dealloc_token(void *token_ptr)
+// TODO: Make sure this isn't missing any conditions for breaking
+t_token_type	subtokenize_unquoted(char **line_ptr)
 {
-	t_token	**_token_ptr;
-	t_token	*token;
-
-	_token_ptr = token_ptr;
-	token = *_token_ptr;
-	ft_free(&token->content);
-	ft_free(_token_ptr);
-	return (FAILURE);
-}
-
-int	dealloc_lambda(t_shell *lambda)
-{
-	dealloc_lst(&lambda->tokens, dealloc_token);
-	dealloc_lst(&lambda->env, dealloc_env_element);
-	dealloc_lst(&lambda->cmds, dealloc_cmd);
-	ft_free(&lambda->line);
-	ft_free(&lambda->cwd);
-	return (FAILURE);
-}
-
-int	dealloc_redirection(void *redirect_ptr)
-{
-	t_redirect	**_redirect_ptr;
-	t_redirect	*redirect;
-
-	_redirect_ptr = redirect_ptr;
-	redirect = *_redirect_ptr;
-	ft_free(&redirect->file_path);
-	ft_free(_redirect_ptr);
-	return (FAILURE);
+	while (**line_ptr != '\0' && !ft_isspace(**line_ptr) && \
+			**line_ptr != '|' && \
+			**line_ptr != '<' && \
+			**line_ptr != '>' && \
+			**line_ptr != '"' && **line_ptr != '\'')
+		(*line_ptr)++;
+	return (UNQUOTED);
 }

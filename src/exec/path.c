@@ -67,7 +67,7 @@ char	*get_absolute_path_from_env(char *name, t_list *env)
 			dealloc_ptr_array(&exec_direcs);
 			return (stop_null());
 		}
-		if (!access(absolute_path, F_OK)) // TODO: Probably needs more flags
+		if (!access(absolute_path, F_OK))
 		{
 			dealloc_ptr_array(&exec_direcs);
 			return (absolute_path);

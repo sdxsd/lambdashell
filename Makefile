@@ -13,6 +13,7 @@ CFILES = \
 	src/builtins/unset.c \
 	src/cosmetic/cosmetic.c \
 	src/dealloc/dealloc_lst.c \
+	src/dealloc/dealloc_ptr_array.c \
 	src/dealloc/dealloc.c \
 	src/debug/debug_print.c \
 	src/env/env_utils.c \
@@ -20,6 +21,7 @@ CFILES = \
 	src/env/expand_variables.c \
 	src/error/error.c \
 	src/exec/exec.c \
+	src/exec/exec_cmd.c \
 	src/exec/path.c \
 	src/parse/is_ambiguous_redirect.c \
 	src/parse/is_text_token.c \
@@ -28,6 +30,7 @@ CFILES = \
 	src/stop/stop.c \
 	src/tokenize/get_token.c \
 	src/tokenize/subtokenizers.c \
+	src/tokenize/subtokenize_quotes.c \
 	src/tokenize/tokenize.c \
 	src/signals/signals.c \
 	src/update_cwd/update_cwd.c

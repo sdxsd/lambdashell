@@ -39,63 +39,17 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-int	dealloc_cmd(void *cmd_ptr)
+void	dealloc_ptr_array(void *ptr_array_ptr)
 {
-	t_cmd	**_cmd_ptr;
-	t_cmd	*cmd;
+	void	***_ptr_array_ptr;
+	void	**ptr_array;
 
-	_cmd_ptr = cmd_ptr;
-	cmd = *_cmd_ptr;
-	dealloc_ptr_array(&cmd->args);
-	ft_free(&cmd->path);
-	dealloc_lst(&cmd->redirections, dealloc_redirection);
-	ft_free(_cmd_ptr);
-	return (FAILURE);
-}
-
-int	dealloc_env_element(void *env_element_ptr)
-{
-	t_env_element	**_env_element_ptr;
-	t_env_element	*env_element;
-
-	_env_element_ptr = env_element_ptr;
-	env_element = *_env_element_ptr;
-	ft_free(&env_element->key);
-	ft_free(&env_element->val);
-	ft_free(_env_element_ptr);
-	return (FAILURE);
-}
-
-int	dealloc_token(void *token_ptr)
-{
-	t_token	**_token_ptr;
-	t_token	*token;
-
-	_token_ptr = token_ptr;
-	token = *_token_ptr;
-	ft_free(&token->content);
-	ft_free(_token_ptr);
-	return (FAILURE);
-}
-
-int	dealloc_lambda(t_shell *lambda)
-{
-	dealloc_lst(&lambda->tokens, dealloc_token);
-	dealloc_lst(&lambda->env, dealloc_env_element);
-	dealloc_lst(&lambda->cmds, dealloc_cmd);
-	ft_free(&lambda->line);
-	ft_free(&lambda->cwd);
-	return (FAILURE);
-}
-
-int	dealloc_redirection(void *redirect_ptr)
-{
-	t_redirect	**_redirect_ptr;
-	t_redirect	*redirect;
-
-	_redirect_ptr = redirect_ptr;
-	redirect = *_redirect_ptr;
-	ft_free(&redirect->file_path);
-	ft_free(_redirect_ptr);
-	return (FAILURE);
+	_ptr_array_ptr = ptr_array_ptr;
+	ptr_array = *_ptr_array_ptr;
+	while (*ptr_array)
+	{
+		ft_free(ptr_array);
+		ptr_array++;
+	}
+	ft_free(_ptr_array_ptr);
 }

@@ -39,6 +39,7 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
+// TODO: Handle invalid user input like >>>
 static t_token_type	subtokenize(char **line)
 {
 	if (**line == '\'')
@@ -57,9 +58,12 @@ static t_token_type	subtokenize(char **line)
 		return (subtokenize_whitespace(line));
 	else
 		return (subtokenize_unquoted(line));
-	// TODO: Handle invalid user input like >>>
 }
 
+// TODO: Free? FIXME: Definitely free.
+// FIXME: memleak when input =
+// "jfkjjiru fuoifudf difudfuuofdforkorkgrg"
+// or other garbage.
 t_list	*tokenize(char *line)
 {
 	t_list			*tokens;
@@ -69,26 +73,19 @@ t_list	*tokenize(char *line)
 	t_token			*token;
 
 	tokens = NULL;
-
 	while (*line)
 	{
 		old_line_pos = line;
-
 		token_type = subtokenize(&line);
-
 		if (token_type == SINGLE_QUOTED || token_type == DOUBLE_QUOTED)
 			content = ft_substr(old_line_pos, 1, line - old_line_pos - 2);
 		else
 			content = ft_substr(old_line_pos, 0, line - old_line_pos);
-
 		if (!content)
-			return (NULL); // TODO: Free? FIXME: Definitely free.
-
+			return (NULL);
 		token = get_token(token_type, content);
 		if (!token || !ft_lstnew_back(&tokens, token))
 		{
-			// FIXME: memleak when input = "jfkjjiru fuoifudf difudfuuofdforkorkgrg"
-			// or other garbage.
 			if (token)
 				dealloc_token(token);
 			dealloc_lst(&tokens, dealloc_token);

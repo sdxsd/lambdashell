@@ -53,7 +53,8 @@ char	**env_to_strings(t_list *env)
 	while (env)
 	{
 		env_element = env->content;
-		env_strings[index] = ft_strjoin_array((char *[]){env_element->key, "=", env_element->val, NULL});
+		env_strings[index] = ft_strjoin_array((char *[]){env_element->key,\
+			"=", env_element->val, NULL});
 		if (!env_strings[index])
 		{
 			dealloc_ptr_array(&env_strings);
