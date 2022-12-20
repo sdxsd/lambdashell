@@ -146,7 +146,10 @@ static char	*get_path(t_list **tokens, t_list *env)
 	}
 	if (is_builtin(path) || ft_strchr(path, '/'))
 		return (path);
-	absolute_path = get_absolute_path_from_env(path, env);
+	if (ft_strlen(path) < 1)
+		absolute_path = "";
+	else
+		absolute_path = get_absolute_path_from_env(path, env);
 	if (absolute_path == path)
 		return (path);
 	ft_free(&path);
@@ -218,8 +221,9 @@ static t_cmd	*get_cmd(t_list **tokens, t_list *env)
 	while (*tokens)
 	{
 		token = (*tokens)->content;
-		// TODO: Maybe necessary to add check for token being NULL?
-		if (token->type == PIPE)
+		if (ft_strlen(token->content) < 1)
+			*tokens = (*tokens)->next;
+		else if (token->type == PIPE)
 		{
 			*tokens = (*tokens)->next;
 			break ;
