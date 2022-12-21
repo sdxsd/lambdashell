@@ -39,9 +39,89 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
+static int	sanitize_pipes(t_list *tokens)
+{
+	bool	seen_cmd;
+	t_token	*token;
+
+	seen_cmd = false;
+	while (tokens)
+	{
+		token = tokens->content;
+
+		if (is_text_token(token))
+		{
+			seen_cmd = true;
+		}
+
+		if (token->type == PIPE && !seen_cmd)
+		{
+			status = 2;
+			ft_putstr_fd(PREFIX": syntax error\n", STDERR_FILENO);
+			return (FAILURE);
+		}
+
+		if (token->type == PIPE && seen_cmd)
+		{
+			seen_cmd = false;
+		}
+
+		tokens = tokens->next;
+	}
+
+	if (!seen_cmd)
+	{
+		status = 2;
+		ft_putstr_fd(PREFIX": syntax error\n", STDERR_FILENO);
+		return (FAILURE);
+	}
+	return (SUCCESS);
+}
+
+static int	sanitize_redirections(t_list *tokens)
+{
+	bool	seen_redirection;
+	t_token	*token;
+
+	seen_redirection = false;
+	while (tokens)
+	{
+		token = tokens->content;
+
+		if (seen_redirection)
+		{
+			if (token->type != WHITESPACE && !is_text_token(token))
+			{
+				status = 2;
+				ft_putstr_fd(PREFIX": syntax error\n", STDERR_FILENO);
+				return (FAILURE);
+			}
+			else if (is_text_token(token))
+				seen_redirection = false;
+		}
+
+		if (token->type == REDIRECTION)
+		{
+			seen_redirection = true;
+		}
+
+		tokens = tokens->next;
+	}
+
+	if (seen_redirection)
+	{
+		status = 2;
+		ft_putstr_fd(PREFIX": syntax error\n", STDERR_FILENO);
+		return (FAILURE);
+	}
+	return (SUCCESS);
+}
+
 int	sanitize_tokens(t_list *tokens)
 {
-
-
+	if (sanitize_pipes(tokens) == FAILURE)
+		return (FAILURE);
+	if (sanitize_redirections(tokens) == FAILURE)
+		return (FAILURE);
 	return (SUCCESS);
 }

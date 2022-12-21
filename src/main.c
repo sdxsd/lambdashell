@@ -60,18 +60,20 @@ static void	prompt(t_shell *lambda)
 	add_history(lambda->line);
 	lambda->tokens = tokenize(lambda->line);
 	ft_free(&lambda->line);
-	// if (sanitize_tokens(lambda->tokens) == FAILURE)
+	// dbg_print_tokens(lambda->tokens);
+	if (sanitize_tokens(lambda->tokens) == FAILURE)
+		return ;
+	// if (exec_heredocs() == FAILURE)
 	// 	return ;
 	if (expand_variables(lambda->tokens, lambda) == FAILURE)
 		return ;
-	// dbg_print_tokens(lambda->tokens);
 	lambda->cmds = parse(lambda->tokens, lambda->env);
 	if (!lambda->cmds)
 		return ;
+	dealloc_lst(&lambda->tokens, dealloc_token);
 	// dbg_print_commands(lambda->cmds);
 	if (execute(lambda->cmds, lambda) == FAILURE)
 		return ;
-	dealloc_lst(&lambda->tokens, dealloc_token);
 	dealloc_lst(&lambda->cmds, dealloc_cmd);
 	return ;
 }

@@ -105,6 +105,7 @@ t_token_type	subtokenize_pipe(char **line_ptr);
 t_token_type	subtokenize_whitespace(char **line_ptr);
 t_token_type	subtokenize_unquoted(char **line_ptr);
 t_list			*tokenize(char *line);
+int				sanitize_tokens(t_list *tokens);
 
 /* SIGNALS */
 void	signal_handler_set(void);
