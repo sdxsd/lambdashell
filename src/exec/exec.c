@@ -156,23 +156,23 @@ static int	execute_builtin(t_cmd *cmd, t_shell *lambda)
 	return (SUCCESS);
 }
 
-static int	get_wait_status(int status)
+static int	get_wait_status(int stat_loc)
 {
 	// TODO: Add unit test for this one
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	else if (WIFSIGNALED(status))
-		return (WTERMSIG(status));
+	if (WIFEXITED(stat_loc))
+		return (WEXITSTATUS(stat_loc));
+	else if (WIFSIGNALED(stat_loc))
+		return (WTERMSIG(stat_loc));
 	// TODO: Probably also need to add this? Check by adding a unit test
-	// else if (WIFSTOPPED(status))
-	// 	return (WIFSTOPPED(status));
+	// else if (WIFSTOPPED(stat_loc))
+	// 	return (WIFSTOPPED(stat_loc));
 	return (0); // TODO: Is this wanted?
 }
 
 static int	execute_simple_command(t_cmd *cmd, t_shell *lambda)
 {
 	pid_t	pid;
-	int		status;
+	int		stat_loc;
 
 	if (ft_strchr(cmd->path, '/'))
 	{
@@ -189,8 +189,8 @@ static int	execute_simple_command(t_cmd *cmd, t_shell *lambda)
 			}
 		}
 		disable_signals();
-		waitpid(pid, &status, 0);
-		status = get_wait_status(status);
+		waitpid(pid, &stat_loc, 0);
+		status = get_wait_status(stat_loc);
 		signal_handler_set();
 	}
 	else
@@ -249,7 +249,7 @@ static int	execute_complex_command(int input_fd, t_list *cmds, t_shell *lambda)
 	int		tube[2];
 	pid_t	pid;
 	t_cmd	*cmd;
-	int		status;
+	int		stat_loc;
 
 	if (cmds->next && pipe(tube) == -1)
 		return (msg_err("exec_and_pipe()", FAILURE));
@@ -272,9 +272,9 @@ static int	execute_complex_command(int input_fd, t_list *cmds, t_shell *lambda)
 		close(input_fd); // TODO: Right now only the parent is closing the read end!!
 	if (cmds->next && execute_complex_command(tube[READ], cmds->next, lambda) != SUCCESS)
 		return (msg_err("exec_and_pipe()", FAILURE));
-	waitpid(pid, &status, 0);
+	waitpid(pid, &stat_loc, 0);
 	if (!cmds->next)
-		status = get_wait_status(status);
+		status = get_wait_status(stat_loc);
 	return (SUCCESS);
 }
 
