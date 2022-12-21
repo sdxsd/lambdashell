@@ -79,6 +79,6 @@ A program is free software if users have all of these freedoms.
 # define PREFIX "\u03BB"
 
 /* GLOBAL VARIABLE */
-/* int		global_sig; */
+int	status;
 
 #endif

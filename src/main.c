@@ -80,7 +80,7 @@ static int	shell_init(char **env, t_shell *lambda)
 {
 	signal_handler_set();
 	ft_bzero(lambda, sizeof(*lambda));
-	lambda->status = SUCCESS;
+	status = SUCCESS;
 	// TODO: Should ` || !lambda->env` be placed back?
 	// Idk how to even get a completely empty environment in the tester
 	if (init_env(env, &lambda->env) == FAILURE)
@@ -99,7 +99,6 @@ static int	shell_init(char **env, t_shell *lambda)
 int	main(int argc, char **argv, char **env)
 {
 	t_shell	lambda;
-	int		status;
 
 	(void)argv;
 	if (argc > 1)
@@ -111,8 +110,7 @@ int	main(int argc, char **argv, char **env)
 	}
 	while (running())
 		prompt(&lambda);
-	status = lambda.status;
-	dealloc_lambda(&lambda);
 	rl_clear_history();
+	dealloc_lambda(&lambda);
 	return (status);
 }

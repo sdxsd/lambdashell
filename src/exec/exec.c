@@ -101,7 +101,7 @@ static int	execute_command(t_cmd *cmd, t_shell *lambda)
 	if (redirections(cmd->redirections, cmd) == FAILURE)
 	{
 		// TODO: ??
-		lambda->status = 1;
+		status = 1;
 		return (FAILURE);
 	}
 
@@ -112,7 +112,7 @@ static int	execute_command(t_cmd *cmd, t_shell *lambda)
 
 	if (execve(cmd->path, cmd->args, env_array) == -1)
 	{
-		lambda->status = 127;
+		status = 127;
 		msg_err(cmd->path, FAILURE);
 		return (FAILURE);
 	}
@@ -125,7 +125,7 @@ static int	execute_builtin(t_cmd *cmd, t_shell *lambda)
 	if (redirections(cmd->redirections, cmd) == FAILURE)
 	{
 		// TODO: ??
-		lambda->status = 1;
+		status = 1;
 		return (FAILURE);
 	}
 
@@ -133,20 +133,20 @@ static int	execute_builtin(t_cmd *cmd, t_shell *lambda)
 
 	// TODO: Maybe if-statement check whether path or args or args[0] or args[1] is NULL?
 	if (ft_streq(cmd->path, "cd"))
-		lambda->status = cd(cmd, lambda);
+		status = cd(cmd, lambda);
 	else if (ft_streq(cmd->path, "env"))
-		lambda->status = env(lambda);
+		status = env(lambda);
 	else if (ft_streq(cmd->path, "exit"))
-		bltin_exit(cmd, lambda);
+		bltin_exit(cmd);
 	else if (ft_streq(cmd->path, "export"))
-		lambda->status = export(cmd, lambda);
+		status = export(cmd, lambda);
 	else if (ft_streq(cmd->path, "pwd"))
-		lambda->status = pwd(lambda);
+		status = pwd(lambda);
 	else if (ft_streq(cmd->path, "unset"))
-		lambda->status = unset(cmd, lambda);
+		status = unset(cmd, lambda);
 	else
 	{
-		lambda->status = 127;
+		status = 127;
 		ft_putstr_fd(PREFIX": ", STDERR_FILENO);
 		ft_putstr_fd(cmd->path, STDERR_FILENO);
 		ft_putstr_fd(": command not found\n", STDERR_FILENO);
@@ -190,7 +190,7 @@ static int	execute_simple_command(t_cmd *cmd, t_shell *lambda)
 		}
 		disable_signals();
 		waitpid(pid, &status, 0);
-		lambda->status = get_wait_status(status);
+		status = get_wait_status(status);
 		signal_handler_set();
 	}
 	else
@@ -240,7 +240,7 @@ static int	execute_child(int input_fd, t_list *cmds, t_shell *lambda, int tube[2
 			// TODO: ??
 		}
 	}
-	exit(lambda->status); // TODO: Should anything be freed before this is called?
+	exit(status); // TODO: Should anything be freed before this is called?
 	return (SUCCESS);
 }
 
@@ -274,7 +274,7 @@ static int	execute_complex_command(int input_fd, t_list *cmds, t_shell *lambda)
 		return (msg_err("exec_and_pipe()", FAILURE));
 	waitpid(pid, &status, 0);
 	if (!cmds->next)
-		lambda->status = get_wait_status(status);
+		status = get_wait_status(status);
 	return (SUCCESS);
 }
 

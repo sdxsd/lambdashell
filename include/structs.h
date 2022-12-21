@@ -51,7 +51,6 @@ typedef struct s_shell
 	t_list		*cmds;
 	char		*line;
 	char		*cwd;
-	int			status;
 	bool		stdin_is_tty;
 	int			stdin_fd;
 	int			stdout_fd;
