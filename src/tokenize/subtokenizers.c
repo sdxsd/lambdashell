@@ -46,6 +46,8 @@ t_token_type	subtokenize_single_quote(char **line_ptr)
 		(*line_ptr)++;
 	if (**line_ptr == '\'')
 		(*line_ptr)++;
+	else if (**line_ptr == '\0')
+		return (UNMATCHED_QUOTE);
 	return (SINGLE_QUOTED);
 }
 
@@ -56,6 +58,8 @@ t_token_type	subtokenize_double_quote(char **line_ptr)
 		(*line_ptr)++;
 	if (**line_ptr == '"')
 		(*line_ptr)++;
+	else if (**line_ptr == '\0')
+		return (UNMATCHED_QUOTE);
 	return (DOUBLE_QUOTED);
 }
 

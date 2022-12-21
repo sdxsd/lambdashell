@@ -76,7 +76,14 @@ t_list	*tokenize(char *line)
 
 		token_type = subtokenize(&line);
 
-		if (token_type == SINGLE_QUOTED || token_type == DOUBLE_QUOTED)
+		if (token_type == UNMATCHED_QUOTE)
+		{
+			status = 2;
+			//ft_putstr_fd(PREFIX": syntax error near unexpected token `newline'\n", STDERR_FILENO);
+			ft_putstr_fd(PREFIX": unexpected EOF while looking for matching quote\n", STDERR_FILENO);
+			return (NULL);
+		}
+		else if (token_type == SINGLE_QUOTED || token_type == DOUBLE_QUOTED)
 			content = ft_substr(old_line_pos, 1, line - old_line_pos - 2);
 		else
 			content = ft_substr(old_line_pos, 0, line - old_line_pos);

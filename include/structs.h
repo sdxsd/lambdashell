@@ -93,6 +93,7 @@ typedef enum s_token_type
 	PIPE,
 	WHITESPACE,
 	UNQUOTED,
+	UNMATCHED_QUOTE,
 }	t_token_type;
 
 typedef struct s_token
