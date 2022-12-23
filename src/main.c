@@ -61,7 +61,7 @@ static void	prompt(t_shell *lambda)
 	lambda->tokens = tokenize(lambda->line);
 	ft_free(&lambda->line);
 	// dbg_print_tokens(lambda->tokens);
-	if (sanitize_tokens(lambda->tokens) == FAILURE)
+	if (check_token_syntax_errors(lambda->tokens) == FAILURE)
 		return ;
 	// if (exec_heredocs() == FAILURE)
 	// 	return ;

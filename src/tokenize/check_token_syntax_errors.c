@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   sanitize_tokens.c                                  :+:    :+:            */
+/*   check_token_syntax_errors.c                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
@@ -39,7 +39,7 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-static int	sanitize_pipes(t_list *tokens)
+static int	check_pipe_syntax_errors(t_list *tokens)
 {
 	bool	seen_cmd;
 	t_token	*token;
@@ -78,7 +78,7 @@ static int	sanitize_pipes(t_list *tokens)
 	return (SUCCESS);
 }
 
-static int	sanitize_redirections(t_list *tokens)
+static int	check_redirection_syntax_errors(t_list *tokens)
 {
 	bool	seen_redirection;
 	t_token	*token;
@@ -117,11 +117,11 @@ static int	sanitize_redirections(t_list *tokens)
 	return (SUCCESS);
 }
 
-int	sanitize_tokens(t_list *tokens)
+int	check_token_syntax_errors(t_list *tokens)
 {
-	if (sanitize_pipes(tokens) == FAILURE)
+	if (check_pipe_syntax_errors(tokens) == FAILURE)
 		return (FAILURE);
-	if (sanitize_redirections(tokens) == FAILURE)
+	if (check_redirection_syntax_errors(tokens) == FAILURE)
 		return (FAILURE);
 	return (SUCCESS);
 }
