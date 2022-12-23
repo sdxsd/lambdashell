@@ -214,7 +214,6 @@ static t_cmd	*get_cmd(t_list **tokens, t_list *env)
 	cmd = get_initial_cmd();
 	arg_list = NULL;
 	token = (*tokens)->content;
-	arg_zero = token->content;
 	while (*tokens)
 	{
 		token = (*tokens)->content;
@@ -235,6 +234,7 @@ static t_cmd	*get_cmd(t_list **tokens, t_list *env)
 		}
 		else if (is_text_token(token) && !cmd->path)
 		{
+			arg_zero = token->content;
 			cmd->path = get_path(tokens, env);
 			if (!cmd->path)
 			{
