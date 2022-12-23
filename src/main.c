@@ -71,11 +71,9 @@ static void	prompt(t_shell *lambda)
 	lambda->cmds = parse(lambda->tokens, lambda->env);
 	if (!lambda->cmds)
 		return ;
-	dealloc_lst(&lambda->tokens, dealloc_token);
 	// dbg_print_commands(lambda->cmds);
 	if (execute(lambda->cmds, lambda) == FAILURE)
 		return ;
-	dealloc_lst(&lambda->cmds, dealloc_cmd);
 }
 
 static int	shell_init(char **env, t_shell *lambda)
@@ -111,7 +109,11 @@ int	main(int argc, char **argv, char **env)
 		return (dealloc_lambda(&lambda));
 	}
 	while (running())
+	{
 		prompt(&lambda);
+		dealloc_lst(&lambda.tokens, dealloc_token);
+		dealloc_lst(&lambda.cmds, dealloc_cmd);
+	}
 	rl_clear_history();
 	dealloc_lambda(&lambda);
 	return (status);
