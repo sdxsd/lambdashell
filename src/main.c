@@ -51,12 +51,7 @@ static void	prompt(t_shell *lambda)
 	lambda->line = readline(readline_str);
 	ft_free(&readline_str);
 	if (!lambda->line)
-	{
-		stop();
-		return ;
-	}
-	else if (ft_strlen(lambda->line) < 1) // TODO: Is this necessary?
-		return ;
+		return (stop_void());
 	add_history(lambda->line);
 	lambda->tokens = tokenize(lambda->line);
 	ft_free(&lambda->line);

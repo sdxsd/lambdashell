@@ -95,10 +95,13 @@ void	dealloc_ptr_array(void *ptr_array_ptr)
 
 	_ptr_array_ptr = ptr_array_ptr;
 	ptr_array = *_ptr_array_ptr;
-	while (*ptr_array)
+	if (ptr_array)
 	{
-		ft_free(ptr_array);
-		ptr_array++;
+		while (*ptr_array)
+		{
+			ft_free(ptr_array);
+			ptr_array++;
+		}
 	}
 	ft_free(_ptr_array_ptr);
 }

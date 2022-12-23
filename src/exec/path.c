@@ -55,7 +55,7 @@ char	*get_absolute_path_from_env(char *name, t_list *env)
 	if (!path)
 		path = env_get_val(env, "PATH");
 	if (!path)
-		return (NULL);
+		return (name);
 	exec_direcs = ft_split(path, ':');
 	if (!exec_direcs)
 		return (stop_null());

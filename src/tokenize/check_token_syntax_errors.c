@@ -42,17 +42,19 @@ A program is free software if users have all of these freedoms.
 static int	check_pipe_syntax_errors(t_list *tokens)
 {
 	bool	seen_cmd;
+	bool	seen_pipe;
 	t_token	*token;
 
 	seen_cmd = false;
+	seen_pipe = false;
 	while (tokens)
 	{
 		token = tokens->content;
 
 		if (is_text_token(token))
-		{
 			seen_cmd = true;
-		}
+		else if (token->type == PIPE)
+			seen_pipe = true;
 
 		if (token->type == PIPE && !seen_cmd)
 		{
@@ -69,7 +71,7 @@ static int	check_pipe_syntax_errors(t_list *tokens)
 		tokens = tokens->next;
 	}
 
-	if (!seen_cmd)
+	if (!seen_cmd && seen_pipe)
 	{
 		status = 2;
 		ft_putstr_fd(PREFIX": syntax error\n", STDERR_FILENO);

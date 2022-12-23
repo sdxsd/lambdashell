@@ -62,3 +62,8 @@ void	*stop_null(void)
 	*get_stop_ptr() = true;
 	return (NULL);
 }
+
+void	stop_void(void)
+{
+	*get_stop_ptr() = true;
+}

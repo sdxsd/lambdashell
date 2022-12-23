@@ -93,6 +93,7 @@ int				*get_stop_ptr(void);
 int				running(void);
 int				stop(void);
 void			*stop_null(void);
+void			stop_void(void);
 
 /* TOKENISATION */
 t_token			*get_token(t_token_type type, char *content);
