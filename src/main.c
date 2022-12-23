@@ -67,15 +67,17 @@ static void	prompt(t_shell *lambda)
 	// 	return ;
 	if (expand_variables(lambda->tokens, lambda) == FAILURE)
 		return ;
-	dbg_print_tokens(lambda->tokens);
+	// dbg_print_tokens(lambda->tokens);
 	if (split_env_tokens(&lambda->tokens) == FAILURE)
 		return ;
-	dbg_print_tokens(lambda->tokens);
+	// dbg_print_tokens(lambda->tokens);
+	// if (remove_outer_whitespace_tokens(&lambda->tokens) == FAILURE)
+	// 	return ;
 	lambda->cmds = parse(lambda->tokens, lambda->env);
 	if (!lambda->cmds)
 		return ;
 	dealloc_lst(&lambda->tokens, dealloc_token);
-	dbg_print_commands(lambda->cmds);
+	// dbg_print_commands(lambda->cmds);
 	if (execute(lambda->cmds, lambda) == FAILURE)
 		return ;
 	dealloc_lst(&lambda->cmds, dealloc_cmd);

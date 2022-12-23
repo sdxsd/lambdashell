@@ -52,12 +52,12 @@ static size_t	get_ptr_array_size(void **ptr)
 	return (size);
 }
 
-static int	new_unquoted_token_back(t_list **current_ptr, char *content)
+static int	new_unquoted_token_back(t_list **current_ptr, char *content,
+				t_token_type token_type)
 {
 	t_token	*token;
 
-	// TODO: I am not sure if it should always be UNQUOTED
-	token = get_token(UNQUOTED, ft_strdup(content));
+	token = get_token(token_type, ft_strdup(content));
 	if (!token || !ft_lstnew_back(current_ptr, token))
 		return (stop());
 	return (SUCCESS);
@@ -82,7 +82,7 @@ int	split_env_tokens(t_list **tokens_ptr)
 		next = current->next;
 
 		// TODO: Can the ft_strset() be removed?
-		if (token->type == UNQUOTED && ft_strset(token->content, WHITESPACE_CHARACTERS))
+		if (token->type == UNQUOTED && (*token->content == '\0' || ft_strset(token->content, WHITESPACE_CHARACTERS)))
 		{
 			split = ft_split_set(token->content, WHITESPACE_CHARACTERS);
 
@@ -92,12 +92,7 @@ int	split_env_tokens(t_list **tokens_ptr)
 				return (stop());
 			}
 
-			if (!*split)
-			{
-				prev = current;
-				current = next;
-				continue;
-			}
+			current->next = NULL;
 
 			split_index = 0;
 			split_count = get_ptr_array_size((void **)split);
@@ -105,13 +100,13 @@ int	split_env_tokens(t_list **tokens_ptr)
 			{
 				if (
 					(split_index > 0 || ft_strchr(WHITESPACE_CHARACTERS, *token->content))
-					&& new_unquoted_token_back(&current, " ") == FAILURE)
+					&& new_unquoted_token_back(&current, " ", WHITESPACE) == FAILURE)
 				{
 					// TODO: ??
 					return (FAILURE);
 				}
 
-				if (new_unquoted_token_back(&current, split[split_index]) == FAILURE)
+				if (new_unquoted_token_back(&current, split[split_index], UNQUOTED) == FAILURE)
 				{
 					// TODO: ??
 					return (FAILURE);
@@ -122,25 +117,38 @@ int	split_env_tokens(t_list **tokens_ptr)
 
 			dealloc_ptr_array(&split);
 
-			if (split_count > 0 && ft_strchr(WHITESPACE_CHARACTERS, token->content[ft_strlen(token->content) - 1]) && new_unquoted_token_back(&current, " ") == FAILURE)
+			if (split_count > 0 && ft_strchr(WHITESPACE_CHARACTERS, token->content[ft_strlen(token->content) - 1]) && new_unquoted_token_back(&current, " ", WHITESPACE) == FAILURE)
 			{
 				// TODO: ??
 				return (FAILURE);
 			}
 
-			if (prev == NULL)
-				*tokens_ptr = current->next;
+			dealloc_token(&token);
+
+			if (prev)
+			{
+				if (current->next)
+					prev->next = current->next;
+				else
+					prev->next = next;
+			}
 			else
-				prev->next = current->next;
+			{
+				if (current->next)
+					*tokens_ptr = current->next;
+				else
+					*tokens_ptr = next;
+			}
 
 			last_added = ft_lstlast(current);
-			// TODO: Can last_added ever be NULL?
-			last_added->next = next;
 
-			dealloc_token(&token);
+			if (current->next)
+			{
+				last_added->next = next;
+				prev = last_added;
+			}
+
 			ft_free(&current);
-
-			prev = last_added;
 		}
 		else
 			prev = current;
