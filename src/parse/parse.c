@@ -86,7 +86,7 @@ static t_redirect	*get_redirect(t_list **tokens)
 	if (!redirect->file_path)
 	{
 		// TODO: Free
-		return (NULL);
+		return (stop_null());
 	}
 	redirect->is_ambiguous = is_ambiguous_redirect(*tokens);
 	while (*tokens)
@@ -107,7 +107,7 @@ static t_redirect	*get_redirect(t_list **tokens)
 		if (!redirect->file_path)
 		{
 			// TODO: Free
-			return (NULL);
+			return (stop_null());
 		}
 
 		*tokens = (*tokens)->next;
@@ -125,7 +125,7 @@ static char	*get_path(t_list **tokens, t_list *env)
 	if (!path)
 	{
 		// TODO: Free
-		return (NULL);
+		return (stop_null());
 	}
 	while (*tokens)
 	{
@@ -138,7 +138,7 @@ static char	*get_path(t_list **tokens, t_list *env)
 		if (!path)
 		{
 			// TODO: Free
-			return (NULL);
+			return (stop_null());
 		}
 		*tokens = (*tokens)->next;
 	}
@@ -200,17 +200,14 @@ static char		*get_arg(t_list **tokens)
 	return (arg);
 }
 
-static t_cmd	*get_cmd(t_list **tokens, t_list *env)
+static int	fill_cmd(t_list **tokens, t_list *env, t_cmd *cmd)
 {
-	t_cmd		*cmd;
 	t_token		*token;
 	t_redirect	*redirect;
 	t_list		*arg_list;
 	char		*arg;
 	char		*arg_zero;
 
-	if (get_initial_cmd(&cmd) == FAILURE)
-		return (NULL);
 	arg_list = NULL;
 	arg_zero = NULL;
 	token = (*tokens)->content;
@@ -227,27 +224,21 @@ static t_cmd	*get_cmd(t_list **tokens, t_list *env)
 		{
 			redirect = get_redirect(tokens);
 			if (!redirect || !ft_lstnew_back(&cmd->redirections, redirect))
-			{
-				dealloc_cmd(&cmd);
-				return (NULL);
-			}
+				return (stop());
 		}
 		else if (is_text_token(token) && !cmd->path)
 		{
 			arg_zero = token->content;
 			cmd->path = get_path(tokens, env);
 			if (!cmd->path)
-			{
-				dealloc_cmd(&cmd);
-				return (NULL);
-			}
+				return (FAILURE);
 			// if (!is_builtin(cmd->path) && ft_strchr(cmd->path, '/') == NULL)
 			// {
 			// 	absolute_path = get_absolute_path_from_env(cmd->path, env);
 			// 	if (!running())
 			// 	{
 			// 		// TODO: Free
-			// 		return (NULL);
+			// 		return (FAILURE);
 			// 	}
 			// 	if (absolute_path)
 			// 	{
@@ -261,10 +252,7 @@ static t_cmd	*get_cmd(t_list **tokens, t_list *env)
 			arg = get_arg(tokens);
 			// FIXME: Memory leak here in ft_lstnew_back().
 			if (!arg || !ft_lstnew_back(&arg_list, arg))
-			{
-				dealloc_cmd(&cmd);
-				return (NULL);
-			}
+				return (FAILURE);
 		}
 		else
 			*tokens = (*tokens)->next;
@@ -277,10 +265,9 @@ static t_cmd	*get_cmd(t_list **tokens, t_list *env)
 	else
 	{
 		ft_lstclear(&arg_list, NULL);
-		dealloc_cmd(&cmd);
-		return (NULL);
+		return (FAILURE);
 	}
-	return (cmd);
+	return (SUCCESS);
 }
 
 t_list	*parse(t_list *tokens, t_list *env)
@@ -291,17 +278,11 @@ t_list	*parse(t_list *tokens, t_list *env)
 	cmds = NULL;
 	while (tokens)
 	{
-		// TODO: Call get_initial_cmd() here so dealloc_cmd() is always called here
-		cmd = get_cmd(&tokens, env);
-		if (!cmd)
-			return (NULL); // TODO: Free?
-		if (!cmd->path)
+		if (get_initial_cmd(&cmd) == FAILURE || fill_cmd(&tokens, env, cmd) == FAILURE || !cmd->path || !ft_lstnew_back(&cmds, cmd))
 		{
-
-			return (NULL); // TODO: Free?
+			dealloc_cmd(&cmd);
+			return (NULL);
 		}
-		if (!ft_lstnew_back(&cmds, cmd))
-			return (NULL); // TODO: Free?
 	}
 	return (cmds);
 }

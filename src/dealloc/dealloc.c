@@ -46,6 +46,8 @@ int	dealloc_cmd(void *cmd_ptr)
 
 	_cmd_ptr = cmd_ptr;
 	cmd = *_cmd_ptr;
+	if (cmd == NULL)
+		return (FAILURE);
 	dealloc_ptr_array(&cmd->args);
 	ft_free(&cmd->path);
 	dealloc_lst(&cmd->redirections, dealloc_redirection);
