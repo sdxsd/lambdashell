@@ -1,24 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_strtrim_whitespace.c                            :+:    :+:            */
+/*   ft_strset.c                                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/12/16 18:42:57 by sbos          #+#    #+#                 */
-/*   Updated: 2022/12/16 18:42:57 by sbos          ########   odam.nl         */
+/*   Created: 2022/06/22 12:52:46 by sbos          #+#    #+#                 */
+/*   Updated: 2022/07/14 14:47:42 by sbos          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
 /**
- * @brief Trims whitespace.
+ * @brief Returns a pointer to the first spot where one of the @p set characters
+ * is found.
  *
- * @param str
- * @return The trimmed string.
+ * @param haystack
+ * @param set
+ * @return A pointer to the first spot where one of the @p set characters
+   is found;\nNULL if no spot is found or @p set is an empty string.
  */
-char	*ft_strtrim_whitespace(const char *str)
+char	*ft_strset(char *haystack, char *set)
 {
-	return (ft_strtrim(str, WHITESPACE_CHARACTERS));
+	char	*x;
+
+	x = NULL;
+	while (*set)
+	{
+		x = ft_strchr(haystack, *set);
+		if (x)
+			return (x);
+		set++;
+	}
+	return (x);
 }

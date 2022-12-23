@@ -14,13 +14,13 @@
 #include <stdlib.h>
 
 /**
- * @brief Frees a variable pointing to a string, and sets the variable to NULL
- * so double free crashes can't occur.
+ * @brief Frees a variable pointing to something allocated,
+ * and sets the variable to NULL so double free crashes can't occur on it.
  * Example: char *str = malloc(42); ft_free(&str); ft_free(&str);
  * This function is written so that it even handles when a struct member
  * is freed that points to its parent struct.
  *
- * @param ptr This should be the address of a variable pointing to
+ * @param ptrptr This should be the address of a variable pointing to
  * something that has been allocated, like a string.
  */
 void	ft_free(void *ptrptr)

@@ -52,6 +52,7 @@ int	unset(t_cmd *cmd, t_shell *lambda)
 	args = cmd->args;
 	while (*args)
 	{
+		// TODO: I think there's a memory leak here since this function doesn't free the content?
 		ft_lst_remove_if(&lambda->env, *args, string_cmp_fn);
 		args++;
 	}

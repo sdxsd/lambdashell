@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_split.c                                         :+:    :+:            */
+/*   ft_split_set.c                                     :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
@@ -13,7 +13,7 @@
 #include "libft.h"
 #include <stdlib.h>
 
-static int	ft_wordcount(const char *s, char c)
+static int	ft_wordcount(const char *s, char *set)
 {
 	int	wc;
 
@@ -22,24 +22,24 @@ static int	ft_wordcount(const char *s, char c)
 	wc = 0;
 	while (*s)
 	{
-		if (*s == c)
+		if (ft_strchr(set, *s))
 			s++;
-		if (*s != c && *s != '\0')
+		if (!ft_strchr(set, *s) && *s != '\0')
 		{
 			wc++;
-			while (*s != c && *s)
+			while (!ft_strchr(set, *s) && *s)
 				s++;
 		}
 	}
 	return (wc);
 }
 
-static int	ft_gndl(const char *s, char c)
+static int	ft_gndl(const char *s, char *set)
 {
 	int	iterator;
 
 	iterator = 0;
-	while (s[iterator] != c && s[iterator])
+	while (!ft_strchr(set, s[iterator]) && s[iterator])
 		iterator++;
 	return (iterator);
 }
@@ -56,7 +56,7 @@ static char	**ft_clean_split(char **s_array)
 	return ((char **)0x0);
 }
 
-char	**ft_split(char const *s, char c)
+char	**ft_split_set(char const *s, char *set)
 {
 	char	**s_array;
 	size_t	iterator;
@@ -64,57 +64,22 @@ char	**ft_split(char const *s, char c)
 	iterator = 0;
 	if (!s)
 		return (NULL);
-	s_array = malloc(sizeof(char *) * (ft_wordcount(s, c) + 1));
+	s_array = malloc(sizeof(char *) * (ft_wordcount(s, set) + 1));
 	if (!s_array)
 		return (NULL);
 	while (s_array && iterator < ft_strlen(s))
 	{
-		while (s[iterator] == c && s[iterator] != '\0')
+		while (ft_strchr(set, s[iterator]) && s[iterator] != '\0')
 			iterator++;
-		if (s[iterator] != c && s[iterator] != '\0')
+		if (!ft_strchr(set, s[iterator]) && s[iterator] != '\0')
 		{
-			*s_array = ft_strndup(&s[iterator], ft_gndl(&s[iterator], c));
+			*s_array = ft_strndup(&s[iterator], ft_gndl(&s[iterator], set));
 			if (!*s_array)
 				return (ft_clean_split(s_array - iterator));
-			iterator += ft_gndl(&s[iterator], c);
+			iterator += ft_gndl(&s[iterator], set);
 			s_array += 1;
 		}
 	}
 	*s_array = NULL;
-	return (s_array - (ft_wordcount(s, c)));
+	return (s_array - (ft_wordcount(s, set)));
 }
-
-/*
-int main()
-{
-	char	*s = "a//////////";
-	char	c = '/';
-	char	**s_array = ft_split(s, c);
-
-	for (int i = 0; s_array[i] != NULL; i++)
-		printf("%s\n", s_array[i]);
-}
-*/
-
-/*
-int main()
-{
-	char	*s = "MacOS/Windows///GNU_LINUX/FreeBSD/////////OpenBSD/UNIX/";
-	char	c = '/';
-	char	**s_array = ft_split(s, c);
-
-	for (int i = 0; s_array[i] != NULL; i++)
-		printf("%s\n", s_array[i]);
-}
-*/
-
-/*
-int main()
-{
-	char *s = "   split       this for   me  !       ";
-
-	char **s_array = ft_split(s, ' ');
-	for (int i = 0; s_array[i] != NULL; i++)
-		printf("%s\n", s_array[i]);
-}
-*/

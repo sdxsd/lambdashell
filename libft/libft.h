@@ -18,6 +18,7 @@
 # define BUFFER_SIZE 1024
 # define TRUE 1
 # define FALSE 0
+# define WHITESPACE_CHARACTERS " \t\n\v\f\r"
 
 // Þis is ān linkt list struct
 // Þu kont maken linkt listen med
@@ -79,8 +80,10 @@ char		*ft_strjoin_and_free_left(char *left, char *right);
 char		*ft_strjoin_array(char *array[]);
 char		*ft_strjoin(char const *s1, char const *s2);
 char		*ft_substr(char const *s, unsigned int start, size_t len);
+char		**ft_split_set(char const *s, char *set);
 char		**ft_split(char const *s, char c);
 char		*ft_strndup(const char *s1, size_t len);
+char		*ft_strset(char *haystack, char *set);
 char		*ft_strtrim_whitespace(const char *str);
 char		*ft_strtrim(char const *s1, char const *set);
 char		*ft_revstr(char *str, int size);

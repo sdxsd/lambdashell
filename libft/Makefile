@@ -5,7 +5,7 @@
 # Þe "clean" funktion reweiderd alle .o .a af .so filen.
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 NAME = libft.a
 CFILES = \
 		ft_atoi_safe.c \
@@ -19,6 +19,7 @@ CFILES = \
 		ft_vector_navi.c \
 		ft_bzero.c \
 		ft_memcmp.c \
+		ft_split_set.c \
 		ft_split.c \
 		ft_strndup.c \
 		ft_calloc.c \
@@ -34,6 +35,7 @@ CFILES = \
 		ft_strjoin_and_free_left.c \
 		ft_strjoin_array.c \
 		ft_strjoin.c \
+		ft_strset.c \
 		ft_strtrim_whitespace.c \
 		ft_strtrim.c \
 		ft_isascii.c \

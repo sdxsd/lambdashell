@@ -39,7 +39,7 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-static char	*last_direc(char *line)
+static char	*last_directory(char *line)
 {
 	char	*last;
 	size_t	iter;
@@ -66,7 +66,7 @@ char	*get_readline_str(t_shell *lambda)
 	if (!user)
 		user = "???";
 	if (lambda->cwd)
-		leaf_dir = last_direc(lambda->cwd);
+		leaf_dir = last_directory(lambda->cwd);
 	else
 		leaf_dir = "???";
 	readline_str = ft_strjoin_array((char *[]){GREEN, "[", user, "] ", \

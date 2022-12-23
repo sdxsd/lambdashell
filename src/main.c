@@ -55,7 +55,7 @@ static void	prompt(t_shell *lambda)
 		stop();
 		return ;
 	}
-	else if (ft_strlen(lambda->line) < 1)
+	else if (ft_strlen(lambda->line) < 1) // TODO: Is this necessary?
 		return ;
 	add_history(lambda->line);
 	lambda->tokens = tokenize(lambda->line);
@@ -67,15 +67,18 @@ static void	prompt(t_shell *lambda)
 	// 	return ;
 	if (expand_variables(lambda->tokens, lambda) == FAILURE)
 		return ;
+	dbg_print_tokens(lambda->tokens);
+	if (split_env_tokens(&lambda->tokens) == FAILURE)
+		return ;
+	dbg_print_tokens(lambda->tokens);
 	lambda->cmds = parse(lambda->tokens, lambda->env);
 	if (!lambda->cmds)
 		return ;
 	dealloc_lst(&lambda->tokens, dealloc_token);
-	// dbg_print_commands(lambda->cmds);
+	dbg_print_commands(lambda->cmds);
 	if (execute(lambda->cmds, lambda) == FAILURE)
 		return ;
 	dealloc_lst(&lambda->cmds, dealloc_cmd);
-	return ;
 }
 
 static int	shell_init(char **env, t_shell *lambda)

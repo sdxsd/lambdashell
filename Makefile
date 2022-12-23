@@ -1,6 +1,6 @@
 
 CC = clang
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 NAME = minishell
 CFILES = \
 	src/main.c \
@@ -28,6 +28,7 @@ CFILES = \
 	src/stop/stop.c \
 	src/tokenize/get_token.c \
 	src/tokenize/sanitize_tokens.c \
+	src/tokenize/split_env_tokens.c \
 	src/tokenize/subtokenizers.c \
 	src/tokenize/tokenize.c \
 	src/signals/signals.c \
