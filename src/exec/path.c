@@ -52,8 +52,8 @@ char	*get_absolute_path_from_env(char *name, t_list *env)
 	int			iter;
 
 	iter = 0;
-		path = env_get_val(env, "PATH");
-	if (!path)
+	path = env_get_val(env, "PATH");
+	if (!path || ft_streq(name, ""))
 		return (name);
 	exec_direcs = ft_split(path, ':');
 	if (!exec_direcs)
