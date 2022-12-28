@@ -46,11 +46,12 @@ int	dealloc_cmd(void *cmd_ptr)
 
 	_cmd_ptr = cmd_ptr;
 	cmd = *_cmd_ptr;
-	if (cmd == NULL)
-		return (FAILURE);
-	dealloc_ptr_array(&cmd->args);
-	ft_free(&cmd->path);
-	dealloc_lst(&cmd->redirections, dealloc_redirection);
+	if (cmd)
+	{
+		dealloc_ptr_array(&cmd->args);
+		ft_free(&cmd->path);
+		dealloc_lst(&cmd->redirections, dealloc_redirection);
+	}
 	ft_free(_cmd_ptr);
 	return (FAILURE);
 }
@@ -62,8 +63,11 @@ int	dealloc_env_element(void *env_element_ptr)
 
 	_env_element_ptr = env_element_ptr;
 	env_element = *_env_element_ptr;
-	ft_free(&env_element->key);
-	ft_free(&env_element->val);
+	if (env_element)
+	{
+		ft_free(&env_element->key);
+		ft_free(&env_element->val);
+	}
 	ft_free(_env_element_ptr);
 	return (FAILURE);
 }
@@ -75,7 +79,8 @@ int	dealloc_token(void *token_ptr)
 
 	_token_ptr = token_ptr;
 	token = *_token_ptr;
-	ft_free(&token->content);
+	if (token)
+		ft_free(&token->content);
 	ft_free(_token_ptr);
 	return (FAILURE);
 }
@@ -115,7 +120,8 @@ int	dealloc_redirection(void *redirect_ptr)
 
 	_redirect_ptr = redirect_ptr;
 	redirect = *_redirect_ptr;
-	ft_free(&redirect->file_path);
+	if (redirect)
+		ft_free(&redirect->file_path);
 	ft_free(_redirect_ptr);
 	return (FAILURE);
 }

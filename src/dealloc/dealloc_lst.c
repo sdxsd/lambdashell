@@ -43,7 +43,7 @@ void	dealloc_lst(t_list **lst, int (*del)(void*))
 {
 	t_list	*ptr;
 
-	if (lst == NULL || *lst == NULL)
+	if (lst == NULL)
 		return ;
 	while (*lst)
 	{
