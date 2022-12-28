@@ -111,7 +111,11 @@ void	mark_ambiguous_redirects(t_list *tokens)
 	{
 		token = tokens->content;
 		if (token->type == REDIRECTION)
+		{
+			tokens = tokens->next;
+			skip_whitespace_tokens(&tokens);
 			token->is_ambiguous = is_ambiguous_redirect(tokens);
+		}
 		tokens = tokens->next;
 	}
 }
