@@ -248,12 +248,10 @@ static int	execute_complex_command(int input_fd, t_list *cmds, t_shell *lambda)
 {
 	int		tube[2];
 	pid_t	pid;
-	t_cmd	*cmd;
 	int		stat_loc;
 
 	if (cmds->next && pipe(tube) == -1)
 		return (msg_err("exec_and_pipe()", FAILURE));
-	cmd = cmds->content;
 	pid = fork();
 	if (pid == FORK_FAILURE)
 		return (msg_err("exec_and_pipe()", FAILURE));

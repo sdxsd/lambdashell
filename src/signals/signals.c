@@ -13,8 +13,11 @@
 #include "../../include/minishell.h"
 #include <signal.h>
 
-// Are signals really this simple?: Yes.
+/* NOTE: Global variable should be defined here. */
+int	status;
 
+// Are signals really this simple?: Yes.
+//
 void	SIGINT_alt(int sig)
 {
 	if (sig == SIGINT)

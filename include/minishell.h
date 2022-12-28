@@ -78,7 +78,7 @@ A program is free software if users have all of these freedoms.
 // "Characters that aren't part of the standard ASCII table are forbidden."
 # define PREFIX "\u03BB"
 
-/* GLOBAL VARIABLE */
-int	status;
+/* True definition in signals.c */
+extern int status;
 
 #endif

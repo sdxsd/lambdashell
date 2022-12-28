@@ -1,6 +1,6 @@
 
 CC = clang
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g
 NAME = minishell
 CFILES = \
 	src/main.c \
