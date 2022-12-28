@@ -61,7 +61,7 @@ static t_status	argless_export(t_shell *lambda)
 
 t_status	export(t_cmd *cmd, t_shell *lambda)
 {
-	int	iter;
+	size_t	iter;
 
 	if (!cmd->args[1])
 		return (argless_export(lambda));
