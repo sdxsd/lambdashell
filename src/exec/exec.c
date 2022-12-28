@@ -249,14 +249,12 @@ static int	execute_complex_command(int input_fd, t_list *cmds, t_shell *lambda)
 	int		tube[2];
 	pid_t	pid;
 	int		stat_loc;
-	t_cmd	*cmd;
 
-	cmd = cmds->content;
 	if (cmds->next && pipe(tube) == -1)
 		return (msg_err("execute_complex_command()", FAILURE));
 	pid = fork();
 	if (pid == FORK_FAILURE)
-		return (msg_err(cmd->args[0], FAILURE));
+		return (msg_err("fork", FAILURE));
 	if (pid == FORK_CHILD)
 	{
 		signal_handler_child_set();
