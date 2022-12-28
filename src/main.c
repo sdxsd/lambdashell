@@ -73,10 +73,7 @@ static void	prompt(t_shell *lambda)
 		return ;
 	// dbg_print_commands(lambda->cmds);
 	if (execute(lambda->cmds, lambda) == FAILURE)
-	{
-		printf("HELL!\n");
 		return ;
-	}
 }
 
 static int	shell_init(char **env, t_shell *lambda)
