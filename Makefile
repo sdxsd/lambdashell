@@ -23,6 +23,7 @@ CFILES = \
 	src/error/error.c \
 	src/exec/exec.c \
 	src/exec/path.c \
+	src/heredoc/heredoc.c \
 	src/parse/is_text_token.c \
 	src/parse/parse.c \
 	src/parse/skip_whitespace_tokens.c \
