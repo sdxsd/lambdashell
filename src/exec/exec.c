@@ -40,6 +40,7 @@ A program is free software if users have all of these freedoms.
 #include "../../include/minishell.h"
 #include <sys/wait.h>
 #include <fcntl.h>
+#include <errno.h>
 
 static int	redirections(t_list *list, t_cmd *cmd)
 {
@@ -269,7 +270,11 @@ static int	execute_complex_command(int input_fd, t_list *cmds, t_shell *lambda)
 	if (input_fd != -1)
 		close(input_fd); // TODO: Right now only the parent is closing the read end!!
 	if (cmds->next && execute_complex_command(tube[READ], cmds->next, lambda) != SUCCESS)
+	{
+		if (errno != EAGAIN)
+			return (msg_err("execute_complex_command()", FAILURE));
 		return (FAILURE);
+	}
 	waitpid(pid, &stat_loc, 0);
 	if (!cmds->next)
 		status = get_wait_status(stat_loc);
