@@ -2,32 +2,28 @@
 
 * Errors:
 Multiple output of errors when too many forks.
-"Unset PATH" occasionally not working. (We most likely cache the path)
-
-* TODO Will [/]
-+ [ ] Write ft_fprintf for easy error printing.
-+ [ ] License builtin as advised by the GNU GPLv3.
 
 * Minishell
-** TODO Builtins: [3/7]
+** DONE Builtins: [7/7]
 + [X] cd
 + [X] pwd
 + [X] env
-+ [ ] exit
-+ [ ] echo with -n
-+ [ ] export
-+ [ ] unset
-** TODO Features: [3/10]
++ [X] exit
++ [X] echo with -n
++ [X] export
++ [X] unset
+** DONE Features: [10/10]
 + [X] Redirections
 + [X] Piping
 + [X] Single commands
-+ [ ] Variable expansion
-+ [ ] Return values
-+ [ ] Signals
-+ [ ] History
-+ [ ] Single quotes
-+ [ ] Double quotes
-+ [ ] Parsing
++ [X] Variable expansion
++ [X] Return values
++ [X] Signals
++ [X] History
++ [X] Single quotes
++ [X] Double quotes
++ [X] Parsing
+
 
 * Methodology
 ** How bash does it (Thanks Freek!)
@@ -73,48 +69,3 @@ typedef struct simple_com {
   REDIRECT *redirects; /* Redirections to perform. */
 } SIMPLE_COM;
 #+END_SRC
-
-* Documentation
-** t_cmd
-The t_cmd struct contains all data required to run execve.
-Can also contain builtins.
-** t_exec_element
-A multifunctional struct that is filled out through the course of the program.
-#+BEGIN_SRC c
-typedef struct s_exec_element
-{
-    int  type; // I.e. tkn_bltin, tkn_cmd.
-    char *line; // Contains the raw line: "grep "Hello!" file.txt"
-    void *value; // Contains the struct required for execution: t_cmd
-    struct s_exec_element *next; // Next element in the list.
-}   t_exec_element;
-#+END_SRC
-
-* t_vector
-A doubly linked list with a number of subroutines for easy
-manipulation and navigation.
-** t_vector *alloc_vector(int n_elements);
-Allocates (n_elements) vector elements.
-** int vec_assign_element(t_vector *head, size_t idx, void *data);
-Takes the head of the list, an index value and a pointer to data.
-The vector element at (idx) will have its data value point to data.
-** t_vector *vec_get_element(t_vector *head, size_t idx);
-Returns the vector element at (idx).
-** t_vector *new_vector_element(t_vector *prev, size_t idx);
-Returns a new vector element.
-** void *free_vector(t_vector *vec, void (*dealloc) (void *));
-Deallocs entire vector list.
-** t_vector *vector_get_last(t_vector *vec);
-Returns last element in vector.
-** t_vector *vector_get_first(t_vector *vec);
-Returns first element in vector.
-** int vector_size(t_vector *vec);
-Returns size of vector.
-** t_vector *vector_push_back(t_vector *head, t_vector *new);
-Places new vector element at the back of the vector.
-** void vector_pop_back(t_vector *head, void (*dealloc) (void *));
-Removes the vector element from back of the vector.
-** t_vector *vector_push_front(t_vector **head, t_vector *new);
-Pushes new vector element to the front of the vector.
-** t_vector *vector_pop_front(t_vector *head, void (*dealloc) (void *));
-Removes vector element from the front of the vector.
