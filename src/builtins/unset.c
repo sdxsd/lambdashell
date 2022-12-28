@@ -39,13 +39,13 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-int	string_cmp_fn(void *lst_content, void *needle)
+static int	string_cmp_fn(void *lst_content, void *needle)
 {
 	return (ft_strcmp(((t_env_element *)lst_content)->key, (char *)needle));
 }
 
 // TODO: Should anything special happen if no argument is provided?
-int	unset(t_cmd *cmd, t_shell *lambda)
+t_status	unset(t_cmd *cmd, t_shell *lambda)
 {
 	char	**args;
 
@@ -56,5 +56,5 @@ int	unset(t_cmd *cmd, t_shell *lambda)
 		ft_lst_remove_if(&lambda->env, *args, string_cmp_fn);
 		args++;
 	}
-	return (SUCCESS);
+	return (OK);
 }

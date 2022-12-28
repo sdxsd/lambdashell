@@ -39,9 +39,9 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-static int	get_key_length(char *str)
+static size_t	get_key_length(char *str)
 {
-	int	count;
+	size_t	count;
 
 	count = 0;
 	while (str[count] != '\0' && str[count] != '=')
@@ -49,7 +49,7 @@ static int	get_key_length(char *str)
 	return (count);
 }
 
-static int	add_env_element(char *key, char *val, t_list **env)
+static t_status	add_env_element(char *key, char *val, t_list **env)
 {
 	t_env_element	*env_element;
 
@@ -60,30 +60,30 @@ static int	add_env_element(char *key, char *val, t_list **env)
 	env_element->val = val;
 	if (!ft_lstnew_back(env, env_element))
 		return (dealloc_env_element(&env_element));
-	return (SUCCESS);
+	return (OK);
 }
 
-int	get_val(char **val, char *env_line)
+t_status	get_val(char **val, char *env_line)
 {
 	*val = NULL;
 	if (env_line[get_key_length(env_line)] == '=')
 	{
 		*val = ft_strdup(env_line + get_key_length(env_line) + 1);
 		if (!*val)
-			return (stop());
+			return (ERROR);
 	}
-	return (SUCCESS);
+	return (OK);
 }
 
-int	add_or_change_env_element(char *env_line, t_list **env)
+t_status	add_or_change_env_element(char *env_line, t_list **env)
 {
 	char			*key;
 	char			*val;
 	t_env_element	*env_element;
 
 	key = ft_strndup(env_line, get_key_length(env_line));
-	if (!key || get_val(&val, env_line) == FAILURE)
-		return (stop());
+	if (!key || get_val(&val, env_line) == ERROR)
+		return (ERROR);
 	while (*env)
 	{
 		env_element = (*env)->content;
@@ -91,25 +91,25 @@ int	add_or_change_env_element(char *env_line, t_list **env)
 		{
 			ft_free(&key);
 			if (!val)
-				return (SUCCESS);
+				return (OK);
 			ft_free(&env_element->val);
 			env_element->val = val;
-			return (SUCCESS);
+			return (OK);
 		}
 		env = &(*env)->next;
 	}
 	return (add_env_element(key, val, env));
 }
 
-int	init_env(char **env, t_list **lambda_env)
+t_status	init_env(char **env, t_list **lambda_env)
 {
 	while (*env)
 	{
-		if (add_or_change_env_element(*env, lambda_env) == FAILURE)
-			return (FAILURE);
+		if (add_or_change_env_element(*env, lambda_env) == ERROR)
+			return (ERROR);
 		env++;
 	}
-	return (SUCCESS);
+	return (OK);
 }
 
 // TODO: Can env_element or env_element->key be NULL?

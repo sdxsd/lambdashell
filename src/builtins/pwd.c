@@ -39,10 +39,10 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-int	pwd(t_shell *lambda)
+t_status	pwd(t_shell *lambda)
 {
 	if (lambda->cwd == NULL)
-		return (msg_err("pwd()", FAILURE));
+		return (msg_err("pwd()", ERROR));
 	ft_printf("%s\n", lambda->cwd);
-	return (SUCCESS);
+	return (OK);
 }

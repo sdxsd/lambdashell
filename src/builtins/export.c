@@ -39,12 +39,12 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-static int	argless_export(t_shell *lambda)
+static t_status	argless_export(t_shell *lambda)
 {
 	t_list			*env_list;
 	t_env_element	*env_element;
 
-	// TODO: Should this function ever return FAILURE?
+	// TODO: Should this function ever return ERROR?
 	env_list = lambda->env;
 	while (env_list)
 	{
@@ -56,10 +56,10 @@ static int	argless_export(t_shell *lambda)
 			ft_printf("declare -x %s=\"%s\"\n", env_element->key, env_element->val);
 		env_list = env_list->next;
 	}
-	return (SUCCESS);
+	return (OK);
 }
 
-int	export(t_cmd *cmd, t_shell *lambda)
+t_status	export(t_cmd *cmd, t_shell *lambda)
 {
 	int	iter;
 
@@ -73,5 +73,5 @@ int	export(t_cmd *cmd, t_shell *lambda)
 	}
 	/* NOTE: Protect if add_or_change_env_element() goes wrong. */
 	/* return (add_or_change_env_element(cmd->args[1], &lambda->env)); */
-	return (SUCCESS);
+	return (OK);
 }

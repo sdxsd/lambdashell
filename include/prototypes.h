@@ -45,8 +45,8 @@ A program is free software if users have all of these freedoms.
 t_env_element	*alloc_env_element(void);
 
 /* BUILTINS */
-int				cd(t_cmd *cmd, t_shell *lambda);
-int				env(t_shell *lambda);
+t_status		cd(t_cmd *cmd, t_shell *lambda);
+t_status		env(t_shell *lambda);
 void			bltin_exit(t_cmd *cmd);
 int				export(t_cmd *cmd, t_shell *lambda);
 int				pwd(t_shell *lambda);
@@ -57,31 +57,27 @@ int				echo(t_cmd *cmd);
 char			*get_readline_str(t_shell *lambda);
 
 /* DEALLOC */
-int				dealloc_cmd(void *cmd_ptr);
-int				dealloc_env_element(void *env_element_ptr);
-int				dealloc_token(void *token_ptr);
-int				dealloc_lambda(t_shell *lambda);
+t_status		dealloc_cmd(void *cmd_ptr);
+t_status		dealloc_env_element(void *env_element_ptr);
+t_status		dealloc_token(void *token_ptr);
 void			dealloc_ptr_array(void *ptr_array_ptr);
-int				dealloc_redirection(void *redirect_ptr);
-void			dealloc_lst(t_list **lst, int (*del)(void*));
-
-/* DEBUG */
-void			dbg_print_tokens(t_list *tokens);
-void			dbg_print_commands(t_list *cmds);
+t_status		dealloc_redirection(void *redirect_ptr);
+void			dealloc_lst(t_list **lst, t_status (*del)(void*));
+t_status		dealloc_lambda(t_shell *lambda);
 
 /* ENVIRONMENT */
-int				add_or_change_env_element(char *env_line, t_list **env);
-int				init_env(char **env, t_list **lambda_env);
+t_status		add_or_change_env_element(char *env_line, t_list **env);
+t_status		init_env(char **env, t_list **lambda_env);
 char			**env_to_strings(t_list *env);
 char			*env_get_val(t_list *env, char *key);
-int				expand_variables(t_list *tokens, t_shell *lambda);
+t_status		expand_variables(t_list *tokens, t_shell *lambda);
 
 /* ERROR MESSAGES */
-int				msg_err(char *s, int ret);
+t_status		msg_err(char *s, t_status ret);
 void			*null_msg_err(char *s);
 
 /* EXECUTION */
-int				execute(t_shell *lambda);
+t_status		execute(t_shell *lambda);
 
 /* PARSE */
 bool			is_ambiguous_redirect(t_list *tokens);
@@ -90,16 +86,14 @@ t_list			*parse(t_list *tokens, t_list *env);
 void			skip_whitespace_tokens(t_list **tokens);
 
 /* STOP */
-int				*get_stop_ptr(void);
-int				running(void);
-int				stop(void);
-void			*stop_null(void);
+bool			running(void);
+t_status		stop(void);
 void			stop_void(void);
 
 /* TOKENISATION */
 t_token			*get_token(t_token_type type, char *content);
-int				check_token_syntax_errors(t_list *tokens);
-int				split_env_tokens(t_list **tokens_ptr);
+t_status		check_token_syntax_errors(t_list *tokens);
+t_status		split_env_tokens(t_list **tokens_ptr);
 t_token_type	subtokenize_single_quote(char **line_ptr);
 t_token_type	subtokenize_double_quote(char **line_ptr);
 t_token_type	subtokenize_heredoc(char **line_ptr);
@@ -111,35 +105,18 @@ t_token_type	subtokenize_unquoted(char **line_ptr);
 t_list			*tokenize(char *line);
 
 /* SIGNALS */
-void	signal_handler_set(void);
-void	signal_handler_child_set(void);
-void	disable_signals(void);
+void			signal_handler_set(void);
+void			signal_handler_child_set(void);
+void			disable_signals(void);
 
 /* UPDATE_CWD */
 void			update_cwd(t_shell *lambda);
 
-/* EXECUTION */
-int				executor(int i_fd, t_list *cmds, t_shell *lambda);
-
-/* PARSE */
-bool			is_ambiguous_redirect(t_list *tokens);
-bool			is_text_token(t_token *token);
-t_list			*parse(t_list *tokens, t_list *env);
-void			skip_whitespace_tokens(t_list **tokens);
-
 /* PATH */
 char			*get_absolute_path_from_env(char *name, t_list *env);
-
-/* DEALLOC */
-void			dealloc_ptr_array(void *ptr_array_ptr);
-int				dealloc_lambda(t_shell *lambda);
-void			dealloc_cmds(t_list *cmds);
-int				dealloc_cmd(void *cmd_ptr);
-void			dealloc_redirections(t_list *redir);
 
 /* DEBUG */
 void			dbg_print_tokens(t_list *tokens);
 void			dbg_print_commands(t_list *cmds);
-void			dbg_print_lines(char **lines);
 
 #endif
