@@ -61,7 +61,17 @@ static int	argless_export(t_shell *lambda)
 
 int	export(t_cmd *cmd, t_shell *lambda)
 {
+	int	iter;
+
 	if (!cmd->args[1])
 		return (argless_export(lambda));
-	return (add_or_change_env_element(cmd->args[1], &lambda->env));
+	iter = 1;
+	while (cmd->args[iter] != NULL)
+	{
+		add_or_change_env_element(cmd->args[iter], &lambda->env);
+		iter++;
+	}
+	/* NOTE: Protect if add_or_change_env_element() goes wrong. */
+	/* return (add_or_change_env_element(cmd->args[1], &lambda->env)); */
+	return (SUCCESS);
 }
