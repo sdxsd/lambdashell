@@ -1,8 +1,5 @@
 #+TITLE: Minishell
 
-* Errors:
-Multiple output of errors when too many forks.
-
 * Minishell
 ** DONE Builtins: [7/7]
 + [X] cd
