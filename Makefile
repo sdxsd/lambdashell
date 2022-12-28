@@ -11,6 +11,7 @@ CFILES = \
 	src/builtins/export.c \
 	src/builtins/pwd.c \
 	src/builtins/unset.c \
+	src/builtins/echo.c \
 	src/cosmetic/cosmetic.c \
 	src/dealloc/dealloc_lst.c \
 	src/dealloc/dealloc.c \

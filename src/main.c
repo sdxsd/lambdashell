@@ -72,7 +72,7 @@ static void	prompt(t_shell *lambda)
 	if (!lambda->cmds)
 		return ;
 	// dbg_print_commands(lambda->cmds);
-	if (execute(lambda->cmds, lambda) == FAILURE)
+	if (execute(lambda) == FAILURE)
 		return ;
 }
 

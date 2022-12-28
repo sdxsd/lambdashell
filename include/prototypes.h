@@ -51,6 +51,7 @@ void			bltin_exit(t_cmd *cmd);
 int				export(t_cmd *cmd, t_shell *lambda);
 int				pwd(t_shell *lambda);
 int				unset(t_cmd *cmd, t_shell *lambda);
+int				echo(t_cmd *cmd);
 
 /* COSMETIC */
 char			*get_readline_str(t_shell *lambda);
@@ -80,7 +81,7 @@ int				msg_err(char *s, int ret);
 void			*null_msg_err(char *s);
 
 /* EXECUTION */
-int				execute(t_list *cmds, t_shell *lambda);
+int				execute(t_shell *lambda);
 
 /* PARSE */
 bool			is_ambiguous_redirect(t_list *tokens);

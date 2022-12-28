@@ -281,9 +281,9 @@ static int	execute_complex_command(int input_fd, t_list *cmds, t_shell *lambda)
 	return (SUCCESS);
 }
 
-int	execute(t_list *cmds, t_shell *lambda)
+int	execute(t_shell *lambda)
 {
-	if (cmds->next)
-		return (execute_complex_command(-1, cmds, lambda));
-	return (execute_simple_command(cmds->content, lambda));
+	if (lambda->cmds->next)
+		return (execute_complex_command(-1, lambda->cmds, lambda));
+	return (execute_simple_command(lambda->cmds->content, lambda));
 }
