@@ -19,10 +19,10 @@ CFILES = \
 	src/env/env_utils.c \
 	src/env/env.c \
 	src/env/expand_variables.c \
+	src/env/mark_ambiguous_redirects.c \
 	src/error/error.c \
 	src/exec/exec.c \
 	src/exec/path.c \
-	src/parse/is_ambiguous_redirect.c \
 	src/parse/is_text_token.c \
 	src/parse/parse.c \
 	src/parse/skip_whitespace_tokens.c \

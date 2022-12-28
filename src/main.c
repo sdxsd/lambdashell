@@ -62,6 +62,7 @@ static void	prompt(t_shell *lambda)
 	// 	return ;
 	if (expand_variables(lambda->tokens, lambda) == ERROR)
 		return ;
+	mark_ambiguous_redirects(lambda->tokens);
 	// dbg_print_tokens(lambda->tokens);
 	if (split_env_tokens(&lambda->tokens) == ERROR)
 		return ;

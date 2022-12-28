@@ -100,6 +100,7 @@ typedef struct s_token
 {
 	t_token_type	type;
 	char			*content;
+	bool			is_ambiguous;
 }	t_token;
 
 typedef enum s_expansion_state

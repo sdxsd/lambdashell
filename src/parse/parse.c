@@ -80,21 +80,22 @@ static t_redirect	*get_redirect(t_list **tokens)
 
 	redirect = ft_calloc(1, sizeof(*redirect));
 	fill_direction(redirect, (*tokens)->content);
+	token = (*tokens)->content;
+	redirect->is_ambiguous = token->is_ambiguous;
 	*tokens = (*tokens)->next;
-	skip_whitespace_tokens(tokens);
+	skip_whitespace_tokens(tokens); // TODO: Try to let the while-loop below naturally do this
 	redirect->file_path = ft_calloc(1, sizeof(*redirect->file_path));
 	if (!redirect->file_path)
 	{
 		// TODO: Free
 		return (NULL);
 	}
-	redirect->is_ambiguous = is_ambiguous_redirect(*tokens);
 	while (*tokens)
 	{
 		token = (*tokens)->content;
 		// TODO: Maybe necessary to add check for token being NULL?
 		if (!is_text_token(token))
-			break;
+			break ;
 
 		if (token->type == UNQUOTED)
 			content = ft_strtrim_whitespace(token->content);
@@ -132,7 +133,7 @@ static char	*get_path(t_list **tokens, t_list *env)
 		token = (*tokens)->content;
 		// TODO: Maybe necessary to add check for token being NULL?
 		if (!is_text_token(token))
-			break;
+			break ;
 
 		path = ft_strjoin_and_free_left(path, token->content);
 		if (!path)
@@ -188,7 +189,7 @@ static char		*get_arg(t_list **tokens)
 		token = (*tokens)->content;
 		// TODO: Maybe necessary to add check for token being NULL?
 		if (!is_text_token(token))
-			break;
+			break ;
 		arg = ft_strjoin_and_free_left(arg, token->content);
 		if (!arg)
 		{
@@ -210,7 +211,7 @@ static t_status	fill_cmd(t_list **tokens, t_list *env, t_cmd *cmd)
 
 	arg_list = NULL;
 	arg_zero = NULL;
-	token = (*tokens)->content;
+	// token = (*tokens)->content;
 	while (*tokens)
 	{
 		token = (*tokens)->content;
@@ -232,25 +233,10 @@ static t_status	fill_cmd(t_list **tokens, t_list *env, t_cmd *cmd)
 			cmd->path = get_path(tokens, env);
 			if (!cmd->path)
 				return (ERROR);
-			// if (!is_builtin(cmd->path) && ft_strchr(cmd->path, '/') == NULL)
-			// {
-			// 	absolute_path = get_absolute_path_from_env(cmd->path, env);
-			// 	if (!running())
-			// 	{
-			// 		// TODO: Free
-			// 		return (ERROR);
-			// 	}
-			// 	if (absolute_path)
-			// 	{
-			// 		ft_free(&cmd->path);
-			// 		cmd->path = absolute_path;
-			// 	}
-			// }
 		}
 		else if (is_text_token(token))
 		{
 			arg = get_arg(tokens);
-			// FIXME: Memory leak here in ft_lstnew_back().
 			if (!arg || !ft_lstnew_back(&arg_list, arg))
 				return (ERROR);
 		}

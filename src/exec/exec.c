@@ -135,10 +135,10 @@ static t_status	execute_builtin(t_cmd *cmd, t_shell *lambda)
 	// TODO: Maybe if-statement check whether path or args or args[0] or args[1] is NULL?
 	if (ft_streq(cmd->path, "cd"))
 		status = cd(cmd, lambda);
-	else if (ft_streq(cmd->path, "env"))
-		status = env(lambda);
 	else if (ft_streq(cmd->path, "echo"))
 		status = echo(cmd);
+	else if (ft_streq(cmd->path, "env"))
+		status = env(lambda);
 	else if (ft_streq(cmd->path, "exit"))
 		bltin_exit(cmd);
 	else if (ft_streq(cmd->path, "export"))

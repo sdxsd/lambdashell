@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   is_ambiguous_redirect.c                            :+:    :+:            */
+/*   mark_ambiguous_redirects.c                         :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/11/22 15:48:01 by sbos          #+#    #+#                 */
-/*   Updated: 2022/11/22 15:48:01 by sbos          ########   odam.nl         */
+/*   Created: 2022/12/28 20:21:22 by sbos          #+#    #+#                 */
+/*   Updated: 2022/12/28 20:21:22 by sbos          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-bool	is_ambiguous_redirect(t_list *tokens)
+static bool	is_ambiguous_redirect(t_list *tokens)
 {
 	t_token	*token;
 
@@ -101,4 +101,17 @@ bool	is_ambiguous_redirect(t_list *tokens)
 	// `echo a > $empty`
 	// `echo a > $space`
 	return (!valid_path);
+}
+
+void	mark_ambiguous_redirects(t_list *tokens)
+{
+	t_token	*token;
+
+	while (tokens)
+	{
+		token = tokens->content;
+		if (token->type == REDIRECTION)
+			token->is_ambiguous = is_ambiguous_redirect(tokens);
+		tokens = tokens->next;
+	}
 }

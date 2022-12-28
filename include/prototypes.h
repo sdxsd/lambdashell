@@ -71,6 +71,7 @@ t_status		init_env(char **env, t_list **lambda_env);
 char			**env_to_strings(t_list *env);
 char			*env_get_val(t_list *env, char *key);
 t_status		expand_variables(t_list *tokens, t_shell *lambda);
+void			mark_ambiguous_redirects(t_list *tokens);
 
 /* ERROR MESSAGES */
 t_status		msg_err(char *s, t_status ret);
@@ -80,7 +81,6 @@ void			*null_msg_err(char *s);
 t_status		execute(t_shell *lambda);
 
 /* PARSE */
-bool			is_ambiguous_redirect(t_list *tokens);
 bool			is_text_token(t_token *token);
 t_list			*parse(t_list *tokens, t_list *env);
 void			skip_whitespace_tokens(t_list **tokens);
