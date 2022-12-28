@@ -57,16 +57,14 @@ char			*get_readline_str(t_shell *lambda);
 
 /* DEALLOC */
 int				dealloc_cmd(void *cmd_ptr);
+void			dealloc_cmds(t_list *cmds);
 int				dealloc_env_element(void *env_element_ptr);
 int				dealloc_token(void *token_ptr);
-int				dealloc_lambda(t_shell *lambda);
 void			dealloc_ptr_array(void *ptr_array_ptr);
 int				dealloc_redirection(void *redirect_ptr);
+void			dealloc_redirections(t_list *redir);
 void			dealloc_lst(t_list **lst, int (*del)(void*));
-
-/* DEBUG */
-void			dbg_print_tokens(t_list *tokens);
-void			dbg_print_commands(t_list *cmds);
+int				dealloc_lambda(t_shell *lambda);
 
 /* ENVIRONMENT */
 int				add_or_change_env_element(char *env_line, t_list **env);
@@ -110,9 +108,9 @@ t_token_type	subtokenize_unquoted(char **line_ptr);
 t_list			*tokenize(char *line);
 
 /* SIGNALS */
-void	signal_handler_set(void);
-void	signal_handler_child_set(void);
-void	disable_signals(void);
+void			signal_handler_set(void);
+void			signal_handler_child_set(void);
+void			disable_signals(void);
 
 /* UPDATE_CWD */
 void			update_cwd(t_shell *lambda);
@@ -120,25 +118,11 @@ void			update_cwd(t_shell *lambda);
 /* EXECUTION */
 int				executor(int i_fd, t_list *cmds, t_shell *lambda);
 
-/* PARSE */
-bool			is_ambiguous_redirect(t_list *tokens);
-bool			is_text_token(t_token *token);
-t_list			*parse(t_list *tokens, t_list *env);
-void			skip_whitespace_tokens(t_list **tokens);
-
 /* PATH */
 char			*get_absolute_path_from_env(char *name, t_list *env);
-
-/* DEALLOC */
-void			dealloc_ptr_array(void *ptr_array_ptr);
-int				dealloc_lambda(t_shell *lambda);
-void			dealloc_cmds(t_list *cmds);
-int				dealloc_cmd(void *cmd_ptr);
-void			dealloc_redirections(t_list *redir);
 
 /* DEBUG */
 void			dbg_print_tokens(t_list *tokens);
 void			dbg_print_commands(t_list *cmds);
-void			dbg_print_lines(char **lines);
 
 #endif
