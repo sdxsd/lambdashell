@@ -46,13 +46,12 @@ static char	*path_join(char *dir, char *name)
 
 char	*get_absolute_path_from_env(char *name, t_list *env)
 {
-	static char	*path;
+	char		*path;
 	char		*absolute_path;
 	char		**exec_direcs;
 	int			iter;
 
 	iter = 0;
-	if (!path)
 		path = env_get_val(env, "PATH");
 	if (!path)
 		return (name);
