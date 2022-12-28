@@ -39,7 +39,7 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-static int	is_builtin(char *path)
+static bool	is_builtin(char *path)
 {
 	return (ft_streq(path, "cd")
 		// || ft_streq(path, "echo")
@@ -50,14 +50,14 @@ static int	is_builtin(char *path)
 		|| ft_streq(path, "unset"));
 }
 
-static int	get_initial_cmd(t_cmd **cmd)
+static t_status	get_initial_cmd(t_cmd **cmd)
 {
 	*cmd = ft_calloc(1, sizeof(**cmd));
 	if (!*cmd)
-		return (FAILURE);
+		return (ERROR);
 	(*cmd)->input_fd = STDIN_FILENO;
 	(*cmd)->output_fd = STDOUT_FILENO;
-	return (SUCCESS);
+	return (OK);
 }
 
 static void	fill_direction(t_redirect *redirect, t_token *token)
@@ -200,7 +200,7 @@ static char		*get_arg(t_list **tokens)
 	return (arg);
 }
 
-static int	fill_cmd(t_list **tokens, t_list *env, t_cmd *cmd)
+static t_status	fill_cmd(t_list **tokens, t_list *env, t_cmd *cmd)
 {
 	t_token		*token;
 	t_redirect	*redirect;
@@ -224,21 +224,21 @@ static int	fill_cmd(t_list **tokens, t_list *env, t_cmd *cmd)
 		{
 			redirect = get_redirect(tokens);
 			if (!redirect || !ft_lstnew_back(&cmd->redirections, redirect))
-				return (FAILURE);
+				return (ERROR);
 		}
 		else if (is_text_token(token) && !cmd->path)
 		{
 			arg_zero = token->content;
 			cmd->path = get_path(tokens, env);
 			if (!cmd->path)
-				return (FAILURE);
+				return (ERROR);
 			// if (!is_builtin(cmd->path) && ft_strchr(cmd->path, '/') == NULL)
 			// {
 			// 	absolute_path = get_absolute_path_from_env(cmd->path, env);
 			// 	if (!running())
 			// 	{
 			// 		// TODO: Free
-			// 		return (FAILURE);
+			// 		return (ERROR);
 			// 	}
 			// 	if (absolute_path)
 			// 	{
@@ -252,7 +252,7 @@ static int	fill_cmd(t_list **tokens, t_list *env, t_cmd *cmd)
 			arg = get_arg(tokens);
 			// FIXME: Memory leak here in ft_lstnew_back().
 			if (!arg || !ft_lstnew_back(&arg_list, arg))
-				return (FAILURE);
+				return (ERROR);
 		}
 		else
 			*tokens = (*tokens)->next;
@@ -265,9 +265,9 @@ static int	fill_cmd(t_list **tokens, t_list *env, t_cmd *cmd)
 	else
 	{
 		ft_lstclear(&arg_list, NULL);
-		return (FAILURE);
+		return (ERROR);
 	}
-	return (SUCCESS);
+	return (OK);
 }
 
 t_list	*parse(t_list *tokens, t_list *env)
@@ -278,7 +278,7 @@ t_list	*parse(t_list *tokens, t_list *env)
 	cmds = NULL;
 	while (tokens)
 	{
-		if (get_initial_cmd(&cmd) == FAILURE || fill_cmd(&tokens, env, cmd) == FAILURE || !cmd->path || !ft_lstnew_back(&cmds, cmd))
+		if (get_initial_cmd(&cmd) == ERROR || fill_cmd(&tokens, env, cmd) == ERROR || !cmd->path || !ft_lstnew_back(&cmds, cmd))
 		{
 			dealloc_cmd(&cmd);
 			return (NULL);

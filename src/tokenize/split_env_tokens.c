@@ -52,18 +52,18 @@ static size_t	get_ptr_array_size(void **ptr)
 	return (size);
 }
 
-static int	new_unquoted_token_back(t_list **current_ptr, char *content,
+static t_status	new_unquoted_token_back(t_list **current_ptr, char *content,
 				t_token_type token_type)
 {
 	t_token	*token;
 
 	token = get_token(token_type, ft_strdup(content));
 	if (!token || !ft_lstnew_back(current_ptr, token))
-		return (FAILURE);
-	return (SUCCESS);
+		return (ERROR);
+	return (OK);
 }
 
-int	split_env_tokens(t_list **tokens_ptr)
+t_status	split_env_tokens(t_list **tokens_ptr)
 {
 	t_list	*prev;
 	t_list	*current;
@@ -89,7 +89,7 @@ int	split_env_tokens(t_list **tokens_ptr)
 			if (!split)
 			{
 				// TODO: ??
-				return (FAILURE);
+				return (ERROR);
 			}
 
 			current->next = NULL;
@@ -100,16 +100,16 @@ int	split_env_tokens(t_list **tokens_ptr)
 			{
 				if (
 					(split_index > 0 || ft_strchr(WHITESPACE_CHARACTERS, *token->content))
-					&& new_unquoted_token_back(&current, " ", WHITESPACE) == FAILURE)
+					&& new_unquoted_token_back(&current, " ", WHITESPACE) == ERROR)
 				{
 					// TODO: ??
-					return (FAILURE);
+					return (ERROR);
 				}
 
-				if (new_unquoted_token_back(&current, split[split_index], UNQUOTED) == FAILURE)
+				if (new_unquoted_token_back(&current, split[split_index], UNQUOTED) == ERROR)
 				{
 					// TODO: ??
-					return (FAILURE);
+					return (ERROR);
 				}
 
 				split_index++;
@@ -117,10 +117,10 @@ int	split_env_tokens(t_list **tokens_ptr)
 
 			dealloc_ptr_array(&split);
 
-			if (split_count > 0 && ft_strchr(WHITESPACE_CHARACTERS, token->content[ft_strlen(token->content) - 1]) && new_unquoted_token_back(&current, " ", WHITESPACE) == FAILURE)
+			if (split_count > 0 && ft_strchr(WHITESPACE_CHARACTERS, token->content[ft_strlen(token->content) - 1]) && new_unquoted_token_back(&current, " ", WHITESPACE) == ERROR)
 			{
 				// TODO: ??
-				return (FAILURE);
+				return (ERROR);
 			}
 
 			dealloc_token(&token);
@@ -155,7 +155,7 @@ int	split_env_tokens(t_list **tokens_ptr)
 
 		current = next;
 	}
-	return (SUCCESS);
+	return (OK);
 }
 
 // TODO: REMOVE THIS BACKUP
@@ -163,10 +163,10 @@ int	split_env_tokens(t_list **tokens_ptr)
 // 	original_element = current;
 // 	current = next;
 
-// 	if (ft_strlen(token->content) > 0 && ft_strchr(WHITESPACE_CHARACTERS, token->content[ft_strlen(token->content) - 1]) && new_unquoted_token_front(&current, " ") == FAILURE)
+// 	if (ft_strlen(token->content) > 0 && ft_strchr(WHITESPACE_CHARACTERS, token->content[ft_strlen(token->content) - 1]) && new_unquoted_token_front(&current, " ") == ERROR)
 // 	{
 // 		// TODO: ??
-// 		return (FAILURE);
+// 		return (ERROR);
 // 	}
 
 // 	split = ft_split_set(token->content, WHITESPACE_CHARACTERS);
@@ -174,7 +174,7 @@ int	split_env_tokens(t_list **tokens_ptr)
 // 	if (!split)
 // 	{
 // 		// TODO: ??
-// 		return (FAILURE);
+// 		return (ERROR);
 // 	}
 
 // 	split_index = get_ptr_array_size((void **)split);
@@ -182,23 +182,23 @@ int	split_env_tokens(t_list **tokens_ptr)
 // 	{
 // 		split_index--;
 
-// 		if (split_index + 1 == get_ptr_array_size((void **)split) && new_unquoted_token_front(&current, " ") == FAILURE)
+// 		if (split_index + 1 == get_ptr_array_size((void **)split) && new_unquoted_token_front(&current, " ") == ERROR)
 // 		{
 // 			// TODO: ??
-// 			return (FAILURE);
+// 			return (ERROR);
 // 		}
 
-// 		if (new_unquoted_token_front(&current, split[split_index]) == FAILURE)
+// 		if (new_unquoted_token_front(&current, split[split_index]) == ERROR)
 // 		{
 // 			// TODO: ??
-// 			return (FAILURE);
+// 			return (ERROR);
 // 		}
 // 	}
 
-// 	if (ft_strchr(WHITESPACE_CHARACTERS, *token->content) && new_unquoted_token_front(&current, " ") == FAILURE)
+// 	if (ft_strchr(WHITESPACE_CHARACTERS, *token->content) && new_unquoted_token_front(&current, " ") == ERROR)
 // 	{
 // 		// TODO: ??
-// 		return (FAILURE);
+// 		return (ERROR);
 // 	}
 
 // 	dealloc_token(&token);

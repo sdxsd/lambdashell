@@ -110,4 +110,10 @@ typedef enum s_expansion_state
 	EXPANSION_STATE_INVALID_VARIABLE,
 }	t_expansion_state;
 
+typedef enum s_status
+{
+	OK,
+	ERROR,
+}	t_status;
+
 #endif

@@ -49,7 +49,7 @@ char	*get_absolute_path_from_env(char *name, t_list *env)
 	char		*path;
 	char		*absolute_path;
 	char		**exec_direcs;
-	int			iter;
+	size_t		iter;
 
 	iter = 0;
 	path = env_get_val(env, "PATH");

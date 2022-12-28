@@ -35,7 +35,7 @@ A program is free software if users have all of these freedoms.
 #include "../../include/minishell.h"
 #include <unistd.h>
 
-int	msg_err(char *s, int ret)
+t_status	msg_err(char *s, t_status ret)
 {
 	ft_putstr_fd(PREFIX": ", STDERR_FILENO);
 	perror(s);

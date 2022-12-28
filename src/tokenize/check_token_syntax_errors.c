@@ -39,7 +39,7 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-static int	check_pipe_syntax_errors(t_list *tokens)
+static t_status	check_pipe_syntax_errors(t_list *tokens)
 {
 	bool	seen_cmd;
 	bool	seen_pipe;
@@ -60,7 +60,7 @@ static int	check_pipe_syntax_errors(t_list *tokens)
 		{
 			status = 2;
 			ft_putstr_fd(PREFIX": syntax error\n", STDERR_FILENO);
-			return (FAILURE);
+			return (ERROR);
 		}
 
 		if (token->type == PIPE && seen_cmd)
@@ -75,12 +75,12 @@ static int	check_pipe_syntax_errors(t_list *tokens)
 	{
 		status = 2;
 		ft_putstr_fd(PREFIX": syntax error\n", STDERR_FILENO);
-		return (FAILURE);
+		return (ERROR);
 	}
-	return (SUCCESS);
+	return (OK);
 }
 
-static int	check_redirection_syntax_errors(t_list *tokens)
+static t_status	check_redirection_syntax_errors(t_list *tokens)
 {
 	bool	seen_redirection;
 	t_token	*token;
@@ -96,7 +96,7 @@ static int	check_redirection_syntax_errors(t_list *tokens)
 			{
 				status = 2;
 				ft_putstr_fd(PREFIX": syntax error\n", STDERR_FILENO);
-				return (FAILURE);
+				return (ERROR);
 			}
 			else if (is_text_token(token))
 				seen_redirection = false;
@@ -114,16 +114,16 @@ static int	check_redirection_syntax_errors(t_list *tokens)
 	{
 		status = 2;
 		ft_putstr_fd(PREFIX": syntax error\n", STDERR_FILENO);
-		return (FAILURE);
+		return (ERROR);
 	}
-	return (SUCCESS);
+	return (OK);
 }
 
-int	check_token_syntax_errors(t_list *tokens)
+t_status	check_token_syntax_errors(t_list *tokens)
 {
-	if (check_pipe_syntax_errors(tokens) == FAILURE)
-		return (FAILURE);
-	if (check_redirection_syntax_errors(tokens) == FAILURE)
-		return (FAILURE);
-	return (SUCCESS);
+	if (check_pipe_syntax_errors(tokens) == ERROR)
+		return (ERROR);
+	if (check_redirection_syntax_errors(tokens) == ERROR)
+		return (ERROR);
+	return (OK);
 }

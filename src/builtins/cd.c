@@ -39,7 +39,7 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-static int	argless_cd(t_list *env)
+static t_status	argless_cd(t_list *env)
 {
 	char	*home_path;
 
@@ -48,31 +48,31 @@ static int	argless_cd(t_list *env)
 	{
 		// TODO: Maybe write a function for manual error messages for this
 		ft_putstr_fd(PREFIX": cd: HOME not set\n", STDERR_FILENO);
-		return (FAILURE);
+		return (ERROR);
 	}
 	if (chdir(home_path) == -1)
-		return (msg_err("cd", FAILURE));
-	return (SUCCESS);
+		return (msg_err("cd", ERROR));
+	return (OK);
 }
 
-int	cd(t_cmd *cmd, t_shell *lambda)
+t_status	cd(t_cmd *cmd, t_shell *lambda)
 {
 	char	*msg;
 
 	if (!cmd->args[1])
 	{
-		if (argless_cd(lambda->env) == FAILURE)
-			return (FAILURE);
+		if (argless_cd(lambda->env) == ERROR)
+			return (ERROR);
 	}
 	else if (chdir(cmd->args[1]) == -1)
 	{
 		msg = ft_strjoin("cd: ", cmd->args[1]);
 		if (!msg)
-			return (msg_err("cd", FAILURE));
-		msg_err(msg, FAILURE);
+			return (msg_err("cd", ERROR));
+		msg_err(msg, ERROR);
 		ft_free(&msg);
-		return (FAILURE);
+		return (ERROR);
 	}
 	update_cwd(lambda);
-	return (SUCCESS);
+	return (OK);
 }

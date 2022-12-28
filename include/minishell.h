@@ -60,8 +60,6 @@ A program is free software if users have all of these freedoms.
 # define WRITE 1
 # define TRUE 1
 # define FALSE 0
-# define FAILURE 1
-# define SUCCESS 0
 # define FORK_FAILURE -1
 # define FORK_CHILD 0
 # define FORK_PARENT 1

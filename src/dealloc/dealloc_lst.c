@@ -39,7 +39,7 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-void	dealloc_lst(t_list **lst, int (*del)(void*))
+void	dealloc_lst(t_list **lst, t_status (*del)(void*))
 {
 	t_list	*ptr;
 

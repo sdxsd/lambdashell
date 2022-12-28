@@ -42,7 +42,7 @@ A program is free software if users have all of these freedoms.
 #include <fcntl.h>
 #include <errno.h>
 
-static int	redirections(t_list *list, t_cmd *cmd)
+static t_status	redirections(t_list *list, t_cmd *cmd)
 {
 	t_redirect	*redir;
 	int			flags;
@@ -57,7 +57,7 @@ static int	redirections(t_list *list, t_cmd *cmd)
 		if (redir->is_ambiguous)
 		{
 			ft_putstr_fd(PREFIX": ambiguous redirect\n", STDERR_FILENO);
-			return (FAILURE);
+			return (ERROR);
 		}
 		if (redir->direction == DIRECTION_IN && !in_encountered)
 		{
@@ -71,7 +71,7 @@ static int	redirections(t_list *list, t_cmd *cmd)
 		// TODO: Should still print "no such file" when a second input file isn't found
 		open_fd = open(redir->file_path, flags, 0644);
 		if (open_fd < 0)
-			return (msg_err(NULL, FAILURE));
+			return (msg_err(NULL, ERROR));
 		if (redir->direction == DIRECTION_IN)
 			cmd->input_fd = open_fd;
 		if (redir->direction == DIRECTION_OUT || redir->direction == DIRECTION_APPEND)
@@ -79,7 +79,7 @@ static int	redirections(t_list *list, t_cmd *cmd)
 		// TODO: Handle DIRECTION_HEREDOC
 		list = list->next;
 	}
-	return (SUCCESS);
+	return (OK);
 }
 
 static void	dup2_cmd(t_cmd *cmd)
@@ -95,15 +95,15 @@ static void	dup2_cmd(t_cmd *cmd)
 		close(cmd->output_fd);
 }
 
-static int	execute_command(t_cmd *cmd, t_shell *lambda)
+static t_status	execute_command(t_cmd *cmd, t_shell *lambda)
 {
 	char	**env_array;
 
-	if (redirections(cmd->redirections, cmd) == FAILURE)
+	if (redirections(cmd->redirections, cmd) == ERROR)
 	{
 		// TODO: ??
 		status = 1;
-		return (FAILURE);
+		return (ERROR);
 	}
 
 	// TODO: Try to find a way to not call this env_to_strings() every time
@@ -114,20 +114,20 @@ static int	execute_command(t_cmd *cmd, t_shell *lambda)
 	if (execve(cmd->path, cmd->args, env_array) == -1)
 	{
 		status = 127;
-		msg_err(cmd->path, FAILURE);
-		return (FAILURE);
+		msg_err(cmd->path, ERROR);
+		return (ERROR);
 	}
 
-	return (SUCCESS);
+	return (OK);
 }
 
-static int	execute_builtin(t_cmd *cmd, t_shell *lambda)
+static t_status	execute_builtin(t_cmd *cmd, t_shell *lambda)
 {
-	if (redirections(cmd->redirections, cmd) == FAILURE)
+	if (redirections(cmd->redirections, cmd) == ERROR)
 	{
 		// TODO: ??
 		status = 1;
-		return (FAILURE);
+		return (ERROR);
 	}
 
 	dup2_cmd(cmd);
@@ -151,10 +151,10 @@ static int	execute_builtin(t_cmd *cmd, t_shell *lambda)
 		ft_putstr_fd(PREFIX": ", STDERR_FILENO);
 		ft_putstr_fd(cmd->path, STDERR_FILENO);
 		ft_putstr_fd(": command not found\n", STDERR_FILENO);
-		return (FAILURE);
+		return (ERROR);
 	}
 
-	return (SUCCESS);
+	return (OK);
 }
 
 static int	get_wait_status(int stat_loc)
@@ -170,7 +170,7 @@ static int	get_wait_status(int stat_loc)
 	return (0); // TODO: Is this wanted?
 }
 
-static int	execute_simple_command(t_cmd *cmd, t_shell *lambda)
+static t_status	execute_simple_command(t_cmd *cmd, t_shell *lambda)
 {
 	pid_t	pid;
 	int		stat_loc;
@@ -179,14 +179,14 @@ static int	execute_simple_command(t_cmd *cmd, t_shell *lambda)
 	{
 		pid = fork();
 		if (pid == FORK_FAILURE)
-			return (msg_err("execute_simple_command()", FAILURE));
+			return (msg_err("execute_simple_command()", ERROR));
 		if (pid == FORK_CHILD)
 		{
 			signal_handler_child_set();
-			if (execute_command(cmd, lambda) == FAILURE)
+			if (execute_command(cmd, lambda) == ERROR)
 			{
 				// TODO: ??
-				return (FAILURE);
+				return (ERROR);
 			}
 		}
 		disable_signals();
@@ -196,12 +196,12 @@ static int	execute_simple_command(t_cmd *cmd, t_shell *lambda)
 	}
 	else
 	{
-		if (execute_builtin(cmd, lambda) == FAILURE)
+		if (execute_builtin(cmd, lambda) == ERROR)
 		{
 			// TODO: Can this be moved to the end of execute_builtin()?
 			dup2(lambda->stdin_fd, STDIN_FILENO);
 			dup2(lambda->stdout_fd, STDOUT_FILENO);
-			return (FAILURE);
+			return (ERROR);
 		}
 
 		// TODO: Can this be moved to the end of execute_builtin()?
@@ -209,10 +209,10 @@ static int	execute_simple_command(t_cmd *cmd, t_shell *lambda)
 		dup2(lambda->stdin_fd, STDIN_FILENO);
 		dup2(lambda->stdout_fd, STDOUT_FILENO);
 	}
-	return (SUCCESS);
+	return (OK);
 }
 
-static int	execute_child(int input_fd, t_list *cmds, t_shell *lambda, int tube[2])
+static t_status	execute_child(int input_fd, t_list *cmds, t_shell *lambda, int tube[2])
 {
 	t_cmd	*cmd;
 
@@ -229,37 +229,37 @@ static int	execute_child(int input_fd, t_list *cmds, t_shell *lambda, int tube[2
 
 	if (ft_strchr(cmd->path, '/'))
 	{
-		if (execute_command(cmd, lambda) == FAILURE)
+		if (execute_command(cmd, lambda) == ERROR)
 		{
 			// TODO: ??
 		}
 	}
 	else
 	{
-		if (execute_builtin(cmd, lambda) == FAILURE)
+		if (execute_builtin(cmd, lambda) == ERROR)
 		{
 			// TODO: ??
 		}
 	}
 	exit(status); // TODO: Should anything be freed before this is called?
-	return (SUCCESS);
+	return (OK);
 }
 
-static int	execute_complex_command(int input_fd, t_list *cmds, t_shell *lambda)
+static t_status	execute_complex_command(int input_fd, t_list *cmds, t_shell *lambda)
 {
 	int		tube[2];
 	pid_t	pid;
 	int		stat_loc;
 
 	if (cmds->next && pipe(tube) == -1)
-		return (msg_err("execute_complex_command()", FAILURE));
+		return (msg_err("execute_complex_command()", ERROR));
 	pid = fork();
 	if (pid == FORK_FAILURE)
-		return (msg_err("fork", FAILURE));
+		return (msg_err("fork", ERROR));
 	if (pid == FORK_CHILD)
 	{
 		signal_handler_child_set();
-		if (execute_child(input_fd, cmds, lambda, tube) == FAILURE)
+		if (execute_child(input_fd, cmds, lambda, tube) == ERROR)
 		{
 			// TODO: ??
 		}
@@ -269,19 +269,19 @@ static int	execute_complex_command(int input_fd, t_list *cmds, t_shell *lambda)
 		close(tube[WRITE]);
 	if (input_fd != -1)
 		close(input_fd); // TODO: Right now only the parent is closing the read end!!
-	if (cmds->next && execute_complex_command(tube[READ], cmds->next, lambda) != SUCCESS)
+	if (cmds->next && execute_complex_command(tube[READ], cmds->next, lambda) != OK)
 	{
 		if (errno != EAGAIN)
-			return (msg_err("execute_complex_command()", FAILURE));
-		return (FAILURE);
+			return (msg_err("execute_complex_command()", ERROR));
+		return (ERROR);
 	}
 	waitpid(pid, &stat_loc, 0);
 	if (!cmds->next)
 		status = get_wait_status(stat_loc);
-	return (SUCCESS);
+	return (OK);
 }
 
-int	execute(t_list *cmds, t_shell *lambda)
+t_status	execute(t_list *cmds, t_shell *lambda)
 {
 	if (cmds->next)
 		return (execute_complex_command(-1, cmds, lambda));

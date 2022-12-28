@@ -56,35 +56,35 @@ static void	prompt(t_shell *lambda)
 	lambda->tokens = tokenize(lambda->line);
 	ft_free(&lambda->line);
 	// dbg_print_tokens(lambda->tokens);
-	if (check_token_syntax_errors(lambda->tokens) == FAILURE)
+	if (check_token_syntax_errors(lambda->tokens) == ERROR)
 		return ;
-	// if (exec_heredocs() == FAILURE)
+	// if (exec_heredocs() == ERROR)
 	// 	return ;
-	if (expand_variables(lambda->tokens, lambda) == FAILURE)
+	if (expand_variables(lambda->tokens, lambda) == ERROR)
 		return ;
 	// dbg_print_tokens(lambda->tokens);
-	if (split_env_tokens(&lambda->tokens) == FAILURE)
+	if (split_env_tokens(&lambda->tokens) == ERROR)
 		return ;
 	// dbg_print_tokens(lambda->tokens);
-	// if (remove_outer_whitespace_tokens(&lambda->tokens) == FAILURE)
+	// if (remove_outer_whitespace_tokens(&lambda->tokens) == ERROR)
 	// 	return ;
 	lambda->cmds = parse(lambda->tokens, lambda->env);
 	if (!lambda->cmds)
 		return ;
 	// dbg_print_commands(lambda->cmds);
-	if (execute(lambda->cmds, lambda) == FAILURE)
+	if (execute(lambda->cmds, lambda) == ERROR)
 		return ;
 }
 
-static int	shell_init(char **env, t_shell *lambda)
+static t_status	shell_init(char **env, t_shell *lambda)
 {
 	signal_handler_set();
 	ft_bzero(lambda, sizeof(*lambda));
-	status = SUCCESS;
+	status = OK;
 	// TODO: Should ` || !lambda->env` be placed back?
 	// Idk how to even get a completely empty environment in the tester
-	if (init_env(env, &lambda->env) == FAILURE)
-		return (FAILURE);
+	if (init_env(env, &lambda->env) == ERROR)
+		return (ERROR);
 	// TODO: Should lambda->cwd set by this function be error checked?
 	update_cwd(lambda);
 	// TODO: May need to check errno afterwards according to man page
@@ -92,8 +92,8 @@ static int	shell_init(char **env, t_shell *lambda)
 	lambda->stdin_fd = dup(STDIN_FILENO);
 	lambda->stdout_fd = dup(STDOUT_FILENO);
 	if (lambda->stdin_fd == -1 || lambda->stdout_fd == -1)
-		return (FAILURE);
-	return (SUCCESS);
+		return (ERROR);
+	return (OK);
 }
 
 int	main(int argc, char **argv, char **env)
@@ -102,8 +102,8 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argv;
 	if (argc > 1)
-		return (FAILURE);
-	if (shell_init(env, &lambda) == FAILURE)
+		return (ERROR);
+	if (shell_init(env, &lambda) == ERROR)
 	{
 		rl_clear_history();
 		return (dealloc_lambda(&lambda));

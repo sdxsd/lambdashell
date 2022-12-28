@@ -158,7 +158,7 @@ static char	*get_expanded_string(char *content, t_shell *lambda)
 	return (expanded_string);
 }
 
-int	expand_variables(t_list *tokens, t_shell *lambda)
+t_status	expand_variables(t_list *tokens, t_shell *lambda)
 {
 	t_token	*token;
 	char	*expanded_string;
@@ -181,5 +181,5 @@ int	expand_variables(t_list *tokens, t_shell *lambda)
 		tokens = tokens->next;
 	}
 
-	return (SUCCESS); // TODO: Use status value
+	return (OK); // TODO: Use status value
 }

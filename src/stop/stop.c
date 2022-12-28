@@ -39,22 +39,22 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-static int	*get_stop_ptr(void)
+static bool	*get_stop_ptr(void)
 {
-	static int	stop = false;
+	static bool	stop = false;
 
 	return (&stop);
 }
 
-int	running(void)
+bool	running(void)
 {
 	return (!*get_stop_ptr());
 }
 
-int	stop(void)
+t_status	stop(void)
 {
 	*get_stop_ptr() = true;
-	return (FAILURE);
+	return (ERROR);
 }
 
 void	stop_void(void)

@@ -45,40 +45,38 @@ A program is free software if users have all of these freedoms.
 t_env_element	*alloc_env_element(void);
 
 /* BUILTINS */
-int				cd(t_cmd *cmd, t_shell *lambda);
-int				env(t_shell *lambda);
+t_status		cd(t_cmd *cmd, t_shell *lambda);
+t_status		env(t_shell *lambda);
 void			bltin_exit(t_cmd *cmd);
-int				export(t_cmd *cmd, t_shell *lambda);
-int				pwd(t_shell *lambda);
-int				unset(t_cmd *cmd, t_shell *lambda);
+t_status		export(t_cmd *cmd, t_shell *lambda);
+t_status		pwd(t_shell *lambda);
+t_status		unset(t_cmd *cmd, t_shell *lambda);
 
 /* COSMETIC */
 char			*get_readline_str(t_shell *lambda);
 
 /* DEALLOC */
-int				dealloc_cmd(void *cmd_ptr);
-void			dealloc_cmds(t_list *cmds);
-int				dealloc_env_element(void *env_element_ptr);
-int				dealloc_token(void *token_ptr);
+t_status		dealloc_cmd(void *cmd_ptr);
+t_status		dealloc_env_element(void *env_element_ptr);
+t_status		dealloc_token(void *token_ptr);
 void			dealloc_ptr_array(void *ptr_array_ptr);
-int				dealloc_redirection(void *redirect_ptr);
-void			dealloc_redirections(t_list *redir);
-void			dealloc_lst(t_list **lst, int (*del)(void*));
-int				dealloc_lambda(t_shell *lambda);
+t_status		dealloc_redirection(void *redirect_ptr);
+void			dealloc_lst(t_list **lst, t_status (*del)(void*));
+t_status		dealloc_lambda(t_shell *lambda);
 
 /* ENVIRONMENT */
-int				add_or_change_env_element(char *env_line, t_list **env);
-int				init_env(char **env, t_list **lambda_env);
+t_status		add_or_change_env_element(char *env_line, t_list **env);
+t_status		init_env(char **env, t_list **lambda_env);
 char			**env_to_strings(t_list *env);
 char			*env_get_val(t_list *env, char *key);
-int				expand_variables(t_list *tokens, t_shell *lambda);
+t_status		expand_variables(t_list *tokens, t_shell *lambda);
 
 /* ERROR MESSAGES */
-int				msg_err(char *s, int ret);
+t_status		msg_err(char *s, t_status ret);
 void			*null_msg_err(char *s);
 
 /* EXECUTION */
-int				execute(t_list *cmds, t_shell *lambda);
+t_status		execute(t_list *cmds, t_shell *lambda);
 
 /* PARSE */
 bool			is_ambiguous_redirect(t_list *tokens);
@@ -87,14 +85,14 @@ t_list			*parse(t_list *tokens, t_list *env);
 void			skip_whitespace_tokens(t_list **tokens);
 
 /* STOP */
-int				running(void);
-int				stop(void);
+bool			running(void);
+t_status		stop(void);
 void			stop_void(void);
 
 /* TOKENISATION */
 t_token			*get_token(t_token_type type, char *content);
-int				check_token_syntax_errors(t_list *tokens);
-int				split_env_tokens(t_list **tokens_ptr);
+t_status		check_token_syntax_errors(t_list *tokens);
+t_status		split_env_tokens(t_list **tokens_ptr);
 t_token_type	subtokenize_single_quote(char **line_ptr);
 t_token_type	subtokenize_double_quote(char **line_ptr);
 t_token_type	subtokenize_heredoc(char **line_ptr);
@@ -112,9 +110,6 @@ void			disable_signals(void);
 
 /* UPDATE_CWD */
 void			update_cwd(t_shell *lambda);
-
-/* EXECUTION */
-int				executor(int i_fd, t_list *cmds, t_shell *lambda);
 
 /* PATH */
 char			*get_absolute_path_from_env(char *name, t_list *env);
