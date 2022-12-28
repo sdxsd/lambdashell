@@ -222,7 +222,10 @@ static t_cmd	*get_cmd(t_list **tokens, t_list *env)
 	{
 		token = (*tokens)->content;
 		if (ft_strlen(token->content) < 1)
+		{
+			ft_free(&token);
 			*tokens = (*tokens)->next;
+		}
 		else if (token->type == PIPE)
 		{
 			*tokens = (*tokens)->next;
