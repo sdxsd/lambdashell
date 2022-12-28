@@ -39,7 +39,7 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-int	echo(t_cmd *cmd)
+t_status echo(t_cmd *cmd)
 {
 	size_t	iter;
 	bool	nl;

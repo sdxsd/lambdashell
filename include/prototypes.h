@@ -48,10 +48,10 @@ t_env_element	*alloc_env_element(void);
 t_status		cd(t_cmd *cmd, t_shell *lambda);
 t_status		env(t_shell *lambda);
 void			bltin_exit(t_cmd *cmd);
-int				export(t_cmd *cmd, t_shell *lambda);
-int				pwd(t_shell *lambda);
-int				unset(t_cmd *cmd, t_shell *lambda);
-int				echo(t_cmd *cmd);
+t_status		export(t_cmd *cmd, t_shell *lambda);
+t_status		pwd(t_shell *lambda);
+t_status		unset(t_cmd *cmd, t_shell *lambda);
+t_status		echo(t_cmd *cmd);
 
 /* COSMETIC */
 char			*get_readline_str(t_shell *lambda);
