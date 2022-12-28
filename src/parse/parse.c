@@ -54,7 +54,7 @@ static int	get_initial_cmd(t_cmd **cmd)
 {
 	*cmd = ft_calloc(1, sizeof(**cmd));
 	if (!*cmd)
-		return (stop());
+		return (FAILURE);
 	(*cmd)->input_fd = STDIN_FILENO;
 	(*cmd)->output_fd = STDOUT_FILENO;
 	return (SUCCESS);
@@ -86,7 +86,7 @@ static t_redirect	*get_redirect(t_list **tokens)
 	if (!redirect->file_path)
 	{
 		// TODO: Free
-		return (stop_null());
+		return (NULL);
 	}
 	redirect->is_ambiguous = is_ambiguous_redirect(*tokens);
 	while (*tokens)
@@ -107,7 +107,7 @@ static t_redirect	*get_redirect(t_list **tokens)
 		if (!redirect->file_path)
 		{
 			// TODO: Free
-			return (stop_null());
+			return (NULL);
 		}
 
 		*tokens = (*tokens)->next;
@@ -125,7 +125,7 @@ static char	*get_path(t_list **tokens, t_list *env)
 	if (!path)
 	{
 		// TODO: Free
-		return (stop_null());
+		return (NULL);
 	}
 	while (*tokens)
 	{
@@ -138,7 +138,7 @@ static char	*get_path(t_list **tokens, t_list *env)
 		if (!path)
 		{
 			// TODO: Free
-			return (stop_null());
+			return (NULL);
 		}
 		*tokens = (*tokens)->next;
 	}
@@ -224,7 +224,7 @@ static int	fill_cmd(t_list **tokens, t_list *env, t_cmd *cmd)
 		{
 			redirect = get_redirect(tokens);
 			if (!redirect || !ft_lstnew_back(&cmd->redirections, redirect))
-				return (stop());
+				return (FAILURE);
 		}
 		else if (is_text_token(token) && !cmd->path)
 		{

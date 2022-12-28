@@ -57,14 +57,14 @@ char	*get_absolute_path_from_env(char *name, t_list *env)
 		return (name);
 	exec_direcs = ft_split(path, ':');
 	if (!exec_direcs)
-		return (stop_null());
+		return (NULL);
 	while (exec_direcs[iter])
 	{
 		absolute_path = path_join(exec_direcs[iter], name);
 		if (!absolute_path)
 		{
 			dealloc_ptr_array(&exec_direcs);
-			return (stop_null());
+			return (NULL);
 		}
 		if (!access(absolute_path, F_OK)) // TODO: Probably needs more flags
 		{

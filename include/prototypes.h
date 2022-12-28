@@ -87,10 +87,8 @@ t_list			*parse(t_list *tokens, t_list *env);
 void			skip_whitespace_tokens(t_list **tokens);
 
 /* STOP */
-int				*get_stop_ptr(void);
 int				running(void);
 int				stop(void);
-void			*stop_null(void);
 void			stop_void(void);
 
 /* TOKENISATION */

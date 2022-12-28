@@ -70,7 +70,7 @@ int	get_val(char **val, char *env_line)
 	{
 		*val = ft_strdup(env_line + get_key_length(env_line) + 1);
 		if (!*val)
-			return (stop());
+			return (FAILURE);
 	}
 	return (SUCCESS);
 }
@@ -83,7 +83,7 @@ int	add_or_change_env_element(char *env_line, t_list **env)
 
 	key = ft_strndup(env_line, get_key_length(env_line));
 	if (!key || get_val(&val, env_line) == FAILURE)
-		return (stop());
+		return (FAILURE);
 	while (*env)
 	{
 		env_element = (*env)->content;

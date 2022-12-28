@@ -39,7 +39,7 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-int	*get_stop_ptr(void)
+static int	*get_stop_ptr(void)
 {
 	static int	stop = false;
 
@@ -57,13 +57,7 @@ int	stop(void)
 	return (FAILURE);
 }
 
-void	*stop_null(void)
-{
-	*get_stop_ptr() = true;
-	return (NULL);
-}
-
 void	stop_void(void)
 {
-	*get_stop_ptr() = true;
+	stop();
 }

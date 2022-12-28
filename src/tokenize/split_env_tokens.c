@@ -59,7 +59,7 @@ static int	new_unquoted_token_back(t_list **current_ptr, char *content,
 
 	token = get_token(token_type, ft_strdup(content));
 	if (!token || !ft_lstnew_back(current_ptr, token))
-		return (stop());
+		return (FAILURE);
 	return (SUCCESS);
 }
 
@@ -89,7 +89,7 @@ int	split_env_tokens(t_list **tokens_ptr)
 			if (!split)
 			{
 				// TODO: ??
-				return (stop());
+				return (FAILURE);
 			}
 
 			current->next = NULL;
@@ -174,7 +174,7 @@ int	split_env_tokens(t_list **tokens_ptr)
 // 	if (!split)
 // 	{
 // 		// TODO: ??
-// 		return (stop());
+// 		return (FAILURE);
 // 	}
 
 // 	split_index = get_ptr_array_size((void **)split);
