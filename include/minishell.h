@@ -68,11 +68,6 @@ A program is free software if users have all of these freedoms.
 # define OUTPUT 1
 # define INPUT 0
 
-# define CLEAR "\033[0;0m"
-# define RED "\033[0;31m"
-# define GREEN "\033[1;32m"
-# define BLUE "\033[1;34m"
-
 // This is the lambda sign in unicode
 // This is necessary because of Norm:
 // "Characters that aren't part of the standard ASCII table are forbidden."

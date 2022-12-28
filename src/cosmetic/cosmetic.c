@@ -69,7 +69,7 @@ char	*get_readline_str(t_shell *lambda)
 		leaf_dir = last_directory(lambda->cwd);
 	else
 		leaf_dir = "???";
-	readline_str = ft_strjoin_array((char *[]){GREEN, "[", user, "] ", \
-		BLUE, leaf_dir, " ", CLEAR, PREFIX" :: ❯ ", NULL});
+	readline_str = ft_strjoin_array((char *[]){"[", user, "] ", leaf_dir, " ", \
+		PREFIX" :: ❯ ", NULL});
 	return (readline_str);
 }

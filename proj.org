@@ -1,5 +1,10 @@
 #+TITLE: Minishell
 
+* Errors:
+Export needs to work with multiple arguments i.e. "export a="200" b="hello" c="kdjfkdjf""
+Multiple output of errors when too many forks.
+"Unset PATH" occasionally not working. (We most likely cache the path)
+
 * TODO Will [/]
 + [ ] Write ft_fprintf for easy error printing.
 + [ ] License builtin as advised by the GNU GPLv3.
