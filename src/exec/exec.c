@@ -137,6 +137,8 @@ static int	execute_builtin(t_cmd *cmd, t_shell *lambda)
 		status = cd(cmd, lambda);
 	else if (ft_streq(cmd->path, "env"))
 		status = env(lambda);
+	else if (ft_streq(cmd->path, "echo"))
+		status = echo(cmd);
 	else if (ft_streq(cmd->path, "exit"))
 		bltin_exit(cmd);
 	else if (ft_streq(cmd->path, "export"))
