@@ -178,7 +178,7 @@ static int	execute_simple_command(t_cmd *cmd, t_shell *lambda)
 	{
 		pid = fork();
 		if (pid == FORK_FAILURE)
-			return (msg_err("exec_and_pipe()", FAILURE));
+			return (msg_err("execute_simple_command()", FAILURE));
 		if (pid == FORK_CHILD)
 		{
 			signal_handler_child_set();
@@ -251,10 +251,10 @@ static int	execute_complex_command(int input_fd, t_list *cmds, t_shell *lambda)
 	int		stat_loc;
 
 	if (cmds->next && pipe(tube) == -1)
-		return (msg_err("exec_and_pipe()", FAILURE));
+		return (msg_err("execute_complex_command()", FAILURE));
 	pid = fork();
 	if (pid == FORK_FAILURE)
-		return (msg_err("exec_and_pipe()", FAILURE));
+		return (msg_err("execute_complex_command()", FAILURE));
 	if (pid == FORK_CHILD)
 	{
 		signal_handler_child_set();
@@ -269,7 +269,7 @@ static int	execute_complex_command(int input_fd, t_list *cmds, t_shell *lambda)
 	if (input_fd != -1)
 		close(input_fd); // TODO: Right now only the parent is closing the read end!!
 	if (cmds->next && execute_complex_command(tube[READ], cmds->next, lambda) != SUCCESS)
-		return (msg_err("exec_and_pipe()", FAILURE));
+		return (msg_err("execute_complex_command()", FAILURE));
 	waitpid(pid, &stat_loc, 0);
 	if (!cmds->next)
 		status = get_wait_status(stat_loc);
