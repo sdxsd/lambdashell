@@ -43,7 +43,6 @@ static void	prompt(t_shell *lambda)
 {
 	char	*readline_str;
 
-	printf("%d\n", heredoc("eof"));
 	if (!lambda->stdin_is_tty)
 		rl_outstream = stdin;
 	readline_str = get_readline_str(lambda);
