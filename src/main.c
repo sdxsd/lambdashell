@@ -72,7 +72,7 @@ static void	prompt(t_shell *lambda)
 	if (!lambda->cmds)
 		return ;
 	// dbg_print_commands(lambda->cmds);
-	execute(lambda->cmds, lambda);
+	execute(lambda);
 }
 
 static t_status	shell_init(char **env, t_shell *lambda)
