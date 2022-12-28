@@ -51,6 +51,7 @@ void			bltin_exit(t_cmd *cmd);
 t_status		export(t_cmd *cmd, t_shell *lambda);
 t_status		pwd(t_shell *lambda);
 t_status		unset(t_cmd *cmd, t_shell *lambda);
+t_status		echo(t_cmd *cmd);
 
 /* COSMETIC */
 char			*get_readline_str(t_shell *lambda);
@@ -76,7 +77,7 @@ t_status		msg_err(char *s, t_status ret);
 void			*null_msg_err(char *s);
 
 /* EXECUTION */
-t_status		execute(t_list *cmds, t_shell *lambda);
+t_status		execute(t_shell *lambda);
 
 /* PARSE */
 bool			is_ambiguous_redirect(t_list *tokens);

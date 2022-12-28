@@ -137,6 +137,8 @@ static t_status	execute_builtin(t_cmd *cmd, t_shell *lambda)
 		status = cd(cmd, lambda);
 	else if (ft_streq(cmd->path, "env"))
 		status = env(lambda);
+	else if (ft_streq(cmd->path, "echo"))
+		status = echo(cmd);
 	else if (ft_streq(cmd->path, "exit"))
 		bltin_exit(cmd);
 	else if (ft_streq(cmd->path, "export"))
@@ -281,9 +283,9 @@ static t_status	execute_complex_command(int input_fd, t_list *cmds, t_shell *lam
 	return (OK);
 }
 
-t_status	execute(t_list *cmds, t_shell *lambda)
+t_status	execute(t_shell *lambda)
 {
-	if (cmds->next)
-		return (execute_complex_command(-1, cmds, lambda));
-	return (execute_simple_command(cmds->content, lambda));
+	if (lambda->cmds->next)
+		return (execute_complex_command(-1, lambda->cmds, lambda));
+	return (execute_simple_command(lambda->cmds->content, lambda));
 }

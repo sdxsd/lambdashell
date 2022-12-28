@@ -42,7 +42,7 @@ A program is free software if users have all of these freedoms.
 static bool	is_builtin(char *path)
 {
 	return (ft_streq(path, "cd")
-		// || ft_streq(path, "echo")
+		|| ft_streq(path, "echo")
 		|| ft_streq(path, "env")
 		|| ft_streq(path, "exit")
 		|| ft_streq(path, "export")
