@@ -39,8 +39,13 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-static	void print_env_val(char *env_val, char *env_key)
+static	t_status print_env_val(char *env_val, char *env_key, t_shell *lambda)
 {
+	t_list	*tokens;
+
+	tokens = tokenize(env_val);
+	if (expand_variables(tokens, lambda) != OK)
+		return (ERROR);
 	ft_printf("declare -x %s=\"", env_key);
 	while (*env_val != '\0')
 	{
