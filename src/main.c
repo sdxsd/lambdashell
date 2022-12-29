@@ -55,24 +55,18 @@ static void	prompt(t_shell *lambda)
 	add_history(lambda->line);
 	lambda->tokens = tokenize(lambda->line);
 	ft_free(&lambda->line);
-	// dbg_print_tokens(lambda->tokens);
 	if (check_token_syntax_errors(lambda->tokens) == ERROR)
 		return ;
-	// if (exec_heredocs() == ERROR)
-	// 	return ;
 	if (expand_variables(lambda->tokens, lambda) == ERROR)
 		return ;
 	mark_ambiguous_redirects(lambda->tokens);
-	// dbg_print_tokens(lambda->tokens);
 	if (split_env_tokens(&lambda->tokens) == ERROR)
 		return ;
-	// dbg_print_tokens(lambda->tokens);
 	// if (remove_outer_whitespace_tokens(&lambda->tokens) == ERROR)
 	// 	return ;
 	lambda->cmds = parse(lambda->tokens, lambda->env);
 	if (!lambda->cmds)
 		return ;
-	// dbg_print_commands(lambda->cmds);
 	execute(lambda);
 }
 

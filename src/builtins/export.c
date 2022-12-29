@@ -77,6 +77,20 @@ static t_status	argless_export(t_shell *lambda)
 	return (OK);
 }
 
+static t_status	validate_export_args(char **args)
+{
+	while (*args)
+	{
+		if (!ft_isalpha(*(args[0])))
+		{
+			printf("%s: export: `%s\': not a valid identifier\n", PREFIX, *args);
+			return (ERROR);
+		}
+		args++;
+	}
+	return (OK);
+}
+
 t_status	export(t_cmd *cmd, t_shell *lambda)
 {
 	size_t	iter;
@@ -84,6 +98,11 @@ t_status	export(t_cmd *cmd, t_shell *lambda)
 	if (!cmd->args[1])
 		return (argless_export(lambda));
 	iter = 1;
+	if (validate_export_args(cmd->args) != OK)
+	{
+		status = ERROR;
+		return (ERROR);
+	}
 	while (cmd->args[iter] != NULL)
 	{
 		add_or_change_env_element(cmd->args[iter], &lambda->env);
