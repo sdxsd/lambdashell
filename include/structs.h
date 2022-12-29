@@ -98,6 +98,7 @@ typedef enum s_token_type
 
 typedef struct s_token
 {
+	bool			was_single_quoted;
 	t_token_type	type;
 	char			*content;
 	bool			is_ambiguous;
