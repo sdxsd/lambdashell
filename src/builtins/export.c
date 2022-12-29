@@ -39,6 +39,22 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
+static	void print_env_val_with_dollar(char *env_val, char *env_key)
+{
+	ft_printf("declare -x %s=\"", env_key);
+	while (*env_val != '\0')
+	{
+		if (*env_val == '$')
+		{
+			env_val++;
+			ft_putstr("\\$");
+		}
+		ft_putchar(*env_val);
+		env_val++;
+	}
+	ft_putstr("\"\n");
+}
+
 static t_status	argless_export(t_shell *lambda)
 {
 	t_list			*env_list;
@@ -52,6 +68,8 @@ static t_status	argless_export(t_shell *lambda)
 		// TODO: This doesn't escape the dollar_in_env export
 		if (env_element->val == NULL)
 			ft_printf("declare -x %s\n", env_element->key);
+		else if (ft_strchr(env_element->val, '$'))
+			print_env_val_with_dollar(env_element->val, env_element->key);
 		else
 			ft_printf("declare -x %s=\"%s\"\n", env_element->key, env_element->val);
 		env_list = env_list->next;
