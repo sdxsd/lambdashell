@@ -25,7 +25,7 @@ static char	*create_heredoc_file(void)
 	return (full_path);
 }
 
-char	*heredoc(char *delimiter)
+char	*heredoc(char *delimiter, t_shell *lambda)
 {
 	char	*line;
 	char	*full_path;

@@ -68,9 +68,7 @@ static t_status	argless_export(t_shell *lambda)
 		// TODO: This doesn't escape the dollar_in_env export
 		if (env_element->val == NULL)
 			ft_printf("declare -x %s\n", env_element->key);
-		else if (!ft_strcmp(env_element->key, "_"))
-			;
-		else
+		else if (ft_strcmp(env_element->key, "_"))
 			print_env_val(env_element->val, env_element->key);
 		env_list = env_list->next;
 	}
@@ -83,6 +81,7 @@ static t_status	validate_export_args(char **args)
 	{
 		if (!ft_isalpha(*(args[0])))
 		{
+			// TODO: Change to STDERR_FILENO
 			printf("%s: export: `%s\': not a valid identifier\n", PREFIX, *args);
 			return (ERROR);
 		}
