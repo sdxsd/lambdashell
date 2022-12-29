@@ -33,17 +33,16 @@ char	*heredoc(char *delimiter)
 
 	line = NULL;
 	full_path = create_heredoc_file();
-	printf("%s\n", full_path);
 	fd = open(full_path, O_CREAT | O_TRUNC | O_RDWR, 0644);
 	if (fd == -1)
 		return (NULL);
 	while (TRUE)
 	{
 		line = readline("> ");
-		ft_putstr_fd(line, fd);
-		ft_putchar_fd('\n', fd);
 		if (ft_streq(line, delimiter))
 			break ;
+		ft_putstr_fd(line, fd);
+		ft_putchar_fd('\n', fd);
 	}
 	close(fd);
 	return (full_path);

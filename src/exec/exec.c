@@ -77,7 +77,7 @@ static t_status	redirections(t_list *list, t_cmd *cmd)
 		open_fd = open(redir->file_path, flags, 0644);
 		if (open_fd < 0)
 			return (msg_err(NULL, ERROR));
-		if (redir->direction == DIRECTION_IN)
+		if (redir->direction == DIRECTION_IN || redir->direction == DIRECTION_HEREDOC)
 			cmd->input_fd = open_fd;
 		if (redir->direction == DIRECTION_OUT || redir->direction == DIRECTION_APPEND)
 			cmd->output_fd = open_fd;
