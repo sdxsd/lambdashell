@@ -109,6 +109,11 @@ static t_status	heredoc_read_and_write(t_shell *lambda, t_token *delimiter, int 
 	while (TRUE)
 	{
 		line = readline("> ");
+		if (line == NULL)
+		{
+			ft_putstr("λ: warning: here-document delimited by end-of-file\n");
+			return (OK);
+		}
 		if (ft_streq(line, delimiter->content))
 		{
 			ft_free(&line);
