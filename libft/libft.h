@@ -83,6 +83,7 @@ char		*ft_substr(char const *s, unsigned int start, size_t len);
 char		**ft_split_set(char const *s, char *set);
 char		**ft_split(char const *s, char c);
 char		*ft_strndup(const char *s1, size_t len);
+char		*ft_str_not_set(char *haystack, char *set);
 char		*ft_strset(char *haystack, char *set);
 char		*ft_strtrim_whitespace(const char *str);
 char		*ft_strtrim(char const *s1, char const *set);

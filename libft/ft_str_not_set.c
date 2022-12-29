@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_strset.c                                        :+:    :+:            */
+/*   ft_str_not_set.c                                   :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
@@ -13,25 +13,21 @@
 #include "libft.h"
 
 /**
- * @brief Returns a pointer to the first character which is part of
- * the @p set characters.
+ * @brief Returns a pointer to the first character which isn't part
+ * of the @p set characters.
  *
  * @param haystack
  * @param set
- * @return A pointer to the first spot where one of the @p set characters
+ * @return A pointer to the first spot where one of the non-set characters
    is found;\nNULL if no spot is found or @p set is an empty string.
  */
-char	*ft_strset(char *haystack, char *set)
+char	*ft_str_not_set(char *haystack, char *set)
 {
-	char	*x;
-
-	x = NULL;
-	while (*set)
+	while (*haystack)
 	{
-		x = ft_strchr(haystack, *set);
-		if (x)
-			return (x);
-		set++;
+		if (!ft_strchr(set, *haystack))
+			return (haystack);
+		haystack++;
 	}
-	return (x);
+	return (NULL);
 }

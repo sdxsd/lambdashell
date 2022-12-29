@@ -189,68 +189,32 @@ static char	**get_arg_string_array(t_list *arg_list, char *path)
 	return (arg_strings_start);
 }
 
-static t_status	add_args(t_list **tokens_ptr, t_list **arg_list_ptr)
+static char	*get_arg(t_list **tokens_ptr)
 {
 	char	*arg;
 	t_token	*token;
-	char	**split;
 
 	arg = ft_calloc(1, sizeof(*arg));
 	if (!arg)
 	{
 		// TODO: Free
-		return (ERROR);
+		return (NULL);
 	}
-
 	while (*tokens_ptr)
 	{
 		token = (*tokens_ptr)->content;
-
 		// TODO: Maybe necessary to add check for token being NULL?
 		if (!is_text_token(token))
 			break ;
-
-		split = ft_split_set(token->content, WHITESPACE_CHARACTERS);
-
-		while (*split)
+		arg = ft_strjoin_and_free_left(arg, token->content);
+		if (!arg)
 		{
-			arg = ft_strjoin_and_free_left(arg, *split);
-			if (!arg)
-			{
-				// TODO: Free
-				return (ERROR);
-			}
-
-			if (split[1])
-			{
-				if (!ft_lstnew_back(arg_list_ptr, arg))
-				{
-					// TODO: Free
-					return (ERROR);
-				}
-
-				arg = ft_calloc(1, sizeof(*arg));
-				if (!arg)
-				{
-					// TODO: Free
-					return (ERROR);
-				}
-			}
-
-			split++;
+			// TODO: Free
+			return (NULL);
 		}
-
 		*tokens_ptr = (*tokens_ptr)->next;
 	}
-
-	// TODO: Maybe only do this if arg was actually strjoined
-	// if (??)
-	// {
-		if (!ft_lstnew_back(arg_list_ptr, arg))
-			return (ERROR);
-	// }
-
-	return (OK);
+	return (arg);
 }
 
 static t_status	fill_cmd(t_list **tokens_ptr, t_list *env, t_cmd *cmd)
@@ -258,6 +222,7 @@ static t_status	fill_cmd(t_list **tokens_ptr, t_list *env, t_cmd *cmd)
 	t_token		*token;
 	t_redirect	*redirect;
 	t_list		*arg_list;
+	char		*arg;
 	char		*arg_zero;
 
 	arg_list = NULL;
@@ -287,7 +252,8 @@ static t_status	fill_cmd(t_list **tokens_ptr, t_list *env, t_cmd *cmd)
 		}
 		else if (is_text_token(token))
 		{
-			if (add_args(tokens_ptr, &arg_list) == ERROR)
+			arg = get_arg(tokens_ptr);
+			if (!arg || !ft_lstnew_back(&arg_list, arg))
 				return (ERROR);
 		}
 		else

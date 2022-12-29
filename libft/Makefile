@@ -21,6 +21,7 @@ CFILES = \
 		ft_memcmp.c \
 		ft_split_set.c \
 		ft_split.c \
+		ft_str_not_set.c \
 		ft_strndup.c \
 		ft_calloc.c \
 		ft_memcpy.c \
