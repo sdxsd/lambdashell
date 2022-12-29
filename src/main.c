@@ -60,13 +60,20 @@ static void	prompt(t_shell *lambda)
 	if (expand_variables(lambda->tokens, lambda) == ERROR)
 		return ;
 	mark_ambiguous_redirects(lambda->tokens);
-	if (split_env_tokens(&lambda->tokens) == ERROR)
-		return ;
+	// dbg_print_tokens(lambda->tokens);
+
+	// TODO: This function lets execution/ls-expansion.txt pass
+	// TODO: This function however is ruining redirections/ambiguous-redirect/18.txt and 20.txt
+	// if (whitespace_split_env_tokens(&lambda->tokens) == ERROR)
+	// 	return ;
+
 	// if (remove_outer_whitespace_tokens(&lambda->tokens) == ERROR)
 	// 	return ;
+	// dbg_print_tokens(lambda->tokens);
 	lambda->cmds = parse(lambda->tokens, lambda->env);
 	if (!lambda->cmds)
 		return ;
+	// dbg_print_commands(lambda->cmds);
 	execute(lambda);
 }
 

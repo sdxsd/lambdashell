@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   split_env_tokens.c                                 :+:    :+:            */
+/*   whitespace_split_env_tokens.c                      :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
@@ -63,7 +63,7 @@ static t_status	new_unquoted_token_back(t_list **current_ptr, char *content,
 	return (OK);
 }
 
-t_status	split_env_tokens(t_list **tokens_ptr)
+t_status	whitespace_split_env_tokens(t_list **tokens_ptr)
 {
 	t_list	*prev;
 	t_list	*current;
