@@ -101,7 +101,7 @@ static void	write_tokens_into_file(t_list *tokens, int fd)
 	ft_putstr_fd("\n", fd);
 }
 
-static t_status	heredoc_read_and_write(t_shell *lambda, char *delimiter, int fd)
+static t_status	heredoc_read_and_write(t_shell *lambda, t_token *delimiter, int fd)
 {
 	char	*line;
 	t_list	*tokens;
@@ -109,7 +109,7 @@ static t_status	heredoc_read_and_write(t_shell *lambda, char *delimiter, int fd)
 	while (TRUE)
 	{
 		line = readline("> ");
-		if (ft_streq(line, delimiter))
+		if (ft_streq(line, delimiter->content))
 		{
 			ft_free(&line);
 			break ;
@@ -121,11 +121,14 @@ static t_status	heredoc_read_and_write(t_shell *lambda, char *delimiter, int fd)
 			return (ERROR);
 		}
 		convert_single_to_double(tokens);
-		if (expand_variables(tokens, lambda) == ERROR)
+		if (delimiter->type != SINGLE_QUOTED && delimiter->type != DOUBLE_QUOTED)
 		{
-			ft_free(&line);
-			dealloc_lst(&tokens, dealloc_token);
-			return (ERROR);
+			if (expand_variables(tokens, lambda) == ERROR)
+			{
+				ft_free(&line);
+				dealloc_lst(&tokens, dealloc_token);
+				return (ERROR);
+			}
 		}
 		write_tokens_into_file(tokens, fd);
 		dealloc_lst(&tokens, dealloc_token);
@@ -142,7 +145,7 @@ char	*heredoc(t_token *delimiter, t_shell *lambda)
 	fd = open(full_path, O_CREAT | O_TRUNC | O_RDWR, 0644);
 	if (fd == -1)
 		return (NULL);
-	heredoc_read_and_write(lambda, delimiter->content, fd);
+	heredoc_read_and_write(lambda, delimiter, fd);
 	close(fd);
 	return (full_path);
 }

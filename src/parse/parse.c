@@ -80,7 +80,7 @@ static t_status	setup_heredoc(t_list **tokens, t_redirect *redirect, t_shell *la
 	if (token->type == REDIRECTION)
 		tokens = tokens + 1;
 	skip_whitespace_tokens(tokens);
-	redirect->file_path = heredoc(token->content, lambda);
+	redirect->file_path = heredoc(token, lambda);
 	if (!redirect->file_path)
 		return (ERROR);
 	return (OK);
