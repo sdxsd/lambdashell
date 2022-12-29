@@ -43,6 +43,7 @@ char	*heredoc(char *delimiter)
 			break ;
 		ft_putstr_fd(line, fd);
 		ft_putchar_fd('\n', fd);
+		ft_free(&line);
 	}
 	close(fd);
 	return (full_path);
