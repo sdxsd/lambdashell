@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   cd.c                                               :+:    :+:            */
+/*   heredoc.c                                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
@@ -110,11 +110,9 @@ static t_status	heredoc_read_and_write(t_shell *lambda, char *delimiter, int fd)
 
 char	*heredoc(char *delimiter, t_shell *lambda)
 {
-	char	*line;
 	char	*full_path;
 	int		fd;
 
-	line = NULL;
 	full_path = create_heredoc_file();
 	fd = open(full_path, O_CREAT | O_TRUNC | O_RDWR, 0644);
 	if (fd == -1)

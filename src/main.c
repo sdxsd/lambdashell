@@ -64,7 +64,7 @@ static void	prompt(t_shell *lambda)
 		return ;
 	// if (remove_outer_whitespace_tokens(&lambda->tokens) == ERROR)
 	// 	return ;
-	lambda->cmds = parse(lambda->tokens, lambda->env);
+	lambda->cmds = parse(lambda->tokens, lambda);
 	if (!lambda->cmds)
 		return ;
 	execute(lambda);

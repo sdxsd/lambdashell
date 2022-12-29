@@ -82,7 +82,7 @@ t_status		execute(t_shell *lambda);
 
 /* PARSE */
 bool			is_text_token(t_token *token);
-t_list			*parse(t_list *tokens, t_list *env);
+t_list			*parse(t_list *tokens, t_shell *lambda);
 void			skip_whitespace_tokens(t_list **tokens);
 
 /* STOP */
