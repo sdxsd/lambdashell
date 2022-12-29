@@ -52,16 +52,17 @@ void	dbg_print_tokens(t_list *tokens)
 	token_type_strings[PIPE] = "PIPE";
 	token_type_strings[WHITESPACE] = "WHITESPACE";
 	token_type_strings[UNQUOTED] = "UNQUOTED";
-	printf("+---------------+---------------------+\n");
-	printf("| token type    | token content       |\n");
-	printf("+---------------+---------------------+\n");
+	printf("+---------------+---------------------+--------------+\n");
+	printf("| token type    | token content       | is ambiguous |\n");
+	printf("+---------------+---------------------+--------------+\n");
 	while (tokens)
 	{
 		token = tokens->content;
 		printf("| %-13s ", token_type_strings[token->type]);
 		content = ft_strjoin_array((char *[]){"[", token->content, "]", NULL});
-		printf("| %-19s |\n", content);
-		printf("+---------------+---------------------+\n");
+		printf("| %-20s", content);
+		printf("| %d            |\n", token->is_ambiguous);
+		printf("+---------------+---------------------+--------------+\n");
 		tokens = tokens->next;
 	}
 }

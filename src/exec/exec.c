@@ -192,8 +192,8 @@ static t_status	execute_simple_command(t_cmd *cmd, t_shell *lambda)
 			signal_handler_child_set();
 			if (execute_command(cmd, lambda) == ERROR)
 			{
-				// TODO: ??
-				return (ERROR);
+				// TODO: Should anything be freed before this is called?
+				exit(status);
 			}
 		}
 		disable_signals();
