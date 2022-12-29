@@ -68,6 +68,11 @@ static t_status	redirections(t_list *list, t_cmd *cmd)
 			flags |= (O_CREAT | O_TRUNC | O_WRONLY);
 		else if (redir->direction == DIRECTION_APPEND)
 			flags |= (O_CREAT | O_APPEND | O_WRONLY);
+		else if (redir->direction == DIRECTION_HEREDOC)
+		{
+			in_encountered = true;
+			flags |= (O_RDONLY);
+		}
 		// TODO: Should still print "no such file" when a second input file isn't found
 		open_fd = open(redir->file_path, flags, 0644);
 		if (open_fd < 0)
