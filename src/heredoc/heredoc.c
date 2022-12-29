@@ -1,9 +1,8 @@
 #include "../../include/minishell.h"
 #include <fcntl.h>
 
-static int	create_heredoc_file(void)
+static char	*create_heredoc_file(void)
 {
-	int		fd;
 	int		iter;
 	char	*file;
 	char	*full_path;
@@ -23,27 +22,29 @@ static int	create_heredoc_file(void)
 		ft_free(&file);
 		iter++;
 	}
-	printf("%s\n", full_path);
-	fd = open(full_path, O_CREAT | O_TRUNC | O_RDWR, 0644);
-	return (fd);
+	return (full_path);
 }
 
-t_status	heredoc(char *delimiter)
+char	*heredoc(char *delimiter)
 {
 	char	*line;
+	char	*full_path;
 	int		fd;
 
 	line = NULL;
-	fd = create_heredoc_file();
+	full_path = create_heredoc_file();
+	fd = open(full_path, O_CREAT | O_TRUNC | O_RDWR, 0644);
 	if (fd == -1)
-		return (ERROR);
+		return (NULL);
 	while (TRUE)
 	{
 		line = readline("> ");
-		ft_putstr_fd(line, fd);
-		ft_putchar_fd('\n', fd);
 		if (ft_streq(line, delimiter))
 			break ;
+		ft_putstr_fd(line, fd);
+		ft_putchar_fd('\n', fd);
+		ft_free(&line);
 	}
-	return (OK);
+	close(fd);
+	return (full_path);
 }

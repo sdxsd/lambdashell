@@ -116,7 +116,7 @@ void			update_cwd(t_shell *lambda);
 char			*get_absolute_path_from_env(char *name, t_list *env);
 
 /* HEREDOC */
-t_status	heredoc(char *delimiter);
+char		*heredoc(char *delimiter);
 
 /* DEBUG */
 void			dbg_print_tokens(t_list *tokens);
