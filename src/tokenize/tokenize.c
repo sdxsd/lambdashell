@@ -92,7 +92,7 @@ t_list	*tokenize(char *line)
 			// FIXME: memleak when input = "jfkjjiru fuoifudf difudfuuofdforkorkgrg"
 			// or other garbage.
 			if (token)
-				dealloc_token(token);
+				dealloc_token(&token);
 			dealloc_lst(&tokens, dealloc_token);
 			return (NULL);
 		}

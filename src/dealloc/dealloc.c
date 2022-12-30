@@ -95,7 +95,7 @@ t_status	dealloc_lambda(t_shell *lambda)
 	return (ERROR);
 }
 
-void	dealloc_ptr_array(void *ptr_array_ptr)
+t_status	dealloc_ptr_array(void *ptr_array_ptr)
 {
 	void	***_ptr_array_ptr;
 	void	**ptr_array;
@@ -111,6 +111,7 @@ void	dealloc_ptr_array(void *ptr_array_ptr)
 		}
 	}
 	ft_free(_ptr_array_ptr);
+	return (ERROR);
 }
 
 t_status	dealloc_redirection(void *redirect_ptr)
@@ -123,5 +124,22 @@ t_status	dealloc_redirection(void *redirect_ptr)
 	if (redirect)
 		ft_free(&redirect->file_path);
 	ft_free(_redirect_ptr);
+	return (ERROR);
+}
+
+t_status	dealloc_lst(t_list **lst, t_status (*del)(void*))
+{
+	t_list	*ptr;
+
+	if (lst == NULL)
+		return (ERROR);
+	while (*lst)
+	{
+		ptr = *lst;
+		*lst = ptr -> next;
+		if (del != NULL)
+			(*del)(&ptr -> content);
+		free(ptr);
+	}
 	return (ERROR);
 }

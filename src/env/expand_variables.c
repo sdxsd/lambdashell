@@ -174,8 +174,9 @@ t_status	expand_variables(t_list **tokens_list, t_shell *lambda)
 			expanded_string = get_expanded_string(token->content, lambda);
 			if (!expanded_string)
 			{
-				dealloc_lst(tokens_list, dealloc_token);
-				return (ERROR);
+				// TODO: Move this dealloc to a parent function.
+				// Don't forget that tokens_list might need to be changed to &tokens_list in the parent.
+				return (dealloc_lst(tokens_list, dealloc_token));
 			}
 			ft_free(&token->content);
 			token->content = expanded_string;

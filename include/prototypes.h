@@ -60,9 +60,9 @@ char			*get_readline_str(t_shell *lambda);
 t_status		dealloc_cmd(void *cmd_ptr);
 t_status		dealloc_env_element(void *env_element_ptr);
 t_status		dealloc_token(void *token_ptr);
-void			dealloc_ptr_array(void *ptr_array_ptr);
+t_status		dealloc_ptr_array(void *ptr_array_ptr);
 t_status		dealloc_redirection(void *redirect_ptr);
-void			dealloc_lst(t_list **lst, t_status (*del)(void*));
+t_status		dealloc_lst(t_list **lst, t_status (*del)(void*));
 t_status		dealloc_lambda(t_shell *lambda);
 
 /* ENVIRONMENT */

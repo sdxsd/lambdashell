@@ -13,7 +13,6 @@ CFILES = \
 	src/builtins/unset.c \
 	src/builtins/echo.c \
 	src/cosmetic/cosmetic.c \
-	src/dealloc/dealloc_lst.c \
 	src/dealloc/dealloc.c \
 	src/debug/debug_print.c \
 	src/env/env_utils.c \
