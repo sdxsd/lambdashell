@@ -101,7 +101,7 @@ static char	*get_expanded_string(char *content, t_shell *lambda)
 
 	substr_start = content;
 
-	expanded_string = ft_calloc(1, sizeof(*expanded_string));
+	expanded_string = ft_strdup("");
 	if (!expanded_string)
 	{
 		// TODO: Free

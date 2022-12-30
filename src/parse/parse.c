@@ -85,7 +85,7 @@ static t_redirect	*get_redirect(t_list **tokens_ptr, t_shell *lambda)
 	redirect->is_ambiguous = token->is_ambiguous;
 	*tokens_ptr = (*tokens_ptr)->next;
 	skip_whitespace_tokens(tokens_ptr); // TODO: Try to let the while-loop below naturally do this
-	redirect->file_path = ft_calloc(1, sizeof(*redirect->file_path));
+	redirect->file_path = ft_strdup("");
 	if (!redirect->file_path)
 	{
 		// TODO: Free
@@ -125,7 +125,7 @@ static char	*get_path(t_list **tokens_ptr, t_list *env)
 	t_token	*token;
 	char	*absolute_path;
 
-	path = ft_calloc(1, sizeof(*path));
+	path = ft_strdup("");
 	if (!path)
 	{
 		// TODO: Free
@@ -181,7 +181,7 @@ static char	*get_arg(t_list **tokens_ptr)
 	char	*arg;
 	t_token	*token;
 
-	arg = ft_calloc(1, sizeof(*arg));
+	arg = ft_strdup("");
 	if (!arg)
 	{
 		// TODO: Free
