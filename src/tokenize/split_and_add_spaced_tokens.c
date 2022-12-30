@@ -59,7 +59,7 @@ static t_status	new_space_token_back(t_list *current)
 	return (new_unquoted_token_back(&current, " ", WHITESPACE));
 }
 
-static t_status	try_add_trailing_space(size_t split_index, t_token *token,
+static t_status	try_add_leading_space(size_t split_index, t_token *token,
 					t_list *current)
 {
 	if ((split_index > 0 || ft_strchr(WHITESPACE_CHARACTERS,
@@ -68,7 +68,7 @@ static t_status	try_add_trailing_space(size_t split_index, t_token *token,
 	return (OK);
 }
 
-static t_status	try_add_leading_space(size_t split_count,
+static t_status	try_add_trailing_space(size_t split_count,
 					t_token *token, t_list *current)
 {
 	if (split_count > 0 && ft_strchr(WHITESPACE_CHARACTERS,
