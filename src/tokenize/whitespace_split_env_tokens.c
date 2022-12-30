@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   split_env_tokens.c                                 :+:    :+:            */
+/*   whitespace_split_env_tokens.c                      :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
@@ -13,27 +13,22 @@
 /*
 THIS FILE IS LICENSED UNDER THE GNU GPLv3
 Copyright (C) 2022  Will Maguire
-
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
-
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
-
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>
-
 The definition of Free Software is as follows:
 				- The freedom to run the program, for any purpose.
 				- The freedom to study how the program works, and adapt it to your needs.
 				- The freedom to redistribute copies so you can help your neighbor.
 				- The freedom to improve the program, and release
 				your improvements to the public, so that the whole community benefits.
-
 A program is free software if users have all of these freedoms.
 */
 
@@ -63,7 +58,7 @@ static t_status	new_unquoted_token_back(t_list **current_ptr, char *content,
 	return (OK);
 }
 
-t_status	split_env_tokens(t_list **tokens_ptr)
+t_status	whitespace_split_env_tokens(t_list **tokens_ptr)
 {
 	t_list	*prev;
 	t_list	*current;
@@ -82,7 +77,7 @@ t_status	split_env_tokens(t_list **tokens_ptr)
 		next = current->next;
 
 		// TODO: Can the ft_strset() be removed?
-		if (token->type == UNQUOTED && (*token->content == '\0' || ft_strset(token->content, WHITESPACE_CHARACTERS)))
+		if (token->type == UNQUOTED && ft_strset(token->content, WHITESPACE_CHARACTERS) && ft_str_not_set(token->content, WHITESPACE_CHARACTERS))
 		{
 			split = ft_split_set(token->content, WHITESPACE_CHARACTERS);
 
@@ -157,60 +152,3 @@ t_status	split_env_tokens(t_list **tokens_ptr)
 	}
 	return (OK);
 }
-
-// TODO: REMOVE THIS BACKUP
-// {
-// 	original_element = current;
-// 	current = next;
-
-// 	if (ft_strlen(token->content) > 0 && ft_strchr(WHITESPACE_CHARACTERS, token->content[ft_strlen(token->content) - 1]) && new_unquoted_token_front(&current, " ") == ERROR)
-// 	{
-// 		// TODO: ??
-// 		return (ERROR);
-// 	}
-
-// 	split = ft_split_set(token->content, WHITESPACE_CHARACTERS);
-
-// 	if (!split)
-// 	{
-// 		// TODO: ??
-// 		return (ERROR);
-// 	}
-
-// 	split_index = get_ptr_array_size((void **)split);
-// 	while (split_index > 0)
-// 	{
-// 		split_index--;
-
-// 		if (split_index + 1 == get_ptr_array_size((void **)split) && new_unquoted_token_front(&current, " ") == ERROR)
-// 		{
-// 			// TODO: ??
-// 			return (ERROR);
-// 		}
-
-// 		if (new_unquoted_token_front(&current, split[split_index]) == ERROR)
-// 		{
-// 			// TODO: ??
-// 			return (ERROR);
-// 		}
-// 	}
-
-// 	if (ft_strchr(WHITESPACE_CHARACTERS, *token->content) && new_unquoted_token_front(&current, " ") == ERROR)
-// 	{
-// 		// TODO: ??
-// 		return (ERROR);
-// 	}
-
-// 	dealloc_token(&token);
-// 	ft_free(&original_element);
-
-// 	if (prev == NULL)
-// 		*tokens_ptr = current;
-// 	else
-// 		prev->next = current;
-
-// 	prev = first_added_element;
-// 	current = next;
-// 	// fprintf(stderr, "a\n");
-// 	// fflush(NULL);
-// }

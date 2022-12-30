@@ -50,13 +50,13 @@ static bool	is_builtin(char *path)
 		|| ft_streq(path, "unset"));
 }
 
-static t_status	get_initial_cmd(t_cmd **cmd)
+static t_status	get_initial_cmd(t_cmd **cmd_ptr)
 {
-	*cmd = ft_calloc(1, sizeof(**cmd));
-	if (!*cmd)
+	*cmd_ptr = ft_calloc(1, sizeof(**cmd_ptr));
+	if (!*cmd_ptr)
 		return (ERROR);
-	(*cmd)->input_fd = STDIN_FILENO;
-	(*cmd)->output_fd = STDOUT_FILENO;
+	(*cmd_ptr)->input_fd = STDIN_FILENO;
+	(*cmd_ptr)->output_fd = STDOUT_FILENO;
 	return (OK);
 }
 
@@ -83,27 +83,27 @@ static t_status	setup_heredoc(t_list **tokens, t_redirect *redirect, t_shell *la
 	return (OK);
 }
 
-static t_redirect	*get_redirect(t_list **tokens, t_shell *lambda)
+static t_redirect	*get_redirect(t_list **tokens_ptr, t_shell *lambda)
 {
 	t_redirect	*redirect;
 	t_token		*token;
 	char		*content;
 
 	redirect = ft_calloc(1, sizeof(*redirect));
-	fill_direction(redirect, (*tokens)->content);
-	token = (*tokens)->content;
+	fill_direction(redirect, (*tokens_ptr)->content);
+	token = (*tokens_ptr)->content;
 	redirect->is_ambiguous = token->is_ambiguous;
-	*tokens = (*tokens)->next;
-	skip_whitespace_tokens(tokens); // TODO: Try to let the while-loop below naturally do this
+	*tokens_ptr = (*tokens_ptr)->next;
+	skip_whitespace_tokens(tokens_ptr); // TODO: Try to let the while-loop below naturally do this
 	redirect->file_path = ft_calloc(1, sizeof(*redirect->file_path));
 	if (!redirect->file_path)
 	{
 		// TODO: Free
 		return (NULL);
 	}
-	while (*tokens)
+	while (*tokens_ptr)
 	{
-		token = (*tokens)->content;
+		token = (*tokens_ptr)->content;
 		// TODO: Maybe necessary to add check for token being NULL?
 		if (!is_text_token(token))
 			break ;
@@ -113,7 +113,7 @@ static t_redirect	*get_redirect(t_list **tokens, t_shell *lambda)
 		else
 			content = ft_strdup(token->content);
 		if (redirect->direction == DIRECTION_HEREDOC)
-			setup_heredoc(tokens, redirect, lambda);
+			setup_heredoc(tokens_ptr, redirect, lambda);
 		else
 			redirect->file_path = ft_strjoin_and_free_left(redirect->file_path, content);
 		ft_free(&content);
@@ -124,12 +124,12 @@ static t_redirect	*get_redirect(t_list **tokens, t_shell *lambda)
 			return (NULL);
 		}
 
-		*tokens = (*tokens)->next;
+		*tokens_ptr = (*tokens_ptr)->next;
 	}
 	return (redirect);
 }
 
-static char	*get_path(t_list **tokens, t_list *env)
+static char	*get_path(t_list **tokens_ptr, t_list *env)
 {
 	char	*path;
 	t_token	*token;
@@ -141,9 +141,9 @@ static char	*get_path(t_list **tokens, t_list *env)
 		// TODO: Free
 		return (NULL);
 	}
-	while (*tokens)
+	while (*tokens_ptr)
 	{
-		token = (*tokens)->content;
+		token = (*tokens_ptr)->content;
 		// TODO: Maybe necessary to add check for token being NULL?
 		if (!is_text_token(token))
 			break ;
@@ -154,7 +154,7 @@ static char	*get_path(t_list **tokens, t_list *env)
 			// TODO: Free
 			return (NULL);
 		}
-		*tokens = (*tokens)->next;
+		*tokens_ptr = (*tokens_ptr)->next;
 	}
 	if (is_builtin(path) || ft_strchr(path, '/'))
 		return (path);
@@ -186,7 +186,7 @@ static char	**get_arg_string_array(t_list *arg_list, char *path)
 	return (arg_strings_start);
 }
 
-static char		*get_arg(t_list **tokens)
+static char	*get_arg(t_list **tokens_ptr)
 {
 	char	*arg;
 	t_token	*token;
@@ -197,9 +197,9 @@ static char		*get_arg(t_list **tokens)
 		// TODO: Free
 		return (NULL);
 	}
-	while (*tokens)
+	while (*tokens_ptr)
 	{
-		token = (*tokens)->content;
+		token = (*tokens_ptr)->content;
 		// TODO: Maybe necessary to add check for token being NULL?
 		if (!is_text_token(token))
 			break ;
@@ -209,12 +209,12 @@ static char		*get_arg(t_list **tokens)
 			// TODO: Free
 			return (NULL);
 		}
-		*tokens = (*tokens)->next;
+		*tokens_ptr = (*tokens_ptr)->next;
 	}
 	return (arg);
 }
 
-static t_status	fill_cmd(t_list **tokens, t_shell *lambda, t_cmd *cmd)
+static t_status	fill_cmd(t_list **tokens_ptr, t_shell *lambda, t_cmd *cmd)
 {
 	t_token		*token;
 	t_redirect	*redirect;
@@ -224,37 +224,37 @@ static t_status	fill_cmd(t_list **tokens, t_shell *lambda, t_cmd *cmd)
 
 	arg_list = NULL;
 	arg_zero = NULL;
-	// token = (*tokens)->content;
-	while (*tokens)
+	// token = (*tokens_ptr)->content;
+	while (*tokens_ptr)
 	{
-		token = (*tokens)->content;
+		token = (*tokens_ptr)->content;
 		// TODO: Maybe necessary to add check for token being NULL?
 		if (token->type == PIPE)
 		{
-			*tokens = (*tokens)->next;
+			*tokens_ptr = (*tokens_ptr)->next;
 			break ;
 		}
 		else if (token->type == REDIRECTION)
 		{
-			redirect = get_redirect(tokens, lambda);
+			redirect = get_redirect(tokens_ptr, lambda);
 			if (!redirect || !ft_lstnew_back(&cmd->redirections, redirect))
 				return (ERROR);
 		}
 		else if (is_text_token(token) && !cmd->path)
 		{
 			arg_zero = token->content;
-			cmd->path = get_path(tokens, lambda->env);
+			cmd->path = get_path(tokens_ptr, lambda->env);
 			if (!cmd->path)
 				return (ERROR);
 		}
 		else if (is_text_token(token))
 		{
-			arg = get_arg(tokens);
+			arg = get_arg(tokens_ptr);
 			if (!arg || !ft_lstnew_back(&arg_list, arg))
 				return (ERROR);
 		}
 		else
-			*tokens = (*tokens)->next;
+			*tokens_ptr = (*tokens_ptr)->next;
 	}
 	if (arg_zero)
 	{

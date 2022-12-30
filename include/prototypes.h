@@ -91,9 +91,8 @@ t_status		stop(void);
 void			stop_void(void);
 
 /* TOKENISATION */
-t_token			*get_token(t_token_type type, char *content);
 t_status		check_token_syntax_errors(t_list *tokens);
-t_status		split_env_tokens(t_list **tokens_ptr);
+t_token			*get_token(t_token_type type, char *content);
 t_token_type	subtokenize_single_quote(char **line_ptr);
 t_token_type	subtokenize_double_quote(char **line_ptr);
 t_token_type	subtokenize_heredoc(char **line_ptr);
@@ -103,6 +102,7 @@ t_token_type	subtokenize_pipe(char **line_ptr);
 t_token_type	subtokenize_whitespace(char **line_ptr);
 t_token_type	subtokenize_unquoted(char **line_ptr);
 t_list			*tokenize(char *line);
+t_status		whitespace_split_env_tokens(t_list **tokens_ptr);
 
 /* SIGNALS */
 void			signal_handler_set(void);

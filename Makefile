@@ -29,11 +29,11 @@ CFILES = \
 	src/parse/parse.c \
 	src/parse/skip_whitespace_tokens.c \
 	src/stop/stop.c \
-	src/tokenize/get_token.c \
 	src/tokenize/check_token_syntax_errors.c \
-	src/tokenize/split_env_tokens.c \
+	src/tokenize/get_token.c \
 	src/tokenize/subtokenizers.c \
 	src/tokenize/tokenize.c \
+	src/tokenize/whitespace_split_env_tokens.c \
 	src/signals/signals.c \
 	src/update_cwd/update_cwd.c
 
