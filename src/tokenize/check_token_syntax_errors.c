@@ -50,33 +50,18 @@ static t_status	check_pipe_syntax_errors(t_list *tokens)
 	while (tokens)
 	{
 		token = tokens->content;
-
 		if (is_text_token(token))
 			seen_cmd = true;
 		else if (token->type == PIPE)
 			seen_pipe = true;
-
 		if (token->type == PIPE && !seen_cmd)
-		{
-			status = 2;
-			ft_putstr_fd(PREFIX": syntax error\n", STDERR_FILENO);
 			return (ERROR);
-		}
-
 		if (token->type == PIPE && seen_cmd)
-		{
 			seen_cmd = false;
-		}
-
 		tokens = tokens->next;
 	}
-
 	if (!seen_cmd && seen_pipe)
-	{
-		status = 2;
-		ft_putstr_fd(PREFIX": syntax error\n", STDERR_FILENO);
 		return (ERROR);
-	}
 	return (OK);
 }
 
@@ -89,41 +74,30 @@ static t_status	check_redirection_syntax_errors(t_list *tokens)
 	while (tokens)
 	{
 		token = tokens->content;
-
 		if (seen_redirection)
 		{
 			if (token->type != WHITESPACE && !is_text_token(token))
-			{
-				status = 2;
-				ft_putstr_fd(PREFIX": syntax error\n", STDERR_FILENO);
 				return (ERROR);
-			}
 			else if (is_text_token(token))
 				seen_redirection = false;
 		}
-
 		if (token->type == REDIRECTION)
-		{
 			seen_redirection = true;
-		}
-
 		tokens = tokens->next;
 	}
-
 	if (seen_redirection)
-	{
-		status = 2;
-		ft_putstr_fd(PREFIX": syntax error\n", STDERR_FILENO);
 		return (ERROR);
-	}
 	return (OK);
 }
 
 t_status	check_token_syntax_errors(t_list *tokens)
 {
-	if (check_pipe_syntax_errors(tokens) == ERROR)
+	if (check_pipe_syntax_errors(tokens) == ERROR
+		|| check_redirection_syntax_errors(tokens) == ERROR)
+	{
+		status = 2;
+		ft_putstr_fd(PREFIX": syntax error\n", STDERR_FILENO);
 		return (ERROR);
-	if (check_redirection_syntax_errors(tokens) == ERROR)
-		return (ERROR);
+	}
 	return (OK);
 }
