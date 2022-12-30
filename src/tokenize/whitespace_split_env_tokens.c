@@ -53,13 +53,28 @@ static void	update_prev_pointer_to_next(t_list *prev, t_list *current,
 	}
 }
 
+static t_status	update_pointers(t_list *current, t_list **prev, t_list *next,
+					t_list **tokens_ptr)
+{
+	t_list	*last_added;
+
+	update_prev_pointer_to_next(*prev, current, next, tokens_ptr);
+	last_added = ft_lstlast(current);
+	if (current->next)
+	{
+		last_added->next = next;
+		*prev = last_added;
+	}
+	ft_free(&current);
+	return (OK);
+}
+
 t_status	whitespace_split_env_tokens(t_list **tokens_ptr)
 {
 	t_list	*prev;
 	t_list	*current;
 	t_token	*token;
 	t_list	*next;
-	t_list	*last_added;
 
 	prev = NULL;
 	current = *tokens_ptr;
@@ -67,35 +82,17 @@ t_status	whitespace_split_env_tokens(t_list **tokens_ptr)
 	{
 		token = current->content;
 		next = current->next;
-
 		if (token->type == UNQUOTED
 			&& ft_str_not_set(token->content, WHITESPACE_CHARACTERS))
 		{
 			current->next = NULL;
-
 			if (split_and_add_spaced_tokens(token, current) == ERROR)
-			{
-				// TODO: ??
 				return (ERROR);
-			}
-
-			dealloc_token(&token);
-
-			update_prev_pointer_to_next(prev, current, next, tokens_ptr);
-
-			last_added = ft_lstlast(current);
-
-			if (current->next)
-			{
-				last_added->next = next;
-				prev = last_added;
-			}
-
-			ft_free(&current);
+			if (update_pointers(current, &prev, next, tokens_ptr) == ERROR)
+				return (ERROR);
 		}
 		else
 			prev = current;
-
 		current = next;
 	}
 	return (OK);

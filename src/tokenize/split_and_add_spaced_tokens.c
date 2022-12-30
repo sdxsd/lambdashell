@@ -101,5 +101,6 @@ t_status	split_and_add_spaced_tokens(t_token *token, t_list *current)
 	dealloc_ptr_array(&split);
 	if (try_add_trailing_space(split_count, token, current) == ERROR)
 		return (ERROR);
+	dealloc_token(&token);
 	return (OK);
 }
