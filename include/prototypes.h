@@ -70,7 +70,7 @@ t_status		add_or_change_env_element(char *env_line, t_list **env);
 t_status		init_env(char **env, t_list **lambda_env);
 char			**env_to_strings(t_list *env);
 char			*env_get_val(t_list *env, char *key);
-t_status		expand_variables(t_list *tokens, t_shell *lambda);
+t_status		expand_variables(t_list **tokens_list, t_shell *lambda);
 void			mark_ambiguous_redirects(t_list *tokens);
 
 /* ERROR MESSAGES */
@@ -117,6 +117,9 @@ char			*get_absolute_path_from_env(char *name, t_list *env);
 
 /* HEREDOC */
 char			*heredoc(t_token *delimiter, t_shell *lambda);
+void			convert_single_to_double(t_list *tokens);
+void			write_tokens_into_file(t_list *tokens, int fd);
+t_status		prepare_tokens(t_token *d, t_list *t, t_shell *l);
 
 /* DEBUG */
 void			dbg_print_tokens(t_list *tokens);

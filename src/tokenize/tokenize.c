@@ -73,13 +73,10 @@ t_list	*tokenize(char *line)
 	while (*line)
 	{
 		old_line_pos = line;
-
 		token_type = subtokenize(&line);
-
 		if (token_type == UNMATCHED_QUOTE)
 		{
 			status = 2;
-			//ft_putstr_fd(PREFIX": syntax error near unexpected token `newline'\n", STDERR_FILENO);
 			ft_putstr_fd(PREFIX": unexpected EOF while looking for matching quote\n", STDERR_FILENO);
 			return (NULL);
 		}
@@ -87,10 +84,8 @@ t_list	*tokenize(char *line)
 			content = ft_substr(old_line_pos, 1, line - old_line_pos - 2);
 		else
 			content = ft_substr(old_line_pos, 0, line - old_line_pos);
-
 		if (!content)
 			return (NULL); // TODO: Free? FIXME: Definitely free.
-
 		token = get_token(token_type, content);
 		if (!token || !ft_lstnew_back(&tokens, token))
 		{
