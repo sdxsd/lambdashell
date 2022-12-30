@@ -157,7 +157,10 @@ static t_status	execute_builtin(t_cmd *cmd, t_shell *lambda)
 		status = 127;
 		ft_putstr_fd(PREFIX": ", STDERR_FILENO);
 		ft_putstr_fd(cmd->path, STDERR_FILENO);
-		ft_putstr_fd(": command not found\n", STDERR_FILENO);
+		if (env_get_val(lambda->env, "PATH"))
+			ft_putstr_fd(": command not found\n", STDERR_FILENO);
+		else
+			ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
 		return (ERROR);
 	}
 
