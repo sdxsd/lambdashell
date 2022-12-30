@@ -83,7 +83,7 @@ char			**env_to_strings(t_list *env);
 
 bool			is_valid_name_chr(char chr);
 bool			is_valid_name_first_chr(char chr);
-bool			is_valid_name(char *name);
+bool			is_valid_identifier(char *name);
 
 void			mark_ambiguous_redirects(t_list *tokens);
 

@@ -75,37 +75,36 @@ static t_status	argless_export(t_shell *lambda)
 	return (OK);
 }
 
-static t_status	validate_export_args(char **args)
+static t_status	export_valid_names(char **args, t_list **env_ptr)
 {
+	t_status	export_status;
+
+	export_status = OK;
+	args++;
 	while (*args)
 	{
-		if (!ft_isalpha(*(args[0])))
+		if (!is_valid_identifier(*args))
 		{
-			// TODO: Change to STDERR_FILENO
-			printf("%s: export: `%s\': not a valid identifier\n", PREFIX, *args);
-			return (ERROR);
+			prefixed_error("export: ");
+			print_error(*args);
+			print_error(": not a valid identifier\n");
+			export_status = ERROR;
 		}
+		else
+			add_or_change_env_element(*args, env_ptr);
 		args++;
 	}
-	return (OK);
+	return (export_status);
 }
 
 t_status	export(t_cmd *cmd, t_shell *lambda)
 {
-	size_t	iter;
-
 	if (!cmd->args[1])
 		return (argless_export(lambda));
-	iter = 1;
-	if (validate_export_args(cmd->args) != OK)
+	if (export_valid_names(cmd->args, &lambda->env) == ERROR)
 	{
-		status = ERROR;
+		status = 1;
 		return (ERROR);
-	}
-	while (cmd->args[iter] != NULL)
-	{
-		add_or_change_env_element(cmd->args[iter], &lambda->env);
-		iter++;
 	}
 	/* NOTE: Protect if add_or_change_env_element() goes wrong. */
 	/* return (add_or_change_env_element(cmd->args[1], &lambda->env)); */

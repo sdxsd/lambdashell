@@ -18,7 +18,7 @@ CFILES = \
 	src/env/env_utils.c \
 	src/env/env.c \
 	src/env/expand_variables.c \
-	src/env/is_valid_name.c \
+	src/env/is_valid_identifier.c \
 	src/env/mark_ambiguous_redirects.c \
 	src/error/error.c \
 	src/exec/exec.c \

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   is_valid_name.c                                    :+:    :+:            */
+/*   is_valid_identifier.c                              :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
@@ -49,12 +49,12 @@ bool	is_valid_name_first_chr(char chr)
 	return (ft_isalpha(chr) || chr == '_');
 }
 
-bool	is_valid_name(char *name)
+bool	is_valid_identifier(char *name)
 {
 	if (!is_valid_name_first_chr(*name))
 		return (false);
 	name++;
-	while (*name)
+	while (*name != '=' && *name)
 	{
 		if (!is_valid_name_chr(*name))
 			return (false);
