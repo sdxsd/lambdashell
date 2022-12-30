@@ -46,7 +46,7 @@ HEADERS = \
 	include/splash.h \
 	include/structs.h
 
-OFILES = $(CFILES:.c=.o)
+OFILES = $(addprefix obj/,$(CFILES:.c=.o))
 
 LIBFT_PATH = libft/libft.a
 
@@ -63,7 +63,9 @@ all: $(NAME)
 $(NAME): $(OFILES) $(LIBFT_PATH)
 	$(CC) $(CFLAGS) $(OFILES) $(LIB) -o $(NAME)
 
-%.o: %.c $(HEADERS)
+# Will attempt to create the object's parent directory
+obj/%.o: %.c $(HEADERS)
+	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(LIBFT_PATH):
@@ -77,7 +79,7 @@ fclean: clean
 
 clean:
 	$(MAKE) -C libft/ fclean
-	@rm -f $(OFILES)
+	@rm -rf obj/
 	@echo "CLEANED UP"
 
 .PHONY: all re fclean clean
