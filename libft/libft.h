@@ -118,6 +118,7 @@ void		ft_bzero(void *s, size_t n);
 void		*ft_memmove(void *dst, const void *src, size_t len);
 void		*ft_calloc(size_t count, size_t size);
 void		ft_free(void *ptrptr);
+size_t		ft_ptr_array_len(void **ptr_array);
 
 // ASCII NÆR INTEGER AF INTEGER NÆR ASCII
 char		*ft_itoa(int n);

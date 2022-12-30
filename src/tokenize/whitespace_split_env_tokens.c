@@ -34,28 +34,23 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-static size_t	get_ptr_array_size(void **ptr)
+static void	update_prev_pointer_to_next(t_list *prev, t_list *current,
+				t_list *next, t_list **tokens_ptr)
 {
-	size_t	size;
-
-	size = 0;
-	while (*ptr)
+	if (prev)
 	{
-		size++;
-		ptr++;
+		if (current->next)
+			prev->next = current->next;
+		else
+			prev->next = next;
 	}
-	return (size);
-}
-
-static t_status	new_unquoted_token_back(t_list **current_ptr, char *content,
-				t_token_type token_type)
-{
-	t_token	*token;
-
-	token = get_token(token_type, ft_strdup(content));
-	if (!token || !ft_lstnew_back(current_ptr, token))
-		return (ERROR);
-	return (OK);
+	else
+	{
+		if (current->next)
+			*tokens_ptr = current->next;
+		else
+			*tokens_ptr = next;
+	}
 }
 
 t_status	whitespace_split_env_tokens(t_list **tokens_ptr)
@@ -64,9 +59,6 @@ t_status	whitespace_split_env_tokens(t_list **tokens_ptr)
 	t_list	*current;
 	t_token	*token;
 	t_list	*next;
-	char	**split;
-	size_t	split_index;
-	size_t	split_count;
 	t_list	*last_added;
 
 	prev = NULL;
@@ -76,43 +68,12 @@ t_status	whitespace_split_env_tokens(t_list **tokens_ptr)
 		token = current->content;
 		next = current->next;
 
-		// TODO: Can the ft_strset() be removed?
-		if (token->type == UNQUOTED && ft_strset(token->content, WHITESPACE_CHARACTERS) && ft_str_not_set(token->content, WHITESPACE_CHARACTERS))
+		if (token->type == UNQUOTED
+			&& ft_str_not_set(token->content, WHITESPACE_CHARACTERS))
 		{
-			split = ft_split_set(token->content, WHITESPACE_CHARACTERS);
-
-			if (!split)
-			{
-				// TODO: ??
-				return (ERROR);
-			}
-
 			current->next = NULL;
 
-			split_index = 0;
-			split_count = get_ptr_array_size((void **)split);
-			while (split_index < split_count)
-			{
-				if (
-					(split_index > 0 || ft_strchr(WHITESPACE_CHARACTERS, *token->content))
-					&& new_unquoted_token_back(&current, " ", WHITESPACE) == ERROR)
-				{
-					// TODO: ??
-					return (ERROR);
-				}
-
-				if (new_unquoted_token_back(&current, split[split_index], UNQUOTED) == ERROR)
-				{
-					// TODO: ??
-					return (ERROR);
-				}
-
-				split_index++;
-			}
-
-			dealloc_ptr_array(&split);
-
-			if (split_count > 0 && ft_strchr(WHITESPACE_CHARACTERS, token->content[ft_strlen(token->content) - 1]) && new_unquoted_token_back(&current, " ", WHITESPACE) == ERROR)
+			if (split_and_add_spaced_tokens(token, current) == ERROR)
 			{
 				// TODO: ??
 				return (ERROR);
@@ -120,20 +81,7 @@ t_status	whitespace_split_env_tokens(t_list **tokens_ptr)
 
 			dealloc_token(&token);
 
-			if (prev)
-			{
-				if (current->next)
-					prev->next = current->next;
-				else
-					prev->next = next;
-			}
-			else
-			{
-				if (current->next)
-					*tokens_ptr = current->next;
-				else
-					*tokens_ptr = next;
-			}
+			update_prev_pointer_to_next(prev, current, next, tokens_ptr);
 
 			last_added = ft_lstlast(current);
 

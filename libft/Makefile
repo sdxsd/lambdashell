@@ -40,6 +40,7 @@ CFILES = \
 		ft_strtrim_whitespace.c \
 		ft_strtrim.c \
 		ft_isascii.c \
+		ft_ptr_array_len.c \
 		ft_putchar_fd.c \
 		ft_strlcat.c \
 		ft_substr.c \
