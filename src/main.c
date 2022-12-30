@@ -62,6 +62,7 @@ static void	prompt(t_shell *lambda)
 	mark_ambiguous_redirects(lambda->tokens);
 	if (whitespace_split_env_tokens(&lambda->tokens) == ERROR)
 		return ;
+	// dbg_print_tokens(lambda->tokens);
 	lambda->cmds = parse(lambda->tokens, lambda);
 	if (!lambda->cmds)
 		return ;
@@ -74,13 +75,10 @@ static t_status	shell_init(char **env, t_shell *lambda)
 	signal_handler_set();
 	ft_bzero(lambda, sizeof(*lambda));
 	status = OK;
-	// TODO: Should ` || !lambda->env` be placed back?
-	// Idk how to even get a completely empty environment in the tester
 	if (init_env(env, &lambda->env) == ERROR)
 		return (ERROR);
-	// TODO: Should lambda->cwd set by this function be error checked?
-	update_cwd(lambda);
-	// TODO: May need to check errno afterwards according to man page
+	if (update_cwd(lambda) == ERROR)
+		return (ERROR);
 	lambda->stdin_is_tty = isatty(STDIN_FILENO);
 	lambda->stdin_fd = dup(STDIN_FILENO);
 	lambda->stdout_fd = dup(STDOUT_FILENO);

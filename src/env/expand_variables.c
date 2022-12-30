@@ -69,17 +69,11 @@ static char	*get_appended(char *content, t_expansion_state state, char *substr_s
 	return (appended);
 }
 
-static bool	is_valid_name_chr(char chr)
-{
-	return (ft_isalpha(chr) || chr == '_');
-}
-
 static bool	should_get_appended(char *content, char *substr_start,
 				t_expansion_state state)
 {
 	const bool	is_variable_end = \
-		state == EXPANSION_STATE_VARIABLE && \
-		!is_valid_name_chr(*content) && !ft_isdigit(*content);
+		state == EXPANSION_STATE_VARIABLE && !is_valid_name_chr(*content);
 	const bool	is_status_or_invalid_end = \
 		(state == EXPANSION_STATE_STATUS || \
 		state == EXPANSION_STATE_INVALID_VARIABLE) && \
@@ -120,9 +114,7 @@ static char	*get_expanded_string(char *content, t_shell *lambda)
 			}
 			substr_start = content;
 
-			expanded_string = ft_strjoin_and_free_left(expanded_string, appended);
-			ft_free(&appended);
-
+			expanded_string = ft_strjoin_and_free_left_right(expanded_string, &appended);
 			if (!expanded_string)
 			{
 				// TODO: Free
@@ -134,7 +126,7 @@ static char	*get_expanded_string(char *content, t_shell *lambda)
 
 		if (*content == '$')
 		{
-			if (is_valid_name_chr(*(content + 1)))
+			if (is_valid_name_first_chr(*(content + 1)))
 				state = EXPANSION_STATE_VARIABLE;
 			else if (*(content + 1) == '?')
 				state = EXPANSION_STATE_STATUS;
@@ -152,10 +144,7 @@ static char	*get_expanded_string(char *content, t_shell *lambda)
 		return (NULL);
 	}
 
-	expanded_string = ft_strjoin_and_free_left(expanded_string, appended);
-	ft_free(&appended);
-
-	return (expanded_string);
+	return (ft_strjoin_and_free_left_right(expanded_string, &appended));
 }
 
 t_status	expand_variables(t_list **tokens_list, t_shell *lambda)

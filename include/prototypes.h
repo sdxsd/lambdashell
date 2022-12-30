@@ -68,32 +68,59 @@ t_status		dealloc_redirection(void *redirect_ptr);
 t_status		dealloc_lst(t_list **lst, t_status (*del)(void*));
 t_status		dealloc_lambda(t_shell *lambda);
 
-/* ENVIRONMENT */
-t_status		add_or_change_env_element(char *env_line, t_list **env);
-t_status		init_env(char **env, t_list **lambda_env);
-char			**env_to_strings(t_list *env);
+/* DEBUG */
+void			dbg_print_tokens(t_list *tokens);
+void			dbg_print_commands(t_list *cmds);
+
+/* ENV */
+t_status		add_or_change_env_element(char *env_line, t_list **env_ptr);
+t_status		init_env(char **env, t_list **lambda_env_ptr);
 char			*env_get_val(t_list *env, char *key);
+
 t_status		expand_variables(t_list **tokens_list, t_shell *lambda);
+
+char			**env_to_strings(t_list *env);
+
+bool			is_valid_name_chr(char chr);
+bool			is_valid_name_first_chr(char chr);
+bool			is_valid_name(char *name);
+
 void			mark_ambiguous_redirects(t_list *tokens);
 
-/* ERROR MESSAGES */
-t_status		msg_err(char *s, t_status ret);
-void			*null_msg_err(char *s);
+/* ERROR */
+t_status		print_error(char *msg);
+t_status		prefixed_error(char *msg);
+t_status		prefixed_perror(char *msg);
 
-/* EXECUTION */
+/* EXEC */
 t_status		execute(t_shell *lambda);
+char			*get_absolute_path_from_env(char *name, t_list *env);
+
+/* HEREDOC */
+char			*heredoc(t_token *delimiter, t_shell *lambda);
+void			convert_single_to_double(t_list *tokens);
+void			write_tokens_into_file(t_list *tokens, int fd);
+t_status		prepare_tokens(t_token *d, t_list *t, t_shell *l);
+
+/* NULL */
+void			*null(t_status _);
 
 /* PARSE */
 bool			is_text_token(t_token *token);
 t_list			*parse(t_list *tokens, t_shell *lambda);
 void			skip_whitespace_tokens(t_list **tokens);
 
+/* SIGNALS */
+void			signal_handler_set(void);
+void			signal_handler_child_set(void);
+void			disable_signals(void);
+
 /* STOP */
 bool			running(void);
 t_status		stop(void);
 void			stop_void(void);
 
-/* TOKENISATION */
+/* TOKENIZE */
 t_status		check_token_syntax_errors(t_list *tokens);
 t_status		split_and_add_spaced_tokens(t_token *token, t_list *current);
 
@@ -109,25 +136,7 @@ t_token_type	subtokenize_unquoted(char **line_ptr);
 t_list			*tokenize(char *line);
 t_status		whitespace_split_env_tokens(t_list **tokens_ptr);
 
-/* SIGNALS */
-void			signal_handler_set(void);
-void			signal_handler_child_set(void);
-void			disable_signals(void);
-
 /* UPDATE_CWD */
-void			update_cwd(t_shell *lambda);
-
-/* PATH */
-char			*get_absolute_path_from_env(char *name, t_list *env);
-
-/* HEREDOC */
-char			*heredoc(t_token *delimiter, t_shell *lambda);
-void			convert_single_to_double(t_list *tokens);
-void			write_tokens_into_file(t_list *tokens, int fd);
-t_status		prepare_tokens(t_token *d, t_list *t, t_shell *l);
-
-/* DEBUG */
-void			dbg_print_tokens(t_list *tokens);
-void			dbg_print_commands(t_list *cmds);
+t_status		update_cwd(t_shell *lambda);
 
 #endif

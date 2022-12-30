@@ -96,7 +96,7 @@ t_status	check_token_syntax_errors(t_list *tokens)
 		|| check_redirection_syntax_errors(tokens) == ERROR)
 	{
 		status = 2;
-		ft_putstr_fd(PREFIX": syntax error\n", STDERR_FILENO);
+		prefixed_error("syntax error\n");
 		return (ERROR);
 	}
 	return (OK);

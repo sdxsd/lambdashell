@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   update_cwd.c                                       :+:    :+:            */
+/*   is_valid_name.c                                    :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/12/02 21:24:58 by sbos          #+#    #+#                 */
-/*   Updated: 2022/12/02 21:24:58 by sbos          ########   odam.nl         */
+/*   Created: 2022/12/30 23:23:21 by sbos          #+#    #+#                 */
+/*   Updated: 2022/12/30 23:23:21 by sbos          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,26 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-t_status	update_cwd(t_shell *lambda)
+bool	is_valid_name_chr(char chr)
 {
-	ft_free(&lambda->cwd);
-	lambda->cwd = getcwd(NULL, 0);
-	if (!lambda->cwd)
-		return (prefixed_perror("cwd"));
-	return (OK);
+	return (ft_isalnum(chr) || chr == '_');
+}
+
+bool	is_valid_name_first_chr(char chr)
+{
+	return (ft_isalpha(chr) || chr == '_');
+}
+
+bool	is_valid_name(char *name)
+{
+	if (!is_valid_name_first_chr(*name))
+		return (false);
+	name++;
+	while (*name)
+	{
+		if (!is_valid_name_chr(*name))
+			return (false);
+		name++;
+	}
+	return (true);
 }

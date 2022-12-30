@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   update_cwd.c                                       :+:    :+:            */
+/*   null.c                                             :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/12/02 21:24:58 by sbos          #+#    #+#                 */
-/*   Updated: 2022/12/02 21:24:58 by sbos          ########   odam.nl         */
+/*   Created: 2022/12/30 21:48:40 by sbos          #+#    #+#                 */
+/*   Updated: 2022/12/30 21:48:40 by sbos          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,8 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-t_status	update_cwd(t_shell *lambda)
+void	*null(t_status _)
 {
-	ft_free(&lambda->cwd);
-	lambda->cwd = getcwd(NULL, 0);
-	if (!lambda->cwd)
-		return (prefixed_perror("cwd"));
-	return (OK);
+	(void)_;
+	return (NULL);
 }

@@ -49,7 +49,7 @@ static size_t	get_key_length(char *str)
 	return (count);
 }
 
-static t_status	add_env_element(char *key, char *val, t_list **env)
+static t_status	add_env_element(char *key, char *val, t_list **env_ptr)
 {
 	t_env_element	*env_element;
 
@@ -58,24 +58,24 @@ static t_status	add_env_element(char *key, char *val, t_list **env)
 		return (dealloc_env_element(&env_element));
 	env_element->key = key;
 	env_element->val = val;
-	if (!ft_lstnew_back(env, env_element))
+	if (!ft_lstnew_back(env_ptr, env_element))
 		return (dealloc_env_element(&env_element));
 	return (OK);
 }
 
-t_status	get_val(char **val, char *env_line)
+static t_status	get_val(char **val_ptr, char *env_line)
 {
-	*val = NULL;
+	*val_ptr = NULL;
 	if (env_line[get_key_length(env_line)] == '=')
 	{
-		*val = ft_strdup(env_line + get_key_length(env_line) + 1);
-		if (!*val)
+		*val_ptr = ft_strdup(env_line + get_key_length(env_line) + 1);
+		if (!*val_ptr)
 			return (ERROR);
 	}
 	return (OK);
 }
 
-t_status	add_or_change_env_element(char *env_line, t_list **env)
+t_status	add_or_change_env_element(char *env_line, t_list **env_ptr)
 {
 	char			*key;
 	char			*val;
@@ -84,9 +84,9 @@ t_status	add_or_change_env_element(char *env_line, t_list **env)
 	key = ft_strndup(env_line, get_key_length(env_line));
 	if (!key || get_val(&val, env_line) == ERROR)
 		return (ERROR);
-	while (*env)
+	while (*env_ptr)
 	{
-		env_element = (*env)->content;
+		env_element = (*env_ptr)->content;
 		if (ft_streq(env_element->key, key))
 		{
 			ft_free(&key);
@@ -96,16 +96,16 @@ t_status	add_or_change_env_element(char *env_line, t_list **env)
 			env_element->val = val;
 			return (OK);
 		}
-		env = &(*env)->next;
+		env_ptr = &(*env_ptr)->next;
 	}
-	return (add_env_element(key, val, env));
+	return (add_env_element(key, val, env_ptr));
 }
 
-t_status	init_env(char **env, t_list **lambda_env)
+t_status	init_env(char **env, t_list **lambda_env_ptr)
 {
 	while (*env)
 	{
-		if (add_or_change_env_element(*env, lambda_env) == ERROR)
+		if (add_or_change_env_element(*env, lambda_env_ptr) == ERROR)
 			return (ERROR);
 		env++;
 	}

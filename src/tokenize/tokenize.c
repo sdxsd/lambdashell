@@ -75,7 +75,7 @@ t_list	*tokenize(char *line)
 		if (token_type == UNMATCHED_QUOTE)
 		{
 			status = 2;
-			ft_putstr_fd(PREFIX": unexpected EOF while looking for matching quote\n", STDERR_FILENO);
+			prefixed_error("unexpected EOF while looking for matching quote\n");
 			dealloc_lst(&tokens, dealloc_token);
 			return (NULL);
 		}

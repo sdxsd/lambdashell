@@ -47,11 +47,11 @@ static t_status	argless_cd(t_list *env)
 	if (!home_path)
 	{
 		// TODO: Maybe write a function for manual error messages for this
-		ft_putstr_fd(PREFIX": cd: HOME not set\n", STDERR_FILENO);
+		prefixed_error("cd: HOME not set\n");
 		return (ERROR);
 	}
 	if (chdir(home_path) == -1)
-		return (msg_err("cd", ERROR));
+		return (prefixed_perror("cd"));
 	return (OK);
 }
 
@@ -68,11 +68,12 @@ t_status	cd(t_cmd *cmd, t_shell *lambda)
 	{
 		msg = ft_strjoin("cd: ", cmd->args[1]);
 		if (!msg)
-			return (msg_err("cd", ERROR));
-		msg_err(msg, ERROR);
+			return (prefixed_perror("cd"));
+		prefixed_perror(msg);
 		ft_free(&msg);
 		return (ERROR);
 	}
-	update_cwd(lambda);
+	if (update_cwd(lambda) == ERROR)
+		return (ERROR);
 	return (OK);
 }

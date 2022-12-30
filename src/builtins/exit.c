@@ -11,18 +11,14 @@
 void	bltin_exit(t_cmd *cmd)
 {
 	int		exit_status;
-	char	*error_msg;
 
 	if (!cmd->args[1])
 		return (stop_void());
 	if (!ft_atoi_safe(cmd->args[1], &exit_status))
 	{
-		error_msg = ft_strjoin_array((char *[]){PREFIX": exit: ", cmd->args[1], ": numeric argument required\n", NULL});
-		// TODO: What to do if error_msg is NULL?
-		if (error_msg)
-		{
-			ft_putstr_fd(error_msg, STDERR_FILENO);
-		}
+		prefixed_error("exit: ");
+		print_error(cmd->args[1]);
+		print_error(": numeric argument required\n");
 		status = 255;
 		return (stop_void());
 	}
@@ -33,7 +29,7 @@ void	bltin_exit(t_cmd *cmd)
 	}
 	else
 	{
-		ft_putstr_fd(PREFIX": exit: too many arguments\n", STDERR_FILENO);
+		prefixed_error("exit: too many arguments\n");
 		status = 1;
 	}
 }

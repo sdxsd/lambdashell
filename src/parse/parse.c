@@ -105,8 +105,7 @@ static t_redirect	*get_redirect(t_list **tokens_ptr, t_shell *lambda)
 		if (redirect->direction == DIRECTION_HEREDOC)
 			setup_heredoc(tokens_ptr, redirect, lambda);
 		else
-			redirect->file_path = ft_strjoin_and_free_left(redirect->file_path, content);
-		ft_free(&content);
+			redirect->file_path = ft_strjoin_and_free_left_right(redirect->file_path, &content);
 
 		if (!redirect->file_path)
 		{
@@ -163,7 +162,7 @@ static char	**get_arg_string_array(t_list *arg_list, char *path)
 	arg_strings_start = ft_calloc(ft_lstsize(arg_list) + 2, sizeof(*arg_strings));
 	arg_strings = arg_strings_start;
 	if (!arg_strings)
-		return (null_msg_err("get_arg_string_array()"));
+		return (null(prefixed_perror("get_arg_string_array()")));
 	*arg_strings = ft_strdup(path);
 	arg_strings++;
 	while (arg_list)
@@ -268,10 +267,7 @@ t_list	*parse(t_list *tokens, t_shell *lambda)
 	while (tokens)
 	{
 		if (alloc_cmd(&cmd) == ERROR || fill_cmd(&tokens, lambda, cmd) == ERROR || !cmd->path || !ft_lstnew_back(&cmds, cmd))
-		{
-			dealloc_cmd(&cmd);
-			return (NULL);
-		}
+			return (null(dealloc_cmd(&cmd)));
 	}
 	return (cmds);
 }

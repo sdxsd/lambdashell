@@ -35,15 +35,22 @@ A program is free software if users have all of these freedoms.
 #include "../../include/minishell.h"
 #include <unistd.h>
 
-t_status	msg_err(char *s, t_status ret)
+t_status	print_error(char *msg)
 {
-	ft_putstr_fd(PREFIX": ", STDERR_FILENO);
-	perror(s);
-	return (ret);
+	ft_putstr_fd(msg, STDERR_FILENO);
+	return (ERROR);
 }
 
-void	*null_msg_err(char *s)
+t_status	prefixed_error(char *msg)
 {
-	msg_err(s, 0);
-	return (NULL);
+	print_error(PREFIX);
+	print_error(": ");
+	return (print_error(msg));
+}
+
+t_status	prefixed_perror(char *msg)
+{
+	prefixed_error("");
+	perror(msg);
+	return (ERROR);
 }

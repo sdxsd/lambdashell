@@ -33,6 +33,7 @@ CFILES = \
 		ft_strrchr.c \
 		ft_isalpha.c \
 		ft_memset.c \
+		ft_strjoin_and_free_left_right.c \
 		ft_strjoin_and_free_left.c \
 		ft_strjoin_array.c \
 		ft_strjoin.c \

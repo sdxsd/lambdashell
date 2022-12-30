@@ -56,7 +56,7 @@ static t_status	redirections(t_list *list, t_cmd *cmd)
 		redir = list->content;
 		if (redir->is_ambiguous)
 		{
-			ft_putstr_fd(PREFIX": ambiguous redirect\n", STDERR_FILENO);
+			prefixed_error("ambiguous redirect\n");
 			return (ERROR);
 		}
 		if (redir->direction == DIRECTION_IN && !in_encountered)
@@ -76,7 +76,7 @@ static t_status	redirections(t_list *list, t_cmd *cmd)
 		// TODO: Should still print "no such file" when a second input file isn't found
 		open_fd = open(redir->file_path, flags, 0644);
 		if (open_fd < 0)
-			return (msg_err(redir->file_path, ERROR));
+			return (prefixed_perror(redir->file_path));
 		if (redir->direction == DIRECTION_IN || redir->direction == DIRECTION_HEREDOC)
 			cmd->input_fd = open_fd;
 		if (redir->direction == DIRECTION_OUT || redir->direction == DIRECTION_APPEND)
@@ -119,8 +119,7 @@ static t_status	execute_command(t_cmd *cmd, t_shell *lambda)
 	if (execve(cmd->path, cmd->args, env_array) == -1)
 	{
 		status = 127;
-		msg_err(cmd->path, ERROR);
-		return (ERROR);
+		return (prefixed_perror(cmd->path));
 	}
 
 	return (OK);
@@ -155,12 +154,11 @@ static t_status	execute_builtin(t_cmd *cmd, t_shell *lambda)
 	else
 	{
 		status = 127;
-		ft_putstr_fd(PREFIX": ", STDERR_FILENO);
-		ft_putstr_fd(cmd->path, STDERR_FILENO);
+		prefixed_error(cmd->path);
 		if (env_get_val(lambda->env, "PATH"))
-			ft_putstr_fd(": command not found\n", STDERR_FILENO);
+			print_error(": command not found\n");
 		else
-			ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+			print_error(": No such file or directory\n");
 		return (ERROR);
 	}
 
@@ -189,7 +187,7 @@ static t_status	execute_simple_command(t_cmd *cmd, t_shell *lambda)
 	{
 		pid = fork();
 		if (pid == FORK_FAILURE)
-			return (msg_err("execute_simple_command()", ERROR));
+			return (prefixed_perror("execute_simple_command()"));
 		if (pid == FORK_CHILD)
 		{
 			signal_handler_child_set();
@@ -262,10 +260,10 @@ static t_status	execute_complex_command(int input_fd, t_list *cmds, t_shell *lam
 	int		stat_loc;
 
 	if (cmds->next && pipe(tube) == -1)
-		return (msg_err("execute_complex_command()", ERROR));
+		return (prefixed_perror("execute_complex_command()"));
 	pid = fork();
 	if (pid == FORK_FAILURE)
-		return (msg_err("fork", ERROR));
+		return (prefixed_perror("fork"));
 	if (pid == FORK_CHILD)
 	{
 		signal_handler_child_set();
@@ -282,7 +280,7 @@ static t_status	execute_complex_command(int input_fd, t_list *cmds, t_shell *lam
 	if (cmds->next && execute_complex_command(tube[READ], cmds->next, lambda) != OK)
 	{
 		if (errno != EAGAIN)
-			return (msg_err("execute_complex_command()", ERROR));
+			return (prefixed_perror("execute_complex_command()"));
 		return (ERROR);
 	}
 	waitpid(pid, &stat_loc, 0);

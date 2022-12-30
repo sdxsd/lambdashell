@@ -18,15 +18,18 @@ CFILES = \
 	src/env/env_utils.c \
 	src/env/env.c \
 	src/env/expand_variables.c \
+	src/env/is_valid_name.c \
 	src/env/mark_ambiguous_redirects.c \
 	src/error/error.c \
 	src/exec/exec.c \
-	src/exec/path.c \
+	src/exec/get_absolute_path_from_env.c \
 	src/heredoc/heredoc.c \
 	src/heredoc/heredoc_utils.c \
+	src/misc/null.c \
 	src/parse/is_text_token.c \
 	src/parse/parse.c \
 	src/parse/skip_whitespace_tokens.c \
+	src/signals/signals.c \
 	src/stop/stop.c \
 	src/tokenize/check_token_syntax_errors.c \
 	src/tokenize/split_and_add_spaced_tokens.c \
@@ -35,7 +38,6 @@ CFILES = \
 	src/tokenize/subtokenizers_redirections.c \
 	src/tokenize/tokenize.c \
 	src/tokenize/whitespace_split_env_tokens.c \
-	src/signals/signals.c \
 	src/update_cwd/update_cwd.c
 
 HEADERS = \

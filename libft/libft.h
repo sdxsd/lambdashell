@@ -76,6 +76,7 @@ char		*ft_strdup(const char *s1);
 int			ft_streq(const char *s1, const char *s2);
 char		*ft_strnstr(const char *haystack, const char *needle, size_t len);
 char		*ft_strmapi(char const *s, char (*f) (unsigned int, char));
+char		*ft_strjoin_and_free_left_right(char *left, char **right_ptr);
 char		*ft_strjoin_and_free_left(char *left, char *right);
 char		*ft_strjoin_array(char *array[]);
 char		*ft_strjoin(char const *s1, char const *s2);

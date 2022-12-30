@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_strjoin_and_free_left.c                         :+:    :+:            */
+/*   ft_strjoin_and_free_left_right.c                   :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
@@ -12,11 +12,11 @@
 
 #include "libft.h"
 
-char	*ft_strjoin_and_free_left(char *left, char *right)
+char	*ft_strjoin_and_free_left_right(char *left, char **right_ptr)
 {
 	char	*joined;
 
-	joined = ft_strjoin(left, right);
-	ft_free(&left);
+	joined = ft_strjoin_and_free_left(left, *right_ptr);
+	ft_free(right_ptr);
 	return (joined);
 }
