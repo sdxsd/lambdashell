@@ -29,7 +29,6 @@ CFILES = \
 	src/parse/skip_whitespace_tokens.c \
 	src/stop/stop.c \
 	src/tokenize/check_token_syntax_errors.c \
-	src/tokenize/get_token.c \
 	src/tokenize/split_and_add_spaced_tokens.c \
 	src/tokenize/subtokenizers_misc.c \
 	src/tokenize/subtokenizers_quotes.c \

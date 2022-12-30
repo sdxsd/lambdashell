@@ -50,16 +50,6 @@ static bool	is_builtin(char *path)
 		|| ft_streq(path, "unset"));
 }
 
-static t_status	get_initial_cmd(t_cmd **cmd_ptr)
-{
-	*cmd_ptr = ft_calloc(1, sizeof(**cmd_ptr));
-	if (!*cmd_ptr)
-		return (ERROR);
-	(*cmd_ptr)->input_fd = STDIN_FILENO;
-	(*cmd_ptr)->output_fd = STDOUT_FILENO;
-	return (OK);
-}
-
 static void	fill_direction(t_redirect *redirect, t_token *token)
 {
 	if (*token->content == '<' && token->content[1] == '<')
@@ -277,7 +267,7 @@ t_list	*parse(t_list *tokens, t_shell *lambda)
 	cmds = NULL;
 	while (tokens)
 	{
-		if (get_initial_cmd(&cmd) == ERROR || fill_cmd(&tokens, lambda, cmd) == ERROR || !cmd->path || !ft_lstnew_back(&cmds, cmd))
+		if (alloc_cmd(&cmd) == ERROR || fill_cmd(&tokens, lambda, cmd) == ERROR || !cmd->path || !ft_lstnew_back(&cmds, cmd))
 		{
 			dealloc_cmd(&cmd);
 			return (NULL);

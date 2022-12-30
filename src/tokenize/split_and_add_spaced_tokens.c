@@ -43,7 +43,7 @@ static t_status	new_unquoted_token_back(t_list **current_ptr, char *content,
 	token_content = ft_strdup(content);
 	if (!token_content)
 		return (ERROR);
-	token = get_token(token_type, token_content);
+	token = alloc_token(token_type, token_content);
 	if (!token)
 	{
 		ft_free(&token_content);

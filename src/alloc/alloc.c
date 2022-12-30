@@ -43,3 +43,27 @@ t_env_element	*alloc_env_element(void)
 {
 	return (ft_calloc(1, sizeof(t_env_element)));
 }
+
+t_token	*alloc_token(t_token_type type, char *content)
+{
+	t_token	*token;
+
+	if (!content)
+		return (NULL);
+	token = ft_calloc(1, sizeof(*token));
+	if (!token)
+		return (NULL);
+	token->type = type;
+	token->content = content;
+	return (token);
+}
+
+t_status	alloc_cmd(t_cmd **cmd_ptr)
+{
+	*cmd_ptr = ft_calloc(1, sizeof(**cmd_ptr));
+	if (!*cmd_ptr)
+		return (ERROR);
+	(*cmd_ptr)->input_fd = STDIN_FILENO;
+	(*cmd_ptr)->output_fd = STDOUT_FILENO;
+	return (OK);
+}

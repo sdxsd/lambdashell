@@ -44,6 +44,8 @@ A program is free software if users have all of these freedoms.
 
 /* ALLOC */
 t_env_element	*alloc_env_element(void);
+t_token			*alloc_token(t_token_type type, char *content);
+t_status		alloc_cmd(t_cmd **cmd_ptr);
 
 /* BUILTINS */
 t_status		cd(t_cmd *cmd, t_shell *lambda);
@@ -93,7 +95,6 @@ void			stop_void(void);
 
 /* TOKENISATION */
 t_status		check_token_syntax_errors(t_list *tokens);
-t_token			*get_token(t_token_type type, char *content);
 t_status		split_and_add_spaced_tokens(t_token *token, t_list *current);
 
 t_token_type	subtokenize_single_quote(char **line_ptr);

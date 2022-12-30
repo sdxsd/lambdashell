@@ -57,7 +57,6 @@ static t_token_type	subtokenize(char **line)
 		return (subtokenize_whitespace(line));
 	else
 		return (subtokenize_unquoted(line));
-	// TODO: Handle invalid user input like >>>
 }
 
 t_list	*tokenize(char *line)
@@ -69,7 +68,6 @@ t_list	*tokenize(char *line)
 	t_token			*token;
 
 	tokens = NULL;
-
 	while (*line)
 	{
 		old_line_pos = line;
@@ -78,21 +76,24 @@ t_list	*tokenize(char *line)
 		{
 			status = 2;
 			ft_putstr_fd(PREFIX": unexpected EOF while looking for matching quote\n", STDERR_FILENO);
+			dealloc_lst(&tokens, dealloc_token);
 			return (NULL);
 		}
-		else if (token_type == SINGLE_QUOTED || token_type == DOUBLE_QUOTED)
+		if (token_type == SINGLE_QUOTED || token_type == DOUBLE_QUOTED)
 			content = ft_substr(old_line_pos, 1, line - old_line_pos - 2);
 		else
 			content = ft_substr(old_line_pos, 0, line - old_line_pos);
 		if (!content)
-			return (NULL); // TODO: Free? FIXME: Definitely free.
-		token = get_token(token_type, content);
+		{
+			dealloc_lst(&tokens, dealloc_token);
+			return (NULL);
+		}
+		token = alloc_token(token_type, content);
 		if (!token || !ft_lstnew_back(&tokens, token))
 		{
 			// FIXME: memleak when input = "jfkjjiru fuoifudf difudfuuofdforkorkgrg"
-			// or other garbage.
-			if (token)
-				dealloc_token(&token);
+			// or other garbage. // TODO: Is this still the case after my edits?
+			dealloc_token(&token);
 			dealloc_lst(&tokens, dealloc_token);
 			return (NULL);
 		}
