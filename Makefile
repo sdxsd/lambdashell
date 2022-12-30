@@ -31,7 +31,9 @@ CFILES = \
 	src/stop/stop.c \
 	src/tokenize/check_token_syntax_errors.c \
 	src/tokenize/get_token.c \
-	src/tokenize/subtokenizers.c \
+	src/tokenize/subtokenizers_misc.c \
+	src/tokenize/subtokenizers_quotes.c \
+	src/tokenize/subtokenizers_redirections.c \
 	src/tokenize/tokenize.c \
 	src/tokenize/whitespace_split_env_tokens.c \
 	src/signals/signals.c \

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   subtokenizers.c                                    :+:    :+:            */
+/*   subtokenizers_redirections.c                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
@@ -39,30 +39,6 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-t_token_type	subtokenize_single_quote(char **line_ptr)
-{
-	(*line_ptr)++;
-	while (**line_ptr != '\0' && **line_ptr != '\'')
-		(*line_ptr)++;
-	if (**line_ptr == '\'')
-		(*line_ptr)++;
-	else if (**line_ptr == '\0')
-		return (UNMATCHED_QUOTE);
-	return (SINGLE_QUOTED);
-}
-
-t_token_type	subtokenize_double_quote(char **line_ptr)
-{
-	(*line_ptr)++;
-	while (**line_ptr != '\0' && **line_ptr != '"')
-		(*line_ptr)++;
-	if (**line_ptr == '"')
-		(*line_ptr)++;
-	else if (**line_ptr == '\0')
-		return (UNMATCHED_QUOTE);
-	return (DOUBLE_QUOTED);
-}
-
 t_token_type	subtokenize_heredoc(char **line_ptr)
 {
 	(*line_ptr) += 2;
@@ -79,25 +55,4 @@ t_token_type	subtokenize_redirection(char **line_ptr)
 {
 	(*line_ptr)++;
 	return (REDIRECTION);
-}
-
-t_token_type	subtokenize_pipe(char **line_ptr)
-{
-	(*line_ptr)++;
-	return (PIPE);
-}
-
-t_token_type	subtokenize_whitespace(char **line_ptr)
-{
-	while (**line_ptr != '\0' && ft_isspace(**line_ptr))
-		(*line_ptr)++;
-	return (WHITESPACE);
-}
-
-t_token_type	subtokenize_unquoted(char **line_ptr)
-{
-	// TODO: Make sure this isn't missing any conditions for breaking
-	while (**line_ptr != '\0' && !ft_isspace(**line_ptr) && **line_ptr != '|' && **line_ptr != '<' && **line_ptr != '>' && **line_ptr != '"' && **line_ptr != '\'')
-		(*line_ptr)++;
-	return (UNQUOTED);
 }
