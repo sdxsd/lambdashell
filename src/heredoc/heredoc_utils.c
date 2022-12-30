@@ -38,69 +38,53 @@ A program is free software if users have all of these freedoms.
 */
 
 #include "../../include/minishell.h"
-#include <fcntl.h>
 
-static char	*create_heredoc_file(void)
+void	convert_single_to_double(t_list *tokens)
 {
-	int		iter;
-	char	*file;
-	char	*full_path;
-	char	*num;
+	t_token	*token;
 
-	iter = 1;
-	num = ft_itoa(iter);
-	file = ft_strjoin("heredoc_", num);
-	full_path = ft_strjoin("/tmp/", file);
-	while (!access(full_path, F_OK))
+	while (tokens)
 	{
-		ft_free(&full_path);
-		num = ft_itoa(iter);
-		file = ft_strjoin("heredoc_", num);
-		full_path = ft_strjoin("/tmp/", file);
-		ft_free(&num);
-		ft_free(&file);
-		iter++;
-	}
-	return (full_path);
-}
-
-static t_status	heredoc_read_and_write(t_shell *lm, t_token *del, int fd)
-{
-	char		*line;
-	t_list		*tokens;
-	t_status	err_status;
-
-	err_status = OK;
-	while (err_status == OK)
-	{
-		line = readline("> ");
-		if (line == NULL)
+		token = tokens->content;
+		token->was_single_quoted = FALSE;
+		if (token->type == SINGLE_QUOTED)
 		{
-			ft_putstr("λ: warning: here-document delimited by end-of-file\n");
-			return (OK);
+			token->was_single_quoted = TRUE;
+			token->type = DOUBLE_QUOTED;
 		}
-		if (ft_streq(line, del->content))
-			break ;
-		tokens = tokenize(line);
-		ft_free(&line);
-		err_status = prepare_tokens(del, tokens, lm);
-		write_tokens_into_file(tokens, fd);
-		dealloc_lst(&tokens, dealloc_token);
+		tokens = tokens->next;
 	}
-	ft_free(&line);
-	return (err_status);
 }
 
-char	*heredoc(t_token *del, t_shell *lambda)
+void	write_tokens_into_file(t_list *tokens, int fd)
 {
-	char	*full_path;
-	int		fd;
+	t_token	*token;
 
-	full_path = create_heredoc_file();
-	fd = open(full_path, O_CREAT | O_TRUNC | O_RDWR, 0644);
-	if (fd == -1)
-		return (NULL);
-	heredoc_read_and_write(lambda, del, fd);
-	close(fd);
-	return (full_path);
+	if (tokens == NULL)
+		return ;
+	while (tokens)
+	{
+		token = tokens->content;
+		if (token->was_single_quoted)
+			ft_putstr_fd("\'", fd);
+		else if (token->type == DOUBLE_QUOTED)
+			ft_putstr_fd("\"", fd);
+		ft_putstr_fd(token->content, fd);
+		if (token->was_single_quoted)
+			ft_putstr_fd("\'", fd);
+		else if (token->type == DOUBLE_QUOTED)
+			ft_putstr_fd("\"", fd);
+		tokens = tokens->next;
+	}
+	ft_putstr_fd("\n", fd);
+}
+
+t_status	prepare_tokens(t_token *d, t_list *t, t_shell *l)
+{
+	if (!t)
+		return (ERROR);
+	convert_single_to_double(t);
+	if (d->type != SINGLE_QUOTED && d->type != DOUBLE_QUOTED)
+		return (expand_variables(&t, l));
+	return (OK);
 }

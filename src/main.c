@@ -57,13 +57,12 @@ static void	prompt(t_shell *lambda)
 	ft_free(&lambda->line);
 	if (check_token_syntax_errors(lambda->tokens) == ERROR)
 		return ;
-	if (expand_variables(lambda->tokens, lambda) == ERROR)
+	if (expand_variables(&lambda->tokens, lambda) == ERROR)
 		return ;
 	mark_ambiguous_redirects(lambda->tokens);
 	if (whitespace_split_env_tokens(&lambda->tokens) == ERROR)
 		return ;
-	// dbg_print_tokens(lambda->tokens);
-	lambda->cmds = parse(lambda->tokens, lambda->env);
+	lambda->cmds = parse(lambda->tokens, lambda);
 	if (!lambda->cmds)
 		return ;
 	// dbg_print_commands(lambda->cmds);

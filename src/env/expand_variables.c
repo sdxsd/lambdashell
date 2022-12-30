@@ -158,28 +158,30 @@ static char	*get_expanded_string(char *content, t_shell *lambda)
 	return (expanded_string);
 }
 
-t_status	expand_variables(t_list *tokens, t_shell *lambda)
+t_status	expand_variables(t_list **tokens_list, t_shell *lambda)
 {
+	t_list	*tokens;
 	t_token	*token;
 	char	*expanded_string;
 
+	tokens = *tokens_list;
 	while (tokens)
 	{
 		token = tokens->content;
-
+		// TODO: Write. NOTE: What does this mean?
 		if (token->type == UNQUOTED || token->type == DOUBLE_QUOTED)
 		{
 			expanded_string = get_expanded_string(token->content, lambda);
 			if (!expanded_string)
 			{
-				// TODO: Error handling
+				dealloc_lst(tokens_list, dealloc_token);
+				return (ERROR);
 			}
 			ft_free(&token->content);
 			token->content = expanded_string;
 		}
-
 		tokens = tokens->next;
 	}
 
-	return (OK); // TODO: Use status value
+	return (OK);
 }
