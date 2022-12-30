@@ -39,6 +39,7 @@ A program is free software if users have all of these freedoms.
 
 #ifndef PROTOTYPES_H
 # define PROTOTYPES_H
+
 # include "structs.h"
 
 /* ALLOC */

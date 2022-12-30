@@ -56,14 +56,6 @@ typedef struct s_shell
 	int			stdout_fd;
 }	t_shell;
 
-typedef enum e_direction
-{
-	DIRECTION_HEREDOC,
-	DIRECTION_APPEND,
-	DIRECTION_IN,
-	DIRECTION_OUT,
-}	t_direction;
-
 typedef struct s_redirect {
 	char		*file_path;
 	t_direction	direction;
@@ -85,17 +77,6 @@ typedef struct s_env_element
 	char	*val;
 }	t_env_element;
 
-typedef enum s_token_type
-{
-	SINGLE_QUOTED,
-	DOUBLE_QUOTED,
-	REDIRECTION,
-	PIPE,
-	WHITESPACE,
-	UNQUOTED,
-	UNMATCHED_QUOTE,
-}	t_token_type;
-
 typedef struct s_token
 {
 	bool			was_single_quoted;
@@ -103,19 +84,5 @@ typedef struct s_token
 	char			*content;
 	bool			is_ambiguous;
 }	t_token;
-
-typedef enum s_expansion_state
-{
-	EXPANSION_STATE_NORMAL,
-	EXPANSION_STATE_VARIABLE,
-	EXPANSION_STATE_STATUS,
-	EXPANSION_STATE_INVALID_VARIABLE,
-}	t_expansion_state;
-
-typedef enum s_status
-{
-	OK,
-	ERROR,
-}	t_status;
 
 #endif

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   minishell.h                                        :+:    :+:            */
+/*   enums.h                                            :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
+/*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 1970/01/01 00:00:00 by wmaguire      #+#    #+#                 */
-/*   Updated: 1970/01/01 00:00:00 by wmaguire      ########   odam.nl         */
+/*   Created: 2022/12/30 21:10:03 by sbos          #+#    #+#                 */
+/*   Updated: 2022/12/30 21:10:03 by sbos          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,42 +37,40 @@ The definition of Free Software is as follows:
 A program is free software if users have all of these freedoms.
 */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#ifndef ENUMS_H
+# define ENUMS_H
 
-/* HEADERS */
-# include "enums.h"
-# include "prototypes.h"
-# include "splash.h"
-# include "structs.h"
+typedef enum s_status
+{
+	OK,
+	ERROR,
+}	t_status;
 
-/* LIBRARIES */
-# include "../libft/libft.h"
-# include <stdlib.h>
-# include <unistd.h>
-# include <stdio.h>
-// # include <sys/wait.h>
-// # include <fcntl.h>
-# include <readline/readline.h>
-# include <readline/history.h>
+typedef enum e_direction
+{
+	DIRECTION_HEREDOC,
+	DIRECTION_APPEND,
+	DIRECTION_IN,
+	DIRECTION_OUT,
+}	t_direction;
 
-/* DEFINES */
-# define READ 0
-# define WRITE 1
-# define TRUE 1
-# define FALSE 0
-# define FORK_FAILURE -1
-# define FORK_CHILD 0
-# define FORK_PARENT 1
-# define OUTPUT 1
-# define INPUT 0
+typedef enum s_expansion_state
+{
+	EXPANSION_STATE_NORMAL,
+	EXPANSION_STATE_VARIABLE,
+	EXPANSION_STATE_STATUS,
+	EXPANSION_STATE_INVALID_VARIABLE,
+}	t_expansion_state;
 
-// This is the lambda sign in unicode
-// This is necessary because of Norm:
-// "Characters that aren't part of the standard ASCII table are forbidden."
-# define PREFIX "\u03BB"
-
-/* True definition in signals.c */
-extern int status;
+typedef enum s_token_type
+{
+	SINGLE_QUOTED,
+	DOUBLE_QUOTED,
+	REDIRECTION,
+	PIPE,
+	WHITESPACE,
+	UNQUOTED,
+	UNMATCHED_QUOTE,
+}	t_token_type;
 
 #endif

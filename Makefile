@@ -40,6 +40,7 @@ CFILES = \
 	src/update_cwd/update_cwd.c
 
 HEADERS = \
+	include/enums.h \
 	include/minishell.h \
 	include/prototypes.h \
 	include/splash.h \
