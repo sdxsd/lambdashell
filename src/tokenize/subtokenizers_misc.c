@@ -54,7 +54,13 @@ t_token_type	subtokenize_whitespace(char **line_ptr)
 
 t_token_type	subtokenize_unquoted(char **line_ptr)
 {
-	while (**line_ptr != '\0' && !ft_isspace(**line_ptr) && **line_ptr != '|' && **line_ptr != '<' && **line_ptr != '>' && **line_ptr != '"' && **line_ptr != '\'')
+	while (**line_ptr != '\0'
+		&& !ft_isspace(**line_ptr)
+		&& **line_ptr != '|'
+		&& **line_ptr != '<'
+		&& **line_ptr != '>'
+		&& **line_ptr != '"'
+		&& **line_ptr != '\'')
 		(*line_ptr)++;
 	return (UNQUOTED);
 }
