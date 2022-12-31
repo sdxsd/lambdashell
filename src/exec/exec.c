@@ -151,7 +151,7 @@ static t_status	execute_builtin(t_cmd *cmd, t_shell *lambda)
 		status = pwd(lambda);
 	else if (ft_streq(cmd->path, "unset"))
 		status = unset(cmd, lambda);
-	else
+	else if (!ft_streq(cmd->path, ""))
 	{
 		status = 127;
 		prefixed_error(cmd->path);
