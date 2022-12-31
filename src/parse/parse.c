@@ -236,7 +236,7 @@ static t_status	fill_cmd(t_list **tokens_ptr, t_shell *lambda, t_cmd *cmd)
 			if (!cmd->path)
 				return (ERROR);
 		}
-		else if (is_text_token(token) && !ft_streq(token->content, ""))
+		else if (is_text_token(token) && ft_str_not_set(token->content, WHITESPACE_CHARACTERS))
 		{
 			arg = get_arg(tokens_ptr);
 			if (!arg || !ft_lstnew_back(&arg_list, arg))
