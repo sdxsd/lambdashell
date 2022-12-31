@@ -62,17 +62,6 @@ static void	fill_direction(t_redirect *redirect, t_token *token)
 		redirect->direction = DIRECTION_OUT;
 }
 
-static t_status	setup_heredoc(t_list **tokens, t_redirect *redirect, t_shell *lambda)
-{
-	t_token	*token;
-
-	token = (*tokens)->content;
-	redirect->file_path = heredoc(token, lambda);
-	if (!redirect->file_path)
-		return (ERROR);
-	return (OK);
-}
-
 static t_redirect	*get_redirect(t_list **tokens_ptr, t_shell *lambda)
 {
 	t_redirect	*redirect;
@@ -223,7 +212,7 @@ static t_status	fill_cmd(t_list **tokens_ptr, t_shell *lambda, t_cmd *cmd)
 			*tokens_ptr = (*tokens_ptr)->next;
 			break ;
 		}
-		else if (token->type == REDIRECTION)
+		else if (token->type == REDIRECTION || token->type == HEREDOC)
 		{
 			redirect = get_redirect(tokens_ptr, lambda);
 			if (!redirect || !ft_lstnew_back(&cmd->redirections, redirect))

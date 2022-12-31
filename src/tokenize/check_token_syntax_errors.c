@@ -81,7 +81,7 @@ static t_status	check_redirection_syntax_errors(t_list *tokens)
 			else if (is_text_token(token))
 				seen_redirection = false;
 		}
-		if (token->type == REDIRECTION)
+		if (token->type == REDIRECTION || token->type == HEREDOC)
 			seen_redirection = true;
 		tokens = tokens->next;
 	}

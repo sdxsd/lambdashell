@@ -42,7 +42,7 @@ A program is free software if users have all of these freedoms.
 t_token_type	subtokenize_heredoc(char **line_ptr)
 {
 	(*line_ptr) += 2;
-	return (REDIRECTION);
+	return (HEREDOC);
 }
 
 t_token_type	subtokenize_append(char **line_ptr)

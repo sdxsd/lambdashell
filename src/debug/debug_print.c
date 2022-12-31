@@ -42,16 +42,18 @@ A program is free software if users have all of these freedoms.
 
 void	dbg_print_tokens(t_list *tokens)
 {
-	char	*token_type_strings[6];
+	char	*token_type_strings[] = {
+		[SINGLE_QUOTED] = "SINGLE_QUOTED",
+		[DOUBLE_QUOTED] = "DOUBLE_QUOTED",
+		[REDIRECTION] = "REDIRECTION",
+		[HEREDOC] = "HEREDOC",
+		[PIPE] = "PIPE",
+		[WHITESPACE] = "WHITESPACE",
+		[UNQUOTED] = "UNQUOTED",
+	};
 	t_token	*token;
 	char	*content;
 
-	token_type_strings[SINGLE_QUOTED] = "SINGLE_QUOTED";
-	token_type_strings[DOUBLE_QUOTED] = "DOUBLE_QUOTED";
-	token_type_strings[REDIRECTION] = "REDIRECTION";
-	token_type_strings[PIPE] = "PIPE";
-	token_type_strings[WHITESPACE] = "WHITESPACE";
-	token_type_strings[UNQUOTED] = "UNQUOTED";
 	printf("+---------------+---------------------+--------------+\n");
 	printf("| token type    | token content       | is ambiguous |\n");
 	printf("+---------------+---------------------+--------------+\n");
