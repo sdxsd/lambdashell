@@ -57,8 +57,6 @@ static t_status	argless_cd(t_list *env)
 
 t_status	cd(t_cmd *cmd, t_shell *lambda)
 {
-	char	*msg;
-
 	if (!cmd->args[1])
 	{
 		if (argless_cd(lambda->env) == ERROR)
@@ -66,11 +64,8 @@ t_status	cd(t_cmd *cmd, t_shell *lambda)
 	}
 	else if (chdir(cmd->args[1]) == -1)
 	{
-		msg = ft_strjoin("cd: ", cmd->args[1]);
-		if (!msg)
-			return (prefixed_perror("cd"));
-		prefixed_perror(msg);
-		ft_free(&msg);
+		prefixed_perror("cd: ");
+		print_error(cmd->args[1]);
 		return (ERROR);
 	}
 	if (update_cwd(lambda) == ERROR)

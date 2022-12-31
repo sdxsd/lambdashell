@@ -117,7 +117,7 @@ static char	*get_new_heredoc_path(void)
 		ft_free(&num);
 		full_path = ft_strjoin("/tmp/", file);
 		ft_free(&file);
-		if (!access(full_path, F_OK))
+		if (access(full_path, F_OK))
 			break ;
 		ft_free(&full_path);
 		iter++;
