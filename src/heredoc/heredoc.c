@@ -106,9 +106,10 @@ static char	*get_new_heredoc_path(void)
 	char	*full_path;
 
 	iter = 1;
-	// TODO: Check that we can even access /tmp
-	// since this will get stuck in an infinite loop otherwise!!
+	// TODO: Place a check for whether /tmp is accessible at all
+	// since this will likely get stuck in an infinite loop of death otherwise!!
 	// The shitty alternative is to change the condition to `iter < 424242`
+	// but please try to do the proper thing instead
 	while (true)
 	{
 		num = ft_itoa(iter);
@@ -126,14 +127,14 @@ static char	*get_new_heredoc_path(void)
 
 char	*heredoc(t_token *delimiter, t_shell *lambda)
 {
-	char	*full_path;
+	char	*heredoc_path;
 	int		fd;
 
-	full_path = get_new_heredoc_path();
-	fd = open(full_path, O_CREAT | O_TRUNC | O_RDWR, 0644);
+	heredoc_path = get_new_heredoc_path();
+	fd = open(heredoc_path, O_CREAT | O_TRUNC | O_RDWR, 0644);
 	if (fd == -1)
 		return (NULL);
-	heredoc_readline_and_write(delimiter, fd, lambda);
+	heredoc_readline_and_write(delimiter, fd, lambda); // TODO: Use result of this fn
 	close(fd);
-	return (full_path);
+	return (heredoc_path);
 }

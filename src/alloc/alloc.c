@@ -48,6 +48,7 @@ t_token	*alloc_token(t_token_type type, char *content)
 {
 	t_token	*token;
 
+	// TODO: Move this check to every parent caller?
 	if (!content)
 		return (NULL);
 	token = ft_calloc(1, sizeof(*token));
@@ -66,4 +67,18 @@ t_status	alloc_cmd(t_cmd **cmd_ptr)
 	(*cmd_ptr)->input_fd = STDIN_FILENO;
 	(*cmd_ptr)->output_fd = STDOUT_FILENO;
 	return (OK);
+}
+
+t_redirect	*alloc_redirect(char *file_path, t_direction direction,
+				bool is_ambiguous)
+{
+	t_redirect	*redirect;
+
+	redirect = ft_calloc(1, sizeof(*redirect));
+	if (!redirect)
+		return (NULL);
+	redirect->file_path = file_path;
+	redirect->direction = direction;
+	redirect->is_ambiguous = is_ambiguous;
+	return (redirect);
 }

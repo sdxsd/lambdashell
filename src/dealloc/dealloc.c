@@ -39,6 +39,8 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
+// TODO: Ungeneracize these functions so they all just get a double ptr directly
+
 t_status	dealloc_cmd(void *cmd_ptr)
 {
 	t_cmd	**_cmd_ptr;
@@ -50,7 +52,7 @@ t_status	dealloc_cmd(void *cmd_ptr)
 	{
 		dealloc_ptr_array(&cmd->args);
 		ft_free(&cmd->path);
-		dealloc_lst(&cmd->redirections, dealloc_redirection);
+		dealloc_lst(&cmd->redirections, dealloc_redirect);
 	}
 	ft_free(_cmd_ptr);
 	return (ERROR);
@@ -114,7 +116,7 @@ t_status	dealloc_ptr_array(void *ptr_array_ptr)
 	return (ERROR);
 }
 
-t_status	dealloc_redirection(void *redirect_ptr)
+t_status	dealloc_redirect(void *redirect_ptr)
 {
 	t_redirect	**_redirect_ptr;
 	t_redirect	*redirect;
@@ -143,3 +145,9 @@ t_status	dealloc_lst(t_list **lst, t_status (*del)(void*))
 	}
 	return (ERROR);
 }
+
+// t_status	dealloc_string(char **string)
+// {
+// 	ft_free(string);
+// 	return (ERROR);
+// }

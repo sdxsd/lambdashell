@@ -50,31 +50,34 @@ static bool	is_builtin(char *path)
 		|| ft_streq(path, "unset"));
 }
 
-static void	fill_direction(t_redirect *redirect, t_token *token)
+static t_direction	get_direction(t_token *token)
 {
 	if (*token->content == '<' && token->content[1] == '<')
-		redirect->direction = DIRECTION_HEREDOC;
-	else if (*token->content == '>' && token->content[1] == '>')
-		redirect->direction = DIRECTION_APPEND;
-	else if (*token->content == '<')
-		redirect->direction = DIRECTION_IN;
-	else if (*token->content == '>')
-		redirect->direction = DIRECTION_OUT;
+		return (DIRECTION_HEREDOC);
+	if (*token->content == '>' && token->content[1] == '>')
+		return (DIRECTION_APPEND);
+	if (*token->content == '<')
+		return (DIRECTION_IN);
+	return (DIRECTION_OUT);
 }
 
-static t_redirect	*get_redirect(t_list **tokens_ptr, t_shell *lambda)
+static t_redirect	*get_redirect(t_list **tokens_ptr)
 {
-	t_redirect	*redirect;
 	t_token		*token;
+	char		*file_path;
+	t_redirect	*redirect;
 	char		*content;
 
-	redirect = ft_calloc(1, sizeof(*redirect));
-	fill_direction(redirect, (*tokens_ptr)->content);
 	token = (*tokens_ptr)->content;
-	redirect->is_ambiguous = token->is_ambiguous;
+	file_path = ft_strdup("");
+	if (!file_path)
+		return (NULL);
+	redirect = alloc_redirect(file_path, get_direction(token),
+			token->is_ambiguous);
+	if (!redirect)
+		return (null(dealloc_redirect(&redirect)));
 	*tokens_ptr = (*tokens_ptr)->next;
-	skip_whitespace_tokens(tokens_ptr); // TODO: Try to let the while-loop below naturally do this
-	redirect->file_path = ft_strdup("");
+	skip_whitespace_tokens(tokens_ptr);
 	if (!redirect->file_path)
 	{
 		// TODO: Free
@@ -91,10 +94,7 @@ static t_redirect	*get_redirect(t_list **tokens_ptr, t_shell *lambda)
 			content = ft_strtrim_whitespace(token->content);
 		else
 			content = ft_strdup(token->content);
-		if (redirect->direction == DIRECTION_HEREDOC)
-			redirect->file_path = heredoc(token, lambda);
-		else
-			redirect->file_path = ft_strjoin_and_free_left_right(redirect->file_path, &content);
+		redirect->file_path = ft_strjoin_and_free_left_right(redirect->file_path, &content);
 
 		if (!redirect->file_path)
 		{
@@ -214,7 +214,7 @@ static t_status	fill_cmd(t_list **tokens_ptr, t_shell *lambda, t_cmd *cmd)
 		}
 		else if (token->type == REDIRECTION || token->type == HEREDOC)
 		{
-			redirect = get_redirect(tokens_ptr, lambda);
+			redirect = get_redirect(tokens_ptr);
 			if (!redirect || !ft_lstnew_back(&cmd->redirections, redirect))
 				return (ERROR);
 		}

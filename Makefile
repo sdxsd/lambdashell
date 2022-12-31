@@ -1,6 +1,6 @@
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g -Wfatal-errors
 NAME = minishell
 CFILES = \
 	src/main.c \
@@ -25,6 +25,7 @@ CFILES = \
 	src/exec/get_absolute_path_from_env.c \
 	src/heredoc/expand_heredoc_tokens.c \
 	src/heredoc/heredoc.c \
+	src/heredoc/heredocs.c \
 	src/misc/null.c \
 	src/parse/is_text_token.c \
 	src/parse/parse.c \

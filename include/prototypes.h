@@ -46,6 +46,8 @@ A program is free software if users have all of these freedoms.
 t_env_element	*alloc_env_element(void);
 t_token			*alloc_token(t_token_type type, char *content);
 t_status		alloc_cmd(t_cmd **cmd_ptr);
+t_redirect		*alloc_redirect(char *file_path, t_direction direction,
+					bool is_ambiguous);
 
 /* BUILTINS */
 t_status		cd(t_cmd *cmd, t_shell *lambda);
@@ -64,7 +66,7 @@ t_status		dealloc_cmd(void *cmd_ptr);
 t_status		dealloc_env_element(void *env_element_ptr);
 t_status		dealloc_token(void *token_ptr);
 t_status		dealloc_ptr_array(void *ptr_array_ptr);
-t_status		dealloc_redirection(void *redirect_ptr);
+t_status		dealloc_redirect(void *redirect_ptr);
 t_status		dealloc_lst(t_list **lst, t_status (*del)(void*));
 t_status		dealloc_lambda(t_shell *lambda);
 
@@ -97,9 +99,10 @@ t_status		execute(t_shell *lambda);
 char			*get_absolute_path_from_env(char *name, t_list *env);
 
 /* HEREDOC */
-char			*heredoc(t_token *delimiter, t_shell *lambda);
 t_status		expand_heredoc_tokens(t_token *delimiter, t_list *tokens,
 					t_shell *lambda);
+char			*heredoc(t_token *delimiter, t_shell *lambda);
+t_status		heredocs(t_list *tokens, t_shell *lambda);
 
 /* NULL */
 void			*null(t_status _);
