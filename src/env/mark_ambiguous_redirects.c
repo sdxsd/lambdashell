@@ -41,14 +41,15 @@ A program is free software if users have all of these freedoms.
 
 static bool	is_ambiguous_redirect(t_list *tokens)
 {
+	bool	valid_path;
+	bool	seen_filename_start;
+	bool	seen_env_word;
 	t_token	*token;
-
-	bool	valid_path = false;
-	bool	seen_filename_start = false;
-	bool	seen_env_word = false;
-
 	char	*content;
 
+	valid_path = false;
+	seen_filename_start = false;
+	seen_env_word = false;
 	while (tokens && is_text_token(tokens->content))
 	{
 		token = tokens->content;
@@ -62,18 +63,22 @@ static bool	is_ambiguous_redirect(t_list *tokens)
 				{
 					if (seen_filename_start)
 						seen_env_word = true;
+					// Handles:
+					// `echo a > ""$space`
+					else if (valid_path)
+						valid_path = false;
 				}
 				else
 				{
 					valid_path = true;
+
+					seen_filename_start = true;
 
 					// Handles:
 					// `echo a > "foo"$whitespace_left`
 					// `echo a > $whitespace_center`
 					if (seen_env_word)
 						return (true);
-
-					seen_filename_start = true;
 				}
 				content++;
 			}
