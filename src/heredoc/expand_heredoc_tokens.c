@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   heredoc.c                                          :+:    :+:            */
+/*   expand_heredoc_tokens.c                            :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
@@ -39,52 +39,25 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-void	convert_single_to_double(t_list *tokens)
+static void	single_to_double_quoted_types(t_list *tokens)
 {
 	t_token	*token;
 
 	while (tokens)
 	{
 		token = tokens->content;
-		token->was_single_quoted = FALSE;
-		if (token->type == SINGLE_QUOTED)
-		{
-			token->was_single_quoted = TRUE;
+		token->was_single_quoted = token->type == SINGLE_QUOTED;
+		if (token->was_single_quoted)
 			token->type = DOUBLE_QUOTED;
-		}
 		tokens = tokens->next;
 	}
 }
 
-void	write_tokens_into_file(t_list *tokens, int fd)
+t_status	expand_heredoc_tokens(t_token *delimiter, t_list *tokens,
+				t_shell *lambda)
 {
-	t_token	*token;
-
-	if (tokens == NULL)
-		return ;
-	while (tokens)
-	{
-		token = tokens->content;
-		if (token->was_single_quoted)
-			ft_putstr_fd("\'", fd);
-		else if (token->type == DOUBLE_QUOTED)
-			ft_putstr_fd("\"", fd);
-		ft_putstr_fd(token->content, fd);
-		if (token->was_single_quoted)
-			ft_putstr_fd("\'", fd);
-		else if (token->type == DOUBLE_QUOTED)
-			ft_putstr_fd("\"", fd);
-		tokens = tokens->next;
-	}
-	ft_putstr_fd("\n", fd);
-}
-
-t_status	prepare_tokens(t_token *d, t_list *t, t_shell *l)
-{
-	if (!t)
-		return (ERROR);
-	convert_single_to_double(t);
-	if (d->type != SINGLE_QUOTED && d->type != DOUBLE_QUOTED)
-		return (expand_variables(&t, l));
+	single_to_double_quoted_types(tokens);
+	if (delimiter->type != SINGLE_QUOTED && delimiter->type != DOUBLE_QUOTED)
+		return (expand_variables(&tokens, lambda));
 	return (OK);
 }

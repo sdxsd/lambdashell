@@ -103,7 +103,7 @@ static t_redirect	*get_redirect(t_list **tokens_ptr, t_shell *lambda)
 		else
 			content = ft_strdup(token->content);
 		if (redirect->direction == DIRECTION_HEREDOC)
-			setup_heredoc(tokens_ptr, redirect, lambda);
+			redirect->file_path = heredoc(token, lambda);
 		else
 			redirect->file_path = ft_strjoin_and_free_left_right(redirect->file_path, &content);
 

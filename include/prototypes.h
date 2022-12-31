@@ -98,9 +98,8 @@ char			*get_absolute_path_from_env(char *name, t_list *env);
 
 /* HEREDOC */
 char			*heredoc(t_token *delimiter, t_shell *lambda);
-void			convert_single_to_double(t_list *tokens);
-void			write_tokens_into_file(t_list *tokens, int fd);
-t_status		prepare_tokens(t_token *d, t_list *t, t_shell *l);
+t_status		expand_heredoc_tokens(t_token *delimiter, t_list *tokens,
+					t_shell *lambda);
 
 /* NULL */
 void			*null(t_status _);

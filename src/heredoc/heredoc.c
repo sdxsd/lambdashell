@@ -40,35 +40,33 @@ A program is free software if users have all of these freedoms.
 #include "../../include/minishell.h"
 #include <fcntl.h>
 
-static char	*create_heredoc_file(void)
+static void	write_tokens_into_file(t_list *tokens, int fd)
 {
-	int		iter;
-	char	*file;
-	char	*full_path;
-	char	*num;
+	t_token	*token;
 
-	iter = 1;
-	num = ft_itoa(iter);
-	file = ft_strjoin("heredoc_", num);
-	full_path = ft_strjoin("/tmp/", file);
-	while (!access(full_path, F_OK))
+	while (tokens)
 	{
-		ft_free(&full_path);
-		num = ft_itoa(iter);
-		file = ft_strjoin("heredoc_", num);
-		full_path = ft_strjoin("/tmp/", file);
-		ft_free(&num);
-		ft_free(&file);
-		iter++;
+		token = tokens->content;
+		if (token->was_single_quoted)
+			ft_putstr_fd("\'", fd);
+		else if (token->type == DOUBLE_QUOTED)
+			ft_putstr_fd("\"", fd);
+		ft_putstr_fd(token->content, fd);
+		if (token->was_single_quoted)
+			ft_putstr_fd("\'", fd);
+		else if (token->type == DOUBLE_QUOTED)
+			ft_putstr_fd("\"", fd);
+		tokens = tokens->next;
 	}
-	return (full_path);
+	ft_putstr_fd("\n", fd);
 }
 
-static t_status	heredoc_read_and_write(t_shell *lm, t_token *del, int fd)
+static t_status	heredoc_readline_and_write(t_token *delimiter, int fd,
+					t_shell *lambda)
 {
+	t_status	err_status;
 	char		*line;
 	t_list		*tokens;
-	t_status	err_status;
 
 	err_status = OK;
 	while (err_status == OK)
@@ -76,31 +74,66 @@ static t_status	heredoc_read_and_write(t_shell *lm, t_token *del, int fd)
 		line = readline("> ");
 		if (line == NULL)
 		{
-			ft_putstr("λ: warning: here-document delimited by end-of-file\n");
+
+			// TODO: I don't know if this is just an OS difference,
+			// but I am not able to reproduce this warning in Bash on Mac.
+			// I'd appreciate it if you could try to get the warning on Mac. :-)
+			//ft_putstr("λ: warning: here-document delimited by end-of-file\n");
+
 			return (OK);
 		}
-		if (ft_streq(line, del->content))
+		if (ft_streq(line, delimiter->content))
 			break ;
 		tokens = tokenize(line);
 		ft_free(&line);
-		err_status = prepare_tokens(del, tokens, lm);
-		write_tokens_into_file(tokens, fd);
+		if (!tokens)
+			return (ERROR);
+		err_status = expand_heredoc_tokens(delimiter, tokens, lambda);
+		// TODO: Should we not immediately check err_status?
+		if (tokens)
+			write_tokens_into_file(tokens, fd);
 		dealloc_lst(&tokens, dealloc_token);
 	}
 	ft_free(&line);
 	return (err_status);
 }
 
-char	*heredoc(t_token *del, t_shell *lambda)
+static char	*get_new_heredoc_path(void)
+{
+	int		iter;
+	char	*num;
+	char	*file;
+	char	*full_path;
+
+	iter = 1;
+	// TODO: Check that we can even access /tmp
+	// since this will get stuck in an infinite loop otherwise!!
+	// The shitty alternative is to change the condition to `iter < 424242`
+	while (true)
+	{
+		num = ft_itoa(iter);
+		file = ft_strjoin("heredoc_", num);
+		ft_free(&num);
+		full_path = ft_strjoin("/tmp/", file);
+		ft_free(&file);
+		if (!access(full_path, F_OK))
+			break ;
+		ft_free(&full_path);
+		iter++;
+	}
+	return (full_path);
+}
+
+char	*heredoc(t_token *delimiter, t_shell *lambda)
 {
 	char	*full_path;
 	int		fd;
 
-	full_path = create_heredoc_file();
+	full_path = get_new_heredoc_path();
 	fd = open(full_path, O_CREAT | O_TRUNC | O_RDWR, 0644);
 	if (fd == -1)
 		return (NULL);
-	heredoc_read_and_write(lambda, del, fd);
+	heredoc_readline_and_write(delimiter, fd, lambda);
 	close(fd);
 	return (full_path);
 }

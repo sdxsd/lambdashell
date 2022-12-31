@@ -23,8 +23,8 @@ CFILES = \
 	src/error/error.c \
 	src/exec/exec.c \
 	src/exec/get_absolute_path_from_env.c \
+	src/heredoc/expand_heredoc_tokens.c \
 	src/heredoc/heredoc.c \
-	src/heredoc/heredoc_utils.c \
 	src/misc/null.c \
 	src/parse/is_text_token.c \
 	src/parse/parse.c \

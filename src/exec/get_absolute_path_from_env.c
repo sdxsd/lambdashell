@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   path.c                                             :+:    :+:            */
+/*   get_absolute_path_from_env.c                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
@@ -47,17 +47,17 @@ static char	*path_join(char *dir, char *name)
 char	*get_absolute_path_from_env(char *name, t_list *env)
 {
 	char		*path;
-	char		*absolute_path;
 	char		**exec_direcs;
 	size_t		iter;
+	char		*absolute_path;
 
-	iter = 0;
 	path = env_get_val(env, "PATH");
 	if (!path || ft_streq(name, ""))
 		return (name);
 	exec_direcs = ft_split(path, ':');
 	if (!exec_direcs)
 		return (NULL);
+	iter = 0;
 	while (exec_direcs[iter])
 	{
 		absolute_path = path_join(exec_direcs[iter], name);
