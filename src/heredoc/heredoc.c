@@ -73,15 +73,7 @@ static t_status	heredoc_readline_and_write(t_token *delimiter, int fd,
 	{
 		line = readline("> ");
 		if (line == NULL)
-		{
-
-			// TODO: I don't know if this is just an OS difference,
-			// but I am not able to reproduce this warning in Bash on Mac.
-			// I'd appreciate it if you could try to get the warning on Mac. :-)
-			//ft_putstr("λ: warning: here-document delimited by end-of-file\n");
-
 			return (OK);
-		}
 		if (ft_streq(line, delimiter->content))
 			break ;
 		tokens = tokenize(line);
@@ -89,8 +81,7 @@ static t_status	heredoc_readline_and_write(t_token *delimiter, int fd,
 		if (!tokens)
 			return (ERROR);
 		err_status = expand_heredoc_tokens(delimiter, tokens, lambda);
-		// TODO: Should we not immediately check err_status?
-		if (tokens)
+		if (err_status != ERROR)
 			write_tokens_into_file(tokens, fd);
 		dealloc_lst(&tokens, dealloc_token);
 	}
@@ -106,10 +97,6 @@ static char	*get_new_heredoc_path(void)
 	char	*full_path;
 
 	iter = 1;
-	// TODO: Place a check for whether /tmp is accessible at all
-	// since this will likely get stuck in an infinite loop of death otherwise!!
-	// The shitty alternative is to change the condition to `iter < 424242`
-	// but please try to do the proper thing instead
 	while (true)
 	{
 		num = ft_itoa(iter);
@@ -134,7 +121,8 @@ char	*heredoc(t_token *delimiter, t_shell *lambda)
 	fd = open(heredoc_path, O_CREAT | O_TRUNC | O_RDWR, 0644);
 	if (fd == -1)
 		return (NULL);
-	heredoc_readline_and_write(delimiter, fd, lambda); // TODO: Use result of this fn
+	if (heredoc_readline_and_write(delimiter, fd, lambda) == ERROR)
+		ft_free(&heredoc_path);
 	close(fd);
 	return (heredoc_path);
 }

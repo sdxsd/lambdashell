@@ -71,6 +71,7 @@ static void	prompt(t_shell *lambda)
 		return ;
 	// dbg_print_commands(lambda->cmds);
 	execute(lambda);
+	/* unlink_heredoc_files(); */
 }
 
 static t_status	shell_init(char **env, t_shell *lambda)
