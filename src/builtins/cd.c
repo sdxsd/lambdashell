@@ -65,7 +65,6 @@ t_status	cd(t_cmd *cmd, t_shell *lambda)
 	else if (chdir(cmd->args[1]) == -1)
 	{
 		prefixed_perror("cd: ");
-		/* print_error(cmd->args[1]); */
 		return (ERROR);
 	}
 	if (update_cwd(lambda) == ERROR)
