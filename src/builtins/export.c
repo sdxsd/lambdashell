@@ -49,8 +49,11 @@ static void	print_env_val(char *env_val, char *env_key)
 			ft_printf("\\%c", *env_val);
 			env_val++;
 		}
-		ft_putchar(*env_val);
-		env_val++;
+		else
+		{
+			ft_printf("%c", *env_val);
+			env_val++;
+		}
 	}
 	ft_putstr("\"\n");
 }
