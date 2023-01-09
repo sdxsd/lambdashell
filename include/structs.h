@@ -85,4 +85,11 @@ typedef struct s_token
 	bool			is_ambiguous;
 }	t_token;
 
+typedef struct s_ambiguous_state
+{
+	bool	seen_content;
+	bool	seen_word;
+	bool	seen_env_space;
+}	t_ambiguous_state;
+
 #endif

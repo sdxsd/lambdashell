@@ -78,11 +78,6 @@ static t_redirect	*get_redirect(t_list **tokens_ptr)
 		return (null(dealloc_redirect(&redirect)));
 	*tokens_ptr = (*tokens_ptr)->next;
 	skip_whitespace_tokens(tokens_ptr);
-	if (!redirect->file_path)
-	{
-		// TODO: Free
-		return (NULL);
-	}
 	while (*tokens_ptr)
 	{
 		token = (*tokens_ptr)->content;

@@ -41,15 +41,15 @@ A program is free software if users have all of these freedoms.
 
 static bool	is_ambiguous_redirect(t_list *tokens)
 {
-	bool	ambiguous;
-	bool	seen_content;
-	bool	seen_word;
-	t_token	*token;
-	char	*content;
+	bool				ambiguous;
+	t_ambiguous_state	state;
+	t_token				*token;
+	char				*content;
 
 	ambiguous = true;
-	seen_content = false;
-	seen_word = false;
+	state.seen_content = false;
+	state.seen_word = false;
+	state.seen_env_space = false;
 	while (tokens && is_text_token(tokens->content))
 	{
 		token = tokens->content;
@@ -61,11 +61,15 @@ static bool	is_ambiguous_redirect(t_list *tokens)
 			{
 				if (ft_isspace(*content))
 				{
+					// `echo a > $space""`
+					state.seen_env_space = true;
+
 					// `echo a > "foo"$whitespace_left`
-					if (seen_content)
-						seen_word = true;
+					if (state.seen_content)
+						state.seen_word = true;
+
 					// `echo a > ""$space`
-					else if (!ambiguous)
+					else
 						ambiguous = true;
 				}
 				else
@@ -74,11 +78,10 @@ static bool	is_ambiguous_redirect(t_list *tokens)
 					ambiguous = false;
 
 					// `echo a > foo$whitespace_left`
-					seen_content = true;
+					state.seen_content = true;
 
-					// `echo a > "foo"$whitespace_left`
 					// `echo a > $whitespace_center`
-					if (seen_word)
+					if (state.seen_word)
 						return (true);
 				}
 				content++;
@@ -92,12 +95,15 @@ static bool	is_ambiguous_redirect(t_list *tokens)
 			if (*content)
 			{
 				// `echo a > "foo"$whitespace_left`
-				seen_content = true;
+				state.seen_content = true;
 
 				// `echo a > $whitespace_right"foo"`
-				if (seen_word)
+				if (state.seen_word)
 					return (true);
 			}
+			// `echo a > $space""`
+			else if (state.seen_env_space)
+				return (true);
 		}
 
 		tokens = tokens->next;
