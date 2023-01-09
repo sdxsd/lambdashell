@@ -41,15 +41,15 @@ A program is free software if users have all of these freedoms.
 
 static bool	is_ambiguous_redirect(t_list *tokens)
 {
-	bool	valid_path;
-	bool	seen_filename_start;
-	bool	seen_env_word;
+	bool	ambiguous;
+	bool	seen_content;
+	bool	seen_word;
 	t_token	*token;
 	char	*content;
 
-	valid_path = false;
-	seen_filename_start = false;
-	seen_env_word = false;
+	ambiguous = true;
+	seen_content = false;
+	seen_word = false;
 	while (tokens && is_text_token(tokens->content))
 	{
 		token = tokens->content;
@@ -61,23 +61,24 @@ static bool	is_ambiguous_redirect(t_list *tokens)
 			{
 				if (ft_isspace(*content))
 				{
-					if (seen_filename_start)
-						seen_env_word = true;
-					// Handles:
+					// `echo a > "foo"$whitespace_left`
+					if (seen_content)
+						seen_word = true;
 					// `echo a > ""$space`
-					else if (valid_path)
-						valid_path = false;
+					else if (!ambiguous)
+						ambiguous = true;
 				}
 				else
 				{
-					valid_path = true;
+					// `echo a > foo`
+					ambiguous = false;
 
-					seen_filename_start = true;
+					// `echo a > foo$whitespace_left`
+					seen_content = true;
 
-					// Handles:
 					// `echo a > "foo"$whitespace_left`
 					// `echo a > $whitespace_center`
-					if (seen_env_word)
+					if (seen_word)
 						return (true);
 				}
 				content++;
@@ -85,15 +86,16 @@ static bool	is_ambiguous_redirect(t_list *tokens)
 		}
 		else
 		{
-			valid_path = true;
+			// `echo a > ""`
+			ambiguous = false;
 
 			if (*content)
 			{
-				seen_filename_start = true;
+				// `echo a > "foo"$whitespace_left`
+				seen_content = true;
 
-				// Handles:
 				// `echo a > $whitespace_right"foo"`
-				if (seen_env_word)
+				if (seen_word)
 					return (true);
 			}
 		}
@@ -101,11 +103,9 @@ static bool	is_ambiguous_redirect(t_list *tokens)
 		tokens = tokens->next;
 	}
 
-	// Handles:
-	// `echo a > ""`
 	// `echo a > $empty`
 	// `echo a > $space`
-	return (!valid_path);
+	return (ambiguous);
 }
 
 void	mark_ambiguous_redirects(t_list *tokens)
