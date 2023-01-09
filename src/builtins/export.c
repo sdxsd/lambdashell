@@ -106,7 +106,7 @@ t_status	export(t_cmd *cmd, t_shell *lambda)
 		return (argless_export(lambda));
 	if (export_valid_names(cmd->args, &lambda->env) == ERROR)
 	{
-		status = 1;
+		g_status = 1;
 		return (ERROR);
 	}
 	/* NOTE: Protect if add_or_change_env_element() goes wrong. */

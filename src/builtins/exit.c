@@ -19,17 +19,17 @@ void	bltin_exit(t_cmd *cmd)
 		prefixed_error("exit: ");
 		print_error(cmd->args[1]);
 		print_error(": numeric argument required\n");
-		status = 2;
+		g_status = 2;
 		return (stop_void());
 	}
 	else if (!cmd->args[2])
 	{
-		status = exit_status;
+		g_status = exit_status;
 		return (stop_void());
 	}
 	else
 	{
 		prefixed_error("exit: too many arguments\n");
-		status = 127;
+		g_status = 127;
 	}
 }

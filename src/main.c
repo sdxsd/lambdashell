@@ -78,7 +78,7 @@ static t_status	shell_init(char **env, t_shell *lambda)
 {
 	signal_handler_set();
 	ft_bzero(lambda, sizeof(*lambda));
-	status = OK;
+	g_status = OK;
 	if (init_env(env, &lambda->env) == ERROR)
 		return (ERROR);
 	if (update_cwd(lambda) == ERROR)
@@ -111,5 +111,5 @@ int	main(int argc, char **argv, char **env)
 	}
 	rl_clear_history();
 	dealloc_lambda(&lambda);
-	return (status);
+	return (g_status);
 }

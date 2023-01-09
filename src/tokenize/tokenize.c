@@ -74,7 +74,7 @@ t_list	*tokenize(char *line)
 		token_type = subtokenize(&line);
 		if (token_type == UNMATCHED_QUOTE)
 		{
-			status = 2;
+			g_status = 2;
 			prefixed_error("unexpected EOF while looking for matching quote\n");
 			dealloc_lst(&tokens, dealloc_token);
 			return (NULL);
@@ -91,8 +91,6 @@ t_list	*tokenize(char *line)
 		token = alloc_token(token_type, content);
 		if (!token || !ft_lstnew_back(&tokens, token))
 		{
-			// FIXME: memleak when input = "jfkjjiru fuoifudf difudfuuofdforkorkgrg"
-			// or other garbage. // TODO: Is this still the case after my edits?
 			dealloc_token(&token);
 			dealloc_lst(&tokens, dealloc_token);
 			return (NULL);

@@ -63,7 +63,7 @@ static char	*get_appended(char *content, t_expansion_state state, char *substr_s
 			appended = ft_strdup("");
 	}
 	else if (state == EXPANSION_STATE_STATUS)
-		appended = ft_itoa(status);
+		appended = ft_itoa(g_status);
 	else
 		appended = ft_strdup("");
 	return (appended);

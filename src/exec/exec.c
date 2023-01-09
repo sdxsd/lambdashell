@@ -106,7 +106,7 @@ static t_status	execute_command(t_cmd *cmd, t_shell *lambda)
 	if (redirections(cmd->redirections, cmd) == ERROR)
 	{
 		// TODO: ??
-		status = 1;
+		g_status = 1;
 		return (ERROR);
 	}
 
@@ -117,7 +117,7 @@ static t_status	execute_command(t_cmd *cmd, t_shell *lambda)
 
 	if (execve(cmd->path, cmd->args, env_array) == -1)
 	{
-		status = 127;
+		g_status = 127;
 		return (prefixed_perror(cmd->path));
 	}
 
@@ -129,7 +129,7 @@ static t_status	execute_builtin(t_cmd *cmd, t_shell *lambda)
 	if (redirections(cmd->redirections, cmd) == ERROR)
 	{
 		// TODO: ??
-		status = 1;
+		g_status = 1;
 		return (ERROR);
 	}
 
@@ -137,22 +137,22 @@ static t_status	execute_builtin(t_cmd *cmd, t_shell *lambda)
 
 	// TODO: Maybe if-statement check whether path or args or args[0] or args[1] is NULL?
 	if (ft_streq(cmd->path, "cd"))
-		status = cd(cmd, lambda);
+		g_status = cd(cmd, lambda);
 	else if (ft_streq(cmd->path, "echo"))
-		status = echo(cmd);
+		g_status = echo(cmd);
 	else if (ft_streq(cmd->path, "env"))
-		status = env(lambda);
+		g_status = env(lambda);
 	else if (ft_streq(cmd->path, "exit"))
 		bltin_exit(cmd);
 	else if (ft_streq(cmd->path, "export"))
-		status = export(cmd, lambda);
+		g_status = export(cmd, lambda);
 	else if (ft_streq(cmd->path, "pwd"))
-		status = pwd(lambda);
+		g_status = pwd(lambda);
 	else if (ft_streq(cmd->path, "unset"))
-		status = unset(cmd, lambda);
+		g_status = unset(cmd, lambda);
 	else if (ft_str_not_set(cmd->path, WHITESPACE_CHARACTERS))
 	{
-		status = 127;
+		g_status = 127;
 		prefixed_error(cmd->path);
 		if (env_get_val(lambda->env, "PATH"))
 			print_error(": command not found\n");
@@ -193,12 +193,12 @@ static t_status	execute_simple_command(t_cmd *cmd, t_shell *lambda)
 			if (execute_command(cmd, lambda) == ERROR)
 			{
 				// TODO: Should anything be freed before this is called?
-				exit(status);
+				exit(g_status);
 			}
 		}
 		disable_signals();
 		waitpid(pid, &stat_loc, 0);
-		status = get_wait_status(stat_loc);
+		g_status = get_wait_status(stat_loc);
 		signal_handler_set();
 	}
 	else
@@ -248,7 +248,7 @@ static t_status	execute_child(int input_fd, t_list *cmds, t_shell *lambda, int t
 			// TODO: ??
 		}
 	}
-	exit(status); // TODO: Should anything be freed before this is called?
+	exit(g_status); // TODO: Should anything be freed before this is called?
 	return (OK);
 }
 
@@ -284,7 +284,7 @@ static t_status	execute_complex_command(int input_fd, t_list *cmds, t_shell *lam
 	}
 	waitpid(pid, &stat_loc, 0);
 	if (!cmds->next)
-		status = get_wait_status(stat_loc);
+		g_status = get_wait_status(stat_loc);
 	return (OK);
 }
 

@@ -73,6 +73,6 @@ A program is free software if users have all of these freedoms.
 # define PREFIX "\u03BB"
 
 /* True definition in signals.c */
-extern int status;
+extern int g_status;
 
 #endif
