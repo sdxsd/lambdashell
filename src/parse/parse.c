@@ -102,43 +102,20 @@ static t_redirect	*get_redirect(t_list **tokens_ptr)
 	return (redirect);
 }
 
-static char	*get_path(t_list **tokens_ptr, t_list *env)
+static char	*get_path(char *arg_zero, t_list *env)
 {
-	char	*path;
-	t_token	*token;
 	char	*absolute_path;
 
-	path = ft_strdup("");
-	if (!path)
-	{
-		// TODO: Free
-		return (NULL);
-	}
-	while (*tokens_ptr)
-	{
-		token = (*tokens_ptr)->content;
-		// TODO: Maybe necessary to add check for token being NULL?
-		if (!is_text_token(token))
-			break ;
-
-		path = ft_strjoin_and_free_left(path, token->content);
-		if (!path)
-		{
-			// TODO: Free
-			return (NULL);
-		}
-		*tokens_ptr = (*tokens_ptr)->next;
-	}
-	if (is_builtin(path) || ft_strchr(path, '/'))
-		return (path);
-	absolute_path = get_absolute_path_from_env(path, env);
-	if (absolute_path == path)
-		return (path);
-	ft_free(&path);
+	if (is_builtin(arg_zero) || ft_strchr(arg_zero, '/'))
+		return (arg_zero);
+	absolute_path = get_absolute_path_from_env(arg_zero, env);
+	if (absolute_path == arg_zero)
+		return (arg_zero);
+	ft_free(&arg_zero);
 	return (absolute_path);
 }
 
-static char	**get_arg_string_array(t_list *arg_list, char *path)
+static char	**get_arg_string_array(char *arg_zero, t_list *arg_list)
 {
 	char	**arg_strings_start;
 	char	**arg_strings;
@@ -147,7 +124,8 @@ static char	**get_arg_string_array(t_list *arg_list, char *path)
 	arg_strings = arg_strings_start;
 	if (!arg_strings)
 		return (null(prefixed_perror("get_arg_string_array()")));
-	*arg_strings = ft_strdup(path);
+	if (arg_zero)
+		*arg_strings = ft_strdup(arg_zero);
 	arg_strings++;
 	while (arg_list)
 	{
@@ -215,8 +193,8 @@ static t_status	fill_cmd(t_list **tokens_ptr, t_shell *lambda, t_cmd *cmd)
 		}
 		else if (is_text_token(token) && !cmd->path)
 		{
-			arg_zero = token->content;
-			cmd->path = get_path(tokens_ptr, lambda->env);
+			arg_zero = get_arg(tokens_ptr);
+			cmd->path = get_path(ft_strdup(arg_zero), lambda->env);
 			if (!cmd->path)
 				return (ERROR);
 		}
@@ -229,16 +207,9 @@ static t_status	fill_cmd(t_list **tokens_ptr, t_shell *lambda, t_cmd *cmd)
 		else
 			*tokens_ptr = (*tokens_ptr)->next;
 	}
-	if (arg_zero)
-	{
-		cmd->args = get_arg_string_array(arg_list, arg_zero);
-		ft_lstclear(&arg_list, NULL);
-	}
-	else
-	{
-		ft_lstclear(&arg_list, NULL);
-		return (ERROR);
-	}
+	cmd->args = get_arg_string_array(arg_zero, arg_list);
+	ft_free(&arg_zero);
+	ft_lstclear(&arg_list, NULL);
 	return (OK);
 }
 
