@@ -14,22 +14,12 @@
 #include <limits.h>
 #include <stdlib.h>
 
-static int	ft_isneg(int n)
-{
-	if (n < 0)
-		return (TRUE);
-	else
-		return (FALSE);
-}
-
 static int	ft_numlen(int n)
 {
 	int	dc;
 
-	if (ft_isneg(n))
-		n = -n;
-	dc = 2;
-	while (n > 10)
+	dc = 1;
+	while (n >= 10)
 	{
 		n /= 10;
 		dc++;
@@ -44,14 +34,14 @@ char	*ft_itoa(int n)
 	char	*str;
 
 	iterator = 0;
-	nstatus = ft_isneg(n);
+	nstatus = (n < 0);
 	if (n == INT_MIN)
 		return (ft_strdup("-2147483648"));
 	if (n == 0)
 		return (ft_strdup("0"));
 	if (nstatus)
 		n = -n;
-	str = malloc(ft_numlen(n) + ft_isneg(n));
+	str = malloc(nstatus + ft_numlen(n) + 1);
 	if (!str)
 		return (NULL);
 	while (n > 0)

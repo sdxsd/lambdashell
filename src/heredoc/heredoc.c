@@ -39,6 +39,7 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 #include <fcntl.h>
+#include <limits.h>
 
 static void	write_tokens_into_file(t_list *tokens, int fd)
 {
@@ -106,11 +107,7 @@ static char	*get_new_heredoc_path(void)
 	char	*full_path;
 
 	iter = 1;
-	// TODO: Place a check for whether /tmp is accessible at all
-	// since this will likely get stuck in an infinite loop of death otherwise!!
-	// The shitty alternative is to change the condition to `iter < 424242`
-	// but please try to do the proper thing instead
-	while (true)
+	while (iter < INT_MAX)
 	{
 		num = ft_itoa(iter);
 		file = ft_strjoin("heredoc_", num);
@@ -122,6 +119,8 @@ static char	*get_new_heredoc_path(void)
 		ft_free(&full_path);
 		iter++;
 	}
+	if (!full_path)
+		prefixed_error("No temporary heredoc file could be created\n");
 	return (full_path);
 }
 
@@ -131,10 +130,18 @@ char	*heredoc(t_token *delimiter, t_shell *lambda)
 	int		fd;
 
 	heredoc_path = get_new_heredoc_path();
+	if (!heredoc_path)
+		return (NULL);
 	fd = open(heredoc_path, O_CREAT | O_TRUNC | O_RDWR, 0644);
 	if (fd == -1)
+		// TODO: Free heredoc_path?
 		return (NULL);
-	heredoc_readline_and_write(delimiter, fd, lambda); // TODO: Use result of this fn
+	if (heredoc_readline_and_write(delimiter, fd, lambda) == ERROR)
+	{
+		// TODO: Free heredoc_path?
+		close(fd);
+		return (NULL);
+	}
 	close(fd);
 	return (heredoc_path);
 }

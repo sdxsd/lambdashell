@@ -58,7 +58,7 @@ t_status	heredocs(t_list *tokens, t_shell *lambda)
 
 			// skip_whitespace_tokens(&tokens);
 
-			// TODO: Maybe necessary to add check for token being NULL before ->type?
+			// TODO: Maybe necessary to add check for token being NULL before ->content?
 			while (tokens && ((t_token *)tokens->content)->type == WHITESPACE)
 			{
 				prev = tokens;
@@ -103,8 +103,16 @@ t_status	heredocs(t_list *tokens, t_shell *lambda)
 				tokens = next;
 			}
 
+			prev->next = next;
+
 			path = heredoc(delimiter, lambda);
 			ft_free(&delimiter->content);
+
+			if (!path)
+			{
+				// TODO: Free
+				return (dealloc_token(&delimiter));
+			}
 
 			delimiter->content = path;
 			delimiter->type = UNQUOTED;
@@ -112,12 +120,15 @@ t_status	heredocs(t_list *tokens, t_shell *lambda)
 			prev->next = NULL;
 			if (!ft_lstnew_back(&prev, delimiter))
 			{
+				prev->next = next;
 				// TODO: Free
-				return (ERROR);
+				return (dealloc_token(&delimiter));
 			}
-			ft_lstlast(prev)->next = next; // TODO: Can `next` here ever be uninitialized?
+			prev->next->next = next; // TODO: Can `next` here ever be uninitialized?
 		}
-		tokens = tokens->next;
+
+		if (tokens)
+			tokens = tokens->next;
 	}
 	return (OK);
 }
