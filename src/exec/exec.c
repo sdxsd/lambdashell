@@ -150,7 +150,7 @@ static t_status	execute_builtin(t_cmd *cmd, t_shell *lambda)
 		status = pwd(lambda);
 	else if (ft_streq(cmd->path, "unset"))
 		status = unset(cmd, lambda);
-	else if (ft_str_not_set(cmd->path, WHITESPACE_CHARACTERS))
+	else if (cmd->path)
 	{
 		status = 127;
 		prefixed_error(cmd->path);
@@ -182,7 +182,7 @@ static t_status	execute_simple_command(t_cmd *cmd, t_shell *lambda)
 	pid_t	pid;
 	int		stat_loc;
 
-	if (ft_strchr(cmd->path, '/'))
+	if (cmd->path && ft_strchr(cmd->path, '/'))
 	{
 		pid = fork();
 		if (pid == FORK_FAILURE)
@@ -234,7 +234,7 @@ static t_status	execute_child(int input_fd, t_list *cmds, t_shell *lambda, int t
 	if (cmds->next)
 		cmd->output_fd = tube[WRITE];
 
-	if (ft_strchr(cmd->path, '/'))
+	if (cmd->path && ft_strchr(cmd->path, '/'))
 	{
 		if (execute_command(cmd, lambda) == ERROR)
 		{
