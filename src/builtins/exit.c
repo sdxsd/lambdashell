@@ -30,6 +30,6 @@ void	bltin_exit(t_cmd *cmd)
 	else
 	{
 		prefixed_error("exit: too many arguments\n");
-		status = 127;
+		status = 1;
 	}
 }
