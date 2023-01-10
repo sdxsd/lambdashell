@@ -101,13 +101,15 @@ static bool	is_ambiguous_redirect(t_list *tokens)
 				if (state.seen_word)
 					return (true);
 			}
-			// `echo a > $space""`
-			else if (state.seen_env_space)
-				return (true);
 		}
 
 		tokens = tokens->next;
 	}
+
+	// `echo a > $space""`
+	// `echo a > $space""hello`
+	if (state.seen_env_space && !state.seen_content)
+		return (true);
 
 	// `echo a > $empty`
 	// `echo a > $space`
