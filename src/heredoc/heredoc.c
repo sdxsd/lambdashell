@@ -99,10 +99,7 @@ static t_status	heredoc_readline_and_write(t_token *delimiter, int fd,
 	{
 		line = readline("> ");
 		if (line == NULL)
-		{
-			ft_putstr("λ: warning: here-document delimited by end-of-file\n");
 			return (OK);
-		}
 		if (ft_streq(line, delimiter->content))
 			break ;
 		tokens = tokenize(line);
