@@ -221,7 +221,7 @@ t_list	*parse(t_list *tokens, t_shell *lambda)
 	cmds = NULL;
 	while (tokens)
 	{
-		if (alloc_cmd(&cmd) == ERROR || fill_cmd(&tokens, lambda, cmd) == ERROR || !cmd->path || !ft_lstnew_back(&cmds, cmd))
+		if (alloc_cmd(&cmd) == ERROR || fill_cmd(&tokens, lambda, cmd) == ERROR || !ft_lstnew_back(&cmds, cmd))
 			return (null(dealloc_cmd(&cmd)));
 	}
 	return (cmds);

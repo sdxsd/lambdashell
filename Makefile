@@ -1,6 +1,6 @@
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g -Wfatal-errors -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g -Wfatal-errors
 NAME = minishell
 CFILES = \
 	src/main.c \
@@ -39,7 +39,6 @@ CFILES = \
 	src/tokenize/subtokenizers_redirections.c \
 	src/tokenize/tokenize.c \
 	src/tokenize/whitespace_split_env_tokens.c \
-	src/tokenize/is_whitespace.c \
 	src/update_cwd/update_cwd.c
 
 HEADERS = \
