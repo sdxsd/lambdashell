@@ -42,19 +42,25 @@ A program is free software if users have all of these freedoms.
 size_t	process_args(t_cmd *cmd, bool *nl)
 {
 	size_t	iter;
+	size_t	arg_iter;
+	size_t	first_arg_to_echo;
 
 	iter = 1;
-	if (cmd->args[1] && cmd->args[1][0] == '-')
+	arg_iter = 1;
+	first_arg_to_echo = 1;
+	while (cmd->args[arg_iter] && cmd->args[arg_iter][0] == '-')
 	{
-		while (cmd->args[1][iter] == 'n')
+		while (cmd->args[arg_iter][iter] == 'n')
 			iter++;
-		if (iter == ft_strlen(cmd->args[1]))
+		if (iter == ft_strlen(cmd->args[arg_iter]))
 		{
-			iter = 2;
+			first_arg_to_echo++;
 			*nl = FALSE;
 		}
+		arg_iter++;
+		iter = 1;
 	}
-	return (iter);
+	return (first_arg_to_echo);
 }
 
 t_status	echo(t_cmd *cmd)
