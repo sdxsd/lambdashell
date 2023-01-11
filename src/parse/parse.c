@@ -39,6 +39,28 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
+static char	**get_arg_string_array(char *arg_zero, t_list *arg_list)
+{
+	char	**arg_strings_start;
+	char	**arg_strings;
+
+	arg_strings_start = ft_calloc(ft_lstsize(arg_list) + 2, sizeof(*arg_strings));
+	arg_strings = arg_strings_start;
+	if (!arg_strings)
+		return (null(prefixed_perror("get_arg_string_array()")));
+	if (arg_zero)
+		*arg_strings = ft_strdup(arg_zero);
+	arg_strings++;
+	while (arg_list)
+	{
+		*arg_strings = arg_list->content;
+		arg_strings++;
+		arg_list = arg_list->next;
+	}
+	*arg_strings = NULL;
+	return (arg_strings_start);
+}
+
 static bool	is_builtin(char *path)
 {
 	return (ft_streq(path, "cd")
@@ -48,6 +70,46 @@ static bool	is_builtin(char *path)
 		|| ft_streq(path, "export")
 		|| ft_streq(path, "pwd")
 		|| ft_streq(path, "unset"));
+}
+
+static char	*get_path(char *arg_zero, t_list *env)
+{
+	char	*absolute_path;
+
+	if (is_builtin(arg_zero) || ft_strchr(arg_zero, '/'))
+		return (arg_zero);
+	absolute_path = get_absolute_path_from_env(arg_zero, env);
+	if (absolute_path == arg_zero)
+		return (arg_zero);
+	ft_free(&arg_zero);
+	return (absolute_path);
+}
+
+static char	*get_arg(t_list **tokens_ptr)
+{
+	char	*arg;
+	t_token	*token;
+
+	arg = ft_strdup("");
+	if (!arg)
+	{
+		// TODO: Free
+		return (NULL);
+	}
+	while (*tokens_ptr)
+	{
+		token = (*tokens_ptr)->content;
+		if (!is_text_token(token))
+			break ;
+		arg = ft_strjoin_and_free_left(arg, token->content);
+		if (!arg)
+		{
+			// TODO: Free
+			return (NULL);
+		}
+		*tokens_ptr = (*tokens_ptr)->next;
+	}
+	return (arg);
 }
 
 static t_direction	get_direction(t_token *token)
@@ -99,68 +161,6 @@ static t_redirect	*get_redirect(t_list **tokens_ptr)
 		*tokens_ptr = (*tokens_ptr)->next;
 	}
 	return (redirect);
-}
-
-static char	*get_path(char *arg_zero, t_list *env)
-{
-	char	*absolute_path;
-
-	if (is_builtin(arg_zero) || ft_strchr(arg_zero, '/'))
-		return (arg_zero);
-	absolute_path = get_absolute_path_from_env(arg_zero, env);
-	if (absolute_path == arg_zero)
-		return (arg_zero);
-	ft_free(&arg_zero);
-	return (absolute_path);
-}
-
-static char	**get_arg_string_array(char *arg_zero, t_list *arg_list)
-{
-	char	**arg_strings_start;
-	char	**arg_strings;
-
-	arg_strings_start = ft_calloc(ft_lstsize(arg_list) + 2, sizeof(*arg_strings));
-	arg_strings = arg_strings_start;
-	if (!arg_strings)
-		return (null(prefixed_perror("get_arg_string_array()")));
-	if (arg_zero)
-		*arg_strings = ft_strdup(arg_zero);
-	arg_strings++;
-	while (arg_list)
-	{
-		*arg_strings = arg_list->content;
-		arg_strings++;
-		arg_list = arg_list->next;
-	}
-	*arg_strings = NULL;
-	return (arg_strings_start);
-}
-
-static char	*get_arg(t_list **tokens_ptr)
-{
-	char	*arg;
-	t_token	*token;
-
-	arg = ft_strdup("");
-	if (!arg)
-	{
-		// TODO: Free
-		return (NULL);
-	}
-	while (*tokens_ptr)
-	{
-		token = (*tokens_ptr)->content;
-		if (!is_text_token(token))
-			break ;
-		arg = ft_strjoin_and_free_left(arg, token->content);
-		if (!arg)
-		{
-			// TODO: Free
-			return (NULL);
-		}
-		*tokens_ptr = (*tokens_ptr)->next;
-	}
-	return (arg);
 }
 
 static t_status	fill_cmd(t_list **tokens_ptr, t_shell *lambda, t_cmd *cmd)
@@ -217,7 +217,8 @@ t_list	*parse(t_list *tokens, t_shell *lambda)
 	cmds = NULL;
 	while (tokens)
 	{
-		if (alloc_cmd(&cmd) == ERROR || fill_cmd(&tokens, lambda, cmd) == ERROR || !ft_lstnew_back(&cmds, cmd))
+		if (alloc_cmd(&cmd) == ERROR || fill_cmd(&tokens, lambda, cmd) == ERROR
+			|| !ft_lstnew_back(&cmds, cmd))
 			return (null(dealloc_cmd(&cmd)));
 	}
 	return (cmds);
