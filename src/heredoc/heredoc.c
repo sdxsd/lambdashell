@@ -78,7 +78,7 @@ void	cleanup_heredocs(void)
 		full_path = ft_strjoin("/tmp/", file);
 		ft_free(&file);
 		if (!access(full_path, F_OK))
-			unlink(full_path) ;
+			unlink(full_path);
 		else
 			break ;
 		ft_free(&full_path);
