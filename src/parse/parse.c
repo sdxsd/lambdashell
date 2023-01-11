@@ -61,30 +61,6 @@ static char	**get_arg_string_array(char *arg_zero, t_list *arg_list)
 	return (arg_strings_start);
 }
 
-static bool	is_builtin(char *path)
-{
-	return (ft_streq(path, "cd")
-		|| ft_streq(path, "echo")
-		|| ft_streq(path, "env")
-		|| ft_streq(path, "exit")
-		|| ft_streq(path, "export")
-		|| ft_streq(path, "pwd")
-		|| ft_streq(path, "unset"));
-}
-
-static char	*get_path(char *arg_zero, t_list *env)
-{
-	char	*absolute_path;
-
-	if (is_builtin(arg_zero) || ft_strchr(arg_zero, '/'))
-		return (arg_zero);
-	absolute_path = get_absolute_path_from_env(arg_zero, env);
-	if (absolute_path == arg_zero)
-		return (arg_zero);
-	ft_free(&arg_zero);
-	return (absolute_path);
-}
-
 static char	*get_arg(t_list **tokens_ptr)
 {
 	char	*arg;
@@ -110,6 +86,40 @@ static char	*get_arg(t_list **tokens_ptr)
 		*tokens_ptr = (*tokens_ptr)->next;
 	}
 	return (arg);
+}
+
+static t_status	add_arg(t_list **tokens_ptr, t_list **arg_list_ptr)
+{
+	char	*arg;
+
+	arg = get_arg(tokens_ptr);
+	if (!arg || !ft_lstnew_back(arg_list_ptr, arg))
+		return (ERROR);
+	return (OK);
+}
+
+static bool	is_builtin(char *path)
+{
+	return (ft_streq(path, "cd")
+		|| ft_streq(path, "echo")
+		|| ft_streq(path, "env")
+		|| ft_streq(path, "exit")
+		|| ft_streq(path, "export")
+		|| ft_streq(path, "pwd")
+		|| ft_streq(path, "unset"));
+}
+
+static char	*get_path(char *arg_zero, t_list *env)
+{
+	char	*absolute_path;
+
+	if (is_builtin(arg_zero) || ft_strchr(arg_zero, '/'))
+		return (arg_zero);
+	absolute_path = get_absolute_path_from_env(arg_zero, env);
+	if (absolute_path == arg_zero)
+		return (arg_zero);
+	ft_free(&arg_zero);
+	return (absolute_path);
 }
 
 static t_direction	get_direction(t_token *token)
@@ -163,45 +173,62 @@ static t_redirect	*get_redirect(t_list **tokens_ptr)
 	return (redirect);
 }
 
-static t_status	fill_cmd(t_list **tokens_ptr, t_shell *lambda, t_cmd *cmd)
+static t_status	add_redirect(t_list **tokens_ptr, t_cmd *cmd)
 {
-	t_token		*token;
 	t_redirect	*redirect;
+
+	redirect = get_redirect(tokens_ptr);
+	if (!redirect || !ft_lstnew_back(&cmd->redirections, redirect))
+		return (ERROR);
+	return (OK);
+}
+
+static t_status	add_next_cmd_part(t_list **tokens_ptr, t_cmd *cmd,
+					char **arg_zero_ptr, t_list *env, t_list **arg_list_ptr)
+{
+	t_token	*token;
+
+	token = (*tokens_ptr)->content;
+	if (token->type == REDIRECTION || token->type == HEREDOC)
+	{
+		if (add_redirect(tokens_ptr, cmd) == ERROR)
+			return (ERROR);
+	}
+	else if (is_text_token(token) && !cmd->path)
+	{
+		*arg_zero_ptr = get_arg(tokens_ptr);
+		cmd->path = get_path(ft_strdup(*arg_zero_ptr), env);
+		if (!cmd->path)
+			return (ERROR);
+	}
+	else if (is_text_token(token) && ft_str_not_set(token->content,
+			WHITESPACE_CHARACTERS))
+	{
+		if (add_arg(tokens_ptr, arg_list_ptr) == ERROR)
+			return (ERROR);
+	}
+	else
+		*tokens_ptr = (*tokens_ptr)->next;
+	return (OK);
+}
+
+static t_status	fill_cmd(t_list **tokens_ptr, t_list *env, t_cmd *cmd)
+{
 	t_list		*arg_list;
-	char		*arg;
 	char		*arg_zero;
 
 	arg_list = NULL;
 	arg_zero = NULL;
 	while (*tokens_ptr)
 	{
-		token = (*tokens_ptr)->content;
-		if (token->type == PIPE)
+		if (((t_token *)(*tokens_ptr)->content)->type == PIPE)
 		{
 			*tokens_ptr = (*tokens_ptr)->next;
 			break ;
 		}
-		else if (token->type == REDIRECTION || token->type == HEREDOC)
-		{
-			redirect = get_redirect(tokens_ptr);
-			if (!redirect || !ft_lstnew_back(&cmd->redirections, redirect))
-				return (ERROR);
-		}
-		else if (is_text_token(token) && !cmd->path)
-		{
-			arg_zero = get_arg(tokens_ptr);
-			cmd->path = get_path(ft_strdup(arg_zero), lambda->env);
-			if (!cmd->path)
-				return (ERROR);
-		}
-		else if (is_text_token(token) && ft_str_not_set(token->content, WHITESPACE_CHARACTERS))
-		{
-			arg = get_arg(tokens_ptr);
-			if (!arg || !ft_lstnew_back(&arg_list, arg))
-				return (ERROR);
-		}
-		else
-			*tokens_ptr = (*tokens_ptr)->next;
+		if (add_next_cmd_part(tokens_ptr, cmd, &arg_zero, env,
+				&arg_list) == ERROR)
+			return (ERROR);
 	}
 	cmd->args = get_arg_string_array(arg_zero, arg_list);
 	ft_free(&arg_zero);
@@ -209,7 +236,7 @@ static t_status	fill_cmd(t_list **tokens_ptr, t_shell *lambda, t_cmd *cmd)
 	return (OK);
 }
 
-t_list	*parse(t_list *tokens, t_shell *lambda)
+t_list	*parse(t_list *tokens, t_list *env)
 {
 	t_list	*cmds;
 	t_cmd	*cmd;
@@ -217,7 +244,7 @@ t_list	*parse(t_list *tokens, t_shell *lambda)
 	cmds = NULL;
 	while (tokens)
 	{
-		if (alloc_cmd(&cmd) == ERROR || fill_cmd(&tokens, lambda, cmd) == ERROR
+		if (alloc_cmd(&cmd) == ERROR || fill_cmd(&tokens, env, cmd) == ERROR
 			|| !ft_lstnew_back(&cmds, cmd))
 			return (null(dealloc_cmd(&cmd)));
 	}

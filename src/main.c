@@ -66,7 +66,7 @@ static void	prompt(t_shell *lambda)
 	// dbg_print_tokens(lambda->tokens);
 	if (whitespace_split_tokens(&lambda->tokens) == ERROR)
 		return ;
-	lambda->cmds = parse(lambda->tokens, lambda);
+	lambda->cmds = parse(lambda->tokens, lambda->env);
 	if (!lambda->cmds)
 		return ;
 	// dbg_print_commands(lambda->cmds);

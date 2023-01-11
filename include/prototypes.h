@@ -107,7 +107,7 @@ void			*null(t_status _);
 
 /* PARSE */
 bool			is_text_token(t_token *token);
-t_list			*parse(t_list *tokens, t_shell *lambda);
+t_list			*parse(t_list *tokens, t_list *env);
 void			skip_whitespace_tokens(t_list **tokens);
 
 /* SIGNALS */
