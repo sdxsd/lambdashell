@@ -78,7 +78,6 @@ t_status	heredocs(t_list *tokens, t_shell *lambda)
 			{
 				token = tokens->content;
 
-				// TODO: Maybe necessary to add check for token being NULL?
 				if (!is_text_token(token))
 					break ;
 

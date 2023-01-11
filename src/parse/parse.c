@@ -81,7 +81,6 @@ static t_redirect	*get_redirect(t_list **tokens_ptr)
 	while (*tokens_ptr)
 	{
 		token = (*tokens_ptr)->content;
-		// TODO: Maybe necessary to add check for token being NULL?
 		if (!is_text_token(token))
 			break ;
 
@@ -151,7 +150,6 @@ static char	*get_arg(t_list **tokens_ptr)
 	while (*tokens_ptr)
 	{
 		token = (*tokens_ptr)->content;
-		// TODO: Maybe necessary to add check for token being NULL?
 		if (!is_text_token(token))
 			break ;
 		arg = ft_strjoin_and_free_left(arg, token->content);
@@ -175,11 +173,9 @@ static t_status	fill_cmd(t_list **tokens_ptr, t_shell *lambda, t_cmd *cmd)
 
 	arg_list = NULL;
 	arg_zero = NULL;
-	// token = (*tokens_ptr)->content;
 	while (*tokens_ptr)
 	{
 		token = (*tokens_ptr)->content;
-		// TODO: Maybe necessary to add check for token being NULL?
 		if (token->type == PIPE)
 		{
 			*tokens_ptr = (*tokens_ptr)->next;
