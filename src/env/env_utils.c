@@ -39,6 +39,30 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
+size_t	get_key_length(char *str)
+{
+	size_t	count;
+
+	count = 0;
+	while (str[count] != '\0' && str[count] != '=')
+		count++;
+	return (count);
+}
+
+t_status	add_env_element(char *key, char *val, t_list **env_ptr)
+{
+	t_env_element	*env_element;
+
+	env_element = alloc_env_element();
+	if (!env_element)
+		return (dealloc_env_element(&env_element));
+	env_element->key = key;
+	env_element->val = val;
+	if (!ft_lstnew_back(env_ptr, env_element))
+		return (dealloc_env_element(&env_element));
+	return (OK);
+}
+
 char	**env_to_strings(t_list *env)
 {
 	char			**env_strings;
@@ -53,7 +77,9 @@ char	**env_to_strings(t_list *env)
 	while (env)
 	{
 		env_element = env->content;
-		env_strings[index] = ft_strjoin_array((char *[]){env_element->key, "=", env_element->val, NULL});
+		env_strings[index] = \
+			ft_strjoin_array((char *[]){env_element->key, \
+										"=", env_element->val, NULL});
 		if (!env_strings[index])
 		{
 			dealloc_ptr_array(&env_strings);
