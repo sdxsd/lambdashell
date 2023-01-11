@@ -102,6 +102,7 @@ char			*get_absolute_path_from_env(char *name, t_list *env);
 t_status		expand_heredoc_tokens(t_token *delimiter, t_list *tokens,
 					t_shell *lambda);
 char			*heredoc(t_token *delimiter, t_shell *lambda);
+void			cleanup_heredocs(void);
 t_status		heredocs(t_list *tokens, t_shell *lambda);
 
 /* NULL */
