@@ -48,7 +48,6 @@ t_token	*alloc_token(t_token_type type, char *content)
 {
 	t_token	*token;
 
-	// TODO: Move this check to every parent caller?
 	if (!content)
 		return (NULL);
 	token = ft_calloc(1, sizeof(*token));

@@ -40,80 +40,80 @@ A program is free software if users have all of these freedoms.
 #include "../../include/minishell.h"
 #include <stdio.h>
 
-void	dbg_print_tokens(t_list *tokens)
-{
-	char	*token_type_strings[] = {
-		[SINGLE_QUOTED] = "SINGLE_QUOTED",
-		[DOUBLE_QUOTED] = "DOUBLE_QUOTED",
-		[REDIRECTION] = "REDIRECTION",
-		[HEREDOC] = "HEREDOC",
-		[PIPE] = "PIPE",
-		[WHITESPACE] = "WHITESPACE",
-		[UNQUOTED] = "UNQUOTED",
-	};
-	t_token	*token;
-	char	*content;
+/* void	dbg_print_tokens(t_list *tokens) */
+/* { */
+/* 	char	*token_type_strings[] = { */
+/* 		[SINGLE_QUOTED] = "SINGLE_QUOTED", */
+/* 		[DOUBLE_QUOTED] = "DOUBLE_QUOTED", */
+/* 		[REDIRECTION] = "REDIRECTION", */
+/* 		[HEREDOC] = "HEREDOC", */
+/* 		[PIPE] = "PIPE", */
+/* 		[WHITESPACE] = "WHITESPACE", */
+/* 		[UNQUOTED] = "UNQUOTED", */
+/* 	}; */
+/* 	t_token	*token; */
+/* 	char	*content; */
 
-	printf("+---------------+---------------------+--------------+\n");
-	printf("| token type    | token content       | is ambiguous |\n");
-	printf("+---------------+---------------------+--------------+\n");
-	while (tokens)
-	{
-		token = tokens->content;
-		printf("| %-13s ", token_type_strings[token->type]);
-		content = ft_strjoin_array((char *[]){"[", token->content, "]", NULL});
-		printf("| %-20s", content);
-		printf("| %d            |\n", token->is_ambiguous);
-		printf("+---------------+---------------------+--------------+\n");
-		tokens = tokens->next;
-	}
-}
+/* 	printf("+---------------+---------------------+--------------+\n"); */
+/* 	printf("| token type    | token content       | is ambiguous |\n"); */
+/* 	printf("+---------------+---------------------+--------------+\n"); */
+/* 	while (tokens) */
+/* 	{ */
+/* 		token = tokens->content; */
+/* 		printf("| %-13s ", token_type_strings[token->type]); */
+/* 		content = ft_strjoin_array((char *[]){"[", token->content, "]", NULL}); */
+/* 		printf("| %-20s", content); */
+/* 		printf("| %d            |\n", token->is_ambiguous); */
+/* 		printf("+---------------+---------------------+--------------+\n"); */
+/* 		tokens = tokens->next; */
+/* 	} */
+/* } */
 
-void	dbg_print_commands(t_list *cmds)
-{
-	char	*direction_strings[4];
-	size_t	cmd_index;
-	t_cmd	*cmd;
-	char	**arg_array;
-	size_t	redirection_index;
-	t_list	*redirection_list;
-	t_redirect	*redirection;
+/* void	dbg_print_commands(t_list *cmds) */
+/* { */
+/* 	char	*direction_strings[4]; */
+/* 	size_t	cmd_index; */
+/* 	t_cmd	*cmd; */
+/* 	char	**arg_array; */
+/* 	size_t	redirection_index; */
+/* 	t_list	*redirection_list; */
+/* 	t_redirect	*redirection; */
 
-	direction_strings[DIRECTION_HEREDOC] = "HEREDOC",
-	direction_strings[DIRECTION_APPEND] = "APPEND",
-	direction_strings[DIRECTION_IN] = "IN",
-	direction_strings[DIRECTION_OUT] = "OUT",
-	printf("\n");
-	cmd_index = 0;
-	while (cmds)
-	{
-		printf("Command %zu:\n", cmd_index + 1);
-		cmd = cmds->content;
-		printf("\tInput file descriptor: %i\n", cmd->input_fd);
-		printf("\tOutput file descriptor: %i\n", cmd->output_fd);
-		printf("\tPath: [%s]\n", cmd->path);
-		printf("\tArgs:");
-		arg_array = cmd->args;
-		while (*arg_array)
-		{
-			printf(" [%s]", *arg_array);
-			arg_array++;
-		}
-		printf("\n");
-		redirection_index = 0;
-		redirection_list = cmd->redirections;
-		while (redirection_list)
-		{
-			printf("\tRedirection %zu:\n", redirection_index + 1);
-			redirection = redirection_list->content;
-			printf("\t\tRedirection file path: [%s]\n", redirection->file_path);
-			printf("\t\tRedirection direction: %s\n", direction_strings[redirection->direction]);
-			printf("\t\tIs ambiguous: %i\n", redirection->is_ambiguous);
-			redirection_list = redirection_list->next;
-			redirection_index++;
-		}
-		cmds = cmds->next;
-		cmd_index++;
-		printf("\n");
-	}
-}
+/* 	direction_strings[DIRECTION_HEREDOC] = "HEREDOC", */
+/* 	direction_strings[DIRECTION_APPEND] = "APPEND", */
+/* 	direction_strings[DIRECTION_IN] = "IN", */
+/* 	direction_strings[DIRECTION_OUT] = "OUT", */
+/* 	printf("\n"); */
+/* 	cmd_index = 0; */
+/* 	while (cmds) */
+/* 	{ */
+/* 		printf("Command %zu:\n", cmd_index + 1); */
+/* 		cmd = cmds->content; */
+/* 		printf("\tInput file descriptor: %i\n", cmd->input_fd); */
+/* 		printf("\tOutput file descriptor: %i\n", cmd->output_fd); */
+/* 		printf("\tPath: [%s]\n", cmd->path); */
+/* 		printf("\tArgs:"); */
+/* 		arg_array = cmd->args; */
+/* 		while (*arg_array) */
+/* 		{ */
+/* 			printf(" [%s]", *arg_array); */
+/* 			arg_array++; */
+/* 		} */
+/* 		printf("\n"); */
+/* 		redirection_index = 0; */
+/* 		redirection_list = cmd->redirections; */
+/* 		while (redirection_list) */
+/* 		{ */
+/* 			printf("\tRedirection %zu:\n", redirection_index + 1); */
+/* 			redirection = redirection_list->content; */
+/* 			printf("\t\tRedirection file path: [%s]\n", redirection->file_path); */
+/* 			printf("\t\tRedirection direction: %s\n", direction_strings[redirection->direction]); */
+/* 			printf("\t\tIs ambiguous: %i\n", redirection->is_ambiguous); */
+/* 			redirection_list = redirection_list->next; */
+/* 			redirection_index++; */
+/* 		} */
+/* 		cmds = cmds->next; */
+/* 		cmd_index++; */
+/* 		printf("\n"); */
+/* 	} */
+/* } */

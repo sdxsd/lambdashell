@@ -37,8 +37,6 @@ The definition of Free Software is as follows:
 A program is free software if users have all of these freedoms.
 */
 
-
-
 #include "../include/minishell.h"
 
 static void	prompt(t_shell *lambda)
@@ -59,19 +57,16 @@ static void	prompt(t_shell *lambda)
 	ft_free(&lambda->line);
 	if (check_token_syntax_errors(lambda->tokens) == ERROR)
 		return ;
-	// dbg_print_tokens(lambda->tokens);
 	if (heredocs(lambda->tokens, lambda) == ERROR)
 		return ;
 	if (expand_variables(&lambda->tokens, lambda) == ERROR)
 		return ;
 	mark_ambiguous_redirects(lambda->tokens);
-	// dbg_print_tokens(lambda->tokens);
 	if (whitespace_split_tokens(&lambda->tokens) == ERROR)
 		return ;
 	lambda->cmds = parse(lambda->tokens, lambda);
 	if (!lambda->cmds)
 		return ;
-	// dbg_print_commands(lambda->cmds);
 	execute(lambda);
 	cleanup_heredocs();
 }

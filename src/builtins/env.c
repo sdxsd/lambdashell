@@ -44,7 +44,6 @@ t_status	env(t_shell *lambda)
 	t_list			*env_list;
 	t_env_element	*env_element;
 
-	// TODO: Should this function ever return ERROR?
 	env_list = lambda->env;
 	while (env_list)
 	{
