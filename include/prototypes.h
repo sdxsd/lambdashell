@@ -91,6 +91,7 @@ bool			is_valid_identifier(char *name);
 t_status		print_error(char *msg);
 t_status		prefixed_error(char *msg);
 t_status		prefixed_perror(char *msg);
+t_status		perror_error(char *msg);
 
 /* EXEC */
 t_status		execute(t_shell *lambda);
@@ -109,7 +110,7 @@ void			*null(t_status _);
 
 /* PARSE */
 bool			is_text_token(t_token *token);
-t_list			*parse(t_list *tokens, t_shell *lambda);
+t_list			*parse(t_list *tokens, t_list *env);
 void			skip_whitespace_tokens(t_list **tokens);
 
 /* SIGNALS */

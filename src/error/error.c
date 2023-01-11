@@ -51,6 +51,11 @@ t_status	prefixed_error(char *msg)
 t_status	prefixed_perror(char *msg)
 {
 	prefixed_error("");
+	return (perror_error(msg));
+}
+
+t_status	perror_error(char *msg)
+{
 	perror(msg);
 	return (ERROR);
 }

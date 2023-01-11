@@ -64,7 +64,7 @@ static void	prompt(t_shell *lambda)
 	mark_ambiguous_redirects(lambda->tokens);
 	if (whitespace_split_tokens(&lambda->tokens) == ERROR)
 		return ;
-	lambda->cmds = parse(lambda->tokens, lambda);
+	lambda->cmds = parse(lambda->tokens, lambda->env);
 	if (!lambda->cmds)
 		return ;
 	execute(lambda);
