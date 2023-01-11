@@ -58,7 +58,6 @@ static t_status	execute_command(t_cmd *cmd, t_shell *lambda)
 
 	if (redirections(cmd->redirections, cmd) == ERROR)
 	{
-		// TODO: ??
 		g_status = 1;
 		return (ERROR);
 	}
@@ -76,12 +75,10 @@ static t_status	execute_builtin(t_cmd *cmd, t_shell *lambda)
 {
 	if (redirections(cmd->redirections, cmd) == ERROR)
 	{
-		// TODO: ??
 		g_status = 1;
 		return (ERROR);
 	}
 	dup2_cmd(cmd);
-	// TODO: Maybe if-statement check whether path or args or args[0] or args[1] is NULL?
 	if (ft_streq(cmd->path, "cd"))
 		g_status = cd(cmd, lambda);
 	else if (ft_streq(cmd->path, "echo"))
@@ -111,15 +108,14 @@ static t_status	execute_builtin(t_cmd *cmd, t_shell *lambda)
 
 static int	get_wait_status(int stat_loc)
 {
-	// TODO: Add unit test for this one
 	if (WIFEXITED(stat_loc))
 		return (WEXITSTATUS(stat_loc));
 	else if (WIFSIGNALED(stat_loc))
 		return (WTERMSIG(stat_loc));
-	// TODO: Probably also need to add this? Check by adding a unit test
-	// else if (WIFSTOPPED(stat_loc))
-	// 	return (WIFSTOPPED(stat_loc));
-	return (0); // TODO: Is this wanted?
+	/* TODO: Double check if necessary */
+	else if (WIFSTOPPED(stat_loc))
+		return (WIFSTOPPED(stat_loc));
+	return (0);
 }
 
 static t_status	execute_simple_command(t_cmd *cmd, t_shell *lambda)
@@ -189,7 +185,7 @@ static t_status	execute_child(int input_fd, t_list *cmds, t_shell *lambda, int t
 			// TODO: ??
 		}
 	}
-	exit(g_status); // TODO: Should anything be freed before this is called?
+	exit(g_status);
 	return (OK);
 }
 
