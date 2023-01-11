@@ -97,6 +97,7 @@ t_status		prefixed_perror(char *msg);
 /* EXEC */
 t_status		execute(t_shell *lambda);
 char			*get_absolute_path_from_env(char *name, t_list *env);
+t_status		redirections(t_list *list, t_cmd *cmd);
 
 /* HEREDOC */
 t_status		expand_heredoc_tokens(t_token *delimiter, t_list *tokens,

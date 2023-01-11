@@ -42,58 +42,11 @@ A program is free software if users have all of these freedoms.
 #include <fcntl.h>
 #include <errno.h>
 
-static t_status	redirections(t_list *list, t_cmd *cmd)
-{
-	t_redirect	*redir;
-	int			flags;
-	bool		in_encountered;
-	int			open_fd;
-
-	in_encountered = false;
-	flags = 0;
-	while (list)
-	{
-		redir = list->content;
-		if (redir->is_ambiguous)
-		{
-			prefixed_error("ambiguous redirect\n");
-			return (ERROR);
-		}
-		if (redir->direction == DIRECTION_IN && !in_encountered)
-		{
-			in_encountered = true;
-			flags |= (O_RDONLY);
-		}
-		else if (redir->direction == DIRECTION_OUT)
-			flags |= (O_CREAT | O_TRUNC | O_WRONLY);
-		else if (redir->direction == DIRECTION_APPEND)
-			flags |= (O_CREAT | O_APPEND | O_WRONLY);
-		else if (redir->direction == DIRECTION_HEREDOC)
-		{
-			in_encountered = true;
-			flags |= (O_RDONLY);
-		}
-		open_fd = open(redir->file_path, flags, 0644);
-		if (open_fd < 0)
-			return (prefixed_perror(redir->file_path));
-		if (redir->direction == DIRECTION_IN || redir->direction == DIRECTION_HEREDOC)
-			cmd->input_fd = open_fd;
-		if (redir->direction == DIRECTION_OUT || redir->direction == DIRECTION_APPEND)
-			cmd->output_fd = open_fd;
-		// TODO: Handle DIRECTION_HEREDOC
-		list = list->next;
-	}
-	return (OK);
-}
-
 static void	dup2_cmd(t_cmd *cmd)
 {
-	// TODO: Protection necessary?
-
 	dup2(cmd->input_fd, STDIN_FILENO);
 	if (cmd->input_fd != STDIN_FILENO)
 		close(cmd->input_fd);
-
 	dup2(cmd->output_fd, STDOUT_FILENO);
 	if (cmd->output_fd != STDOUT_FILENO)
 		close(cmd->output_fd);
@@ -109,18 +62,13 @@ static t_status	execute_command(t_cmd *cmd, t_shell *lambda)
 		g_status = 1;
 		return (ERROR);
 	}
-
-	// TODO: Try to find a way to not call this env_to_strings() every time
 	env_array = env_to_strings(lambda->env);
-
 	dup2_cmd(cmd);
-
 	if (execve(cmd->path, cmd->args, env_array) == -1)
 	{
 		g_status = 127;
 		return (prefixed_perror(cmd->path));
 	}
-
 	return (OK);
 }
 
@@ -132,9 +80,7 @@ static t_status	execute_builtin(t_cmd *cmd, t_shell *lambda)
 		g_status = 1;
 		return (ERROR);
 	}
-
 	dup2_cmd(cmd);
-
 	// TODO: Maybe if-statement check whether path or args or args[0] or args[1] is NULL?
 	if (ft_streq(cmd->path, "cd"))
 		g_status = cd(cmd, lambda);
@@ -160,7 +106,6 @@ static t_status	execute_builtin(t_cmd *cmd, t_shell *lambda)
 			print_error(": No such file or directory\n");
 		return (ERROR);
 	}
-
 	return (OK);
 }
 
@@ -210,7 +155,6 @@ static t_status	execute_simple_command(t_cmd *cmd, t_shell *lambda)
 			dup2(lambda->stdout_fd, STDOUT_FILENO);
 			return (ERROR);
 		}
-
 		// TODO: Can this be moved to the end of execute_builtin()?
 		// TODO: Should these both *always* happen?
 		dup2(lambda->stdin_fd, STDIN_FILENO);
@@ -224,16 +168,13 @@ static t_status	execute_child(int input_fd, t_list *cmds, t_shell *lambda, int t
 	t_cmd	*cmd;
 
 	cmd = cmds->content;
-
 	if (cmds->next)
 		close(tube[READ]);
-
 	// TODO: Why store input_fd and output_fd in cmd when dups can be done immediately?
 	if (input_fd != -1)
 		cmd->input_fd = input_fd;
 	if (cmds->next)
 		cmd->output_fd = tube[WRITE];
-
 	if (cmd->path && ft_strchr(cmd->path, '/'))
 	{
 		if (execute_command(cmd, lambda) == ERROR)

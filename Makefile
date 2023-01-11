@@ -22,6 +22,7 @@ CFILES = \
 	src/env/mark_ambiguous_redirects.c \
 	src/error/error.c \
 	src/exec/exec.c \
+	src/exec/redirect.c \
 	src/exec/get_absolute_path_from_env.c \
 	src/heredoc/expand_heredoc_tokens.c \
 	src/heredoc/heredoc.c \
