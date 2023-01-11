@@ -87,8 +87,6 @@ bool			is_valid_name_chr(char chr);
 bool			is_valid_name_first_chr(char chr);
 bool			is_valid_identifier(char *name);
 
-void			mark_ambiguous_redirects(t_list *tokens);
-
 /* ERROR */
 t_status		print_error(char *msg);
 t_status		prefixed_error(char *msg);
@@ -124,8 +122,8 @@ void			stop_void(void);
 
 /* TOKENIZE */
 t_status		check_token_syntax_errors(t_list *tokens);
+void			mark_ambiguous_redirects(t_list *tokens);
 t_status		split_and_add_spaced_tokens(t_token *token, t_list *current);
-
 t_token_type	subtokenize_single_quote(char **line_ptr);
 t_token_type	subtokenize_double_quote(char **line_ptr);
 t_token_type	subtokenize_heredoc(char **line_ptr);
@@ -136,7 +134,7 @@ t_token_type	subtokenize_whitespace(char **line_ptr);
 t_token_type	subtokenize_unquoted(char **line_ptr);
 
 t_list			*tokenize(char *line);
-t_status		whitespace_split_env_tokens(t_list **tokens_ptr);
+t_status		whitespace_split_tokens(t_list **tokens_ptr);
 
 /* UPDATE_CWD */
 t_status		update_cwd(t_shell *lambda);

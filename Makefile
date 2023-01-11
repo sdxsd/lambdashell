@@ -19,7 +19,6 @@ CFILES = \
 	src/env/env.c \
 	src/env/expand_variables.c \
 	src/env/is_valid_identifier.c \
-	src/env/mark_ambiguous_redirects.c \
 	src/error/error.c \
 	src/exec/exec.c \
 	src/exec/get_absolute_path_from_env.c \
@@ -33,13 +32,13 @@ CFILES = \
 	src/signals/signals.c \
 	src/stop/stop.c \
 	src/tokenize/check_token_syntax_errors.c \
+	src/tokenize/mark_ambiguous_redirects.c \
 	src/tokenize/split_and_add_spaced_tokens.c \
 	src/tokenize/subtokenizers_misc.c \
 	src/tokenize/subtokenizers_quotes.c \
 	src/tokenize/subtokenizers_redirections.c \
 	src/tokenize/tokenize.c \
-	src/tokenize/whitespace_split_env_tokens.c \
-	src/tokenize/is_whitespace.c \
+	src/tokenize/whitespace_split_tokens.c \
 	src/update_cwd/update_cwd.c
 
 HEADERS = \
