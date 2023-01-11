@@ -57,7 +57,6 @@ static t_status	new_unquoted_token_back(t_list **current_ptr, char *content,
 static t_status	new_space_token_back(t_list *current)
 {
 	return (new_unquoted_token_back(&current, " ", WHITESPACE));
-	// return (new_unquoted_token_back(&current, " ", UNQUOTED));
 }
 
 static t_status	try_add_trailing_space(size_t split_count,

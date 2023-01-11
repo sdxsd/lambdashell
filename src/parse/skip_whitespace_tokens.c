@@ -41,7 +41,6 @@ A program is free software if users have all of these freedoms.
 
 void	skip_whitespace_tokens(t_list **tokens)
 {
-	// TODO: Maybe necessary to add check for token being NULL before ->content?
 	while (*tokens && ((t_token *)(*tokens)->content)->type == WHITESPACE)
 		*tokens = (*tokens)->next;
 }

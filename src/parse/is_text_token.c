@@ -41,5 +41,6 @@ A program is free software if users have all of these freedoms.
 
 bool	is_text_token(t_token *token)
 {
-	return (token->type == SINGLE_QUOTED || token->type == DOUBLE_QUOTED || token->type == UNQUOTED);
+	return (token->type == SINGLE_QUOTED || token->type == DOUBLE_QUOTED
+		|| token->type == UNQUOTED);
 }
