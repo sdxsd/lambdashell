@@ -39,6 +39,74 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
+// `echo a > ""`
+// ambiguous = false;
+//
+// `echo a > "foo"$whitespace_left`
+// state.seen_content = true;
+//
+// `echo a > $whitespace_right"foo"`
+// if (state.seen_word)
+static bool	quoted(bool *ambiguous, char character, t_ambiguous_state *state)
+{
+	*ambiguous = false;
+	if (character)
+	{
+		state->seen_content = true;
+		if (state->seen_word)
+			return (true);
+	}
+	return (false);
+}
+
+// `echo a > $space""`
+// state.seen_env_space = true;
+//
+// `echo a > "foo"$whitespace_left`
+// if (state.seen_content)
+//
+// `echo a > ""$space`
+// else ambiguous = true;
+//
+// `echo a > foo`
+// ambiguous = false;
+//
+// `echo a > foo$whitespace_left`
+// state.seen_content = true;
+//
+// `echo a > $whitespace_center`
+// if (state.seen_word)
+static bool	unquoted(char *content, t_ambiguous_state *state, bool *ambiguous)
+{
+	while (*content)
+	{
+		if (ft_isspace(*content))
+		{
+			state->seen_env_space = true;
+			if (state->seen_content)
+				state->seen_word = true;
+			else
+				*ambiguous = true;
+		}
+		else
+		{
+			*ambiguous = false;
+			state->seen_content = true;
+			if (state->seen_word)
+				return (true);
+		}
+		content++;
+	}
+	return (false);
+}
+
+// `echo a > $space""`
+// `echo a > $space""hello`
+// if (state.seen_env_space && !state.seen_content)
+//
+// `echo a > $empty`
+// `echo a > $space`
+// return (ambiguous);
 static bool	is_ambiguous_redirect(t_list *tokens)
 {
 	bool				ambiguous;
@@ -54,65 +122,17 @@ static bool	is_ambiguous_redirect(t_list *tokens)
 	{
 		token = tokens->content;
 		content = token->content;
-
-		if (token->type == UNQUOTED) // && ft_strchr(content, ' '))
+		if (token->type == UNQUOTED)
 		{
-			while (*content)
-			{
-				if (ft_isspace(*content))
-				{
-					// `echo a > $space""`
-					state.seen_env_space = true;
-
-					// `echo a > "foo"$whitespace_left`
-					if (state.seen_content)
-						state.seen_word = true;
-
-					// `echo a > ""$space`
-					else
-						ambiguous = true;
-				}
-				else
-				{
-					// `echo a > foo`
-					ambiguous = false;
-
-					// `echo a > foo$whitespace_left`
-					state.seen_content = true;
-
-					// `echo a > $whitespace_center`
-					if (state.seen_word)
-						return (true);
-				}
-				content++;
-			}
+			if (unquoted(content, &state, &ambiguous))
+				return (true);
 		}
-		else
-		{
-			// `echo a > ""`
-			ambiguous = false;
-
-			if (*content)
-			{
-				// `echo a > "foo"$whitespace_left`
-				state.seen_content = true;
-
-				// `echo a > $whitespace_right"foo"`
-				if (state.seen_word)
-					return (true);
-			}
-		}
-
+		else if (quoted(&ambiguous, *content, &state))
+			return (true);
 		tokens = tokens->next;
 	}
-
-	// `echo a > $space""`
-	// `echo a > $space""hello`
 	if (state.seen_env_space && !state.seen_content)
 		return (true);
-
-	// `echo a > $empty`
-	// `echo a > $space`
 	return (ambiguous);
 }
 

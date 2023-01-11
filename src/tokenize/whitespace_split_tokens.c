@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   whitespace_split_env_tokens.c                      :+:    :+:            */
+/*   whitespace_split_tokens.c                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
@@ -69,7 +69,7 @@ static t_status	update_pointers(t_list *current, t_list **prev, t_list *next,
 	return (OK);
 }
 
-t_status	whitespace_split_env_tokens(t_list **tokens_ptr)
+t_status	whitespace_split_tokens(t_list **tokens_ptr)
 {
 	t_list	*prev;
 	t_list	*current;

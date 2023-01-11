@@ -39,6 +39,29 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
+static void	*token_or_lstnew_back_error(t_token **token_ptr,
+				t_list **tokens_ptr)
+{
+	dealloc_token(token_ptr);
+	dealloc_lst(tokens_ptr, dealloc_token);
+	return (NULL);
+}
+
+static void	*content_error(t_list **tokens_ptr)
+{
+	dealloc_lst(tokens_ptr, dealloc_token);
+	// TODO: perror_error()?
+	return (NULL);
+}
+
+static void	*unmatched_quote_error(t_list **tokens_ptr)
+{
+	g_status = 2;
+	prefixed_error("unexpected EOF while looking for matching quote\n");
+	dealloc_lst(tokens_ptr, dealloc_token);
+	return (NULL);
+}
+
 static t_token_type	subtokenize(char **line)
 {
 	if (**line == '\'')
@@ -73,28 +96,16 @@ t_list	*tokenize(char *line)
 		old_line_pos = line;
 		token_type = subtokenize(&line);
 		if (token_type == UNMATCHED_QUOTE)
-		{
-			g_status = 2;
-			prefixed_error("unexpected EOF while looking for matching quote\n");
-			dealloc_lst(&tokens, dealloc_token);
-			return (NULL);
-		}
+			return (unmatched_quote_error(&tokens));
 		if (token_type == SINGLE_QUOTED || token_type == DOUBLE_QUOTED)
 			content = ft_substr(old_line_pos, 1, line - old_line_pos - 2);
 		else
 			content = ft_substr(old_line_pos, 0, line - old_line_pos);
 		if (!content)
-		{
-			dealloc_lst(&tokens, dealloc_token);
-			return (NULL);
-		}
+			return (content_error(&tokens));
 		token = alloc_token(token_type, content);
 		if (!token || !ft_lstnew_back(&tokens, token))
-		{
-			dealloc_token(&token);
-			dealloc_lst(&tokens, dealloc_token);
-			return (NULL);
-		}
+			return (token_or_lstnew_back_error(&token, &tokens));
 	}
 	return (tokens);
 }

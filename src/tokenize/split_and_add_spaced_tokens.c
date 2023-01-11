@@ -59,21 +59,21 @@ static t_status	new_space_token_back(t_list *current)
 	return (new_unquoted_token_back(&current, " ", WHITESPACE));
 }
 
-static t_status	try_add_leading_space(size_t split_index, t_token *token,
-					t_list *current)
-{
-	if ((split_index > 0 || ft_strchr(WHITESPACE_CHARACTERS,
-				*token->content)) && new_space_token_back(current) == ERROR)
-		return (ERROR);
-	return (OK);
-}
-
 static t_status	try_add_trailing_space(size_t split_count,
 					t_token *token, t_list *current)
 {
 	if (split_count > 0 && ft_strchr(WHITESPACE_CHARACTERS,
 			token->content[ft_strlen(token->content) - 1])
 		&& new_space_token_back(current) == ERROR)
+		return (ERROR);
+	return (OK);
+}
+
+static t_status	try_add_leading_space(size_t split_index, t_token *token,
+					t_list *current)
+{
+	if ((split_index > 0 || ft_strchr(WHITESPACE_CHARACTERS,
+				*token->content)) && new_space_token_back(current) == ERROR)
 		return (ERROR);
 	return (OK);
 }
@@ -104,3 +104,55 @@ t_status	split_and_add_spaced_tokens(t_token *token, t_list *current)
 	dealloc_token(&token);
 	return (OK);
 }
+
+// TODO: IMPLEMENT
+// [ 'echo', @, 'hello', @, >, @, '', $whitespace_left, @, '', @, $space, @, '', $empty, @, $whitespace_left, $whitespace_left ]
+// [ 'echo' ] # input
+// [ 'echo' ] # split unquoted
+// [ 'echo' ] # discard empty
+// [ 'echo' ] # trim whitespace tokens
+// [ 'echo' ] # unempty if one token was quoted
+// [ 'echo', @, 'hello', @, >, @, '', $whitespace_left, @, '', @, $space, @, '', $empty, @, $whitespace_left, $whitespace_left ]
+//            [ 'hello' ] # input
+//            [ 'hello' ] # split unquoted
+//            [ 'hello' ] # discard empty
+//            [ 'hello' ] # trim whitespace tokens
+//            [ 'hello' ] # unempty if one token was quoted
+// [ 'echo', @, 'hello', @, >, @, '', $whitespace_left, @, '', @, $space, @, '', $empty, @, $whitespace_left, $whitespace_left ]
+//                       [ '>' ] # input
+//                       [ '>' ] # split unquoted
+//                       [ '>' ] # discard empty
+//                       [ '>' ] # trim whitespace tokens
+//                       [ '>' ] # unempty if one token was quoted
+// [ 'echo', @, 'hello', @, >, @, '', $whitespace_left, @, '', @, $space, @, '', $empty, @, $whitespace_left, $whitespace_left ]
+//                              [ '', $whitespace_left ] # input           Y
+//                              [ '', @, 'b' ] # split unquoted            Y
+//                              [  @, 'b' ] # discard empty                N
+//                              [ 'b' ] # trim whitespace tokens           N?
+//                              [ 'b' ] # unempty if one token was quoted  N
+// [ 'echo', @, 'hello', @, >, @, 'b', @, '', @, $space, @, '', $empty, @, $whitespace_left, $whitespace_left ]
+//                                      [ '' ] # input
+//                                      [ '' ] # split unquoted
+//                                      [  ] # discard empty
+//                                      [  ] # trim whitespace tokens
+//                                      [ '' ] # unempty if one token was quoted
+// [ 'echo', @, 'hello', @, >, @, 'b', @, '', @, $space, @, '', $empty, @, $whitespace_left, $whitespace_left ]
+//                                             [ $space ] # input
+//                                             [ @, ] # split unquoted
+//                                             [ @, ] # discard empty
+//                                             [  ] # trim whitespace tokens
+//                                             [  ] # unempty if one token was quoted
+// [ 'echo', @, 'hello', @, >, @, 'b', @, '', @, @, '', $empty, @, $whitespace_left, $whitespace_left ]
+//                                                [ '', $empty ] # input
+//                                                [ '' ] # split unquoted
+//                                                [  ] # discard empty
+//                                                [  ] # trim whitespace tokens
+//                                                [ '' ] # unempty if one token was quoted
+// [ 'echo', @, 'hello', @, >, @, 'b', @, '', @, @, '', @, $whitespace_left, $whitespace_left ]
+//                                                    [ $whitespace_left, $whitespace_left ] # input
+//                                                    [ @, 'b', @, 'b' ] # split unquoted
+//                                                    [ @, 'b', @, 'b' ] # discard empty
+//                                                    [ 'b', @, 'b' ] # trim whitespace tokens
+//                                                    [ 'b', @, 'b' ] # unempty if one token was quoted
+// [ 'echo', @, 'hello', @, >, @, 'b', @, '', @, @, '', @, 'b', @, 'b' ]
+// TODO: maybe remove duplicate spaces
