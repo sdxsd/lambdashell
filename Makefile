@@ -32,7 +32,6 @@ CFILES = \
 	src/heredoc/expand_heredoc_tokens.c \
 	src/heredoc/heredoc.c \
 	src/heredoc/heredocs.c \
-	src/misc/null.c \
 	src/parse/add_arg.c \
 	src/parse/add_redirect.c \
 	src/parse/get_arg_string_array.c \

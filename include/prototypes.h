@@ -113,9 +113,6 @@ char			*heredoc(t_token *delimiter, t_lambda *lambda);
 void			cleanup_heredocs(t_list *cmds);
 t_status		heredocs(t_list *tokens, t_lambda *lambda);
 
-/* NULL */
-void			*null(t_status _);
-
 /* PARSE */
 t_status		add_arg(t_list **arg_list_ptr, t_list **tokens_ptr);
 t_status		add_redirect(t_list **tokens_ptr, t_list **redirections_ptr);
