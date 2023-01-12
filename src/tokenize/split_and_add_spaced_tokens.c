@@ -82,7 +82,7 @@ t_status	split_and_add_spaced_tokens(t_token *token, t_list *current)
 
 	split = ft_split_set(token->content, WHITESPACE_CHARACTERS);
 	if (!split)
-		return (ERROR);
+		return (perror_malloc());
 	split_index = 0;
 	split_count = ft_ptr_array_len((void **)split);
 	while (split_index < split_count)

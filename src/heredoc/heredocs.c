@@ -83,8 +83,8 @@ t_status	heredocs(t_list *tokens, t_lambda *lambda)
 				delimiter->content = ft_strjoin_and_free_left_right(delimiter->content, &appended);
 				if (!delimiter->content)
 				{
-					// TODO: Free
-					return (ERROR);
+					dealloc_token(&delimiter);
+					return (perror_malloc());
 				}
 				next = tokens->next;
 				dealloc_token(&token);
