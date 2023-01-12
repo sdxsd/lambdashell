@@ -73,7 +73,7 @@ static t_status	heredoc_readline_and_write(t_token *delimiter, int fd,
 	while (err_status == OK)
 	{
 		line = readline("> ");
-		if (line == NULL)
+		if (!line)
 			return (OK);
 		if (ft_streq(line, delimiter->content))
 			break ;

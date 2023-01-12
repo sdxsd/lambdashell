@@ -70,10 +70,10 @@ t_status	echo(t_cmd *cmd)
 
 	nl = TRUE;
 	iter = process_args(cmd, &nl);
-	while (cmd->args[iter] != NULL)
+	while (cmd->args[iter])
 	{
 		ft_putstr(cmd->args[iter]);
-		if (!(cmd->args[iter + 1] == NULL))
+		if (cmd->args[iter + 1])
 			ft_putchar(' ');
 		iter++;
 	}

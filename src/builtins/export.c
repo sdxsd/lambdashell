@@ -67,10 +67,10 @@ static t_status	argless_export(t_lambda *lambda)
 	while (env_list)
 	{
 		env_element = env_list->content;
-		if (env_element->val == NULL)
-			ft_printf("declare -x %s\n", env_element->key);
-		else
+		if (env_element->val)
 			print_env_val(env_element->val, env_element->key);
+		else
+			ft_printf("declare -x %s\n", env_element->key);
 		env_list = env_list->next;
 	}
 	return (OK);
