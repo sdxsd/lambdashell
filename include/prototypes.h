@@ -102,6 +102,7 @@ t_status		execute_builtin(t_cmd *cmd, t_shell *lambda);
 void			dup2_cmd(t_cmd *cmd);
 int				get_wait_status(int stat_loc);
 t_status		exec_complex_cmd(int i_fd, t_list *cmds, t_shell *lambda);
+t_status		execute_command(t_cmd *cmd, t_shell *lambda);
 
 /* HEREDOC */
 t_status		expand_heredoc_tokens(t_token *delimiter, t_list *tokens,

@@ -22,6 +22,7 @@ CFILES = \
 	src/env/is_valid_identifier.c \
 	src/error/error.c \
 	src/exec/exec.c \
+	src/exec/exec_complex_cmd.c \
 	src/exec/exec_builtin.c \
 	src/exec/exec_utils.c \
 	src/exec/redirect.c \

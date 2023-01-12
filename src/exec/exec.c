@@ -42,7 +42,7 @@ A program is free software if users have all of these freedoms.
 #include <fcntl.h>
 #include <errno.h>
 
-static t_status	execute_command(t_cmd *cmd, t_shell *lambda)
+t_status	execute_command(t_cmd *cmd, t_shell *lambda)
 {
 	char	**env_array;
 
@@ -61,28 +61,33 @@ static t_status	execute_command(t_cmd *cmd, t_shell *lambda)
 	return (OK);
 }
 
+static t_status	forkxec_simp(int *pid, t_cmd *cmd, t_shell *lambda)
+{
+	int		stat_loc;
+
+	*pid = fork();
+	if (*pid == FORK_FAILURE)
+		return (prefixed_perror("execute_simple_command()"));
+	if (*pid == FORK_CHILD)
+	{
+		signal_handler_child_set();
+		if (execute_command(cmd, lambda) == ERROR)
+			dealloc_and_exit(g_status, lambda);
+	}
+	disable_signals();
+	waitpid(*pid, &stat_loc, 0);
+	g_status = get_wait_status(stat_loc);
+	signal_handler_set();
+	return (OK);
+}
+
 // TODO: Check for memory leak in child processes.
 static t_status	execute_simple_command(t_cmd *cmd, t_shell *lambda)
 {
 	pid_t	pid;
-	int		stat_loc;
 
 	if (cmd->path && ft_strchr(cmd->path, '/'))
-	{
-		pid = fork();
-		if (pid == FORK_FAILURE)
-			return (prefixed_perror("execute_simple_command()"));
-		if (pid == FORK_CHILD)
-		{
-			signal_handler_child_set();
-			if (execute_command(cmd, lambda) == ERROR)
-				dealloc_and_exit(g_status, lambda);
-		}
-		disable_signals();
-		waitpid(pid, &stat_loc, 0);
-		g_status = get_wait_status(stat_loc);
-		signal_handler_set();
-	}
+		forkxec_simp(&pid, cmd, lambda);
 	else
 	{
 		if (execute_builtin(cmd, lambda) == ERROR)
@@ -94,69 +99,6 @@ static t_status	execute_simple_command(t_cmd *cmd, t_shell *lambda)
 		dup2(lambda->stdin_fd, STDIN_FILENO);
 		dup2(lambda->stdout_fd, STDOUT_FILENO);
 	}
-	return (OK);
-}
-
-static t_status	execute_child(int i_fd, t_list *cmds, t_shell *lm, int tube[2])
-{
-	t_cmd	*cmd;
-
-	signal_handler_child_set();
-	cmd = cmds->content;
-	if (cmds->next)
-		close(tube[READ]);
-	if (i_fd != -1)
-		cmd->input_fd = i_fd;
-	if (cmds->next)
-		cmd->output_fd = tube[WRITE];
-	if (cmd->path && ft_strchr(cmd->path, '/'))
-		if (execute_command(cmd, lm) == ERROR)
-			dealloc_and_exit(g_status, lm);
-	if (execute_builtin(cmd, lm) == ERROR)
-		dealloc_and_exit(g_status, lm);
-	exit(g_status);
-	return (OK);
-}
-
-static t_status	forkxec(int *p, int i_fd, t_list *cmds, t_shell *lm)
-{
-	int	t[2];
-
-	if (cmds->next && pipe(t) == -1)
-		return (prefixed_perror("execute_complex_command()"));
-	*p = fork();
-	if (*p == FORK_FAILURE)
-		return (prefixed_perror("fork"));
-	if (*p == FORK_CHILD)
-		if (execute_child(i_fd, cmds, lm, t) == ERROR)
-			dealloc_and_exit(g_status, lm);
-	disable_signals();
-	if (cmds->next)
-		close(t[WRITE]);
-	if (i_fd != -1)
-		close(i_fd);
-	if (cmds->next && exec_complex_cmd(t[READ], cmds->next, lm) != OK)
-	{
-		if (errno != EAGAIN)
-			return (prefixed_perror("execute_complex_command()"));
-		return (ERROR);
-	}
-	return (OK);
-}
-
-// TODO: Right now only the parent is closing the read end!!
-// Double check if this is an issue.
-t_status	exec_complex_cmd(int i_fd, t_list *cmds, t_shell *lambda)
-{
-	pid_t	pid;
-	int		stat_loc;
-	int		tube[2];
-
-	if (forkxec(&pid, i_fd, cmds, lambda) == ERROR)
-		return (ERROR);
-	waitpid(pid, &stat_loc, 0);
-	if (!cmds->next)
-		g_status = get_wait_status(stat_loc);
 	return (OK);
 }
 
