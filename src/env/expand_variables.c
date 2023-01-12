@@ -12,7 +12,7 @@
 
 /*
 THIS FILE IS LICENSED UNDER THE GNU GPLv3
-Copyright (C) 2022  Will Maguire
+Copyright (C) 2022 Will Maguire and Sander Bos
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -77,6 +77,7 @@ static bool	should_get_appended(char *content, char *substr_start,
 		state == EXPANSION_STATE_INVALID_VARIABLE) && \
 		(content - substr_start >= 2) && \
 		(content[-2] == '$');
+
 	return (content > substr_start
 		&& (*content == '$' || is_variable_end || is_status_or_invalid_end));
 }

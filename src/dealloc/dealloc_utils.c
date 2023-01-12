@@ -12,7 +12,7 @@
 
 /*
 THIS FILE IS LICENSED UNDER THE GNU GPLv3
-Copyright (C) 2022  Will Maguire
+Copyright (C) 2022 Will Maguire and Sander Bos
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -42,22 +42,22 @@ A program is free software if users have all of these freedoms.
 void	dealloc_and_exit(t_status status, t_lambda *lambda)
 {
 	dealloc_lambda(lambda);
-	exit (status);
+	exit(status);
 }
 
-t_status	dealloc_lst(t_list **lst, t_status (*del)(void*))
+t_status	dealloc_lst(t_list **lst_ptr, t_status (*del)(void*))
 {
-	t_list	*ptr;
+	t_list	*element;
 
-	if (!lst)
+	if (!lst_ptr)
 		return (ERROR);
-	while (*lst)
+	while (*lst_ptr)
 	{
-		ptr = *lst;
-		*lst = ptr -> next;
+		element = *lst_ptr;
+		*lst_ptr = element->next;
 		if (del)
-			(*del)(&ptr -> content);
-		free(ptr);
+			(*del)(&element->content);
+		free(element);
 	}
 	return (ERROR);
 }

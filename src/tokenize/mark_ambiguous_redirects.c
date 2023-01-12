@@ -12,7 +12,7 @@
 
 /*
 THIS FILE IS LICENSED UNDER THE GNU GPLv3
-Copyright (C) 2022  Will Maguire
+Copyright (C) 2022 Will Maguire and Sander Bos
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -39,6 +39,7 @@ A program is free software if users have all of these freedoms.
 
 #include "minishell.h"
 
+// Explanation:
 // `echo a > ""`
 // ambiguous = false;
 //
@@ -60,6 +61,7 @@ static bool	process_quoted(bool *ambiguous, char character,
 	return (false);
 }
 
+// Explanation:
 // `echo a > $space""`
 // state.seen_env_space = true;
 //
@@ -102,6 +104,7 @@ static bool	process_unquoted(char *content, t_ambiguous_state *state,
 	return (false);
 }
 
+// Explanation:
 // `echo a > $space""`
 // `echo a > $space""hello`
 // if (state.seen_env_space && !state.seen_content)

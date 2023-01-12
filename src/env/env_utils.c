@@ -12,7 +12,7 @@
 
 /*
 THIS FILE IS LICENSED UNDER THE GNU GPLv3
-Copyright (C) 2022  Will Maguire
+Copyright (C) 2022 Will Maguire and Sander Bos
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -41,38 +41,37 @@ A program is free software if users have all of these freedoms.
 
 size_t	get_key_length(char *str)
 {
-	size_t	count;
+	size_t	character_index;
 
-	count = 0;
-	while (str[count] != '\0' && str[count] != '=')
-		count++;
-	return (count);
+	character_index = 0;
+	while (str[character_index] != '\0' && str[character_index] != '=')
+		character_index++;
+	return (character_index);
 }
 
 char	**env_to_strings(t_list *env)
 {
 	char			**env_strings;
 	t_env_element	*env_element;
-	size_t			index;
+	size_t			string_index;
 
 	env_strings = ft_calloc(ft_lstsize(env) + 1, sizeof(*env_strings));
 	if (!env_strings)
 		return (perror_malloc_null());
 	env_strings[ft_lstsize(env)] = NULL;
-	index = 0;
+	string_index = 0;
 	while (env)
 	{
 		env_element = env->content;
-		env_strings[index] = \
-			ft_strjoin_array((char *[]){env_element->key, \
-										"=", env_element->val, NULL});
-		if (!env_strings[index])
+		env_strings[string_index] = ft_strjoin_array(
+				(char *[]){env_element->key, "=", env_element->val, NULL});
+		if (!env_strings[string_index])
 		{
 			dealloc_ptr_array(&env_strings);
 			return (perror_malloc_null());
 		}
 		env = env->next;
-		index++;
+		string_index++;
 	}
 	return (env_strings);
 }

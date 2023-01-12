@@ -12,7 +12,7 @@
 
 /*
 THIS FILE IS LICENSED UNDER THE GNU GPLv3
-Copyright (C) 2022  Will Maguire
+Copyright (C) 2022 Will Maguire and Sander Bos
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -41,18 +41,18 @@ A program is free software if users have all of these freedoms.
 
 static char	*last_directory(char *line)
 {
-	char	*last;
-	size_t	iter;
+	char	*leaf_dir;
+	size_t	character_index;
 
-	last = line;
-	iter = 0;
-	while (iter < ft_strlen(line))
+	leaf_dir = line;
+	character_index = 0;
+	while (character_index < ft_strlen(line))
 	{
-		if (line[iter] == '/')
-			last = line + iter + 1;
-		iter++;
+		if (line[character_index] == '/')
+			leaf_dir = line + character_index + 1;
+		character_index++;
 	}
-	return (last);
+	return (leaf_dir);
 }
 
 // Prompt string one

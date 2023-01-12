@@ -12,7 +12,7 @@
 
 /*
 THIS FILE IS LICENSED UNDER THE GNU GPLv3
-Copyright (C) 2022  Will Maguire
+Copyright (C) 2022 Will Maguire and Sander Bos
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -92,17 +92,17 @@ static t_status	heredoc_readline_and_write(t_token *delimiter, int fd,
 
 static char	*get_new_heredoc_path(void)
 {
-	int		iter;
-	char	*num;
+	int		heredoc_id;
+	char	*heredoc_id_string;
 	char	*file;
 	char	*filepath;
 
-	iter = 1;
-	while (iter < INT_MAX)
+	heredoc_id = 1;
+	while (heredoc_id < INT_MAX)
 	{
-		num = ft_itoa(iter);
-		file = ft_strjoin("heredoc_", num);
-		ft_free(&num);
+		heredoc_id_string = ft_itoa(heredoc_id);
+		file = ft_strjoin("heredoc_", heredoc_id_string);
+		ft_free(&heredoc_id_string);
 		if (!file)
 			return (perror_malloc_null());
 		filepath = ft_strjoin("/tmp/", file);
@@ -112,7 +112,7 @@ static char	*get_new_heredoc_path(void)
 		if (access(filepath, F_OK | W_OK) != FILE_EXISTS)
 			break ;
 		ft_free(&filepath);
-		iter++;
+		heredoc_id++;
 	}
 	if (!filepath)
 		prefixed_error("No temporary heredoc file could be created\n");
