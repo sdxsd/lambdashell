@@ -95,7 +95,7 @@ static char	*get_new_heredoc_path(void)
 	int		iter;
 	char	*num;
 	char	*file;
-	char	*full_path;
+	char	*filepath;
 
 	iter = 1;
 	while (iter < INT_MAX)
@@ -103,16 +103,16 @@ static char	*get_new_heredoc_path(void)
 		num = ft_itoa(iter);
 		file = ft_strjoin("heredoc_", num);
 		ft_free(&num);
-		full_path = ft_strjoin("/tmp/", file);
+		filepath = ft_strjoin("/tmp/", file);
 		ft_free(&file);
-		if (access(full_path, F_OK))
+		if (access(filepath, F_OK | W_OK) != FILE_EXISTS)
 			break ;
-		ft_free(&full_path);
+		ft_free(&filepath);
 		iter++;
 	}
-	if (!full_path)
+	if (!filepath)
 		prefixed_error("No temporary heredoc file could be created\n");
-	return (full_path);
+	return (filepath);
 }
 
 char	*heredoc(t_token *delimiter, t_shell *lambda)

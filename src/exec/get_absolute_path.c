@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   get_absolute_path.c                       :+:    :+:            */
+/*   get_absolute_path.c                                :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
+/*   By: sbos <sbos@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 1970/01/01 00:00:00 by wmaguire      #+#    #+#                 */
-/*   Updated: 1970/01/01 00:00:00 by wmaguire      ########   odam.nl         */
+/*   Created: 2023/01/12 17:10:32 by sbos          #+#    #+#                 */
+/*   Updated: 2023/01/12 17:10:32 by sbos          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static char	*get_absolute_path_from_name(char *name, char **exec_direcs)
 			dealloc_ptr_array(&exec_direcs);
 			return (NULL);
 		}
-		if (!access(absolute_path, F_OK))
+		if (access(absolute_path, F_OK | X_OK) == FILE_EXISTS)
 		{
 			dealloc_ptr_array(&exec_direcs);
 			return (absolute_path);

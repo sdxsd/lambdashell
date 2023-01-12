@@ -27,6 +27,7 @@ CFILES = \
 	src/exec/exec_utils.c \
 	src/exec/redirect.c \
 	src/exec/get_absolute_path.c \
+	src/heredoc/cleanup_heredocs.c \
 	src/heredoc/expand_heredoc_tokens.c \
 	src/heredoc/heredoc.c \
 	src/heredoc/heredocs.c \

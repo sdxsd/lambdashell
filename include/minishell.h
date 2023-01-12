@@ -66,6 +66,8 @@ A program is free software if users have all of these freedoms.
 # define FORK_PARENT 1
 # define OUTPUT 1
 # define INPUT 0
+# define FILE_EXISTS 0
+# define UNLINK_SUCCESS 0
 
 // This is the lambda sign in unicode
 // This is necessary because of Norm:
