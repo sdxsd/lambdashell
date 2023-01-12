@@ -47,7 +47,7 @@ static char	*get_line(t_lambda *lambda)
 		rl_outstream = stdin;
 	readline_str = get_readline_str(lambda);
 	if (!readline_str)
-		return (NULL);
+		return (perror_malloc_null());
 	lambda->line = readline(readline_str);
 	ft_free(&readline_str);
 	return (lambda->line);
@@ -77,7 +77,7 @@ static void	prompt(t_lambda *lambda)
 	execute(lambda);
 }
 
-static t_status	shell_init(char **env, t_lambda *lambda)
+static t_status	lambda_init(char **env, t_lambda *lambda)
 {
 	signal_handler_set();
 	ft_bzero(lambda, sizeof(*lambda));
@@ -101,7 +101,7 @@ int	main(int argc, char **argv, char **env)
 	(void)argv;
 	if (argc > 1)
 		return (ERROR);
-	if (shell_init(env, &lambda) == ERROR)
+	if (lambda_init(env, &lambda) == ERROR)
 	{
 		rl_clear_history();
 		return (dealloc_lambda(&lambda));

@@ -39,7 +39,8 @@ A program is free software if users have all of these freedoms.
 
 #include "minishell.h"
 
-static char	*get_appended(char *content, t_expansion_state state, char *substr_start, t_lambda *lambda)
+static char	*get_appended(char *content, t_expansion_state state,
+				char *substr_start, t_lambda *lambda)
 {
 	char	*appended;
 	char	*env_key;
@@ -51,10 +52,7 @@ static char	*get_appended(char *content, t_expansion_state state, char *substr_s
 	{
 		env_key = ft_substr(substr_start, 1, content - substr_start - 1);
 		if (!env_key)
-		{
-			// TODO: Error handling
 			return (NULL);
-		}
 		env_val = env_get_val(lambda->env, env_key);
 		ft_free(&env_key);
 		if (env_val)
@@ -94,10 +92,7 @@ static char	*get_expanded_string(char *content, t_lambda *lambda)
 	substr_start = content;
 	expanded_string = ft_strdup("");
 	if (!expanded_string)
-	{
-		// TODO: Free
-		return (NULL);
-	}
+		return (perror_malloc_null());
 	while (*content)
 	{
 		if (should_get_appended(content, substr_start, state))
@@ -105,16 +100,13 @@ static char	*get_expanded_string(char *content, t_lambda *lambda)
 			appended = get_appended(content, state, substr_start, lambda);
 			if (!appended)
 			{
-				// TODO: Free
-				return (NULL);
+				ft_free(&expanded_string);
+				return (perror_malloc_null());
 			}
 			substr_start = content;
 			expanded_string = ft_strjoin_and_free_left_right(expanded_string, &appended);
 			if (!expanded_string)
-			{
-				// TODO: Free
-				return (NULL);
-			}
+				return (perror_malloc_null());
 			state = EXPANSION_STATE_NORMAL;
 		}
 		if (*content == '$')
@@ -131,8 +123,8 @@ static char	*get_expanded_string(char *content, t_lambda *lambda)
 	appended = get_appended(content, state, substr_start, lambda);
 	if (!appended)
 	{
-		// TODO: Free
-		return (NULL);
+		ft_free(&expanded_string);
+		return (perror_malloc_null());
 	}
 	return (ft_strjoin_and_free_left_right(expanded_string, &appended));
 }

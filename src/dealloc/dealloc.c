@@ -106,13 +106,13 @@ t_status	dealloc_lst(t_list **lst, t_status (*del)(void*))
 {
 	t_list	*ptr;
 
-	if (lst == NULL)
+	if (!lst)
 		return (ERROR);
 	while (*lst)
 	{
 		ptr = *lst;
 		*lst = ptr -> next;
-		if (del != NULL)
+		if (del)
 			(*del)(&ptr -> content);
 		free(ptr);
 	}

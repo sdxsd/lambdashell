@@ -54,30 +54,28 @@ static char	*get_absolute_path_from_name(char *name, char **exec_direcs)
 	{
 		absolute_path = path_join(exec_direcs[iter], name);
 		if (!absolute_path)
-		{
-			dealloc_ptr_array(&exec_direcs);
-			return (NULL);
-		}
+			return (perror_malloc_null());
 		if (access(absolute_path, F_OK | X_OK) == FILE_EXISTS)
-		{
-			dealloc_ptr_array(&exec_direcs);
 			return (absolute_path);
-		}
 		ft_free(&absolute_path);
 		iter++;
 	}
-	dealloc_ptr_array(&exec_direcs);
 	return (name);
 }
 
 char	*get_absolute_path(char *name, t_list *env)
 {
-	char		**exec_direcs;
+	char	*path;
+	char	**exec_direcs;
+	char	*absolute_path;
 
-	if (!env_get_val(env, "PATH") || ft_streq(name, ""))
+	path = env_get_val(env, "PATH");
+	if (!path || ft_streq(name, ""))
 		return (name);
-	exec_direcs = ft_split(env_get_val(env, "PATH"), ':');
+	exec_direcs = ft_split(path, ':');
 	if (!exec_direcs)
-		return (NULL);
-	return (get_absolute_path_from_name(name, exec_direcs));
+		return (perror_malloc_null());
+	absolute_path = get_absolute_path_from_name(name, exec_direcs);
+	dealloc_ptr_array(&exec_direcs);
+	return (absolute_path);
 }

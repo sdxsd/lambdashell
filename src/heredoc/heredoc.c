@@ -73,7 +73,7 @@ static t_status	heredoc_readline_and_write(t_token *delimiter, int fd,
 	while (err_status == OK)
 	{
 		line = readline("> ");
-		if (line == NULL)
+		if (!line)
 			return (OK);
 		if (ft_streq(line, delimiter->content))
 			break ;
@@ -103,8 +103,12 @@ static char	*get_new_heredoc_path(void)
 		num = ft_itoa(iter);
 		file = ft_strjoin("heredoc_", num);
 		ft_free(&num);
+		if (!file)
+			return (perror_malloc_null());
 		filepath = ft_strjoin("/tmp/", file);
 		ft_free(&file);
+		if (!filepath)
+			return (perror_malloc_null());
 		if (access(filepath, F_OK | W_OK) != FILE_EXISTS)
 			break ;
 		ft_free(&filepath);

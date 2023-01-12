@@ -88,14 +88,10 @@ t_status	init_env(char **env, t_list **lambda_env_ptr)
 	return (OK);
 }
 
-// TODO: Can env_element or env_element->key be NULL?
-// ft_streq() below crashes if so
 char	*env_get_val(t_list *env, char *key)
 {
 	t_env_element	*env_element;
 
-	if (!env || !key)
-		return (NULL);
 	while (env)
 	{
 		env_element = env->content;
