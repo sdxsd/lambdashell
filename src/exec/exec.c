@@ -61,6 +61,7 @@ t_status	execute_command(t_cmd *cmd, t_shell *lambda)
 	return (OK);
 }
 
+// TODO: Check for memory leak in child processes.
 static t_status	forkxec_simp(int *pid, t_cmd *cmd, t_shell *lambda)
 {
 	int		stat_loc;
@@ -81,7 +82,6 @@ static t_status	forkxec_simp(int *pid, t_cmd *cmd, t_shell *lambda)
 	return (OK);
 }
 
-// TODO: Check for memory leak in child processes.
 static t_status	execute_simple_command(t_cmd *cmd, t_shell *lambda)
 {
 	pid_t	pid;
