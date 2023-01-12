@@ -42,15 +42,15 @@ A program is free software if users have all of these freedoms.
 static char	*last_directory(char *line)
 {
 	char	*last;
-	size_t	iter;
+	size_t	i;
 
 	last = line;
-	iter = 0;
-	while (iter < ft_strlen(line))
+	i = 0;
+	while (i < ft_strlen(line))
 	{
-		if (line[iter] == '/')
-			last = line + iter + 1;
-		iter++;
+		if (line[i] == '/')
+			last = line + i + 1;
+		i++;
 	}
 	return (last);
 }

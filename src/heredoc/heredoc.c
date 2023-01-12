@@ -92,15 +92,15 @@ static t_status	heredoc_readline_and_write(t_token *delimiter, int fd,
 
 static char	*get_new_heredoc_path(void)
 {
-	int		iter;
+	int		i;
 	char	*num;
 	char	*file;
 	char	*filepath;
 
-	iter = 1;
-	while (iter < INT_MAX)
+	i = 1;
+	while (i < INT_MAX)
 	{
-		num = ft_itoa(iter);
+		num = ft_itoa(i);
 		file = ft_strjoin("heredoc_", num);
 		ft_free(&num);
 		if (!file)
@@ -112,7 +112,7 @@ static char	*get_new_heredoc_path(void)
 		if (access(filepath, F_OK | W_OK) != FILE_EXISTS)
 			break ;
 		ft_free(&filepath);
-		iter++;
+		i++;
 	}
 	if (!filepath)
 		prefixed_error("No temporary heredoc file could be created\n");

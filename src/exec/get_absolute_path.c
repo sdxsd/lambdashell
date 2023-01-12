@@ -46,19 +46,19 @@ static char	*path_join(char *dir, char *name)
 
 static char	*get_absolute_path_from_name(char *name, char **exec_direcs)
 {
-	size_t	iter;
+	size_t	i;
 	char	*absolute_path;
 
-	iter = 0;
-	while (exec_direcs[iter])
+	i = 0;
+	while (exec_direcs[i])
 	{
-		absolute_path = path_join(exec_direcs[iter], name);
+		absolute_path = path_join(exec_direcs[i], name);
 		if (!absolute_path)
 			return (perror_malloc_null());
 		if (access(absolute_path, F_OK | X_OK) == FILE_EXISTS)
 			return (absolute_path);
 		ft_free(&absolute_path);
-		iter++;
+		i++;
 	}
 	return (name);
 }
