@@ -166,7 +166,6 @@ static t_status	execute_child(int input_fd, t_list *cmds, t_shell *lambda, int t
 	cmd = cmds->content;
 	if (cmds->next)
 		close(tube[READ]);
-	// TODO: Why store input_fd and output_fd in cmd when dups can be done immediately?
 	if (input_fd != -1)
 		cmd->input_fd = input_fd;
 	if (cmds->next)
@@ -175,15 +174,14 @@ static t_status	execute_child(int input_fd, t_list *cmds, t_shell *lambda, int t
 	{
 		if (execute_command(cmd, lambda) == ERROR)
 		{
-			// TODO: ??
+			dealloc_lambda(lambda);
+			exit(g_status);
 		}
 	}
-	else
+	if (execute_builtin(cmd, lambda) == ERROR)
 	{
-		if (execute_builtin(cmd, lambda) == ERROR)
-		{
-			// TODO: ??
-		}
+		dealloc_lambda(lambda);
+		exit(g_status);
 	}
 	exit(g_status);
 	return (OK);
