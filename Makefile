@@ -33,11 +33,11 @@ CFILES = \
 	src/heredoc/heredoc.c \
 	src/heredoc/heredocs.c \
 	src/misc/null.c \
-	src/parse/is_text_token.c \
 	src/parse/parse.c \
 	src/signals/signals.c \
 	src/stop/stop.c \
 	src/tokenize/check_token_syntax_errors.c \
+	src/tokenize/is_text_token.c \
 	src/tokenize/mark_ambiguous_redirects.c \
 	src/tokenize/skip_whitespace_tokens.c \
 	src/tokenize/split_and_add_spaced_tokens.c \

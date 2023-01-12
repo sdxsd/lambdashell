@@ -117,7 +117,6 @@ t_status		heredocs(t_list *tokens, t_shell *lambda);
 void			*null(t_status _);
 
 /* PARSE */
-bool			is_text_token(t_token *token);
 t_list			*parse(t_list *tokens, t_list *env);
 
 /* SIGNALS */
@@ -132,6 +131,7 @@ void			stop_void(void);
 
 /* TOKENIZE */
 t_status		check_token_syntax_errors(t_list *tokens);
+bool			is_text_token(t_token *token);
 void			mark_ambiguous_redirects(t_list *tokens);
 void			skip_whitespace_tokens(t_list **tokens);
 t_status		split_and_add_spaced_tokens(t_token *token, t_list *current);
