@@ -47,7 +47,8 @@ A program is free software if users have all of these freedoms.
 //
 // `echo a > $whitespace_right"foo"`
 // if (state.seen_word)
-static bool	quoted(bool *ambiguous, char character, t_ambiguous_state *state)
+static bool	process_quoted(bool *ambiguous, char character,
+				t_ambiguous_state *state)
 {
 	*ambiguous = false;
 	if (character)
@@ -76,7 +77,8 @@ static bool	quoted(bool *ambiguous, char character, t_ambiguous_state *state)
 //
 // `echo a > $whitespace_center`
 // if (state.seen_word)
-static bool	unquoted(char *content, t_ambiguous_state *state, bool *ambiguous)
+static bool	process_unquoted(char *content, t_ambiguous_state *state,
+				bool *ambiguous)
 {
 	while (*content)
 	{
@@ -124,10 +126,10 @@ static bool	is_ambiguous_redirect(t_list *tokens)
 		content = token->content;
 		if (token->type == UNQUOTED)
 		{
-			if (unquoted(content, &state, &ambiguous))
+			if (process_unquoted(content, &state, &ambiguous))
 				return (true);
 		}
-		else if (quoted(&ambiguous, *content, &state))
+		else if (process_quoted(&ambiguous, *content, &state))
 			return (true);
 		tokens = tokens->next;
 	}

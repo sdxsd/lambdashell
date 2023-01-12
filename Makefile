@@ -33,11 +33,11 @@ CFILES = \
 	src/misc/null.c \
 	src/parse/is_text_token.c \
 	src/parse/parse.c \
-	src/parse/skip_whitespace_tokens.c \
 	src/signals/signals.c \
 	src/stop/stop.c \
 	src/tokenize/check_token_syntax_errors.c \
 	src/tokenize/mark_ambiguous_redirects.c \
+	src/tokenize/skip_whitespace_tokens.c \
 	src/tokenize/split_and_add_spaced_tokens.c \
 	src/tokenize/subtokenizers_misc.c \
 	src/tokenize/subtokenizers_quotes.c \

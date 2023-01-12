@@ -97,7 +97,7 @@ t_status	dealloc_redirect(void *redirect_ptr)
 	_redirect_ptr = redirect_ptr;
 	redirect = *_redirect_ptr;
 	if (redirect)
-		ft_free(&redirect->file_path);
+		ft_free(&redirect->filepath);
 	ft_free(_redirect_ptr);
 	return (ERROR);
 }

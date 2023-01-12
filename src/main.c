@@ -60,6 +60,8 @@ static void	prompt(t_shell *lambda)
 	add_history(lambda->line);
 	lambda->tokens = tokenize(lambda->line);
 	ft_free(&lambda->line);
+	if (!lambda->tokens)
+		return ;
 	if (check_token_syntax_errors(lambda->tokens) == ERROR)
 		return ;
 	if (heredocs(lambda->tokens, lambda) == ERROR)
@@ -73,7 +75,6 @@ static void	prompt(t_shell *lambda)
 	if (!lambda->cmds)
 		return ;
 	execute(lambda);
-	cleanup_heredocs();
 }
 
 static t_status	shell_init(char **env, t_shell *lambda)
@@ -110,6 +111,7 @@ int	main(int argc, char **argv, char **env)
 		prompt(&lambda);
 		dealloc_lst(&lambda.tokens, dealloc_token);
 		dealloc_lst(&lambda.cmds, dealloc_cmd);
+		cleanup_heredocs();
 	}
 	rl_clear_history();
 	dealloc_lambda(&lambda);

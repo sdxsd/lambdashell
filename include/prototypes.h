@@ -46,7 +46,7 @@ A program is free software if users have all of these freedoms.
 t_env_element	*alloc_env_element(void);
 t_token			*alloc_token(t_token_type type, char *content);
 t_status		alloc_cmd(t_cmd **cmd_ptr);
-t_redirect		*alloc_redirect(char *file_path, t_direction direction,
+t_redirect		*alloc_redirect(char *filepath, t_direction direction,
 					bool is_ambiguous);
 
 /* BUILTINS */
@@ -117,7 +117,6 @@ void			*null(t_status _);
 /* PARSE */
 bool			is_text_token(t_token *token);
 t_list			*parse(t_list *tokens, t_list *env);
-void			skip_whitespace_tokens(t_list **tokens);
 
 /* SIGNALS */
 void			signal_handler_set(void);
@@ -132,6 +131,7 @@ void			stop_void(void);
 /* TOKENIZE */
 t_status		check_token_syntax_errors(t_list *tokens);
 void			mark_ambiguous_redirects(t_list *tokens);
+void			skip_whitespace_tokens(t_list **tokens);
 t_status		split_and_add_spaced_tokens(t_token *token, t_list *current);
 t_token_type	subtokenize_single_quote(char **line_ptr);
 t_token_type	subtokenize_double_quote(char **line_ptr);

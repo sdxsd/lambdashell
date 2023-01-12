@@ -53,7 +53,7 @@ static void	update_prev_pointer_to_next(t_list *prev, t_list *current,
 	}
 }
 
-static t_status	update_pointers(t_list *current, t_list **prev, t_list *next,
+static void	update_pointers(t_list *current, t_list **prev, t_list *next,
 					t_list **tokens_ptr)
 {
 	t_list	*last_added;
@@ -66,7 +66,6 @@ static t_status	update_pointers(t_list *current, t_list **prev, t_list *next,
 		*prev = last_added;
 	}
 	ft_free(&current);
-	return (OK);
 }
 
 t_status	whitespace_split_tokens(t_list **tokens_ptr)
@@ -88,8 +87,7 @@ t_status	whitespace_split_tokens(t_list **tokens_ptr)
 			current->next = NULL;
 			if (split_and_add_spaced_tokens(token, current) == ERROR)
 				return (ERROR);
-			if (update_pointers(current, &prev, next, tokens_ptr) == ERROR)
-				return (ERROR);
+			update_pointers(current, &prev, next, tokens_ptr);
 		}
 		else
 			prev = current;
