@@ -40,7 +40,8 @@ A program is free software if users have all of these freedoms.
 #include "../../include/minishell.h"
 #include <errno.h>
 
-static t_status	execute_child(int i_fd, t_list *cmds, t_shell *lm, int tube[2])
+static t_status	execute_child(int i_fd, t_list *cmds, t_shell *lambda,
+					int tube[2])
 {
 	t_cmd	*cmd;
 
@@ -53,32 +54,32 @@ static t_status	execute_child(int i_fd, t_list *cmds, t_shell *lm, int tube[2])
 	if (cmds->next)
 		cmd->output_fd = tube[WRITE];
 	if (cmd->path && ft_strchr(cmd->path, '/'))
-		if (execute_command(cmd, lm) == ERROR)
-			dealloc_and_exit(g_status, lm);
-	if (execute_builtin(cmd, lm) == ERROR)
-		dealloc_and_exit(g_status, lm);
+		if (execute_command(cmd, lambda) == ERROR)
+			dealloc_and_exit(g_status, lambda);
+	if (execute_builtin(cmd, lambda) == ERROR)
+		dealloc_and_exit(g_status, lambda);
 	exit(g_status);
 	return (OK);
 }
 
-static t_status	forkxec(int *p, int i_fd, t_list *cmds, t_shell *lm)
+static t_status	forkxec(int *pid_ptr, int i_fd, t_list *cmds, t_shell *lambda)
 {
 	int	t[2];
 
 	if (cmds->next && pipe(t) == -1)
 		return (prefixed_perror("execute_complex_command()"));
-	*p = fork();
-	if (*p == FORK_FAILURE)
+	*pid_ptr = fork();
+	if (*pid_ptr == FORK_FAILURE)
 		return (prefixed_perror("fork"));
-	if (*p == FORK_CHILD)
-		if (execute_child(i_fd, cmds, lm, t) == ERROR)
-			dealloc_and_exit(g_status, lm);
+	if (*pid_ptr == FORK_CHILD)
+		if (execute_child(i_fd, cmds, lambda, t) == ERROR)
+			dealloc_and_exit(g_status, lambda);
 	disable_signals();
 	if (cmds->next)
 		close(t[WRITE]);
 	if (i_fd != -1)
 		close(i_fd);
-	if (cmds->next && exec_complex_cmd(t[READ], cmds->next, lm) != OK)
+	if (cmds->next && exec_complex_cmd(t[READ], cmds->next, lambda) != OK)
 	{
 		g_status = 128;
 		if (errno != EAGAIN)
