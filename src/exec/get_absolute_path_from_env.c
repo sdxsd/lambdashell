@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   get_absolute_path_from_env.c                       :+:    :+:            */
+/*   get_absolute_path.c                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
@@ -44,7 +44,7 @@ static char	*path_join(char *dir, char *name)
 	return (ft_strjoin_array((char *[]){dir, "/", name, NULL}));
 }
 
-char	*ret_absolute_path_from_path(char *name, char **exec_direcs)
+static char	*get_absolute_path_from_name(char *name, char **exec_direcs)
 {
 	size_t	iter;
 	char	*absolute_path;
@@ -70,7 +70,7 @@ char	*ret_absolute_path_from_path(char *name, char **exec_direcs)
 	return (name);
 }
 
-char	*get_absolute_path_from_env(char *name, t_list *env)
+char	*get_absolute_path(char *name, t_list *env)
 {
 	char		**exec_direcs;
 
@@ -79,5 +79,5 @@ char	*get_absolute_path_from_env(char *name, t_list *env)
 	exec_direcs = ft_split(env_get_val(env, "PATH"), ':');
 	if (!exec_direcs)
 		return (NULL);
-	return (ret_absolute_path_from_path(name, exec_direcs));
+	return (get_absolute_path_from_name(name, exec_direcs));
 }

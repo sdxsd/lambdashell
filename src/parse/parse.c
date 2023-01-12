@@ -111,7 +111,7 @@ static char	*get_path(char *arg_zero, t_list *env)
 
 	if (is_builtin(arg_zero) || ft_strchr(arg_zero, '/'))
 		return (arg_zero);
-	absolute_path = get_absolute_path_from_env(arg_zero, env);
+	absolute_path = get_absolute_path(arg_zero, env);
 	if (absolute_path == arg_zero)
 		return (arg_zero);
 	ft_free(&arg_zero);

@@ -25,7 +25,7 @@ CFILES = \
 	src/exec/exec_builtin.c \
 	src/exec/exec_utils.c \
 	src/exec/redirect.c \
-	src/exec/get_absolute_path_from_env.c \
+	src/exec/get_absolute_path.c \
 	src/heredoc/expand_heredoc_tokens.c \
 	src/heredoc/heredoc.c \
 	src/heredoc/heredocs.c \
