@@ -61,8 +61,8 @@ A program is free software if users have all of these freedoms.
 /* 	{ */
 /* 		token = tokens->content; */
 /* 		printf("| %-13s ", token_type_strings[token->type]); */
-		/* content = \ */
-		/* 	ft_strjoin_array((char *[]){"[", token->content, "]", NULL}); */
+/* 		content = \ */
+/* 			ft_strjoin_array((char *[]){"[", token->content, "]", NULL}); */
 /* 		printf("| %-20s", content); */
 /* 		printf("| %d            |\n", token->is_ambiguous); */
 /* 		printf("+---------------+---------------------+--------------+\n"); */
@@ -108,8 +108,8 @@ A program is free software if users have all of these freedoms.
 /* 			printf("\tRedirection %zu:\n", redirection_index + 1); */
 /* 			redirection = redirection_list->content; */
 /* 			printf("\t\tRedirection file path: [%s]\n", redirection->filepath); */
-			/* printf("\t\tRedirection direction: %s\n",\ */
-			/* 	   direction_strings[redirection->direction]); */
+/* 			printf("\t\tRedirection direction: %s\n",\ */
+/* 				   direction_strings[redirection->direction]); */
 /* 			printf("\t\tIs ambiguous: %i\n", redirection->is_ambiguous); */
 /* 			redirection_list = redirection_list->next; */
 /* 			redirection_index++; */

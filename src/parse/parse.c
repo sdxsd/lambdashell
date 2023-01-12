@@ -37,7 +37,7 @@ The definition of Free Software is as follows:
 A program is free software if users have all of these freedoms.
 */
 
-#include "minishell.h"
+#include "../../include/minishell.h"
 
 static bool	is_builtin(char *path)
 {
@@ -112,6 +112,7 @@ static t_status	fill_cmd(t_list **tokens_ptr, t_list *env, t_cmd *cmd)
 	}
 	if (arg_list)
 		cmd->args = get_arg_string_array(arg_list);
+	ft_free(&arg_list->content);
 	ft_lstclear(&arg_list, NULL);
 	return (OK);
 }
