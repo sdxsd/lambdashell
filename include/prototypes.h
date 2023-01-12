@@ -87,6 +87,10 @@ bool			is_valid_name_first_chr(char chr);
 bool			is_valid_identifier(char *name);
 size_t			get_key_length(char *str);
 
+char			*strjoin_appended(char *content, t_expand_state *state,
+					t_lambda *lambda);
+t_status		append(char *content, t_expand_state *state, t_lambda *lambda);
+
 /* ERROR */
 t_status		print_error(char *msg);
 t_status		prefixed_error(char *msg);

@@ -16,6 +16,7 @@ CFILES = \
 	src/dealloc/dealloc.c \
 	src/dealloc/dealloc_utils.c \
 	src/debug/debug_print.c \
+	src/env/appending.c \
 	src/env/env_utils.c \
 	src/env/env.c \
 	src/env/expand_variables.c \

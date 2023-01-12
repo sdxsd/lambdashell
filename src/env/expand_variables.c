@@ -39,48 +39,6 @@ A program is free software if users have all of these freedoms.
 
 #include "minishell.h"
 
-static char	*get_appended(char *content, t_expansion_state state,
-				char *substr_start, t_lambda *lambda)
-{
-	char	*appended;
-	char	*env_key;
-	char	*env_val;
-
-	if (state == EXPANSION_STATE_NORMAL)
-		appended = ft_substr(substr_start, 0, content - substr_start);
-	else if (state == EXPANSION_STATE_VARIABLE)
-	{
-		env_key = ft_substr(substr_start, 1, content - substr_start - 1);
-		if (!env_key)
-			return (NULL);
-		env_val = env_get_val(lambda->env, env_key);
-		ft_free(&env_key);
-		if (env_val)
-			appended = ft_strdup(env_val);
-		else
-			appended = ft_strdup("");
-	}
-	else if (state == EXPANSION_STATE_STATUS)
-		appended = ft_itoa(g_status);
-	else
-		appended = ft_strdup("");
-	return (appended);
-}
-
-static char	*strjoin_appended(char *content, t_expand_state *state,
-				t_lambda *lambda)
-{
-	char	*appended;
-
-	appended = get_appended(content, state->state, state->substr_start, lambda);
-	if (!appended)
-	{
-		ft_free(&state->expanded_string);
-		return (perror_malloc_null());
-	}
-	return (ft_strjoin_and_free_left_right(state->expanded_string, &appended));
-}
-
 static void	update_state_with_next_character(t_expand_state *expand_state,
 				char next_character)
 {
@@ -90,25 +48,6 @@ static void	update_state_with_next_character(t_expand_state *expand_state,
 		expand_state->state = EXPANSION_STATE_STATUS;
 	else if (!ft_isspace(next_character) && next_character != '\0')
 		expand_state->state = EXPANSION_STATE_INVALID_VARIABLE;
-}
-
-static t_status	append(char *content, t_expand_state *state, t_lambda *lambda)
-{
-	char	*appended;
-
-	appended = get_appended(content, state->state, state->substr_start, lambda);
-	if (!appended)
-	{
-		ft_free(&state->expanded_string);
-		return (perror_malloc());
-	}
-	state->substr_start = content;
-	state->expanded_string = ft_strjoin_and_free_left_right(
-			state->expanded_string, &appended);
-	if (!state->expanded_string)
-		return (perror_malloc());
-	state->state = EXPANSION_STATE_NORMAL;
-	return (OK);
 }
 
 static bool	should_get_appended(char *content, t_expansion_state state,
