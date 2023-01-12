@@ -107,7 +107,7 @@ A program is free software if users have all of these freedoms.
 /* 		{ */
 /* 			printf("\tRedirection %zu:\n", redirection_index + 1); */
 /* 			redirection = redirection_list->content; */
-/* 			printf("\t\tRedirection file path: [%s]\n", redirection->file_path); */
+/* 			printf("\t\tRedirection file path: [%s]\n", redirection->filepath); */
 			/* printf("\t\tRedirection direction: %s\n",\ */
 			/* 	   direction_strings[redirection->direction]); */
 /* 			printf("\t\tIs ambiguous: %i\n", redirection->is_ambiguous); */

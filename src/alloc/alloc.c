@@ -68,7 +68,7 @@ t_status	alloc_cmd(t_cmd **cmd_ptr)
 	return (OK);
 }
 
-t_redirect	*alloc_redirect(char *file_path, t_direction direction,
+t_redirect	*alloc_redirect(char *filepath, t_direction direction,
 				bool is_ambiguous)
 {
 	t_redirect	*redirect;
@@ -76,7 +76,7 @@ t_redirect	*alloc_redirect(char *file_path, t_direction direction,
 	redirect = ft_calloc(1, sizeof(*redirect));
 	if (!redirect)
 		return (NULL);
-	redirect->file_path = file_path;
+	redirect->filepath = filepath;
 	redirect->direction = direction;
 	redirect->is_ambiguous = is_ambiguous;
 	return (redirect);

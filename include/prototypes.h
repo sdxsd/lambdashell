@@ -46,7 +46,7 @@ A program is free software if users have all of these freedoms.
 t_env_element	*alloc_env_element(void);
 t_token			*alloc_token(t_token_type type, char *content);
 t_status		alloc_cmd(t_cmd **cmd_ptr);
-t_redirect		*alloc_redirect(char *file_path, t_direction direction,
+t_redirect		*alloc_redirect(char *filepath, t_direction direction,
 					bool is_ambiguous);
 
 /* BUILTINS */

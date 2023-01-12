@@ -55,8 +55,6 @@ t_status	heredocs(t_list *tokens, t_shell *lambda)
 		{
 			prev = tokens;
 			tokens = tokens->next;
-			// skip_whitespace_tokens(&tokens);
-			// TODO: Maybe necessary to add check for token being NULL before ->content?
 			while (tokens && ((t_token *)tokens->content)->type == WHITESPACE)
 			{
 				prev = tokens;

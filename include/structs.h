@@ -58,7 +58,7 @@ typedef struct s_shell
 }	t_shell;
 
 typedef struct s_redirect {
-	char		*file_path;
+	char		*filepath;
 	t_direction	direction;
 	bool		is_ambiguous;
 }	t_redirect;
