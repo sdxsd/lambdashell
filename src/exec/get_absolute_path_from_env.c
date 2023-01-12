@@ -44,19 +44,11 @@ static char	*path_join(char *dir, char *name)
 	return (ft_strjoin_array((char *[]){dir, "/", name, NULL}));
 }
 
-char	*get_absolute_path_from_env(char *name, t_list *env)
+char	*ret_absolute_path_from_path(char *name, char **exec_direcs)
 {
-	char		*path;
-	char		**exec_direcs;
-	size_t		iter;
-	char		*absolute_path;
+	size_t	iter;
+	char	*absolute_path;
 
-	path = env_get_val(env, "PATH");
-	if (!path || ft_streq(name, ""))
-		return (name);
-	exec_direcs = ft_split(path, ':');
-	if (!exec_direcs)
-		return (NULL);
 	iter = 0;
 	while (exec_direcs[iter])
 	{
@@ -76,4 +68,16 @@ char	*get_absolute_path_from_env(char *name, t_list *env)
 	}
 	dealloc_ptr_array(&exec_direcs);
 	return (name);
+}
+
+char	*get_absolute_path_from_env(char *name, t_list *env)
+{
+	char		**exec_direcs;
+
+	if (!env_get_val(env, "PATH") || ft_streq(name, ""))
+		return (name);
+	exec_direcs = ft_split(env_get_val(env, "PATH"), ':');
+	if (!exec_direcs)
+		return (NULL);
+	return (ret_absolute_path_from_path(name, exec_direcs));
 }
