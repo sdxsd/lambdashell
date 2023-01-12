@@ -141,6 +141,7 @@ static t_status	exec_complex_cmd(int i_fd, t_list *cmds, t_shell *lambda)
 		close(i_fd);
 	if (cmds->next && exec_complex_cmd(tube[READ], cmds->next, lambda) != OK)
 	{
+		g_status = 128;
 		if (errno != EAGAIN)
 			return (prefixed_perror("exec_complex_cmd"));
 		return (ERROR);
