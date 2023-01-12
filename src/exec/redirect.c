@@ -65,7 +65,7 @@ t_status	redirections(t_list *list, t_cmd *cmd)
 			return (prefixed_error("ambiguous redirect\n"));
 		flags = get_flags(redir->direction);
 		open_fd = open(redir->filepath, flags, 0644);
-		if (open_fd < 0)
+		if (open_fd == -1)
 			return (prefixed_perror(redir->filepath));
 		if (redir->direction == DIRECTION_IN || \
 			redir->direction == DIRECTION_HEREDOC)

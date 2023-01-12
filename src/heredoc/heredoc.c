@@ -129,9 +129,16 @@ char	*heredoc(t_token *delimiter, t_lambda *lambda)
 		return (NULL);
 	fd = open(heredoc_path, O_CREAT | O_TRUNC | O_RDWR, 0644);
 	if (fd == -1)
+	{
 		ft_free(&heredoc_path);
+		return (NULL);
+	}
 	if (heredoc_readline_and_write(delimiter, fd, lambda) == ERROR)
+	{
 		ft_free(&heredoc_path);
+		close(fd);
+		return (NULL);
+	}
 	close(fd);
 	return (heredoc_path);
 }

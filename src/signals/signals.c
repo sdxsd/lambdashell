@@ -40,8 +40,6 @@ A program is free software if users have all of these freedoms.
 #include "minishell.h"
 #include <signal.h>
 
-// TODO: Can this comment be removed?
-/* NOTE: Global variable should be defined here. */
 int	g_status;
 
 void	sigint_alt(int sig)

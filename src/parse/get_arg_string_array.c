@@ -44,8 +44,7 @@ char	**get_arg_string_array(t_list *arg_list)
 	char	**arg_strings;
 	char	**arg_strings_start;
 
-	arg_strings = ft_calloc(ft_lstsize(arg_list) + 1,
-			sizeof(*arg_strings));
+	arg_strings = ft_calloc(ft_lstsize(arg_list) + 1, sizeof(*arg_strings));
 	if (!arg_strings)
 		return (perror_malloc_null());
 	arg_strings_start = arg_strings;

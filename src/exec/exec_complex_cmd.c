@@ -65,22 +65,22 @@ static t_status	execute_child(int i_fd, t_list *cmds, t_lambda *lambda,
 
 static t_status	forkxec(int *pid_ptr, int i_fd, t_list *cmds, t_lambda *lambda)
 {
-	int	t[2];
+	int	tube[2];
 
-	if (cmds->next && pipe(t) == -1)
+	if (cmds->next && pipe(tube) == -1)
 		return (prefixed_perror("execute_complex_command()"));
 	*pid_ptr = fork();
 	if (*pid_ptr == FORK_FAILURE)
 		return (prefixed_perror("fork"));
 	if (*pid_ptr == FORK_CHILD)
-		if (execute_child(i_fd, cmds, lambda, t) == ERROR)
+		if (execute_child(i_fd, cmds, lambda, tube) == ERROR)
 			dealloc_and_exit(g_status, lambda);
 	disable_signals();
 	if (cmds->next)
-		close(t[WRITE]);
+		close(tube[WRITE]);
 	if (i_fd != -1)
 		close(i_fd);
-	if (cmds->next && exec_complex_cmd(t[READ], cmds->next, lambda) != OK)
+	if (cmds->next && exec_complex_cmd(tube[READ], cmds->next, lambda) != OK)
 	{
 		g_status = 128;
 		if (errno != EAGAIN)
