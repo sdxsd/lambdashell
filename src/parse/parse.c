@@ -44,7 +44,8 @@ static char	**get_arg_string_array(char *arg_zero, t_list *arg_list)
 	char	**arg_strings_start;
 	char	**arg_strings;
 
-	arg_strings_start = ft_calloc(ft_lstsize(arg_list) + 2, sizeof(*arg_strings));
+	arg_strings_start = ft_calloc(ft_lstsize(arg_list) + 2,
+			sizeof(*arg_strings));
 	arg_strings = arg_strings_start;
 	if (!arg_strings)
 		return (null(prefixed_perror("get_arg_string_array()")));
@@ -68,10 +69,7 @@ static char	*get_arg(t_list **tokens_ptr)
 
 	arg = ft_strdup("");
 	if (!arg)
-	{
-		// TODO: Free
 		return (NULL);
-	}
 	while (*tokens_ptr)
 	{
 		token = (*tokens_ptr)->content;
@@ -79,10 +77,7 @@ static char	*get_arg(t_list **tokens_ptr)
 			break ;
 		arg = ft_strjoin_and_free_left(arg, token->content);
 		if (!arg)
-		{
-			// TODO: Free
 			return (NULL);
-		}
 		*tokens_ptr = (*tokens_ptr)->next;
 	}
 	return (arg);
@@ -133,21 +128,16 @@ static t_direction	get_direction(t_token *token)
 	return (DIRECTION_OUT);
 }
 
-static t_redirect	*get_redirect(t_list **tokens_ptr)
+static char	*get_redirect_filepath(t_list **tokens_ptr)
 {
 	t_token		*token;
-	char		*file_path;
-	t_redirect	*redirect;
+	char		*filepath;
 	char		*content;
 
 	token = (*tokens_ptr)->content;
-	file_path = ft_strdup("");
-	if (!file_path)
+	filepath = ft_strdup("");
+	if (!filepath)
 		return (NULL);
-	redirect = alloc_redirect(file_path, get_direction(token),
-			token->is_ambiguous);
-	if (!redirect)
-		return (null(dealloc_redirect(&redirect)));
 	*tokens_ptr = (*tokens_ptr)->next;
 	skip_whitespace_tokens(tokens_ptr);
 	while (*tokens_ptr)
@@ -155,30 +145,34 @@ static t_redirect	*get_redirect(t_list **tokens_ptr)
 		token = (*tokens_ptr)->content;
 		if (!is_text_token(token))
 			break ;
-
 		if (token->type == UNQUOTED)
 			content = ft_strtrim_whitespace(token->content);
 		else
 			content = ft_strdup(token->content);
-		redirect->file_path = ft_strjoin_and_free_left_right(redirect->file_path, &content);
-
-		if (!redirect->file_path)
-		{
-			// TODO: Free
+		filepath = ft_strjoin_and_free_left_right(filepath, &content);
+		if (!filepath)
 			return (NULL);
-		}
-
 		*tokens_ptr = (*tokens_ptr)->next;
 	}
-	return (redirect);
+	return (filepath);
 }
 
-static t_status	add_redirect(t_list **tokens_ptr, t_cmd *cmd)
+static t_status	add_redirect(t_list **tokens_ptr, t_list **redirections_ptr)
 {
+	t_direction	direction;
+	bool		is_ambiguous;
+	char		*filepath;
 	t_redirect	*redirect;
 
-	redirect = get_redirect(tokens_ptr);
-	if (!redirect || !ft_lstnew_back(&cmd->redirections, redirect))
+	direction = get_direction((*tokens_ptr)->content);
+	is_ambiguous = ((t_token *)(*tokens_ptr)->content)->is_ambiguous;
+	filepath = get_redirect_filepath(tokens_ptr);
+	if (!filepath)
+		return (ERROR);
+	redirect = alloc_redirect(filepath, direction, is_ambiguous);
+	if (!redirect)
+		return (dealloc_redirect(&redirect));
+	if (!redirect || !ft_lstnew_back(redirections_ptr, redirect))
 		return (ERROR);
 	return (OK);
 }
@@ -191,7 +185,7 @@ static t_status	add_next_cmd_part(t_list **tokens_ptr, t_cmd *cmd,
 	token = (*tokens_ptr)->content;
 	if (token->type == REDIRECTION || token->type == HEREDOC)
 	{
-		if (add_redirect(tokens_ptr, cmd) == ERROR)
+		if (add_redirect(tokens_ptr, &cmd->redirections) == ERROR)
 			return (ERROR);
 	}
 	else if (is_text_token(token) && !cmd->path)

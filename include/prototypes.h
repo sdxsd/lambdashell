@@ -92,6 +92,7 @@ t_status		print_error(char *msg);
 t_status		prefixed_error(char *msg);
 t_status		prefixed_perror(char *msg);
 t_status		perror_error(char *msg);
+void			*perror_null(char *msg);
 
 /* EXEC */
 t_status		execute(t_shell *lambda);
