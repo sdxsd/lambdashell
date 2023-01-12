@@ -37,18 +37,11 @@ A program is free software if users have all of these freedoms.
 static t_status	new_unquoted_token_back(t_list **current_ptr, char *content,
 				t_token_type token_type)
 {
-	char	*token_content;
 	t_token	*token;
 
-	token_content = ft_strdup(content);
-	if (!token_content)
-		return (ERROR);
-	token = alloc_token(token_type, token_content);
+	token = alloc_token(token_type, ft_strdup(content));
 	if (!token)
-	{
-		ft_free(&token_content);
-		return (ERROR);
-	}
+		return (dealloc_token(&token));
 	if (!ft_lstnew_back(current_ptr, token))
 		return (dealloc_token(&token));
 	return (OK);
