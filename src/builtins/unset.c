@@ -37,11 +37,20 @@ The definition of Free Software is as follows:
 A program is free software if users have all of these freedoms.
 */
 
-#include "minishell.h"
+#include "../../include/minishell.h"
 
 static int	string_cmp_fn(void *lst_content, void *needle)
 {
-	return (ft_strcmp(((t_env_element *)lst_content)->key, (char *)needle));
+	int	result;
+
+	result = ft_strcmp(((t_env_element *)lst_content)->key, (char *)needle);
+	if (result == 0)
+	{
+		ft_free(&((t_env_element *)lst_content)->key);
+		ft_free(&((t_env_element *)lst_content)->val);
+		ft_free(&lst_content);
+	}
+	return (result);
 }
 
 // TODO: Should anything special happen if no argument is provided?
