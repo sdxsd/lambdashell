@@ -101,6 +101,7 @@ static t_status	execute_child(int i_fd, t_list *cmds, t_shell *lm, int tube[2])
 {
 	t_cmd	*cmd;
 
+	signal_handler_child_set();
 	cmd = cmds->content;
 	if (cmds->next)
 		close(tube[READ]);
@@ -131,11 +132,8 @@ static t_status	exec_complex_cmd(int i_fd, t_list *cmds, t_shell *lambda)
 	if (pid == FORK_FAILURE)
 		return (prefixed_perror("fork"));
 	if (pid == FORK_CHILD)
-	{
-		signal_handler_child_set();
 		if (execute_child(i_fd, cmds, lambda, tube) == ERROR)
 			dealloc_and_exit(g_status, lambda);
-	}
 	disable_signals();
 	if (cmds->next)
 		close(tube[WRITE]);
