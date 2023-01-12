@@ -39,7 +39,7 @@ A program is free software if users have all of these freedoms.
 
 #include "../include/minishell.h"
 
-static void	prompt(t_shell *lambda)
+static char	*get_line(t_shell *lambda)
 {
 	char	*readline_str;
 
@@ -47,10 +47,15 @@ static void	prompt(t_shell *lambda)
 		rl_outstream = stdin;
 	readline_str = get_readline_str(lambda);
 	if (!readline_str)
-		return ;
+		return (NULL);
 	lambda->line = readline(readline_str);
 	ft_free(&readline_str);
-	if (!lambda->line)
+	return (lambda->line);
+}
+
+static void	prompt(t_shell *lambda)
+{
+	if (!get_line(lambda))
 		return (stop_void());
 	add_history(lambda->line);
 	lambda->tokens = tokenize(lambda->line);
