@@ -39,18 +39,19 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-static char	**get_arg_string_array(char *arg_zero, t_list *arg_list)
+static char	**get_arg_string_array(t_list *arg_list)
 {
-	char	**arg_strings_start;
 	char	**arg_strings;
+	char	**arg_strings_start;
 
-	arg_strings_start = ft_calloc(ft_lstsize(arg_list) + 2,
+	arg_strings = ft_calloc(ft_lstsize(arg_list) + 1,
 			sizeof(*arg_strings));
-	arg_strings = arg_strings_start;
 	if (!arg_strings)
 		return (null(prefixed_perror("get_arg_string_array()")));
-	if (arg_zero)
-		*arg_strings = ft_strdup(arg_zero);
+	arg_strings_start = arg_strings;
+	if (arg_list->content)
+		*arg_strings = ft_strdup(arg_list->content);
+	arg_list = arg_list->next;
 	arg_strings++;
 	while (arg_list)
 	{
@@ -83,7 +84,7 @@ static char	*get_arg(t_list **tokens_ptr)
 	return (arg);
 }
 
-static t_status	add_arg(t_list **tokens_ptr, t_list **arg_list_ptr)
+static t_status	add_arg(t_list **arg_list_ptr, t_list **tokens_ptr)
 {
 	char	*arg;
 
@@ -177,8 +178,8 @@ static t_status	add_redirect(t_list **tokens_ptr, t_list **redirections_ptr)
 	return (OK);
 }
 
-static t_status	add_next_cmd_part(t_list **tokens_ptr, t_cmd *cmd,
-					char **arg_zero_ptr, t_list *env, t_list **arg_list_ptr)
+static t_status	add_next_cmd_part(t_list **tokens_ptr, t_cmd *cmd, t_list *env,
+					t_list **arg_list_ptr)
 {
 	t_token	*token;
 
@@ -190,15 +191,16 @@ static t_status	add_next_cmd_part(t_list **tokens_ptr, t_cmd *cmd,
 	}
 	else if (is_text_token(token) && !cmd->path)
 	{
-		*arg_zero_ptr = get_arg(tokens_ptr);
-		cmd->path = get_path(ft_strdup(*arg_zero_ptr), env);
+		if (add_arg(arg_list_ptr, tokens_ptr) == ERROR)
+			return (ERROR);
+		cmd->path = get_path(ft_strdup((char *)(*arg_list_ptr)->content), env);
 		if (!cmd->path)
 			return (ERROR);
 	}
 	else if (is_text_token(token) && ft_str_not_set(token->content,
 			WHITESPACE_CHARACTERS))
 	{
-		if (add_arg(tokens_ptr, arg_list_ptr) == ERROR)
+		if (add_arg(arg_list_ptr, tokens_ptr) == ERROR)
 			return (ERROR);
 	}
 	else
@@ -208,11 +210,9 @@ static t_status	add_next_cmd_part(t_list **tokens_ptr, t_cmd *cmd,
 
 static t_status	fill_cmd(t_list **tokens_ptr, t_list *env, t_cmd *cmd)
 {
-	t_list		*arg_list;
-	char		*arg_zero;
+	t_list	*arg_list;
 
 	arg_list = NULL;
-	arg_zero = NULL;
 	while (*tokens_ptr)
 	{
 		if (((t_token *)(*tokens_ptr)->content)->type == PIPE)
@@ -220,12 +220,11 @@ static t_status	fill_cmd(t_list **tokens_ptr, t_list *env, t_cmd *cmd)
 			*tokens_ptr = (*tokens_ptr)->next;
 			break ;
 		}
-		if (add_next_cmd_part(tokens_ptr, cmd, &arg_zero, env,
-				&arg_list) == ERROR)
+		if (add_next_cmd_part(tokens_ptr, cmd, env, &arg_list) == ERROR)
 			return (ERROR);
 	}
-	cmd->args = get_arg_string_array(arg_zero, arg_list);
-	ft_free(&arg_zero);
+	if (arg_list)
+		cmd->args = get_arg_string_array(arg_list);
 	ft_lstclear(&arg_list, NULL);
 	return (OK);
 }
