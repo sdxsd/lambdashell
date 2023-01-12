@@ -47,7 +47,7 @@ static char	**get_arg_string_array(t_list *arg_list)
 	arg_strings = ft_calloc(ft_lstsize(arg_list) + 1,
 			sizeof(*arg_strings));
 	if (!arg_strings)
-		return (null(prefixed_perror("get_arg_string_array()")));
+		return (perror_malloc_null());
 	arg_strings_start = arg_strings;
 	if (arg_list->content)
 		*arg_strings = ft_strdup(arg_list->content);

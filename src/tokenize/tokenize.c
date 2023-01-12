@@ -47,11 +47,10 @@ static void	*token_or_lstnew_back_error(t_token **token_ptr,
 	return (NULL);
 }
 
-// TODO: perror_error()?
 static void	*content_error(t_list **tokens_ptr)
 {
 	dealloc_lst(tokens_ptr, dealloc_token);
-	return (perror_null(""));
+	return (perror_malloc_null());
 }
 
 static void	*unmatched_quote_error(t_list **tokens_ptr)

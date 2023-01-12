@@ -83,7 +83,7 @@ char	**env_to_strings(t_list *env)
 		if (!env_strings[index])
 		{
 			dealloc_ptr_array(&env_strings);
-			return (null(prefixed_perror("env_to_strings()")));
+			return (perror_malloc_null());
 		}
 		env = env->next;
 		index++;
