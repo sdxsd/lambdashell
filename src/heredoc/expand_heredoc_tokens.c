@@ -54,7 +54,7 @@ static void	single_to_double_quoted_types(t_list *tokens)
 }
 
 t_status	expand_heredoc_tokens(t_token *delimiter, t_list *tokens,
-				t_shell *lambda)
+				t_lambda *lambda)
 {
 	if (!tokens)
 		return (ERROR);

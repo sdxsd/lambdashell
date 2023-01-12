@@ -50,16 +50,16 @@ t_redirect		*alloc_redirect(char *filepath, t_direction direction,
 					bool is_ambiguous);
 
 /* BUILTINS */
-t_status		cd(t_cmd *cmd, t_shell *lambda);
-t_status		env(t_shell *lambda);
+t_status		cd(t_cmd *cmd, t_lambda *lambda);
+t_status		env(t_lambda *lambda);
 void			bltin_exit(t_cmd *cmd);
-t_status		export(t_cmd *cmd, t_shell *lambda);
-t_status		pwd(t_shell *lambda);
-t_status		unset(t_cmd *cmd, t_shell *lambda);
+t_status		export(t_cmd *cmd, t_lambda *lambda);
+t_status		pwd(t_lambda *lambda);
+t_status		unset(t_cmd *cmd, t_lambda *lambda);
 t_status		echo(t_cmd *cmd);
 
 /* COSMETIC */
-char			*get_readline_str(t_shell *lambda);
+char			*get_readline_str(t_lambda *lambda);
 
 /* DEALLOC */
 t_status		dealloc_cmd(void *cmd_ptr);
@@ -68,8 +68,8 @@ t_status		dealloc_token(void *token_ptr);
 t_status		dealloc_ptr_array(void *ptr_array_ptr);
 t_status		dealloc_redirect(void *redirect_ptr);
 t_status		dealloc_lst(t_list **lst, t_status (*del)(void*));
-t_status		dealloc_lambda(t_shell *lambda);
-void			dealloc_and_exit(t_status status, t_shell *lambda);
+t_status		dealloc_lambda(t_lambda *lambda);
+void			dealloc_and_exit(t_status status, t_lambda *lambda);
 
 /* DEBUG */
 void			dbg_print_tokens(t_list *tokens);
@@ -79,7 +79,7 @@ void			dbg_print_commands(t_list *cmds);
 t_status		add_or_change_env_element(char *env_line, t_list **env_ptr);
 t_status		init_env(char **env, t_list **lambda_env_ptr);
 char			*env_get_val(t_list *env, char *key);
-t_status		expand_variables(t_list **tokens_list, t_shell *lambda);
+t_status		expand_variables(t_list **tokens_list, t_lambda *lambda);
 char			**env_to_strings(t_list *env);
 bool			is_valid_name_chr(char chr);
 bool			is_valid_name_first_chr(char chr);
@@ -97,21 +97,21 @@ t_status		perror_malloc(void);
 void			*perror_malloc_null(void);
 
 /* EXEC */
-t_status		execute(t_shell *lambda);
+t_status		execute(t_lambda *lambda);
 char			*get_absolute_path(char *name, t_list *env);
 t_status		redirections(t_list *list, t_cmd *cmd);
-t_status		execute_builtin(t_cmd *cmd, t_shell *lambda);
+t_status		execute_builtin(t_cmd *cmd, t_lambda *lambda);
 void			dup2_cmd(t_cmd *cmd);
 int				get_wait_status(int stat_loc);
-t_status		exec_complex_cmd(int i_fd, t_list *cmds, t_shell *lambda);
-t_status		execute_command(t_cmd *cmd, t_shell *lambda);
+t_status		exec_complex_cmd(int i_fd, t_list *cmds, t_lambda *lambda);
+t_status		execute_command(t_cmd *cmd, t_lambda *lambda);
 
 /* HEREDOC */
 t_status		expand_heredoc_tokens(t_token *delimiter, t_list *tokens,
-					t_shell *lambda);
-char			*heredoc(t_token *delimiter, t_shell *lambda);
+					t_lambda *lambda);
+char			*heredoc(t_token *delimiter, t_lambda *lambda);
 void			cleanup_heredocs(t_list *cmds);
-t_status		heredocs(t_list *tokens, t_shell *lambda);
+t_status		heredocs(t_list *tokens, t_lambda *lambda);
 
 /* NULL */
 void			*null(t_status _);
@@ -151,6 +151,6 @@ t_list			*tokenize(char *line);
 t_status		whitespace_split_tokens(t_list **tokens_ptr);
 
 /* UPDATE_CWD */
-t_status		update_cwd(t_shell *lambda);
+t_status		update_cwd(t_lambda *lambda);
 
 #endif

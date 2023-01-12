@@ -44,7 +44,7 @@ A program is free software if users have all of these freedoms.
 # include "enums.h"
 # include "../libft/libft.h"
 
-typedef struct s_shell
+typedef struct t_lambda
 {
 	bool		interactive;
 	t_list		*tokens;
@@ -55,7 +55,7 @@ typedef struct s_shell
 	bool		stdin_is_tty;
 	int			stdin_fd;
 	int			stdout_fd;
-}	t_shell;
+}	t_lambda;
 
 typedef struct s_redirect {
 	char		*filepath;

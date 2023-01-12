@@ -39,7 +39,7 @@ A program is free software if users have all of these freedoms.
 
 #include "minishell.h"
 
-static char	*get_appended(char *content, t_expansion_state state, char *substr_start, t_shell *lambda)
+static char	*get_appended(char *content, t_expansion_state state, char *substr_start, t_lambda *lambda)
 {
 	char	*appended;
 	char	*env_key;
@@ -83,7 +83,7 @@ static bool	should_get_appended(char *content, char *substr_start,
 		&& (*content == '$' || is_variable_end || is_status_or_invalid_end));
 }
 
-static char	*get_expanded_string(char *content, t_shell *lambda)
+static char	*get_expanded_string(char *content, t_lambda *lambda)
 {
 	t_expansion_state	state;
 	char				*substr_start;
@@ -137,7 +137,7 @@ static char	*get_expanded_string(char *content, t_shell *lambda)
 	return (ft_strjoin_and_free_left_right(expanded_string, &appended));
 }
 
-t_status	expand_variables(t_list **tokens_list, t_shell *lambda)
+t_status	expand_variables(t_list **tokens_list, t_lambda *lambda)
 {
 	t_list	*tokens;
 	t_token	*token;

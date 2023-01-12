@@ -63,7 +63,7 @@ static void	write_tokens_into_file(t_list *tokens, int fd)
 }
 
 static t_status	heredoc_readline_and_write(t_token *delimiter, int fd,
-					t_shell *lambda)
+					t_lambda *lambda)
 {
 	t_status	err_status;
 	char		*line;
@@ -115,7 +115,7 @@ static char	*get_new_heredoc_path(void)
 	return (filepath);
 }
 
-char	*heredoc(t_token *delimiter, t_shell *lambda)
+char	*heredoc(t_token *delimiter, t_lambda *lambda)
 {
 	char	*heredoc_path;
 	int		fd;

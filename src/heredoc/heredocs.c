@@ -39,7 +39,7 @@ A program is free software if users have all of these freedoms.
 
 #include "minishell.h"
 
-t_status	heredocs(t_list *tokens, t_shell *lambda)
+t_status	heredocs(t_list *tokens, t_lambda *lambda)
 {
 	t_token	*token;
 	t_list	*prev;

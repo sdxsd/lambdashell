@@ -39,7 +39,7 @@ A program is free software if users have all of these freedoms.
 
 #include "minishell.h"
 
-t_status	update_cwd(t_shell *lambda)
+t_status	update_cwd(t_lambda *lambda)
 {
 	ft_free(&lambda->cwd);
 	lambda->cwd = getcwd(NULL, 0);

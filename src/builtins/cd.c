@@ -51,7 +51,7 @@ static t_status	argless_cd(t_list *env)
 	return (OK);
 }
 
-t_status	cd(t_cmd *cmd, t_shell *lambda)
+t_status	cd(t_cmd *cmd, t_lambda *lambda)
 {
 	if (!cmd->args[1])
 	{

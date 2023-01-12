@@ -39,7 +39,7 @@ A program is free software if users have all of these freedoms.
 
 #include "minishell.h"
 
-static t_status	find_and_run_builtin(t_cmd *cmd, t_shell *lambda)
+static t_status	find_and_run_builtin(t_cmd *cmd, t_lambda *lambda)
 {
 	if (ft_streq(cmd->path, "cd"))
 		g_status = cd(cmd, lambda);
@@ -68,7 +68,7 @@ static t_status	find_and_run_builtin(t_cmd *cmd, t_shell *lambda)
 	return (OK);
 }
 
-t_status	execute_builtin(t_cmd *cmd, t_shell *lambda)
+t_status	execute_builtin(t_cmd *cmd, t_lambda *lambda)
 {
 	if (redirections(cmd->redirections, cmd) == ERROR)
 	{

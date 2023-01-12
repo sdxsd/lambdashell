@@ -42,7 +42,7 @@ A program is free software if users have all of these freedoms.
 #include <fcntl.h>
 #include <errno.h>
 
-t_status	execute_command(t_cmd *cmd, t_shell *lambda)
+t_status	execute_command(t_cmd *cmd, t_lambda *lambda)
 {
 	char	**env_array;
 
@@ -62,7 +62,7 @@ t_status	execute_command(t_cmd *cmd, t_shell *lambda)
 }
 
 // TODO: Check for memory leak in child processes.
-static t_status	forkxec_simp(int *pid, t_cmd *cmd, t_shell *lambda)
+static t_status	forkxec_simp(int *pid, t_cmd *cmd, t_lambda *lambda)
 {
 	int		stat_loc;
 
@@ -82,7 +82,7 @@ static t_status	forkxec_simp(int *pid, t_cmd *cmd, t_shell *lambda)
 	return (OK);
 }
 
-static t_status	execute_simple_command(t_cmd *cmd, t_shell *lambda)
+static t_status	execute_simple_command(t_cmd *cmd, t_lambda *lambda)
 {
 	pid_t	pid;
 
@@ -102,7 +102,7 @@ static t_status	execute_simple_command(t_cmd *cmd, t_shell *lambda)
 	return (OK);
 }
 
-t_status	execute(t_shell *lambda)
+t_status	execute(t_lambda *lambda)
 {
 	if (lambda->cmds->next)
 		return (exec_complex_cmd(-1, lambda->cmds, lambda));

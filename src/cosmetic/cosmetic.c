@@ -56,7 +56,7 @@ static char	*last_directory(char *line)
 }
 
 // Prompt string one
-char	*get_readline_str(t_shell *lambda)
+char	*get_readline_str(t_lambda *lambda)
 {
 	char	*user;
 	char	*leaf_dir;

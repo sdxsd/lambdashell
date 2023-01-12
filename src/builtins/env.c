@@ -39,7 +39,7 @@ A program is free software if users have all of these freedoms.
 
 #include "minishell.h"
 
-t_status	env(t_shell *lambda)
+t_status	env(t_lambda *lambda)
 {
 	t_list			*env_list;
 	t_env_element	*env_element;

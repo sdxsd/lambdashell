@@ -56,7 +56,7 @@ t_status	dealloc_cmd(void *cmd_ptr)
 	return (ERROR);
 }
 
-t_status	dealloc_lambda(t_shell *lambda)
+t_status	dealloc_lambda(t_lambda *lambda)
 {
 	dealloc_lst(&lambda->tokens, dealloc_token);
 	dealloc_lst(&lambda->env, dealloc_env_element);
@@ -66,7 +66,7 @@ t_status	dealloc_lambda(t_shell *lambda)
 	return (ERROR);
 }
 
-void	dealloc_and_exit(t_status status, t_shell *lambda)
+void	dealloc_and_exit(t_status status, t_lambda *lambda)
 {
 	dealloc_lambda(lambda);
 	exit (status);

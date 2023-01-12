@@ -40,7 +40,7 @@ A program is free software if users have all of these freedoms.
 #include "minishell.h"
 #include <errno.h>
 
-static t_status	execute_child(int i_fd, t_list *cmds, t_shell *lambda,
+static t_status	execute_child(int i_fd, t_list *cmds, t_lambda *lambda,
 					int tube[2])
 {
 	t_cmd	*cmd;
@@ -62,7 +62,7 @@ static t_status	execute_child(int i_fd, t_list *cmds, t_shell *lambda,
 	return (OK);
 }
 
-static t_status	forkxec(int *pid_ptr, int i_fd, t_list *cmds, t_shell *lambda)
+static t_status	forkxec(int *pid_ptr, int i_fd, t_list *cmds, t_lambda *lambda)
 {
 	int	t[2];
 
@@ -91,7 +91,7 @@ static t_status	forkxec(int *pid_ptr, int i_fd, t_list *cmds, t_shell *lambda)
 
 // TODO: Right now only the parent is closing the read end!!
 // Double check if this is an issue.
-t_status	exec_complex_cmd(int i_fd, t_list *cmds, t_shell *lambda)
+t_status	exec_complex_cmd(int i_fd, t_list *cmds, t_lambda *lambda)
 {
 	pid_t	pid;
 	int		stat_loc;

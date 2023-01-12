@@ -58,7 +58,7 @@ static void	print_env_val(char *env_val, char *env_key)
 	ft_putstr("\"\n");
 }
 
-static t_status	argless_export(t_shell *lambda)
+static t_status	argless_export(t_lambda *lambda)
 {
 	t_list			*env_list;
 	t_env_element	*env_element;
@@ -101,7 +101,7 @@ static t_status	export_valid_names(char **args, t_list **env_ptr)
 /* NOTE: Protect if add_or_change_env_element() goes wrong. */
 /* return (add_or_change_env_element(cmd->args[1], &lambda->env)); */
 // TODO: Is the above comment still relevant?
-t_status	export(t_cmd *cmd, t_shell *lambda)
+t_status	export(t_cmd *cmd, t_lambda *lambda)
 {
 	if (!cmd->args[1])
 		return (argless_export(lambda));

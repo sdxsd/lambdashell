@@ -39,7 +39,7 @@ A program is free software if users have all of these freedoms.
 
 #include "minishell.h"
 
-t_status	pwd(t_shell *lambda)
+t_status	pwd(t_lambda *lambda)
 {
 	if (lambda->cwd == NULL)
 		return (prefixed_perror("pwd"));
