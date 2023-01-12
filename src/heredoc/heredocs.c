@@ -39,14 +39,84 @@ A program is free software if users have all of these freedoms.
 
 #include "minishell.h"
 
+static t_status	resolve_and_add_delimiter(t_token *delimiter, t_list *prev,
+					t_list *next, t_lambda *lambda)
+{
+	char	*path;
+
+	path = heredoc(delimiter, lambda);
+	ft_free(&delimiter->content);
+	if (!path)
+		return (dealloc_token(&delimiter));
+	delimiter->content = path;
+	delimiter->type = UNQUOTED;
+	prev->next = NULL;
+	if (!ft_lstnew_back(&prev, delimiter))
+	{
+		prev->next = next;
+		perror_malloc();
+		return (dealloc_token(&delimiter));
+	}
+	return (OK);
+}
+
+static t_status	strjoin_to_delimiter(t_token *token, t_token *delimiter)
+{
+	char	*appended;
+
+	if (token->type == SINGLE_QUOTED || token->type == DOUBLE_QUOTED)
+		delimiter->type = DOUBLE_QUOTED;
+	if (token->type == UNQUOTED)
+		appended = ft_strtrim_whitespace(token->content);
+	else
+		appended = ft_strdup(token->content);
+	delimiter->content = ft_strjoin_and_free_left_right(delimiter->content,
+			&appended);
+	if (!delimiter->content)
+	{
+		dealloc_token(&delimiter);
+		return (perror_malloc());
+	}
+	return (OK);
+}
+
+static t_status	fill_delimiter(t_list **tokens_ptr, t_token *delimiter,
+					t_list **next_ptr)
+{
+	t_token	*token;
+
+	while ((*tokens_ptr))
+	{
+		token = (*tokens_ptr)->content;
+		if (!is_text_token(token))
+			break ;
+		if (strjoin_to_delimiter(token, delimiter) == ERROR)
+			return (ERROR);
+		*next_ptr = (*tokens_ptr)->next;
+		dealloc_token(&token);
+		*tokens_ptr = *next_ptr;
+	}
+	return (OK);
+}
+
+static void	skip_whitespace_tokens_and_update_prev(t_list **tokens_ptr,
+				t_list **prev_ptr)
+{
+	*tokens_ptr = (*tokens_ptr)->next;
+	while (*tokens_ptr
+		&& ((t_token *)(*tokens_ptr)->content)->type == WHITESPACE)
+	{
+		*prev_ptr = *tokens_ptr;
+		*tokens_ptr = (*tokens_ptr)->next;
+	}
+}
+
 t_status	heredocs(t_list *tokens, t_lambda *lambda)
 {
 	t_token	*token;
 	t_list	*prev;
 	t_token	*delimiter;
-	char	*appended;
 	t_list	*next;
-	char	*path;
 
 	while (tokens)
 	{
@@ -54,58 +124,15 @@ t_status	heredocs(t_list *tokens, t_lambda *lambda)
 		if (token->type == HEREDOC)
 		{
 			prev = tokens;
-			tokens = tokens->next;
-			while (tokens && ((t_token *)tokens->content)->type == WHITESPACE)
-			{
-				prev = tokens;
-				tokens = tokens->next;
-			}
+			skip_whitespace_tokens_and_update_prev(&tokens, &prev);
 			delimiter = alloc_token(UNQUOTED, ft_strdup(""));
 			if (!delimiter || !delimiter->content)
-			{
-				// TODO: Free
 				return (dealloc_token(&delimiter));
-			}
-			// TODO: This is pretty much just get_redirect() from parse.c
-			// Try to let this function and that function share this code.
-			while (tokens)
-			{
-				token = tokens->content;
-				if (!is_text_token(token))
-					break ;
-				if (token->type == SINGLE_QUOTED
-					|| token->type == DOUBLE_QUOTED)
-					delimiter->type = DOUBLE_QUOTED;
-				if (token->type == UNQUOTED)
-					appended = ft_strtrim_whitespace(token->content);
-				else
-					appended = ft_strdup(token->content);
-				delimiter->content = ft_strjoin_and_free_left_right(delimiter->content, &appended);
-				if (!delimiter->content)
-				{
-					dealloc_token(&delimiter);
-					return (perror_malloc());
-				}
-				next = tokens->next;
-				dealloc_token(&token);
-				tokens = next;
-			}
+			fill_delimiter(&tokens, delimiter, &next);
 			ft_free(&prev->next);
 			prev->next = next;
-			path = heredoc(delimiter, lambda);
-			ft_free(&delimiter->content);
-			if (!path)
-				return (dealloc_token(&delimiter));
-			delimiter->content = path;
-			delimiter->type = UNQUOTED;
-			prev->next = NULL;
-			if (!ft_lstnew_back(&prev, delimiter))
-			{
-				prev->next = next;
-				perror_malloc();
-				return (dealloc_token(&delimiter));
-			}
-			prev->next->next = next; // TODO: Can `next` here ever be uninitialized?
+			resolve_and_add_delimiter(delimiter, prev, next, lambda);
+			prev->next->next = next;
 		}
 		if (tokens)
 			tokens = tokens->next;
