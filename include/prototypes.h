@@ -96,6 +96,9 @@ t_status		perror_error(char *msg);
 t_status		execute(t_shell *lambda);
 char			*get_absolute_path_from_env(char *name, t_list *env);
 t_status		redirections(t_list *list, t_cmd *cmd);
+t_status		execute_builtin(t_cmd *cmd, t_shell *lambda);
+void			dup2_cmd(t_cmd *cmd);
+int				get_wait_status(int stat_loc);
 
 /* HEREDOC */
 t_status		expand_heredoc_tokens(t_token *delimiter, t_list *tokens,
