@@ -28,11 +28,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>
 
 The definition of Free Software is as follows:
-				- The freedom to run the program, for any purpose.
-				- The freedom to study how the program works, and adapt it to your needs.
-				- The freedom to redistribute copies so you can help your neighbor.
-				- The freedom to improve the program, and release
-				your improvements to the public, so that the whole community benefits.
+	- The freedom to run the program, for any purpose.
+	- The freedom to study how the program works, and adapt it to your needs.
+	- The freedom to redistribute copies so you can help your neighbor.
+	- The freedom to improve the program, and release your improvements
+	to the public, so that the whole community benefits.
 
 A program is free software if users have all of these freedoms.
 */
