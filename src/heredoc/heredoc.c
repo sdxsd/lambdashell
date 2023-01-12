@@ -62,31 +62,6 @@ static void	write_tokens_into_file(t_list *tokens, int fd)
 	ft_putstr_fd("\n", fd);
 }
 
-void	cleanup_heredocs(void)
-{
-	int		iter;
-	char	*num;
-	char	*file;
-	char	*full_path;
-
-	iter = 1;
-	while (iter < INT_MAX)
-	{
-		num = ft_itoa(iter);
-		file = ft_strjoin("heredoc_", num);
-		ft_free(&num);
-		full_path = ft_strjoin("/tmp/", file);
-		ft_free(&file);
-		if (!access(full_path, F_OK))
-			unlink(full_path);
-		else
-			break ;
-		ft_free(&full_path);
-		iter++;
-	}
-	ft_free(&full_path);
-}
-
 static t_status	heredoc_readline_and_write(t_token *delimiter, int fd,
 					t_shell *lambda)
 {

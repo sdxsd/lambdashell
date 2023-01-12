@@ -108,7 +108,7 @@ int				get_wait_status(int stat_loc);
 t_status		expand_heredoc_tokens(t_token *delimiter, t_list *tokens,
 					t_shell *lambda);
 char			*heredoc(t_token *delimiter, t_shell *lambda);
-void			cleanup_heredocs(void);
+void			cleanup_heredocs(t_list *cmds);
 t_status		heredocs(t_list *tokens, t_shell *lambda);
 
 /* NULL */
