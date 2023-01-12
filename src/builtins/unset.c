@@ -45,6 +45,8 @@ static int	string_cmp_fn(void *lst_content, void *needle)
 }
 
 // TODO: Should anything special happen if no argument is provided?
+// TODO: I think there's a memory leak here
+// since ft_lst_remove_if doesn't free the content?
 t_status	unset(t_cmd *cmd, t_shell *lambda)
 {
 	char	**args;
@@ -52,7 +54,6 @@ t_status	unset(t_cmd *cmd, t_shell *lambda)
 	args = cmd->args;
 	while (*args)
 	{
-		// TODO: I think there's a memory leak here since this function doesn't free the content?
 		ft_lst_remove_if(&lambda->env, *args, string_cmp_fn);
 		args++;
 	}

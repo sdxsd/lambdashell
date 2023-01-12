@@ -35,7 +35,7 @@ static int	get_negative_value(const char *str, bool *out_of_range)
 	static const int	range_mult_ten = INT_MIN / 10;
 	static const int	range_last_digit = -(INT_MIN % 10);
 	int					value;
-	size_t					i;
+	size_t				i;
 	int					digit;
 
 	value = 0;
@@ -105,7 +105,7 @@ static int	ft_atoi_range(const char *str, bool *out_of_range)
 bool	ft_atoi_safe(const char *str, int *nbr)
 {
 	bool	out_of_range;
-	int	i;
+	int		i;
 
 	i = 0;
 	while (ft_isspace(str[i]))
