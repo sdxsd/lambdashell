@@ -112,7 +112,6 @@ static t_status	fill_cmd(t_list **tokens_ptr, t_list *env, t_cmd *cmd)
 	}
 	if (arg_list)
 		cmd->args = get_arg_string_array(arg_list);
-	ft_free(&arg_list->content);
 	ft_lstclear(&arg_list, NULL);
 	return (OK);
 }
