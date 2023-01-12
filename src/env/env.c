@@ -39,6 +39,23 @@ A program is free software if users have all of these freedoms.
 
 #include "minishell.h"
 
+static t_status	add_env_element(char *key, char *val, t_list **env_ptr)
+{
+	t_env_element	*env_element;
+
+	env_element = alloc_env_element();
+	if (!env_element)
+		return (dealloc_env_element(&env_element));
+	env_element->key = key;
+	env_element->val = val;
+	if (!ft_lstnew_back(env_ptr, env_element))
+	{
+		perror_malloc();
+		return (dealloc_env_element(&env_element));
+	}
+	return (OK);
+}
+
 static t_status	get_val(char **val_ptr, char *env_line)
 {
 	*val_ptr = NULL;
@@ -46,7 +63,7 @@ static t_status	get_val(char **val_ptr, char *env_line)
 	{
 		*val_ptr = ft_strdup(env_line + get_key_length(env_line) + 1);
 		if (!*val_ptr)
-			return (ERROR);
+			return (perror_malloc());
 	}
 	return (OK);
 }
@@ -58,7 +75,9 @@ t_status	add_or_change_env_element(char *env_line, t_list **env_ptr)
 	t_env_element	*env_element;
 
 	key = ft_strndup(env_line, get_key_length(env_line));
-	if (!key || get_val(&val, env_line) == ERROR)
+	if (!key)
+		return (perror_malloc());
+	if (get_val(&val, env_line) == ERROR)
 		return (ERROR);
 	while (*env_ptr)
 	{

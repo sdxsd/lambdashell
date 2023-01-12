@@ -49,20 +49,6 @@ size_t	get_key_length(char *str)
 	return (count);
 }
 
-t_status	add_env_element(char *key, char *val, t_list **env_ptr)
-{
-	t_env_element	*env_element;
-
-	env_element = alloc_env_element();
-	if (!env_element)
-		return (dealloc_env_element(&env_element));
-	env_element->key = key;
-	env_element->val = val;
-	if (!ft_lstnew_back(env_ptr, env_element))
-		return (dealloc_env_element(&env_element));
-	return (OK);
-}
-
 char	**env_to_strings(t_list *env)
 {
 	char			**env_strings;

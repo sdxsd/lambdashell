@@ -86,7 +86,6 @@ bool			is_valid_name_chr(char chr);
 bool			is_valid_name_first_chr(char chr);
 bool			is_valid_identifier(char *name);
 size_t			get_key_length(char *str);
-t_status		add_env_element(char *key, char *val, t_list **env_ptr);
 
 /* ERROR */
 t_status		print_error(char *msg);
