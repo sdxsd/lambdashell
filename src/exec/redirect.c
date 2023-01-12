@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   exec.c                                             :+:    :+:            */
+/*   redirect.c                                         :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
@@ -40,37 +40,30 @@ A program is free software if users have all of these freedoms.
 #include "../../include/minishell.h"
 #include <fcntl.h>
 
-int	get_flags(int dir, bool *input_encountered)
+int	get_flags(int dir)
 {
-	if ((dir == DIRECTION_IN && !(*input_encountered)) || \
-		dir == DIRECTION_HEREDOC)
-	{
-		*input_encountered = true;
+	if (dir == DIRECTION_IN || dir == DIRECTION_HEREDOC)
 		return (O_RDONLY);
-	}
 	if (dir == DIRECTION_OUT)
 		return (O_CREAT | O_TRUNC | O_WRONLY);
 	if (dir == DIRECTION_APPEND)
 		return (O_CREAT | O_APPEND | O_WRONLY);
-	else
-		return (-1);
+	return (-1);
 }
 
 t_status	redirections(t_list *list, t_cmd *cmd)
 {
 	t_redirect	*redir;
 	int			flags;
-	bool		in_encountered;
 	int			open_fd;
 
-	in_encountered = false;
 	flags = 0;
 	while (list)
 	{
 		redir = list->content;
 		if (redir->is_ambiguous)
 			return (prefixed_error("ambiguous redirect\n"));
-		flags = get_flags(redir->direction, &in_encountered);
+		flags = get_flags(redir->direction);
 		open_fd = open(redir->file_path, flags, 0644);
 		if (open_fd < 0)
 			return (prefixed_perror(redir->file_path));
