@@ -1,6 +1,6 @@
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g -Wfatal-errors -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g -Wfatal-errors
 NAME = minishell
 CFILES = \
 	src/main.c \
