@@ -47,12 +47,6 @@ static void	*token_or_lstnew_back_error(t_token **token_ptr,
 	return (NULL);
 }
 
-static void	*content_error(t_list **tokens_ptr)
-{
-	dealloc_lst(tokens_ptr, dealloc_token);
-	return (perror_malloc_null());
-}
-
 static void	*unmatched_quote_error(t_list **tokens_ptr)
 {
 	g_status = 2;
@@ -100,8 +94,6 @@ t_list	*tokenize(char *line)
 			content = ft_substr(old_line_pos, 1, line - old_line_pos - 2);
 		else
 			content = ft_substr(old_line_pos, 0, line - old_line_pos);
-		if (!content)
-			return (content_error(&tokens));
 		token = alloc_token(token_type, content);
 		if (!token || !ft_lstnew_back(&tokens, token))
 			return (token_or_lstnew_back_error(&token, &tokens));
