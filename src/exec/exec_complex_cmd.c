@@ -39,6 +39,7 @@ A program is free software if users have all of these freedoms.
 
 #include "minishell.h"
 #include <errno.h>
+#include <sys/wait.h>
 
 static t_status	execute_child(int i_fd, t_list *cmds, t_lambda *lambda,
 					int tube[2])
