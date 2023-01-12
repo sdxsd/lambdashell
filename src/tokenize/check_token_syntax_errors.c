@@ -95,7 +95,7 @@ t_status	check_token_syntax_errors(t_list *tokens)
 	if (check_pipe_syntax_errors(tokens) == ERROR
 		|| check_redirection_syntax_errors(tokens) == ERROR)
 	{
-		status = 2;
+		g_status = 2;
 		prefixed_error("syntax error\n");
 		return (ERROR);
 	}

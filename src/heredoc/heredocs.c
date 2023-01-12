@@ -55,67 +55,53 @@ t_status	heredocs(t_list *tokens, t_shell *lambda)
 		{
 			prev = tokens;
 			tokens = tokens->next;
-
 			// skip_whitespace_tokens(&tokens);
-
 			// TODO: Maybe necessary to add check for token being NULL before ->content?
 			while (tokens && ((t_token *)tokens->content)->type == WHITESPACE)
 			{
 				prev = tokens;
 				tokens = tokens->next;
 			}
-
 			delimiter = alloc_token(UNQUOTED, ft_strdup(""));
 			if (!delimiter || !delimiter->content)
 			{
 				// TODO: Free
 				return (dealloc_token(&delimiter));
 			}
-
 			// TODO: This is pretty much just get_redirect() from parse.c
 			// Try to let this function and that function share this code.
 			while (tokens)
 			{
 				token = tokens->content;
-
 				if (!is_text_token(token))
 					break ;
-
 				if (token->type == SINGLE_QUOTED
 					|| token->type == DOUBLE_QUOTED)
 					delimiter->type = DOUBLE_QUOTED;
-
 				if (token->type == UNQUOTED)
 					appended = ft_strtrim_whitespace(token->content);
 				else
 					appended = ft_strdup(token->content);
 				delimiter->content = ft_strjoin_and_free_left_right(delimiter->content, &appended);
-
 				if (!delimiter->content)
 				{
 					// TODO: Free
 					return (ERROR);
 				}
-
 				next = tokens->next;
 				dealloc_token(&token);
 				tokens = next;
 			}
-
 			prev->next = next;
-
 			path = heredoc(delimiter, lambda);
 			ft_free(&delimiter->content);
-
 			if (!path)
 			{
 				// TODO: Free
 				return (dealloc_token(&delimiter));
 			}
-
 			delimiter->content = path;
 			delimiter->type = UNQUOTED;
-
 			prev->next = NULL;
 			if (!ft_lstnew_back(&prev, delimiter))
 			{
@@ -125,7 +111,6 @@ t_status	heredocs(t_list *tokens, t_shell *lambda)
 			}
 			prev->next->next = next; // TODO: Can `next` here ever be uninitialized?
 		}
-
 		if (tokens)
 			tokens = tokens->next;
 	}

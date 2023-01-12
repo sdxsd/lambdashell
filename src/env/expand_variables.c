@@ -63,7 +63,7 @@ static char	*get_appended(char *content, t_expansion_state state, char *substr_s
 			appended = ft_strdup("");
 	}
 	else if (state == EXPANSION_STATE_STATUS)
-		appended = ft_itoa(status);
+		appended = ft_itoa(g_status);
 	else
 		appended = ft_strdup("");
 	return (appended);
@@ -79,7 +79,6 @@ static bool	should_get_appended(char *content, char *substr_start,
 		state == EXPANSION_STATE_INVALID_VARIABLE) && \
 		(content - substr_start >= 2) && \
 		(content[-2] == '$');
-
 	return (content > substr_start
 		&& (*content == '$' || is_variable_end || is_status_or_invalid_end));
 }
@@ -92,16 +91,13 @@ static char	*get_expanded_string(char *content, t_shell *lambda)
 	char				*appended;
 
 	state = EXPANSION_STATE_NORMAL;
-
 	substr_start = content;
-
 	expanded_string = ft_strdup("");
 	if (!expanded_string)
 	{
 		// TODO: Free
 		return (NULL);
 	}
-
 	while (*content)
 	{
 		if (should_get_appended(content, substr_start, state))
@@ -113,17 +109,14 @@ static char	*get_expanded_string(char *content, t_shell *lambda)
 				return (NULL);
 			}
 			substr_start = content;
-
 			expanded_string = ft_strjoin_and_free_left_right(expanded_string, &appended);
 			if (!expanded_string)
 			{
 				// TODO: Free
 				return (NULL);
 			}
-
 			state = EXPANSION_STATE_NORMAL;
 		}
-
 		if (*content == '$')
 		{
 			if (is_valid_name_first_chr(*(content + 1)))
@@ -133,17 +126,14 @@ static char	*get_expanded_string(char *content, t_shell *lambda)
 			else if (!ft_isspace(*(content + 1)) && *(content + 1) != '\0')
 				state = EXPANSION_STATE_INVALID_VARIABLE;
 		}
-
 		content++;
 	}
-
 	appended = get_appended(content, state, substr_start, lambda);
 	if (!appended)
 	{
 		// TODO: Free
 		return (NULL);
 	}
-
 	return (ft_strjoin_and_free_left_right(expanded_string, &appended));
 }
 
@@ -172,6 +162,5 @@ t_status	expand_variables(t_list **tokens_list, t_shell *lambda)
 		}
 		tokens = tokens->next;
 	}
-
 	return (OK);
 }

@@ -45,11 +45,7 @@ static t_status	argless_cd(t_list *env)
 
 	home_path = env_get_val(env, "HOME");
 	if (!home_path)
-	{
-		// TODO: Maybe write a function for manual error messages for this
-		prefixed_error("cd: HOME not set\n");
-		return (ERROR);
-	}
+		return (prefixed_error("cd: HOME not set\n"));
 	if (chdir(home_path) == -1)
 		return (prefixed_perror("cd"));
 	return (OK);

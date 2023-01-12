@@ -14,6 +14,7 @@ CFILES = \
 	src/builtins/echo.c \
 	src/cosmetic/cosmetic.c \
 	src/dealloc/dealloc.c \
+	src/dealloc/dealloc_two.c \
 	src/debug/debug_print.c \
 	src/env/env_utils.c \
 	src/env/env.c \
@@ -21,6 +22,9 @@ CFILES = \
 	src/env/is_valid_identifier.c \
 	src/error/error.c \
 	src/exec/exec.c \
+	src/exec/exec_builtin.c \
+	src/exec/exec_utils.c \
+	src/exec/redirect.c \
 	src/exec/get_absolute_path_from_env.c \
 	src/heredoc/expand_heredoc_tokens.c \
 	src/heredoc/heredoc.c \

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   dealloc.c                                          :+:    :+:            */
+/*   exec_builtin.c                                     :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
@@ -39,82 +39,42 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-// TODO: Ungeneracize these functions so they all just get a double ptr directly
-
-t_status	dealloc_env_element(void *env_element_ptr)
+static t_status	find_and_run_builtin(t_cmd *cmd, t_shell *lambda)
 {
-	t_env_element	**_env_element_ptr;
-	t_env_element	*env_element;
-
-	_env_element_ptr = env_element_ptr;
-	env_element = *_env_element_ptr;
-	if (env_element)
+	if (ft_streq(cmd->path, "cd"))
+		g_status = cd(cmd, lambda);
+	else if (ft_streq(cmd->path, "echo"))
+		g_status = echo(cmd);
+	else if (ft_streq(cmd->path, "env"))
+		g_status = env(lambda);
+	else if (ft_streq(cmd->path, "exit"))
+		bltin_exit(cmd);
+	else if (ft_streq(cmd->path, "export"))
+		g_status = export(cmd, lambda);
+	else if (ft_streq(cmd->path, "pwd"))
+		g_status = pwd(lambda);
+	else if (ft_streq(cmd->path, "unset"))
+		g_status = unset(cmd, lambda);
+	else if (cmd->path)
 	{
-		ft_free(&env_element->key);
-		ft_free(&env_element->val);
-	}
-	ft_free(_env_element_ptr);
-	return (ERROR);
-}
-
-t_status	dealloc_token(void *token_ptr)
-{
-	t_token	**_token_ptr;
-	t_token	*token;
-
-	_token_ptr = token_ptr;
-	token = *_token_ptr;
-	if (token)
-		ft_free(&token->content);
-	ft_free(_token_ptr);
-	return (ERROR);
-}
-
-t_status	dealloc_ptr_array(void *ptr_array_ptr)
-{
-	void	***_ptr_array_ptr;
-	void	**ptr_array;
-
-	_ptr_array_ptr = ptr_array_ptr;
-	ptr_array = *_ptr_array_ptr;
-	if (ptr_array)
-	{
-		while (*ptr_array)
-		{
-			ft_free(ptr_array);
-			ptr_array++;
-		}
-	}
-	ft_free(_ptr_array_ptr);
-	return (ERROR);
-}
-
-t_status	dealloc_redirect(void *redirect_ptr)
-{
-	t_redirect	**_redirect_ptr;
-	t_redirect	*redirect;
-
-	_redirect_ptr = redirect_ptr;
-	redirect = *_redirect_ptr;
-	if (redirect)
-		ft_free(&redirect->file_path);
-	ft_free(_redirect_ptr);
-	return (ERROR);
-}
-
-t_status	dealloc_lst(t_list **lst, t_status (*del)(void*))
-{
-	t_list	*ptr;
-
-	if (lst == NULL)
+		g_status = 127;
+		prefixed_error(cmd->path);
+		if (env_get_val(lambda->env, "PATH"))
+			print_error(": command not found\n");
+		else
+			print_error(": No such file or directory\n");
 		return (ERROR);
-	while (*lst)
-	{
-		ptr = *lst;
-		*lst = ptr -> next;
-		if (del != NULL)
-			(*del)(&ptr -> content);
-		free(ptr);
 	}
-	return (ERROR);
+	return (OK);
+}
+
+t_status	execute_builtin(t_cmd *cmd, t_shell *lambda)
+{
+	if (redirections(cmd->redirections, cmd) == ERROR)
+	{
+		g_status = 1;
+		return (ERROR);
+	}
+	dup2_cmd(cmd);
+	return (find_and_run_builtin(cmd, lambda));
 }

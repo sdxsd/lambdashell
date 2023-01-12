@@ -47,6 +47,7 @@ static void	*token_or_lstnew_back_error(t_token **token_ptr,
 	return (NULL);
 }
 
+// TODO: perror_error()?
 static void	*content_error(t_list **tokens_ptr)
 {
 	dealloc_lst(tokens_ptr, dealloc_token);
@@ -55,7 +56,7 @@ static void	*content_error(t_list **tokens_ptr)
 
 static void	*unmatched_quote_error(t_list **tokens_ptr)
 {
-	status = 2;
+	g_status = 2;
 	prefixed_error("unexpected EOF while looking for matching quote\n");
 	dealloc_lst(tokens_ptr, dealloc_token);
 	return (NULL);

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   dealloc.c                                          :+:    :+:            */
+/*   exec.c                                             :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
@@ -38,83 +38,49 @@ A program is free software if users have all of these freedoms.
 */
 
 #include "../../include/minishell.h"
+#include <fcntl.h>
 
-// TODO: Ungeneracize these functions so they all just get a double ptr directly
-
-t_status	dealloc_env_element(void *env_element_ptr)
+int	get_flags(int dir, bool *input_encountered)
 {
-	t_env_element	**_env_element_ptr;
-	t_env_element	*env_element;
-
-	_env_element_ptr = env_element_ptr;
-	env_element = *_env_element_ptr;
-	if (env_element)
+	if ((dir == DIRECTION_IN && !(*input_encountered)) || \
+		dir == DIRECTION_HEREDOC)
 	{
-		ft_free(&env_element->key);
-		ft_free(&env_element->val);
+		*input_encountered = true;
+		return (O_RDONLY);
 	}
-	ft_free(_env_element_ptr);
-	return (ERROR);
+	if (dir == DIRECTION_OUT)
+		return (O_CREAT | O_TRUNC | O_WRONLY);
+	if (dir == DIRECTION_APPEND)
+		return (O_CREAT | O_APPEND | O_WRONLY);
+	else
+		return (-1);
 }
 
-t_status	dealloc_token(void *token_ptr)
+t_status	redirections(t_list *list, t_cmd *cmd)
 {
-	t_token	**_token_ptr;
-	t_token	*token;
+	t_redirect	*redir;
+	int			flags;
+	bool		in_encountered;
+	int			open_fd;
 
-	_token_ptr = token_ptr;
-	token = *_token_ptr;
-	if (token)
-		ft_free(&token->content);
-	ft_free(_token_ptr);
-	return (ERROR);
-}
-
-t_status	dealloc_ptr_array(void *ptr_array_ptr)
-{
-	void	***_ptr_array_ptr;
-	void	**ptr_array;
-
-	_ptr_array_ptr = ptr_array_ptr;
-	ptr_array = *_ptr_array_ptr;
-	if (ptr_array)
+	in_encountered = false;
+	flags = 0;
+	while (list)
 	{
-		while (*ptr_array)
-		{
-			ft_free(ptr_array);
-			ptr_array++;
-		}
+		redir = list->content;
+		if (redir->is_ambiguous)
+			return (prefixed_error("ambiguous redirect\n"));
+		flags = get_flags(redir->direction, &in_encountered);
+		open_fd = open(redir->file_path, flags, 0644);
+		if (open_fd < 0)
+			return (prefixed_perror(redir->file_path));
+		if (redir->direction == DIRECTION_IN || \
+			redir->direction == DIRECTION_HEREDOC)
+			cmd->input_fd = open_fd;
+		if (redir->direction == DIRECTION_OUT || \
+			redir->direction == DIRECTION_APPEND)
+			cmd->output_fd = open_fd;
+		list = list->next;
 	}
-	ft_free(_ptr_array_ptr);
-	return (ERROR);
-}
-
-t_status	dealloc_redirect(void *redirect_ptr)
-{
-	t_redirect	**_redirect_ptr;
-	t_redirect	*redirect;
-
-	_redirect_ptr = redirect_ptr;
-	redirect = *_redirect_ptr;
-	if (redirect)
-		ft_free(&redirect->file_path);
-	ft_free(_redirect_ptr);
-	return (ERROR);
-}
-
-t_status	dealloc_lst(t_list **lst, t_status (*del)(void*))
-{
-	t_list	*ptr;
-
-	if (lst == NULL)
-		return (ERROR);
-	while (*lst)
-	{
-		ptr = *lst;
-		*lst = ptr -> next;
-		if (del != NULL)
-			(*del)(&ptr -> content);
-		free(ptr);
-	}
-	return (ERROR);
+	return (OK);
 }

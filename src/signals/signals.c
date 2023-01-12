@@ -14,11 +14,10 @@
 #include <signal.h>
 
 /* NOTE: Global variable should be defined here. */
-int	status;
+int	g_status;
 
 // Are signals really this simple?: Yes.
-//
-void	SIGINT_alt(int sig)
+void	sigint_alt(int sig)
 {
 	if (sig == SIGINT)
 		ft_printf("\n");
@@ -28,13 +27,13 @@ void	sighandler(int sig)
 {
 	if (sig == SIGINT)
 	{
-		ft_printf("\n"); // TODO: Should this be printed to stderr?
+		ft_printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 	if (sig == SIGQUIT)
-		ft_printf("\n"); // TODO: Should this be printed to stderr?
+		ft_printf("\n");
 }
 
 void	disable_signals(void)

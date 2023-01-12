@@ -78,14 +78,13 @@ void			dbg_print_commands(t_list *cmds);
 t_status		add_or_change_env_element(char *env_line, t_list **env_ptr);
 t_status		init_env(char **env, t_list **lambda_env_ptr);
 char			*env_get_val(t_list *env, char *key);
-
 t_status		expand_variables(t_list **tokens_list, t_shell *lambda);
-
 char			**env_to_strings(t_list *env);
-
 bool			is_valid_name_chr(char chr);
 bool			is_valid_name_first_chr(char chr);
 bool			is_valid_identifier(char *name);
+size_t			get_key_length(char *str);
+t_status		add_env_element(char *key, char *val, t_list **env_ptr);
 
 /* ERROR */
 t_status		print_error(char *msg);
@@ -97,11 +96,16 @@ void			*perror_null(char *msg);
 /* EXEC */
 t_status		execute(t_shell *lambda);
 char			*get_absolute_path_from_env(char *name, t_list *env);
+t_status		redirections(t_list *list, t_cmd *cmd);
+t_status		execute_builtin(t_cmd *cmd, t_shell *lambda);
+void			dup2_cmd(t_cmd *cmd);
+int				get_wait_status(int stat_loc);
 
 /* HEREDOC */
 t_status		expand_heredoc_tokens(t_token *delimiter, t_list *tokens,
 					t_shell *lambda);
 char			*heredoc(t_token *delimiter, t_shell *lambda);
+void			cleanup_heredocs(void);
 t_status		heredocs(t_list *tokens, t_shell *lambda);
 
 /* NULL */

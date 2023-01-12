@@ -44,13 +44,12 @@ t_status	env(t_shell *lambda)
 	t_list			*env_list;
 	t_env_element	*env_element;
 
-	// TODO: Should this function ever return ERROR?
 	env_list = lambda->env;
 	while (env_list)
 	{
 		env_element = env_list->content;
 		if (env_element->val)
-			ft_printf("%s=%s\n", env_element->key, env_element->val);
+			printf("%s=%s\n", env_element->key, env_element->val);
 		env_list = env_list->next;
 	}
 	return (OK);

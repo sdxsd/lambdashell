@@ -63,12 +63,10 @@ static t_status	argless_export(t_shell *lambda)
 	t_list			*env_list;
 	t_env_element	*env_element;
 
-	// TODO: Should this function ever return ERROR?
 	env_list = lambda->env;
 	while (env_list)
 	{
 		env_element = env_list->content;
-		// TODO: This doesn't escape the dollar_in_env export
 		if (env_element->val == NULL)
 			ft_printf("declare -x %s\n", env_element->key);
 		else
@@ -106,7 +104,7 @@ t_status	export(t_cmd *cmd, t_shell *lambda)
 		return (argless_export(lambda));
 	if (export_valid_names(cmd->args, &lambda->env) == ERROR)
 	{
-		status = 1;
+		g_status = 1;
 		return (ERROR);
 	}
 	/* NOTE: Protect if add_or_change_env_element() goes wrong. */

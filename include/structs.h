@@ -41,6 +41,7 @@ A program is free software if users have all of these freedoms.
 # define STRUCTS_H
 
 # include <stdbool.h>
+# include "enums.h"
 # include "../libft/libft.h"
 
 typedef struct s_shell

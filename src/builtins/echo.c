@@ -39,27 +39,37 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-t_status echo(t_cmd *cmd)
+size_t	process_args(t_cmd *cmd, bool *nl)
+{
+	size_t	iter;
+	size_t	arg_iter;
+	size_t	first_arg_to_echo;
+
+	iter = 1;
+	arg_iter = 1;
+	first_arg_to_echo = 1;
+	while (cmd->args[arg_iter] && cmd->args[arg_iter][0] == '-')
+	{
+		while (cmd->args[arg_iter][iter] == 'n')
+			iter++;
+		if (iter == ft_strlen(cmd->args[arg_iter]))
+		{
+			first_arg_to_echo++;
+			*nl = FALSE;
+		}
+		arg_iter++;
+		iter = 1;
+	}
+	return (first_arg_to_echo);
+}
+
+t_status	echo(t_cmd *cmd)
 {
 	size_t	iter;
 	bool	nl;
 
 	nl = TRUE;
-	if (cmd->args[1] && cmd->args[1][0] == '-')
-	{
-		iter = 1;
-		while (cmd->args[1][iter] == 'n')
-			iter++;
-		if (iter == ft_strlen(cmd->args[1]))
-		{
-			iter = 2;
-			nl = FALSE;
-		}
-		else
-			iter = 1;
-	}
-	else
-		iter = 1;
+	iter = process_args(cmd, &nl);
 	while (cmd->args[iter] != NULL)
 	{
 		ft_putstr(cmd->args[iter]);

@@ -57,27 +57,25 @@ static void	prompt(t_shell *lambda)
 	ft_free(&lambda->line);
 	if (check_token_syntax_errors(lambda->tokens) == ERROR)
 		return ;
-	// dbg_print_tokens(lambda->tokens);
 	if (heredocs(lambda->tokens, lambda) == ERROR)
 		return ;
 	if (expand_variables(&lambda->tokens, lambda) == ERROR)
 		return ;
 	mark_ambiguous_redirects(lambda->tokens);
-	// dbg_print_tokens(lambda->tokens);
 	if (whitespace_split_tokens(&lambda->tokens) == ERROR)
 		return ;
 	lambda->cmds = parse(lambda->tokens, lambda->env);
 	if (!lambda->cmds)
 		return ;
-	// dbg_print_commands(lambda->cmds);
 	execute(lambda);
+	cleanup_heredocs();
 }
 
 static t_status	shell_init(char **env, t_shell *lambda)
 {
 	signal_handler_set();
 	ft_bzero(lambda, sizeof(*lambda));
-	status = OK;
+	g_status = OK;
 	if (init_env(env, &lambda->env) == ERROR)
 		return (ERROR);
 	if (update_cwd(lambda) == ERROR)
@@ -110,5 +108,5 @@ int	main(int argc, char **argv, char **env)
 	}
 	rl_clear_history();
 	dealloc_lambda(&lambda);
-	return (status);
+	return (g_status);
 }
