@@ -77,6 +77,7 @@ static bool	should_get_appended(char *content, char *substr_start,
 		state == EXPANSION_STATE_INVALID_VARIABLE) && \
 		(content - substr_start >= 2) && \
 		(content[-2] == '$');
+
 	return (content > substr_start
 		&& (*content == '$' || is_variable_end || is_status_or_invalid_end));
 }

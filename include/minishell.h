@@ -51,8 +51,6 @@ A program is free software if users have all of these freedoms.
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h>
-// # include <sys/wait.h>
-// # include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -74,7 +72,7 @@ A program is free software if users have all of these freedoms.
 // "Characters that aren't part of the standard ASCII table are forbidden."
 # define PREFIX "\u03BB"
 
-/* True definition in signals.c */
+/* Its definition is in signals/signals.c */
 extern int	g_status;
 
 #endif

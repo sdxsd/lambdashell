@@ -41,18 +41,18 @@ A program is free software if users have all of these freedoms.
 
 static char	*last_directory(char *line)
 {
-	char	*last;
-	size_t	i;
+	char	*leaf_dir;
+	size_t	character_index;
 
-	last = line;
-	i = 0;
-	while (i < ft_strlen(line))
+	leaf_dir = line;
+	character_index = 0;
+	while (character_index < ft_strlen(line))
 	{
-		if (line[i] == '/')
-			last = line + i + 1;
-		i++;
+		if (line[character_index] == '/')
+			leaf_dir = line + character_index + 1;
+		character_index++;
 	}
-	return (last);
+	return (leaf_dir);
 }
 
 // Prompt string one

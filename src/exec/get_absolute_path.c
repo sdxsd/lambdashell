@@ -44,21 +44,21 @@ static char	*path_join(char *dir, char *name)
 	return (ft_strjoin_array((char *[]){dir, "/", name, NULL}));
 }
 
-static char	*get_absolute_path_from_name(char *name, char **exec_direcs)
+static char	*get_absolute_path_from_name(char *name, char **path_parts)
 {
-	size_t	i;
+	size_t	path_part_index;
 	char	*absolute_path;
 
-	i = 0;
-	while (exec_direcs[i])
+	path_part_index = 0;
+	while (path_parts[path_part_index])
 	{
-		absolute_path = path_join(exec_direcs[i], name);
+		absolute_path = path_join(path_parts[path_part_index], name);
 		if (!absolute_path)
 			return (perror_malloc_null());
 		if (access(absolute_path, F_OK | X_OK) == FILE_EXISTS)
 			return (absolute_path);
 		ft_free(&absolute_path);
-		i++;
+		path_part_index++;
 	}
 	return (name);
 }
@@ -66,16 +66,16 @@ static char	*get_absolute_path_from_name(char *name, char **exec_direcs)
 char	*get_absolute_path(char *name, t_list *env)
 {
 	char	*path;
-	char	**exec_direcs;
+	char	**path_parts;
 	char	*absolute_path;
 
 	path = env_get_val(env, "PATH");
 	if (!path || ft_streq(name, ""))
 		return (name);
-	exec_direcs = ft_split(path, ':');
-	if (!exec_direcs)
+	path_parts = ft_split(path, ':');
+	if (!path_parts)
 		return (perror_malloc_null());
-	absolute_path = get_absolute_path_from_name(name, exec_direcs);
-	dealloc_ptr_array(&exec_direcs);
+	absolute_path = get_absolute_path_from_name(name, path_parts);
+	dealloc_ptr_array(&path_parts);
 	return (absolute_path);
 }
