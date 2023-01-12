@@ -171,10 +171,8 @@ static t_status	add_redirect(t_list **tokens_ptr, t_list **redirections_ptr)
 	if (!filepath)
 		return (ERROR);
 	redirect = alloc_redirect(filepath, direction, is_ambiguous);
-	if (!redirect)
-		return (dealloc_redirect(&redirect));
 	if (!redirect || !ft_lstnew_back(redirections_ptr, redirect))
-		return (ERROR);
+		return (dealloc_redirect(&redirect));
 	return (OK);
 }
 
