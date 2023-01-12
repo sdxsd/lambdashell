@@ -39,6 +39,12 @@ A program is free software if users have all of these freedoms.
 
 #include "minishell.h"
 
+/* Born to code */
+/* Source is a fuck */
+/* Fix em' all 1970 */
+/* I am UNIX man */
+/* 410,757,864,530 DELETED LINES */
+
 // These ones do exit in Bash: `exit 0`, `exit a 2`, `exit a b`
 // These ones don't exit in Bash: `exit 4 2`, `exit 4 a`
 void	bltin_exit(t_cmd *cmd)

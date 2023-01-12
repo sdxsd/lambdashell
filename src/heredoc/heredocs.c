@@ -90,6 +90,7 @@ t_status	heredocs(t_list *tokens, t_lambda *lambda)
 				dealloc_token(&token);
 				tokens = next;
 			}
+			ft_free(&prev->next);
 			prev->next = next;
 			path = heredoc(delimiter, lambda);
 			ft_free(&delimiter->content);
