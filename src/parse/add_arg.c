@@ -68,6 +68,9 @@ t_status	add_arg(t_list **arg_list_ptr, t_list **tokens_ptr)
 	if (!arg)
 		return (ERROR);
 	if (!ft_lstnew_back(arg_list_ptr, arg))
+	{
+		ft_free(&arg);
 		return (perror_malloc());
+	}
 	return (OK);
 }

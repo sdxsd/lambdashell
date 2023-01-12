@@ -94,17 +94,14 @@ t_status	heredocs(t_list *tokens, t_lambda *lambda)
 			path = heredoc(delimiter, lambda);
 			ft_free(&delimiter->content);
 			if (!path)
-			{
-				// TODO: Free
 				return (dealloc_token(&delimiter));
-			}
 			delimiter->content = path;
 			delimiter->type = UNQUOTED;
 			prev->next = NULL;
 			if (!ft_lstnew_back(&prev, delimiter))
 			{
 				prev->next = next;
-				// TODO: Free
+				perror_malloc();
 				return (dealloc_token(&delimiter));
 			}
 			prev->next->next = next; // TODO: Can `next` here ever be uninitialized?

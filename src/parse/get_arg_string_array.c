@@ -51,6 +51,11 @@ char	**get_arg_string_array(t_list *arg_list)
 	arg_strings_start = arg_strings;
 	if (arg_list->content)
 		*arg_strings = ft_strdup(arg_list->content);
+	if (!*arg_strings)
+	{
+		ft_free(&arg_strings);
+		return (perror_malloc_null());
+	}
 	arg_list = arg_list->next;
 	arg_strings++;
 	while (arg_list)

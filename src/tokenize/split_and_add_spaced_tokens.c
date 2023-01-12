@@ -43,7 +43,10 @@ static t_status	new_unquoted_token_back(t_list **current_ptr, char *content,
 	if (!token)
 		return (dealloc_token(&token));
 	if (!ft_lstnew_back(current_ptr, token))
-		return (dealloc_token(&token));
+	{
+		dealloc_token(&token);
+		return (perror_malloc());
+	}
 	return (OK);
 }
 

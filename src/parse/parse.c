@@ -54,6 +54,8 @@ static char	*get_path(char *arg_zero, t_list *env)
 {
 	char	*absolute_path;
 
+	if (!arg_zero)
+		return (perror_malloc_null());
 	if (is_builtin(arg_zero) || ft_strchr(arg_zero, '/'))
 		return (arg_zero);
 	absolute_path = get_absolute_path(arg_zero, env);
@@ -78,7 +80,7 @@ static t_status	add_next_cmd_part(t_list **tokens_ptr, t_cmd *cmd, t_list *env,
 	{
 		if (add_arg(arg_list_ptr, tokens_ptr) == ERROR)
 			return (ERROR);
-		cmd->path = get_path(ft_strdup((char *)(*arg_list_ptr)->content), env);
+		cmd->path = get_path(ft_strdup((*arg_list_ptr)->content), env);
 		if (!cmd->path)
 			return (ERROR);
 	}
@@ -122,9 +124,16 @@ t_list	*parse(t_list *tokens, t_list *env)
 	cmds = NULL;
 	while (tokens)
 	{
-		if (alloc_cmd(&cmd) == ERROR || fill_cmd(&tokens, env, cmd) == ERROR
-			|| !ft_lstnew_back(&cmds, cmd))
-			return (null(dealloc_cmd(&cmd)));
+		if (alloc_cmd(&cmd) == ERROR || fill_cmd(&tokens, env, cmd) == ERROR)
+		{
+			dealloc_cmd(&cmd);
+			return (NULL);
+		}
+		if (!ft_lstnew_back(&cmds, cmd))
+		{
+			dealloc_cmd(&cmd);
+			return (perror_malloc_null());
+		}
 	}
 	return (cmds);
 }

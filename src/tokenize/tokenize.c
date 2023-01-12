@@ -39,12 +39,20 @@ A program is free software if users have all of these freedoms.
 
 #include "minishell.h"
 
-static void	*token_or_lstnew_back_error(t_token **token_ptr,
-				t_list **tokens_ptr)
+static t_status	add_token(t_token **token_ptr, t_list **tokens_ptr)
 {
-	dealloc_token(token_ptr);
-	dealloc_lst(tokens_ptr, dealloc_token);
-	return (NULL);
+	if (!*token_ptr)
+	{
+		dealloc_lst(tokens_ptr, dealloc_token);
+		return (ERROR);
+	}
+	if (!ft_lstnew_back(tokens_ptr, *token_ptr))
+	{
+		dealloc_token(token_ptr);
+		dealloc_lst(tokens_ptr, dealloc_token);
+		return (perror_malloc());
+	}
+	return (OK);
 }
 
 static void	*unmatched_quote_error(t_list **tokens_ptr)
@@ -95,8 +103,8 @@ t_list	*tokenize(char *line)
 		else
 			content = ft_substr(old_line_pos, 0, line - old_line_pos);
 		token = alloc_token(token_type, content);
-		if (!token || !ft_lstnew_back(&tokens, token))
-			return (token_or_lstnew_back_error(&token, &tokens));
+		if (add_token(&token, &tokens) == ERROR)
+			return (NULL);
 	}
 	return (tokens);
 }
