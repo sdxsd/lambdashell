@@ -42,7 +42,7 @@ A program is free software if users have all of these freedoms.
 t_status	pwd(t_shell *lambda)
 {
 	if (lambda->cwd == NULL)
-		return (prefixed_perror("pwd()"));
+		return (prefixed_perror("pwd"));
 	ft_printf("%s\n", lambda->cwd);
 	return (OK);
 }

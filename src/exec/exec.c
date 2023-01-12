@@ -71,7 +71,7 @@ static t_status	execute_simple_command(t_cmd *cmd, t_shell *lambda)
 	{
 		pid = fork();
 		if (pid == FORK_FAILURE)
-			return (prefixed_perror("fork()"));
+			return (prefixed_perror("fork"));
 		if (pid == FORK_CHILD)
 		{
 			signal_handler_child_set();
@@ -127,10 +127,10 @@ static t_status	exec_complex_cmd(int i_fd, t_list *cmds, t_shell *lambda)
 	int		stat_loc;
 
 	if (cmds->next && pipe(tube) == -1)
-		return (prefixed_perror("pipe()"));
+		return (prefixed_perror("pipe"));
 	pid = fork();
 	if (pid == FORK_FAILURE)
-		return (prefixed_perror("fork()"));
+		return (prefixed_perror("fork"));
 	if (pid == FORK_CHILD)
 		if (execute_child(i_fd, cmds, lambda, tube) == ERROR)
 			dealloc_and_exit(g_status, lambda);
@@ -142,7 +142,7 @@ static t_status	exec_complex_cmd(int i_fd, t_list *cmds, t_shell *lambda)
 	if (cmds->next && exec_complex_cmd(tube[READ], cmds->next, lambda) != OK)
 	{
 		if (errno != EAGAIN)
-			return (prefixed_perror("exec_complex_cmd()"));
+			return (prefixed_perror("exec_complex_cmd"));
 		return (ERROR);
 	}
 	waitpid(pid, &stat_loc, 0);

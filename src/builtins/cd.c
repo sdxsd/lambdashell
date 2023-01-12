@@ -47,7 +47,7 @@ static t_status	argless_cd(t_list *env)
 	if (!home_path)
 		return (prefixed_error("cd: HOME not set\n"));
 	if (chdir(home_path) == -1)
-		return (prefixed_perror("chdir()"));
+		return (prefixed_perror("chdir"));
 	return (OK);
 }
 
@@ -59,7 +59,7 @@ t_status	cd(t_cmd *cmd, t_shell *lambda)
 			return (ERROR);
 	}
 	else if (chdir(cmd->args[1]) == -1)
-		return (prefixed_perror("chdir()"));
+		return (prefixed_perror("chdir"));
 	if (update_cwd(lambda) == ERROR)
 		return (ERROR);
 	return (OK);

@@ -44,6 +44,6 @@ t_status	update_cwd(t_shell *lambda)
 	ft_free(&lambda->cwd);
 	lambda->cwd = getcwd(NULL, 0);
 	if (!lambda->cwd)
-		return (prefixed_perror("getcwd()"));
+		return (prefixed_perror("getcwd"));
 	return (OK);
 }
