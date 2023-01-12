@@ -69,6 +69,7 @@ t_status		dealloc_ptr_array(void *ptr_array_ptr);
 t_status		dealloc_redirect(void *redirect_ptr);
 t_status		dealloc_lst(t_list **lst, t_status (*del)(void*));
 t_status		dealloc_lambda(t_shell *lambda);
+void			dealloc_and_exit(t_status status, t_shell *lambda);
 
 /* DEBUG */
 void			dbg_print_tokens(t_list *tokens);

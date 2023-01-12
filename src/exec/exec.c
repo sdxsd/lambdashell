@@ -76,10 +76,7 @@ static t_status	execute_simple_command(t_cmd *cmd, t_shell *lambda)
 		{
 			signal_handler_child_set();
 			if (execute_command(cmd, lambda) == ERROR)
-			{
-				dealloc_lambda(lambda);
-				exit(g_status);
-			}
+				dealloc_and_exit(g_status, lambda);
 		}
 		disable_signals();
 		waitpid(pid, &stat_loc, 0);
@@ -112,18 +109,10 @@ static t_status	execute_child(int i_fd, t_list *cmds, t_shell *lm, int tube[2])
 	if (cmds->next)
 		cmd->output_fd = tube[WRITE];
 	if (cmd->path && ft_strchr(cmd->path, '/'))
-	{
 		if (execute_command(cmd, lm) == ERROR)
-		{
-			dealloc_lambda(lm);
-			exit(g_status);
-		}
-	}
+			dealloc_and_exit(g_status, lm);
 	if (execute_builtin(cmd, lm) == ERROR)
-	{
-		dealloc_lambda(lm);
-		exit(g_status);
-	}
+		dealloc_and_exit(g_status, lm);
 	exit(g_status);
 	return (OK);
 }
@@ -145,10 +134,7 @@ static t_status	exec_complex_cmd(int i_fd, t_list *cmds, t_shell *lambda)
 	{
 		signal_handler_child_set();
 		if (execute_child(i_fd, cmds, lambda, tube) == ERROR)
-		{
-			dealloc_lambda(lambda);
-			exit (g_status);
-		}
+			dealloc_and_exit(g_status, lambda);
 	}
 	disable_signals();
 	if (cmds->next)

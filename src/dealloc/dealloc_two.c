@@ -65,3 +65,9 @@ t_status	dealloc_lambda(t_shell *lambda)
 	ft_free(&lambda->cwd);
 	return (ERROR);
 }
+
+void	dealloc_and_exit(t_status status, t_shell *lambda)
+{
+	dealloc_lambda(lambda);
+	exit (status);
+}
