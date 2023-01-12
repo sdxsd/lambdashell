@@ -59,3 +59,9 @@ t_status	perror_error(char *msg)
 	perror(msg);
 	return (ERROR);
 }
+
+void	*perror_null(char *msg)
+{
+	perror(msg);
+	return (NULL);
+}
