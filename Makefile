@@ -14,7 +14,7 @@ CFILES = \
 	src/builtins/echo.c \
 	src/cosmetic/cosmetic.c \
 	src/dealloc/dealloc.c \
-	src/dealloc/dealloc_two.c \
+	src/dealloc/dealloc_utils.c \
 	src/debug/debug_print.c \
 	src/env/env_utils.c \
 	src/env/env.c \
