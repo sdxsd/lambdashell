@@ -69,6 +69,7 @@ else
 LIB += -L $(shell brew --prefix readline)/lib -lreadline
 INCLUDES += -I $(shell brew --prefix readline)/include
 endif
+INCLUDES += -Iinclude
 
 all: $(NAME)
 

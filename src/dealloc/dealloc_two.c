@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   dealloc.c                                          :+:    :+:            */
+/*   dealloc_two.c                                      :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: wmaguire <wmaguire@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
@@ -37,7 +37,7 @@ The definition of Free Software is as follows:
 A program is free software if users have all of these freedoms.
 */
 
-#include "../../include/minishell.h"
+#include "minishell.h"
 
 t_status	dealloc_cmd(void *cmd_ptr)
 {

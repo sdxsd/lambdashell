@@ -37,7 +37,7 @@ The definition of Free Software is as follows:
 A program is free software if users have all of these freedoms.
 */
 
-#include "../../include/minishell.h"
+#include "minishell.h"
 
 t_status	heredocs(t_list *tokens, t_shell *lambda)
 {

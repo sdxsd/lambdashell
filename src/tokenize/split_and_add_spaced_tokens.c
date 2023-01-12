@@ -32,7 +32,7 @@ The definition of Free Software is as follows:
 A program is free software if users have all of these freedoms.
 */
 
-#include "../../include/minishell.h"
+#include "minishell.h"
 
 static t_status	new_unquoted_token_back(t_list **current_ptr, char *content,
 				t_token_type token_type)

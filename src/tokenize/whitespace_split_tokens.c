@@ -32,7 +32,7 @@ The definition of Free Software is as follows:
 A program is free software if users have all of these freedoms.
 */
 
-#include "../../include/minishell.h"
+#include "minishell.h"
 
 static void	update_prev_pointer_to_next(t_list *prev, t_list *current,
 				t_list *next, t_list **tokens_ptr)
