@@ -61,6 +61,7 @@ static t_status	execute_command(t_cmd *cmd, t_shell *lambda)
 	return (OK);
 }
 
+// TODO: Check for memory leak in child processes.
 static t_status	execute_simple_command(t_cmd *cmd, t_shell *lambda)
 {
 	pid_t	pid;
@@ -76,7 +77,7 @@ static t_status	execute_simple_command(t_cmd *cmd, t_shell *lambda)
 			signal_handler_child_set();
 			if (execute_command(cmd, lambda) == ERROR)
 			{
-				// TODO: Should anything be freed before this is called?
+				dealloc_lambda(lambda);
 				exit(g_status);
 			}
 		}
@@ -89,13 +90,10 @@ static t_status	execute_simple_command(t_cmd *cmd, t_shell *lambda)
 	{
 		if (execute_builtin(cmd, lambda) == ERROR)
 		{
-			// TODO: Can this be moved to the end of execute_builtin()?
 			dup2(lambda->stdin_fd, STDIN_FILENO);
 			dup2(lambda->stdout_fd, STDOUT_FILENO);
 			return (ERROR);
 		}
-		// TODO: Can this be moved to the end of execute_builtin()?
-		// TODO: Should these both *always* happen?
 		dup2(lambda->stdin_fd, STDIN_FILENO);
 		dup2(lambda->stdout_fd, STDOUT_FILENO);
 	}
@@ -130,7 +128,9 @@ static t_status	execute_child(int i_fd, t_list *cmds, t_shell *lm, int tube[2])
 	return (OK);
 }
 
-static t_status	execute_complex_command(int i_fd, t_list *cmds, t_shell *lambda)
+// TODO: Right now only the parent is closing the read end!!
+// Double check if this is an issue.
+static t_status	exec_complex_cmd(int i_fd, t_list *cmds, t_shell *lambda)
 {
 	int		tube[2];
 	pid_t	pid;
@@ -146,15 +146,16 @@ static t_status	execute_complex_command(int i_fd, t_list *cmds, t_shell *lambda)
 		signal_handler_child_set();
 		if (execute_child(i_fd, cmds, lambda, tube) == ERROR)
 		{
-			// TODO: ??
+			dealloc_lambda(lambda);
+			exit (g_status);
 		}
 	}
 	disable_signals();
 	if (cmds->next)
 		close(tube[WRITE]);
 	if (i_fd != -1)
-		close(i_fd); // TODO: Right now only the parent is closing the read end!!
-	if (cmds->next && execute_complex_command(tube[READ], cmds->next, lambda) != OK)
+		close(i_fd);
+	if (cmds->next && exec_complex_cmd(tube[READ], cmds->next, lambda) != OK)
 	{
 		if (errno != EAGAIN)
 			return (prefixed_perror("execute_complex_command()"));
@@ -169,6 +170,6 @@ static t_status	execute_complex_command(int i_fd, t_list *cmds, t_shell *lambda)
 t_status	execute(t_shell *lambda)
 {
 	if (lambda->cmds->next)
-		return (execute_complex_command(-1, lambda->cmds, lambda));
+		return (exec_complex_cmd(-1, lambda->cmds, lambda));
 	return (execute_simple_command(lambda->cmds->content, lambda));
 }
