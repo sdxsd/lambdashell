@@ -48,7 +48,7 @@ static char	*get_redirect_filepath(t_list **tokens_ptr)
 	token = (*tokens_ptr)->content;
 	filepath = ft_strdup("");
 	if (!filepath)
-		return (NULL);
+		return (perror_malloc_null());
 	*tokens_ptr = (*tokens_ptr)->next;
 	skip_whitespace_tokens(tokens_ptr);
 	while (*tokens_ptr)
@@ -62,7 +62,7 @@ static char	*get_redirect_filepath(t_list **tokens_ptr)
 			content = ft_strdup(token->content);
 		filepath = ft_strjoin_and_free_left_right(filepath, &content);
 		if (!filepath)
-			return (NULL);
+			return (perror_malloc_null());
 		*tokens_ptr = (*tokens_ptr)->next;
 	}
 	return (filepath);

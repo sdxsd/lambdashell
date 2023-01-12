@@ -47,7 +47,7 @@ static char	*get_line(t_lambda *lambda)
 		rl_outstream = stdin;
 	readline_str = get_readline_str(lambda);
 	if (!readline_str)
-		return (NULL);
+		return (perror_malloc_null());
 	lambda->line = readline(readline_str);
 	ft_free(&readline_str);
 	return (lambda->line);

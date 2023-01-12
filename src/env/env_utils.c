@@ -70,9 +70,9 @@ char	**env_to_strings(t_list *env)
 	size_t			index;
 
 	env_strings = ft_calloc(ft_lstsize(env) + 1, sizeof(*env_strings));
-	env_strings[ft_lstsize(env)] = NULL;
 	if (!env_strings)
-		return (NULL);
+		return (perror_malloc_null());
+	env_strings[ft_lstsize(env)] = NULL;
 	index = 0;
 	while (env)
 	{

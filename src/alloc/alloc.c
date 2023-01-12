@@ -49,10 +49,10 @@ t_token	*alloc_token(t_token_type type, char *content)
 	t_token	*token;
 
 	if (!content)
-		return (NULL);
+		return (perror_malloc_null());
 	token = ft_calloc(1, sizeof(*token));
 	if (!token)
-		return (NULL);
+		return (perror_malloc_null());
 	token->type = type;
 	token->content = content;
 	return (token);
@@ -75,7 +75,7 @@ t_redirect	*alloc_redirect(char *filepath, t_direction direction,
 
 	redirect = ft_calloc(1, sizeof(*redirect));
 	if (!redirect)
-		return (NULL);
+		return (perror_malloc_null());
 	redirect->filepath = filepath;
 	redirect->direction = direction;
 	redirect->is_ambiguous = is_ambiguous;

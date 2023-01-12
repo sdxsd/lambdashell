@@ -46,7 +46,7 @@ static char	*get_arg(t_list **tokens_ptr)
 
 	arg = ft_strdup("");
 	if (!arg)
-		return (NULL);
+		return (perror_malloc_null());
 	while (*tokens_ptr)
 	{
 		token = (*tokens_ptr)->content;
@@ -54,7 +54,7 @@ static char	*get_arg(t_list **tokens_ptr)
 			break ;
 		arg = ft_strjoin_and_free_left(arg, token->content);
 		if (!arg)
-			return (NULL);
+			return (perror_malloc_null());
 		*tokens_ptr = (*tokens_ptr)->next;
 	}
 	return (arg);
@@ -65,7 +65,9 @@ t_status	add_arg(t_list **arg_list_ptr, t_list **tokens_ptr)
 	char	*arg;
 
 	arg = get_arg(tokens_ptr);
-	if (!arg || !ft_lstnew_back(arg_list_ptr, arg))
+	if (!arg)
 		return (ERROR);
+	if (!ft_lstnew_back(arg_list_ptr, arg))
+		return (perror_malloc());
 	return (OK);
 }
