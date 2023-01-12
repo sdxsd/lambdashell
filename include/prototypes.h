@@ -117,6 +117,9 @@ t_status		heredocs(t_list *tokens, t_shell *lambda);
 void			*null(t_status _);
 
 /* PARSE */
+t_status		add_arg(t_list **arg_list_ptr, t_list **tokens_ptr);
+t_status		add_redirect(t_list **tokens_ptr, t_list **redirections_ptr);
+char			**get_arg_string_array(t_list *arg_list);
 t_list			*parse(t_list *tokens, t_list *env);
 
 /* SIGNALS */

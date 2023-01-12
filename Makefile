@@ -33,6 +33,9 @@ CFILES = \
 	src/heredoc/heredoc.c \
 	src/heredoc/heredocs.c \
 	src/misc/null.c \
+	src/parse/add_arg.c \
+	src/parse/add_redirect.c \
+	src/parse/get_arg_string_array.c \
 	src/parse/parse.c \
 	src/signals/signals.c \
 	src/stop/stop.c \

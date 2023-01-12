@@ -39,61 +39,6 @@ A program is free software if users have all of these freedoms.
 
 #include "../../include/minishell.h"
 
-static char	**get_arg_string_array(t_list *arg_list)
-{
-	char	**arg_strings;
-	char	**arg_strings_start;
-
-	arg_strings = ft_calloc(ft_lstsize(arg_list) + 1,
-			sizeof(*arg_strings));
-	if (!arg_strings)
-		return (perror_malloc_null());
-	arg_strings_start = arg_strings;
-	if (arg_list->content)
-		*arg_strings = ft_strdup(arg_list->content);
-	arg_list = arg_list->next;
-	arg_strings++;
-	while (arg_list)
-	{
-		*arg_strings = arg_list->content;
-		arg_strings++;
-		arg_list = arg_list->next;
-	}
-	*arg_strings = NULL;
-	return (arg_strings_start);
-}
-
-static char	*get_arg(t_list **tokens_ptr)
-{
-	char	*arg;
-	t_token	*token;
-
-	arg = ft_strdup("");
-	if (!arg)
-		return (NULL);
-	while (*tokens_ptr)
-	{
-		token = (*tokens_ptr)->content;
-		if (!is_text_token(token))
-			break ;
-		arg = ft_strjoin_and_free_left(arg, token->content);
-		if (!arg)
-			return (NULL);
-		*tokens_ptr = (*tokens_ptr)->next;
-	}
-	return (arg);
-}
-
-static t_status	add_arg(t_list **arg_list_ptr, t_list **tokens_ptr)
-{
-	char	*arg;
-
-	arg = get_arg(tokens_ptr);
-	if (!arg || !ft_lstnew_back(arg_list_ptr, arg))
-		return (ERROR);
-	return (OK);
-}
-
 static bool	is_builtin(char *path)
 {
 	return (ft_streq(path, "cd")
@@ -116,64 +61,6 @@ static char	*get_path(char *arg_zero, t_list *env)
 		return (arg_zero);
 	ft_free(&arg_zero);
 	return (absolute_path);
-}
-
-static t_direction	get_direction(t_token *token)
-{
-	if (*token->content == '<' && token->content[1] == '<')
-		return (DIRECTION_HEREDOC);
-	if (*token->content == '>' && token->content[1] == '>')
-		return (DIRECTION_APPEND);
-	if (*token->content == '<')
-		return (DIRECTION_IN);
-	return (DIRECTION_OUT);
-}
-
-static char	*get_redirect_filepath(t_list **tokens_ptr)
-{
-	t_token		*token;
-	char		*filepath;
-	char		*content;
-
-	token = (*tokens_ptr)->content;
-	filepath = ft_strdup("");
-	if (!filepath)
-		return (NULL);
-	*tokens_ptr = (*tokens_ptr)->next;
-	skip_whitespace_tokens(tokens_ptr);
-	while (*tokens_ptr)
-	{
-		token = (*tokens_ptr)->content;
-		if (!is_text_token(token))
-			break ;
-		if (token->type == UNQUOTED)
-			content = ft_strtrim_whitespace(token->content);
-		else
-			content = ft_strdup(token->content);
-		filepath = ft_strjoin_and_free_left_right(filepath, &content);
-		if (!filepath)
-			return (NULL);
-		*tokens_ptr = (*tokens_ptr)->next;
-	}
-	return (filepath);
-}
-
-static t_status	add_redirect(t_list **tokens_ptr, t_list **redirections_ptr)
-{
-	t_direction	direction;
-	bool		is_ambiguous;
-	char		*filepath;
-	t_redirect	*redirect;
-
-	direction = get_direction((*tokens_ptr)->content);
-	is_ambiguous = ((t_token *)(*tokens_ptr)->content)->is_ambiguous;
-	filepath = get_redirect_filepath(tokens_ptr);
-	if (!filepath)
-		return (ERROR);
-	redirect = alloc_redirect(filepath, direction, is_ambiguous);
-	if (!redirect || !ft_lstnew_back(redirections_ptr, redirect))
-		return (dealloc_redirect(&redirect));
-	return (OK);
 }
 
 static t_status	add_next_cmd_part(t_list **tokens_ptr, t_cmd *cmd, t_list *env,
