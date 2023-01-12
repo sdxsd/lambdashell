@@ -118,8 +118,10 @@ static t_status	execute_child(int i_fd, t_list *cmds, t_shell *lm, int tube[2])
 	return (OK);
 }
 
-static t_status	forkxec(int *p, int i_fd, t_list *cmds, t_shell *lm, int *t)
+static t_status	forkxec(int *p, int i_fd, t_list *cmds, t_shell *lm)
 {
+	int	t[2];
+
 	if (cmds->next && pipe(t) == -1)
 		return (prefixed_perror("execute_complex_command()"));
 	*p = fork();
@@ -133,25 +135,25 @@ static t_status	forkxec(int *p, int i_fd, t_list *cmds, t_shell *lm, int *t)
 		close(t[WRITE]);
 	if (i_fd != -1)
 		close(i_fd);
-	return (OK);
-}
-
-// TODO: Right now only the parent is closing the read end!!
-// Double check if this is an issue.
-static t_status	exec_complex_cmd(int i_fd, t_list *cmds, t_shell *lambda)
-{
-	pid_t	pid;
-	int		stat_loc;
-	int		tube[2];
-
-	if (forkxec(&pid, i_fd, cmds, lambda, tube) == ERROR)
-		return (ERROR);
-	if (cmds->next && exec_complex_cmd(tube[READ], cmds->next, lambda) != OK)
+	if (cmds->next && exec_complex_cmd(t[READ], cmds->next, lm) != OK)
 	{
 		if (errno != EAGAIN)
 			return (prefixed_perror("execute_complex_command()"));
 		return (ERROR);
 	}
+	return (OK);
+}
+
+// TODO: Right now only the parent is closing the read end!!
+// Double check if this is an issue.
+t_status	exec_complex_cmd(int i_fd, t_list *cmds, t_shell *lambda)
+{
+	pid_t	pid;
+	int		stat_loc;
+	int		tube[2];
+
+	if (forkxec(&pid, i_fd, cmds, lambda) == ERROR)
+		return (ERROR);
 	waitpid(pid, &stat_loc, 0);
 	if (!cmds->next)
 		g_status = get_wait_status(stat_loc);
