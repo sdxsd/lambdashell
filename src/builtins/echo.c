@@ -39,45 +39,44 @@ A program is free software if users have all of these freedoms.
 
 #include "minishell.h"
 
-size_t	process_args(t_cmd *cmd, bool *nl)
+static size_t	get_first_arg_index_to_echo(t_cmd *cmd, bool *print_newline_ptr)
 {
-	size_t	iter;
-	size_t	arg_iter;
-	size_t	first_arg_to_echo;
+	size_t	character_index;
+	size_t	arg_index;
+	size_t	first_arg_index_to_echo;
 
-	iter = 1;
-	arg_iter = 1;
-	first_arg_to_echo = 1;
-	while (cmd->args[arg_iter] && cmd->args[arg_iter][0] == '-')
+	arg_index = 1;
+	first_arg_index_to_echo = 1;
+	while (cmd->args[arg_index] && cmd->args[arg_index][0] == '-')
 	{
-		while (cmd->args[arg_iter][iter] == 'n')
-			iter++;
-		if (iter == ft_strlen(cmd->args[arg_iter]))
+		character_index = 1;
+		while (cmd->args[arg_index][character_index] == 'n')
+			character_index++;
+		if (character_index == ft_strlen(cmd->args[arg_index]))
 		{
-			first_arg_to_echo++;
-			*nl = FALSE;
+			first_arg_index_to_echo++;
+			*print_newline_ptr = false;
 		}
-		arg_iter++;
-		iter = 1;
+		arg_index++;
 	}
-	return (first_arg_to_echo);
+	return (first_arg_index_to_echo);
 }
 
 t_status	echo(t_cmd *cmd)
 {
-	size_t	iter;
-	bool	nl;
+	size_t	arg_index;
+	bool	print_newline;
 
-	nl = TRUE;
-	iter = process_args(cmd, &nl);
-	while (cmd->args[iter])
+	print_newline = true;
+	arg_index = get_first_arg_index_to_echo(cmd, &print_newline);
+	while (cmd->args[arg_index])
 	{
-		ft_putstr(cmd->args[iter]);
-		if (cmd->args[iter + 1])
+		ft_putstr(cmd->args[arg_index]);
+		if (cmd->args[arg_index + 1])
 			ft_putchar(' ');
-		iter++;
+		arg_index++;
 	}
-	if (nl == TRUE)
+	if (print_newline)
 		ft_putstr("\n");
 	return (0);
 }
