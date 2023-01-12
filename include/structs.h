@@ -93,4 +93,11 @@ typedef struct s_ambiguous_state
 	bool	seen_env_space;
 }	t_ambiguous_state;
 
+typedef struct s_expand_state
+{
+	t_expansion_state	state;
+	char				*substr_start;
+	char				*expanded_string;
+}	t_expand_state;
+
 #endif

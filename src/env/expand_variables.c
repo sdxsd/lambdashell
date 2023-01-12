@@ -67,8 +67,52 @@ static char	*get_appended(char *content, t_expansion_state state,
 	return (appended);
 }
 
-static bool	should_get_appended(char *content, char *substr_start,
-				t_expansion_state state)
+static char	*strjoin_appended(char *content, t_expand_state *state,
+				t_lambda *lambda)
+{
+	char	*appended;
+
+	appended = get_appended(content, state->state, state->substr_start, lambda);
+	if (!appended)
+	{
+		ft_free(&state->expanded_string);
+		return (perror_malloc_null());
+	}
+	return (ft_strjoin_and_free_left_right(state->expanded_string, &appended));
+}
+
+static void	update_state_with_next_character(t_expand_state *expand_state,
+				char next_character)
+{
+	if (is_valid_name_first_chr(next_character))
+		expand_state->state = EXPANSION_STATE_VARIABLE;
+	else if (next_character == '?')
+		expand_state->state = EXPANSION_STATE_STATUS;
+	else if (!ft_isspace(next_character) && next_character != '\0')
+		expand_state->state = EXPANSION_STATE_INVALID_VARIABLE;
+}
+
+static t_status	append(char *content, t_expand_state *state, t_lambda *lambda)
+{
+	char	*appended;
+
+	appended = get_appended(content, state->state, state->substr_start, lambda);
+	if (!appended)
+	{
+		ft_free(&state->expanded_string);
+		return (perror_malloc());
+	}
+	state->substr_start = content;
+	state->expanded_string = ft_strjoin_and_free_left_right(
+			state->expanded_string, &appended);
+	if (!state->expanded_string)
+		return (perror_malloc());
+	state->state = EXPANSION_STATE_NORMAL;
+	return (OK);
+}
+
+static bool	should_get_appended(char *content, t_expansion_state state,
+				char *substr_start)
 {
 	const bool	is_variable_end = \
 		state == EXPANSION_STATE_VARIABLE && !is_valid_name_chr(*content);
@@ -84,72 +128,48 @@ static bool	should_get_appended(char *content, char *substr_start,
 
 static char	*get_expanded_string(char *content, t_lambda *lambda)
 {
-	t_expansion_state	state;
-	char				*substr_start;
-	char				*expanded_string;
-	char				*appended;
+	t_expand_state	state;
 
-	state = EXPANSION_STATE_NORMAL;
-	substr_start = content;
-	expanded_string = ft_strdup("");
-	if (!expanded_string)
+	state.state = EXPANSION_STATE_NORMAL;
+	state.substr_start = content;
+	state.expanded_string = ft_strdup("");
+	if (!state.expanded_string)
 		return (perror_malloc_null());
 	while (*content)
 	{
-		if (should_get_appended(content, substr_start, state))
+		if (should_get_appended(content, state.state, state.substr_start)
+			&& append(content, &state, lambda) == ERROR)
 		{
-			appended = get_appended(content, state, substr_start, lambda);
-			if (!appended)
-			{
-				ft_free(&expanded_string);
-				return (perror_malloc_null());
-			}
-			substr_start = content;
-			expanded_string = ft_strjoin_and_free_left_right(expanded_string, &appended);
-			if (!expanded_string)
-				return (perror_malloc_null());
-			state = EXPANSION_STATE_NORMAL;
+			ft_free(&state.expanded_string);
+			return (NULL);
 		}
 		if (*content == '$')
-		{
-			if (is_valid_name_first_chr(*(content + 1)))
-				state = EXPANSION_STATE_VARIABLE;
-			else if (*(content + 1) == '?')
-				state = EXPANSION_STATE_STATUS;
-			else if (!ft_isspace(*(content + 1)) && *(content + 1) != '\0')
-				state = EXPANSION_STATE_INVALID_VARIABLE;
-		}
+			update_state_with_next_character(&state, content[1]);
 		content++;
 	}
-	appended = get_appended(content, state, substr_start, lambda);
-	if (!appended)
-	{
-		ft_free(&expanded_string);
-		return (perror_malloc_null());
-	}
-	return (ft_strjoin_and_free_left_right(expanded_string, &appended));
+	return (strjoin_appended(content, &state, lambda));
 }
 
-t_status	expand_variables(t_list **tokens_list, t_lambda *lambda)
+static bool	can_contain_whitespace(t_token_type type)
+{
+	return (type == UNQUOTED || type == DOUBLE_QUOTED);
+}
+
+t_status	expand_variables(t_list **tokens_ptr, t_lambda *lambda)
 {
 	t_list	*tokens;
 	t_token	*token;
 	char	*expanded_string;
 
-	tokens = *tokens_list;
+	tokens = *tokens_ptr;
 	while (tokens)
 	{
 		token = tokens->content;
-		// TODO: Write. NOTE: What does this mean?
-		if (token->type == UNQUOTED || token->type == DOUBLE_QUOTED)
+		if (can_contain_whitespace(token->type))
 		{
 			expanded_string = get_expanded_string(token->content, lambda);
 			if (!expanded_string)
-			{
-				// TODO: Move this dealloc to a parent function.
-				// Don't forget that tokens_list might need to be changed to &tokens_list in the parent.
-				return (dealloc_lst(tokens_list, dealloc_token));
-			}
+				return (ERROR);
 			ft_free(&token->content);
 			token->content = expanded_string;
 		}

@@ -80,7 +80,7 @@ void			dbg_print_commands(t_list *cmds);
 t_status		add_or_change_env_element(char *env_line, t_list **env_ptr);
 t_status		init_env(char **env, t_list **lambda_env_ptr);
 char			*env_get_val(t_list *env, char *key);
-t_status		expand_variables(t_list **tokens_list, t_lambda *lambda);
+t_status		expand_variables(t_list **tokens_ptr, t_lambda *lambda);
 char			**env_to_strings(t_list *env);
 bool			is_valid_name_chr(char chr);
 bool			is_valid_name_first_chr(char chr);
