@@ -46,8 +46,8 @@ static t_status	resolve_and_add_delimiter(t_token *delimiter, t_list *prev,
 
 	path = heredoc(delimiter, lambda);
 	ft_free(&delimiter->content);
-	if (!path)
-		return (dealloc_token(&delimiter));
+	if (!path) // TODO: RE-ADD dealloc
+		return (ERROR);
 	delimiter->content = path;
 	delimiter->type = UNQUOTED;
 	prev->next = NULL;
@@ -128,10 +128,12 @@ t_status	heredocs(t_list *tokens, t_lambda *lambda)
 			delimiter = alloc_token(UNQUOTED, ft_strdup(""));
 			if (!delimiter || !delimiter->content)
 				return (dealloc_token(&delimiter));
-			fill_delimiter(&tokens, delimiter, &next);
+			if (fill_delimiter(&tokens, delimiter, &next) == ERROR)
+				return (dealloc_token(&delimiter));
 			ft_free(&prev->next);
 			prev->next = next;
-			resolve_and_add_delimiter(delimiter, prev, next, lambda);
+			if (resolve_and_add_delimiter(delimiter, prev, next, lambda) == ERROR)
+				return (dealloc_token(&delimiter));
 			prev->next->next = next;
 		}
 		if (tokens)

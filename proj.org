@@ -1,5 +1,9 @@
 #+TITLE: Minishell
 
+* Notes:
+Fix signals in heredocs. 
+^C needs to exit heredoc.
+
 * Echo comment
 // TODO: IMPLEMENT
 // [ 'echo', @, 'hello', @, >, @, '', $whitespace_left, @, '', @, $space, @, '', $empty, @, $whitespace_left, $whitespace_left ]

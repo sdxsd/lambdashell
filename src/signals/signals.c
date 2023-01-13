@@ -42,10 +42,12 @@ A program is free software if users have all of these freedoms.
 
 int	g_status;
 
-void	sigint_alt(int sig)
+void	sig_heredoc_set(int sig)
 {
 	if (sig == SIGINT)
-		ft_printf("\n");
+	{
+		g_status = 1337;
+	}
 }
 
 void	sighandler(int sig)

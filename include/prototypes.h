@@ -124,9 +124,11 @@ char			**get_arg_string_array(t_list *arg_list);
 t_list			*parse(t_list *tokens, t_list *env);
 
 /* SIGNALS */
+void			sighandler(int sig);
 void			signal_handler_set(void);
 void			signal_handler_child_set(void);
 void			disable_signals(void);
+void			sig_heredoc_set(int sig);
 
 /* STOP */
 bool			running(void);
