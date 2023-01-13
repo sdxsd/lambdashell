@@ -57,7 +57,7 @@ t_status	dealloc_lst(t_list **lst_ptr, t_status (*del)(void*))
 		*lst_ptr = element->next;
 		if (del)
 			(*del)(&element->content);
-		free(element);
+		ft_free(&element);
 	}
 	return (ERROR);
 }
