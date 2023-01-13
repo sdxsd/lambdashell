@@ -40,6 +40,7 @@ A program is free software if users have all of these freedoms.
 #include "minishell.h"
 #include <fcntl.h>
 #include <limits.h>
+#include <signal.h>
 
 static void	write_tokens_into_file(t_list *tokens, int fd)
 {
@@ -75,6 +76,7 @@ static t_status	heredoc_readline_and_write(t_token *delimiter, int fd,
 		line = readline("> ");
 		if (g_status == 1337)
 		{
+			ft_free(&line);
 			g_status = 1;
 			return (ERROR);
 		}
@@ -89,7 +91,6 @@ static t_status	heredoc_readline_and_write(t_token *delimiter, int fd,
 			else
 			{
 				tokens = tokenize(line);
-				ft_free(&line);
 				if (!tokens)
 					return (ERROR);
 				err_status = expand_heredoc_tokens(delimiter, tokens, lambda);
@@ -97,6 +98,7 @@ static t_status	heredoc_readline_and_write(t_token *delimiter, int fd,
 					write_tokens_into_file(tokens, fd);
 				dealloc_lst(&tokens, dealloc_token);
 			}
+			ft_free(&line);
 		}
 	}
 	ft_free(&line);
