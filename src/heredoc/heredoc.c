@@ -37,7 +37,7 @@ The definition of Free Software is as follows:
 A program is free software if users have all of these freedoms.
 */
 
-#include "minishell.h"
+#include "../../include/minishell.h"
 #include <fcntl.h>
 #include <limits.h>
 #include <signal.h>
@@ -63,12 +63,33 @@ static void	write_tokens_into_file(t_list *tokens, int fd)
 	ft_putstr_fd("\n", fd);
 }
 
+static t_status	tokenize_and_write(t_token *delimiter, int fd,
+									t_lambda *lambda, char *line)
+{
+	t_status	err_status;
+	t_list		*tokens;
+
+	err_status = OK;
+	if (ft_strlen(line) < 1)
+		ft_putstr_fd("\n", fd);
+	else
+	{
+		tokens = tokenize(line);
+		if (!tokens)
+			return (ERROR);
+		err_status = expand_heredoc_tokens(delimiter, tokens, lambda);
+		if (err_status != ERROR)
+			write_tokens_into_file(tokens, fd);
+		dealloc_lst(&tokens, dealloc_token);
+	}
+	return (err_status);
+}
+
 static t_status	heredoc_readline_and_write(t_token *delimiter, int fd,
 					t_lambda *lambda)
 {
 	t_status	err_status;
 	char		*line;
-	t_list		*tokens;
 
 	err_status = OK;
 	while (err_status == OK)
@@ -86,18 +107,7 @@ static t_status	heredoc_readline_and_write(t_token *delimiter, int fd,
 		{
 			if (ft_streq(line, delimiter->content))
 				break ;
-			if (ft_strlen(line) < 1)
-				ft_putstr_fd("\n", fd);
-			else
-			{
-				tokens = tokenize(line);
-				if (!tokens)
-					return (ERROR);
-				err_status = expand_heredoc_tokens(delimiter, tokens, lambda);
-				if (err_status != ERROR)
-					write_tokens_into_file(tokens, fd);
-				dealloc_lst(&tokens, dealloc_token);
-			}
+			err_status = tokenize_and_write(delimiter, fd, lambda, line);
 			ft_free(&line);
 		}
 	}
