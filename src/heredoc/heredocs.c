@@ -47,7 +47,7 @@ static t_status	resolve_and_add_delimiter(t_token *delimiter, t_list *prev,
 	path = heredoc(delimiter, lambda);
 	ft_free(&delimiter->content);
 	if (!path)
-		return (dealloc_token(&delimiter));
+		return (ERROR);
 	delimiter->content = path;
 	delimiter->type = UNQUOTED;
 	prev->next = NULL;
@@ -85,6 +85,8 @@ static t_status	fill_delimiter(t_list **tokens_ptr, t_token *delimiter,
 {
 	t_token	*token;
 
+	if (!delimiter || !delimiter->content)
+		return (ERROR);
 	while ((*tokens_ptr))
 	{
 		token = (*tokens_ptr)->content;
@@ -115,7 +117,7 @@ t_status	heredocs(t_list *tokens, t_lambda *lambda)
 {
 	t_token	*token;
 	t_list	*prev;
-	t_token	*delimiter;
+	t_token	*del;
 	t_list	*next;
 
 	while (tokens)
@@ -125,13 +127,13 @@ t_status	heredocs(t_list *tokens, t_lambda *lambda)
 		{
 			prev = tokens;
 			skip_whitespace_tokens_and_update_prev(&tokens, &prev);
-			delimiter = alloc_token(UNQUOTED, ft_strdup(""));
-			if (!delimiter || !delimiter->content)
-				return (dealloc_token(&delimiter));
-			fill_delimiter(&tokens, delimiter, &next);
+			del = alloc_token(UNQUOTED, ft_strdup(""));
+			if (fill_delimiter(&tokens, del, &next) == ERROR)
+				return (dealloc_token(&del));
 			ft_free(&prev->next);
 			prev->next = next;
-			resolve_and_add_delimiter(delimiter, prev, next, lambda);
+			if (resolve_and_add_delimiter(del, prev, next, lambda) == ERROR)
+				return (dealloc_token(&del));
 			prev->next->next = next;
 		}
 		if (tokens)
