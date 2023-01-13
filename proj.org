@@ -1,58 +1,5 @@
 #+TITLE: Minishell
 
-* Echo comment
-// TODO: IMPLEMENT
-// [ 'echo', @, 'hello', @, >, @, '', $whitespace_left, @, '', @, $space, @, '', $empty, @, $whitespace_left, $whitespace_left ]
-// [ 'echo' ] # input
-// [ 'echo' ] # split unquoted
-// [ 'echo' ] # discard empty
-// [ 'echo' ] # trim whitespace tokens
-// [ 'echo' ] # unempty if one token was quoted
-// [ 'echo', @, 'hello', @, >, @, '', $whitespace_left, @, '', @, $space, @, '', $empty, @, $whitespace_left, $whitespace_left ]
-//            [ 'hello' ] # input
-//            [ 'hello' ] # split unquoted
-//            [ 'hello' ] # discard empty
-//            [ 'hello' ] # trim whitespace tokens
-//            [ 'hello' ] # unempty if one token was quoted
-// [ 'echo', @, 'hello', @, >, @, '', $whitespace_left, @, '', @, $space, @, '', $empty, @, $whitespace_left, $whitespace_left ]
-//                       [ '>' ] # input
-//                       [ '>' ] # split unquoted
-//                       [ '>' ] # discard empty
-//                       [ '>' ] # trim whitespace tokens
-//                       [ '>' ] # unempty if one token was quoted
-// [ 'echo', @, 'hello', @, >, @, '', $whitespace_left, @, '', @, $space, @, '', $empty, @, $whitespace_left, $whitespace_left ]
-//                              [ '', $whitespace_left ] # input           Y
-//                              [ '', @, 'b' ] # split unquoted            Y
-//                              [  @, 'b' ] # discard empty                N
-//                              [ 'b' ] # trim whitespace tokens           N?
-//                              [ 'b' ] # unempty if one token was quoted  N
-// [ 'echo', @, 'hello', @, >, @, 'b', @, '', @, $space, @, '', $empty, @, $whitespace_left, $whitespace_left ]
-//                                      [ '' ] # input
-//                                      [ '' ] # split unquoted
-//                                      [  ] # discard empty
-//                                      [  ] # trim whitespace tokens
-//                                      [ '' ] # unempty if one token was quoted
-// [ 'echo', @, 'hello', @, >, @, 'b', @, '', @, $space, @, '', $empty, @, $whitespace_left, $whitespace_left ]
-//                                             [ $space ] # input
-//                                             [ @, ] # split unquoted
-//                                             [ @, ] # discard empty
-//                                             [  ] # trim whitespace tokens
-//                                             [  ] # unempty if one token was quoted
-// [ 'echo', @, 'hello', @, >, @, 'b', @, '', @, @, '', $empty, @, $whitespace_left, $whitespace_left ]
-//                                                [ '', $empty ] # input
-//                                                [ '' ] # split unquoted
-//                                                [  ] # discard empty
-//                                                [  ] # trim whitespace tokens
-//                                                [ '' ] # unempty if one token was quoted
-// [ 'echo', @, 'hello', @, >, @, 'b', @, '', @, @, '', @, $whitespace_left, $whitespace_left ]
-//                                                    [ $whitespace_left, $whitespace_left ] # input
-//                                                    [ @, 'b', @, 'b' ] # split unquoted
-//                                                    [ @, 'b', @, 'b' ] # discard empty
-//                                                    [ 'b', @, 'b' ] # trim whitespace tokens
-//                                                    [ 'b', @, 'b' ] # unempty if one token was quoted
-// [ 'echo', @, 'hello', @, >, @, 'b', @, '', @, @, '', @, 'b', @, 'b' ]
-// TODO: maybe remove duplicate spaces
-
 * Errors:
 Multiple output of errors when too many forks.
 
