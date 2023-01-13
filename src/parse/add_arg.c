@@ -39,6 +39,12 @@ A program is free software if users have all of these freedoms.
 
 #include "minishell.h"
 
+static bool	is_space_inside_unquoted(t_token *token)
+{
+	return (token->type == UNQUOTED
+		&& ft_strset(token->content, WHITESPACE_CHARACTERS));
+}
+
 static char	*get_arg(t_list **tokens_ptr)
 {
 	char	*arg;
@@ -50,7 +56,7 @@ static char	*get_arg(t_list **tokens_ptr)
 	while (*tokens_ptr)
 	{
 		token = (*tokens_ptr)->content;
-		if (!is_text_token(token))
+		if (!is_text_token(token) || is_space_inside_unquoted(token))
 			break ;
 		arg = ft_strjoin_and_free_left(arg, token->content);
 		if (!arg)
